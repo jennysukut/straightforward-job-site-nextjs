@@ -2,23 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 48, 139, 123;
-  --background-rgb: 248, 242, 236;
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
+  color: rgb(248, 242, 236);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+  .rounded-4xl {
+    border-radius: 3.5rem;
+  }
 }
 
 @layer components {
   .button {
-    @apply flex flex-col text-cream rounded-3xl m-3 px-6 py-2 tracking-wide;
+    @apply flex flex-col text-cream rounded-4xl m-3 px-6 py-2 tracking-wide max-w-64;
+  }
+
+  .borderContainer {
+    @apply flex flex-col bg-cream text-jade rounded-3xl m-5 px-10 py-8 outline outline-jade drop-shadow-jade max-w-96;
+  }
+
+  /* for the solid container, you have to add the color and drop shadow to the page directly */
+  .solidContainer {
+    @apply flex flex-col text-cream rounded-3xl m-5 px-10 py-8 max-w-96;
   }
 }
