@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  letter-spacing: 0.15em;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0.2em;
+}
+
 body {
   color: rgb(248, 242, 236);
 }
@@ -13,11 +23,14 @@ body {
   .rounded-4xl {
     border-radius: 3.5rem;
   }
+  .tracking-extra-wide {
+    letter-spacing: 0.2em;
+  }
 }
 
 @layer components {
   .button {
-    @apply flex flex-col text-cream rounded-4xl m-3 px-6 py-2 tracking-wide max-w-64;
+    @apply flex flex-col text-cream rounded-4xl m-3 px-7 py-2 tracking-extra-wide max-w-64 text-xs;
   }
 
   .borderContainer {
