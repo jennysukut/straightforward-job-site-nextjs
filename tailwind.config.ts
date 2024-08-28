@@ -11,6 +11,7 @@ const config: Config = {
       colors: {
         //If you need a reference, there are color names outlined on the Figma design with the Color Palette
         // cream + purple
+        eggshell: "#FFF9F3",
         cream: "#F8F2EC",
         lilac: "#D6A6DC",
         // teal + green shades
