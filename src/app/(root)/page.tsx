@@ -12,7 +12,7 @@ export default function Home() {
         <SiteButton variant="hollow">{`I'm a Normal button`}</SiteButton>
         <SiteButton
           variant="filled"
-          colorScheme="e3"
+          colorScheme="b6"
           addClasses="max-w-72"
           size="large"
         >

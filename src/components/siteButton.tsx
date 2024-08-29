@@ -63,7 +63,7 @@ const SiteButton: React.FC<ButtonProps> = ({
     : "hover:-translate-x-0.5 hover:-translate-y-0.5";
 
   const buttonDisabled = disabled
-    ? "disabled:translate-x-1.5 disabled:translate-y-1.5 disabled:bg-blush disabled:text-white disabled:hover:cursor-not-allowed disabled:hover:saturate-100"
+    ? "disabled:translate-x-1 disabled:translate-y-1 disabled:bg-blush disabled:text-white disabled:hover:cursor-not-allowed disabled:hover:saturate-100"
     : "";
 
   return (
