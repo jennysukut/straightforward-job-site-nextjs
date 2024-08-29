@@ -7,11 +7,15 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      sans: ["satoshi", "sans-serif"],
+    },
     extend: {
       colors: {
         //If you need a reference, there are color names outlined on the Figma design with the Color Palette
         // cream + purple
         cream: "#F8F2EC",
+        eggshell: "#FFF9F3",
         lilac: "#D6A6DC",
         // teal + green shades
         sky: "#C1D8D3",

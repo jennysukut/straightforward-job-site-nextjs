@@ -1,29 +1,26 @@
-import TestButton from "./button";
+import SiteButton from "@/components/siteButton";
 
 export default function Home() {
-  const buttonHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    const button: HTMLButtonElement = event.currentTarget;
-    console.log(button.classList);
-    // setClickedButton(button.name);
-  };
-
   return (
-    <main className="flex min-h-screen flex-col items-center bg-cream p-24 align-middle">
-      <h1 className="text-3xl text-jade">Straightforward Job Site</h1>
-      <p className="italic text-lilac">
+    <main className="Main flex min-h-screen flex-col items-center bg-cream p-24 align-middle">
+      <h1 className="Title text-3xl text-jade">Straightforward Job Site</h1>
+      <p className="Subtitle italic text-lilac">
         testing out some tailwind classes + options
       </p>
 
-      <div className="my-5 flex flex-col items-center">
-        <button className="button bg-jade drop-shadow-smLime">
-          test button
-        </button>
-        <button className="button max-w-56 bg-watermelon py-4 drop-shadow-olive">
-          new button with more text + options
-        </button>
-        <TestButton />
+      <div className="ButtonContainer my-5 flex flex-col items-center gap-6">
+        <SiteButton variant="hollow">{`I'm a Normal button`}</SiteButton>
+        <SiteButton
+          variant="filled"
+          colorScheme="e3"
+          addClasses="max-w-72"
+          size="large"
+        >
+          {`I'm a Large Button!`}
+        </SiteButton>
+        <SiteButton variant="filled" colorScheme="d4" disabled>
+          {`I don't work :(`}
+        </SiteButton>
       </div>
 
       <div className="flex flex-row items-center justify-evenly">
