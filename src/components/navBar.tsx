@@ -34,7 +34,7 @@ export default function NavBar() {
         </SiteButton>
         <SiteButton
           variant="filled"
-          colorScheme="d1"
+          colorScheme="f3"
           aria="Create a new account"
         >
           signup
