@@ -9,10 +9,10 @@ export default function TemporaryPage() {
         testing out some tailwind classes + options
       </p>
       <div className="ButtonContainer my-5 flex flex-col items-center gap-6">
-        <SiteButton
-          aria="this is a test"
-          variant="hollow"
-        >{`I'm a Normal button`}</SiteButton>
+        <SiteButton aria="this is a test" variant="hollow">
+          {" "}
+          normal button
+        </SiteButton>
         <SiteButton
           aria="this is a test"
           variant="filled"
@@ -20,7 +20,7 @@ export default function TemporaryPage() {
           addClasses="max-w-72"
           size="large"
         >
-          {`I'm a Large Button!`}
+          large button!
         </SiteButton>
         <SiteButton
           aria="this is a test"
@@ -28,7 +28,7 @@ export default function TemporaryPage() {
           colorScheme="d4"
           disabled
         >
-          {`I don't work :(`}
+          {`disabled :(`}
         </SiteButton>
       </div>
       <div className="flex flex-row items-center justify-evenly">
