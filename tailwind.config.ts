@@ -1,12 +1,11 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
+    fontFamily: {
+      sans: ["satoshi", "sans-serif"],
+    },
     extend: {
       colors: {
         //If you need a reference, there are color names outlined on the Figma design with the Color Palette
@@ -26,6 +25,7 @@ const config: Config = {
         blush: "#F8DAD0",
         peach: "#FFA08B",
         apricot: "#FDA26B",
+        darkApricot: "#F0935A",
         orange: "#F38143",
         watermelon: "#FFABDA",
         magenta: "#E673A9",
