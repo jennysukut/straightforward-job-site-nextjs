@@ -7,7 +7,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "large";
   variant: "hollow" | "filled";
   colorScheme?: string;
-  aria?: string;
+  aria: string;
 }
 
 const SiteButton: React.FC<ButtonProps> = ({
@@ -70,7 +70,7 @@ const SiteButton: React.FC<ButtonProps> = ({
     <div className="ButtonContainer relative">
       <button
         {...props}
-        className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold capitalize leading-5 transition-all duration-200 hover:saturate-150 ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
+        className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold capitalize transition-all duration-200 hover:saturate-150 ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
         type={type ?? "button"}
         onClick={onClick}
         disabled={disabled}
@@ -82,7 +82,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         {children}
       </button>
       <div
-        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full capitalize leading-5 text-transparent ${variant === "hollow" ? "border-[3px] border-jade" : ""} ${buttonSize} ${buttonColors[colorScheme].color2} ${addClasses}`}
+        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full capitalize text-transparent ${variant === "hollow" ? "border-[3px] border-jade" : ""} ${buttonSize} ${buttonColors[colorScheme].color2} ${addClasses}`}
       >
         {children}
       </div>
