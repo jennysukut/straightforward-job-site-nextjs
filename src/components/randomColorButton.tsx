@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import { buttonColors, colorSchemeOptions } from "@/lib/buttonColors";
+import { buttonColors } from "@/lib/buttonColors";
 import type { ColorSchemeOption } from "@/lib/buttonColors";
+import getRandomColorScheme from "@/utils/getRandomColorScheme";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   addClasses?: string;
@@ -11,9 +12,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   aria: string;
 }
 
-console.log(`Options ${colorSchemeOptions}`);
-
-const SiteButton: React.FC<ButtonProps> = ({
+const RandomColorButton: React.FC<ButtonProps> = ({
   addClasses,
   size,
   onClick,
@@ -26,9 +25,15 @@ const SiteButton: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const [isPressed, setIsPressed] = useState(false);
+  const [currentColor, setCurrentColor] = useState(colorScheme);
 
   let buttonSize: string;
   let buttonStyle: string;
+
+  function setNewColor(currentColor: ColorSchemeOption) {
+    const newColor = getRandomColorScheme(currentColor);
+    setCurrentColor(newColor);
+  }
 
   switch (size) {
     case "large":
@@ -43,7 +48,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       buttonStyle = "bg-cream border-jade text-jade border-[3px]";
       break;
     case "filled":
-      buttonStyle = `text-eggshell ${buttonColors[colorScheme].color1}`;
+      buttonStyle = `text-eggshell ${buttonColors[currentColor].color1}`;
       break;
     default:
       buttonStyle = "";
@@ -75,7 +80,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         {...props}
         className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-150 ${variant === "hollow" ? `group-hover:border-lime group-hover:bg-lime group-hover:text-eggshell` : ""} ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
         type={type ?? "button"}
-        onClick={onClick}
+        onClick={() => setNewColor(currentColor)}
         disabled={disabled}
         aria-label={aria}
         onMouseDown={handleMouseDown}
@@ -85,7 +90,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         {children}
       </button>
       <div
-        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent ${variant === "hollow" ? `border-[2px] border-jade bg-jade group-hover:border-lilac group-hover:bg-lilac` : `${buttonColors[colorScheme].color2}`} ${buttonSize} ${addClasses}`}
+        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent ${variant === "hollow" ? `border-[2px] border-jade bg-jade group-hover:border-lilac group-hover:bg-lilac` : `${buttonColors[currentColor].color2}`} ${buttonSize} ${addClasses}`}
       >
         {children}
       </div>
@@ -93,4 +98,4 @@ const SiteButton: React.FC<ButtonProps> = ({
   );
 };
 
-export default SiteButton;
+export default RandomColorButton;
