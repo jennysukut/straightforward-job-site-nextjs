@@ -11,8 +11,6 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   aria: string;
 }
 
-console.log(`Options ${colorSchemeOptions}`);
-
 const SiteButton: React.FC<ButtonProps> = ({
   addClasses,
   size,
@@ -73,7 +71,7 @@ const SiteButton: React.FC<ButtonProps> = ({
     <div className="ButtonContainer group relative">
       <button
         {...props}
-        className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-150 ${variant === "hollow" ? `group-hover:border-lime group-hover:bg-lime group-hover:text-eggshell` : ""} ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
+        className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-[120%] ${variant === "hollow" ? `group-hover:border-lime group-hover:bg-lime group-hover:text-eggshell` : ""} ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
         type={type ?? "button"}
         onClick={onClick}
         disabled={disabled}
