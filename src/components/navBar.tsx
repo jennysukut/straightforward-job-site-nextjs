@@ -16,7 +16,7 @@ export default function NavBar() {
       </Link>
       <div className="TEMPORARYBUTTON">
         <Link href={"/temporaryTestPage"}>
-          <SiteButton variant="hollow" colorScheme="e6" aria="About us">
+          <SiteButton variant="hollow" colorScheme="a1" aria="About us">
             temporary button to test page
           </SiteButton>
         </Link>

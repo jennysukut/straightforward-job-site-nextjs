@@ -18,7 +18,7 @@ const SiteButton: React.FC<ButtonProps> = ({
   type = "button",
   aria,
   variant,
-  colorScheme = "a2",
+  colorScheme = "e5",
   children,
   ...props
 }) => {
@@ -66,11 +66,13 @@ const SiteButton: React.FC<ButtonProps> = ({
     ? "disabled:translate-x-1 disabled:translate-y-1 disabled:bg-blush disabled:text-white disabled:hover:cursor-not-allowed disabled:hover:saturate-100"
     : "";
 
+console.log(`${buttonColors[colorScheme].color2}`);
+
   return (
-    <div className="ButtonContainer relative">
+    <div className=" ButtonContainer group relative">
       <button
         {...props}
-        className={`SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-150 ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
+        className={`SiteButton  relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-150 ${variant === "hollow" ? `group-hover:text-eggshell group-hover:bg-lime group-hover:border-lime` : "" } ${buttonSize} ${addClasses} ${buttonStyle} ${transitionClass} ${buttonDisabled}`}
         type={type ?? "button"}
         onClick={onClick}
         disabled={disabled}
@@ -82,7 +84,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         {children}
       </button>
       <div
-        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent ${variant === "hollow" ? "border-[3px] border-jade bg-jade" : ""} ${buttonSize} ${buttonColors[colorScheme].color2} ${addClasses}`}
+        className={`ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent ${variant === "hollow" ? `border-[2px] border-jade bg-jade  group-hover:bg-lilac group-hover:border-lilac` : `${buttonColors[colorScheme].color2}`} ${buttonSize}  ${addClasses}`}
       >
         {children}
       </div>
