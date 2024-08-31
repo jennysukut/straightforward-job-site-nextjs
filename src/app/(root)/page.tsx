@@ -7,8 +7,8 @@ export default function Home() {
         <h1 className="MainText max-w-[37vw] font-bold text-apricot">
           here, we utilize{" "}
           <span className="font-extrabold text-darkApricot">honesty </span> and{" "}
-          <span className="font-extrabold text-darkApricot">transparency </span> to
-          make job searching & hiring better for{" "}
+          <span className="font-extrabold text-darkApricot">transparency </span>{" "}
+          to make job searching & hiring better for{" "}
           <span className="font-extrabold text-darkApricot">
             every person involved.
           </span>

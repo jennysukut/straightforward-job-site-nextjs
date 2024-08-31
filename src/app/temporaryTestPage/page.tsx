@@ -1,4 +1,4 @@
-import SiteButton from "@/components/siteButton";
+import RandomColorButton from "@/components/randomColorButton";
 
 export default function TemporaryPage() {
   return (
@@ -9,11 +9,15 @@ export default function TemporaryPage() {
         testing out some tailwind classes + options
       </p>
       <div className="ButtonContainer my-5 flex flex-col items-center gap-6">
-        <SiteButton aria="this is a test" variant="filled" colorScheme="f2">
+        <RandomColorButton
+          aria="this is a test"
+          variant="filled"
+          colorScheme="f2"
+        >
           {" "}
           normal button
-        </SiteButton>
-        <SiteButton
+        </RandomColorButton>
+        <RandomColorButton
           aria="this is a test"
           variant="filled"
           colorScheme="b6"
@@ -21,15 +25,15 @@ export default function TemporaryPage() {
           size="large"
         >
           large button!
-        </SiteButton>
-        <SiteButton
+        </RandomColorButton>
+        <RandomColorButton
           aria="this is a test"
           variant="filled"
           colorScheme="b1"
           disabled
         >
           {`disabled :(`}
-        </SiteButton>
+        </RandomColorButton>
       </div>
       <div className="flex flex-row items-center justify-evenly">
         <div className="borderContainer">
