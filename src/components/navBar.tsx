@@ -4,10 +4,10 @@ import Link from "next/link";
 
 export default function NavBar() {
   return (
-    <div className="NavBar mt-[50px] flex h-20 w-full justify-between px-16">
+    <div className="NavBar flex h-20 w-full justify-between px-16 pt-[50px]">
       <Link href={"/"}>
         <Image
-          className="Logo cursor-pointer transition-transform duration-300 hover:scale-105 max-w-48"
+          className="Logo max-w-48 cursor-pointer transition-transform duration-300 hover:scale-105"
           src="/sfjs-logo.svg"
           width={229}
           height={75}
