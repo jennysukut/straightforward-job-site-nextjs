@@ -17,10 +17,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="relative overflow-x-hidden bg-cream">
-        <Theme panelBackground="solid" radius="large">
+      <body className="relative overflow-x-hidden">
+        <Theme
+          panelBackground="solid"
+          radius="large"
+          className="flex min-h-screen w-full flex-col bg-cream"
+        >
           <NavBar />
-          {children}
+          <div className="Main flex flex-1 flex-col">{children}</div>
           <Footer />
         </Theme>
       </body>
