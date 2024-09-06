@@ -39,6 +39,24 @@ body {
   font-weight: 700;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8dad0;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d5cb2c;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d2c720;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -48,6 +66,9 @@ body {
   }
   .tracking-extra-wide {
     letter-spacing: 0.2em;
+  }
+  .scrollbar-thumb-rounded-full {
+    --scrollbar-thumb-radius: 9999px;
   }
 }
 
