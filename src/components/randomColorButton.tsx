@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import type { ColorSchemeOption } from "@/lib/buttonColors";
+import type { ButtonColorOption } from "@/lib/buttonColors";
 import getRandomColorScheme from "@/utils/getRandomColorScheme";
 import SiteButton from "./siteButton";
 
@@ -8,7 +8,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   addClasses?: string;
   size?: "large";
   variant: "hollow" | "filled";
-  colorScheme: ColorSchemeOption;
+  colorScheme: ButtonColorOption;
   aria: string;
 }
 
@@ -27,7 +27,7 @@ const RandomColorButton: React.FC<ButtonProps> = ({
   
   const [currentColor, setCurrentColor] = useState(colorScheme);
 
-  function setNewColor(currentColor: ColorSchemeOption) {
+  function setNewColor(currentColor: ButtonColorOption) {
     const newColor = getRandomColorScheme(currentColor);
     setCurrentColor(newColor);
   }

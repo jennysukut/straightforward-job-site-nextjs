@@ -225,9 +225,9 @@ export const buttonColors = {
 export type ButtonColors = typeof buttonColors;
 
 // This defines the type of that array
-export type ColorSchemeOption = keyof typeof buttonColors;
+export type ButtonColorOption = keyof typeof buttonColors;
 
-// This is a dynamically generated array that includes the list of all of the keys from the colorScheme object
-export const colorSchemeOptions = Object.keys(
+// This is a dynamically generated array that includes the list of all of the keys from the ButtonColor object
+export const buttonColorOptions = Object.keys(
   buttonColors,
-) as ColorSchemeOption[];
+) as ButtonColorOption[];

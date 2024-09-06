@@ -1,11 +1,14 @@
 "use client";
 
 import clsx from "clsx";
-import { boxColors } from "@/lib/boxColors";
+import {
+  LargeShadowColorOption,
+  largeShadowColors,
+} from "@/lib/largeShadowColors";
 
 interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   variant: "hollow" | "filled";
-  colorScheme?: string;
+  colorScheme?: LargeShadowColorOption;
   aria: string;
   type?: string;
   title?: string;
@@ -25,12 +28,12 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   ...props
 }) => {
   const boxClasses = clsx(
-    "InfoBox max-w-screen-sm relative z-[1] py-8 px-10 font-sans leading-5 font-semibold rounded-3xl transition-all duration-200 tracking-superwide",
+    "InfoBox max-w-screen-sm relative z-[1] py-8 px-10 leading-5 font-semibold rounded-3xl transition-all duration-200 tracking-superwide",
     {
       // variant
       "bg-cream border-jade drop-shadow-jade text-jade font-semibold border-[3px]":
         variant === "hollow",
-      [`text-eggshell ${boxColors[colorScheme]}`]: variant === "filled",
+      [`text-eggshell ${largeShadowColors[colorScheme]}`]: variant === "filled",
 
       //textSize
       "text-xs": textSize === "small",
