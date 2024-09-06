@@ -1,4 +1,3 @@
-import Image from "next/image";
 import SiteButton from "./siteButton";
 
 export default function Footer() {

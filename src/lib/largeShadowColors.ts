@@ -1,4 +1,4 @@
-export const boxColors: BoxColors = {
+export const largeShadowColors = {
   a1: "bg-watermelon drop-shadow-orange",
   a2: "bg-sky drop-shadow-orange",
   a3: "bg-magenta drop-shadow-orange",
@@ -42,6 +42,10 @@ export const boxColors: BoxColors = {
   f6: "bg-magenta drop-shadow-peach",
 };
 
-export type BoxColors = {
-  [name: string]: string;
-};
+export type LargeShadowColorScheme = typeof largeShadowColors;
+
+export type LargeShadowColorOption = keyof typeof largeShadowColors;
+
+export const largeShadowColorOptions = Object.keys(
+  largeShadowColors,
+) as LargeShadowColorOption[];

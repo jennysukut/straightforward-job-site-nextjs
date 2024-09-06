@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
-import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
 
 export const metadata: Metadata = {
   title: "Straightforward Job Site",
@@ -17,16 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="relative overflow-x-hidden">
-        <Theme
-          panelBackground="solid"
-          radius="large"
-          className="flex min-h-screen w-full flex-col bg-cream"
-        >
-          <NavBar />
-          <div className="Main flex flex-1 flex-col">{children}</div>
-          <Footer />
-        </Theme>
+      <body className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-cream">
+        <NavBar />
+        <div className="Main flex flex-1 flex-col">{children}</div>
+        <Footer />
       </body>
     </html>
   );
