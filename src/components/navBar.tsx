@@ -59,7 +59,7 @@ export default function NavBar() {
         </SiteButton>
       </div>
       {aboutClicked === true ? (
-        <div className="AboutButtons relative flex flex-col items-start space-y-4">
+        <div className="AboutButtons absolute right-56 top-24 flex flex-col items-start space-y-4">
           <SiteButton variant="filled" colorScheme="b3" aria="our why">
             our why
           </SiteButton>
