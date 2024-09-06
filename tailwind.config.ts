@@ -1,3 +1,4 @@
+import { url } from "inspector";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -30,6 +31,9 @@ const config: Config = {
         watermelon: "#FFABDA",
         magenta: "#E673A9",
       },
+      letterSpacing: {
+        superwide: "0.15em",
+      },
     },
     dropShadow: {
       // larger drop shadows
@@ -47,19 +51,19 @@ const config: Config = {
       watermelon: "10px 10px 0px #FFABDA",
       magenta: "10px 10px 0px #E673A9",
       // small drop shadows
-      smLilac: "7px 7px 0px #D6A6DC",
-      smSky: "7px 7px 0px #C1D8D3",
-      smJade: "7px 7px 0px #50B09F",
-      smEmerald: "7px 7px 0px #308B7B",
-      smMidnight: "7px 7px 0px #0C776D",
-      smLime: "7px 7px 0px #D5CB2C",
-      smOlive: "7px 7px 0px #A6A646",
-      smBlush: "7px 7px 0px #F8DAD0",
-      smPeach: "7px 7px 0px #FFA08B",
-      smApricot: "7px 7px 0px #FDA26B",
-      smOrange: "7px 7px 0px #F38143",
-      smWatermelon: "7px 7px 0px #FFABDA",
-      smMagenta: "7px 7px 0px #E673A9",
+      smLilac: "3px 3px 0px #D6A6DC",
+      smSky: "3px 3px 0px #C1D8D3",
+      smJade: "3px 3px 0px #50B09F",
+      smEmerald: "3px 3px 0px #308B7B",
+      smMidnight: "3px 3px 0px #0C776D",
+      smLime: "3px 3px 0px #D5CB2C",
+      smOlive: "3px 3px 0px #A6A646",
+      smBlush: "3px 3px 0px #F8DAD0",
+      smPeach: "3px 3px 0px #FFA08B",
+      smApricot: "3px 3px 0px #FDA26B",
+      smOrange: "3px 3px 0px #F38143",
+      smWatermelon: "3px 3px 0px #FFABDA",
+      smMagenta: "3px 3px 0px #E673A9",
     },
   },
   plugins: [],

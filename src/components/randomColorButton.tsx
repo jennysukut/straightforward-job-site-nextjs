@@ -24,6 +24,7 @@ const RandomColorButton: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
+  
   const [currentColor, setCurrentColor] = useState(colorScheme);
 
   function setNewColor(currentColor: ColorSchemeOption) {
