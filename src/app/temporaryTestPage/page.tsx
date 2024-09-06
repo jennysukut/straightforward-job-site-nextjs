@@ -50,7 +50,7 @@ export default function TemporaryPage() {
         aria="test"
         colorScheme="b1"
         >
-          {`testing another label`}
+          {`label with a set scheme`}
         </SiteLabel>
 
         <SiteLabel
@@ -65,6 +65,18 @@ export default function TemporaryPage() {
         aria="test"
         >
           {`testing a different label`}
+        </SiteLabel>
+        <SiteLabel
+        variant="functional"
+        aria="test"
+        >
+          {`labely label`}
+        </SiteLabel>
+        <SiteLabel
+        variant="functional"
+        aria="test"
+        >
+          {`yet another label`}
         </SiteLabel>
         </div>
       </div>

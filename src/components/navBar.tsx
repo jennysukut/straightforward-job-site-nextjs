@@ -1,8 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import SiteButton from "./siteButton";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function NavBar() {
+
+const [aboutClicked, setAboutClicked] = useState(false);
+
+function handleAboutClick() {
+  setAboutClicked(true);
+  console.log("about clicked");
+}
+
   return (
     <div className="NavBar flex h-fit w-full justify-between px-16 pt-[50px]">
       <Link href={"/"}>
@@ -16,13 +27,13 @@ export default function NavBar() {
       </Link>
       <div className="TEMPORARYBUTTON">
         <Link href={"/temporaryTestPage"}>
-          <SiteButton variant="hollow" colorScheme="a1" aria="About us">
+          <SiteButton variant="hollow" colorScheme="a1" aria="test button">
             temporary button to test page
           </SiteButton>
         </Link>
       </div>
       <div className="NavButtonContainer flex gap-6">
-        <SiteButton variant="filled" colorScheme="b4" aria="About us">
+        <SiteButton variant="filled" colorScheme="b4" aria="About us" onClick={handleAboutClick}>
           about
         </SiteButton>
         <SiteButton
