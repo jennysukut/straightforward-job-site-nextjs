@@ -1,7 +1,3 @@
-type ColorStyle = {
-  [name: string]: string;
-};
-
 export const colorStyle: ColorStyle = {
     a1: "bg-watermelon drop-shadow-smOrange",
     a2: "bg-sky drop-shadow-smOrange",
@@ -45,3 +41,17 @@ export const colorStyle: ColorStyle = {
     f5: "bg-peach drop-shadow-smOlive",
     f6: "bg-magenta drop-shadow-smPeach",
 };
+
+export type ColorStyle = {
+  [name: string]: string;
+};
+
+// This defines the type of that array
+export type LabelColorOptions = keyof typeof colorStyle;
+
+// This is a dynamically generated array that includes the list of all of the keys from the colorScheme object
+export const labelColorOptions = Object.keys(
+  colorStyle,
+) as LabelColorOptions[];
+
+console.log(labelColorOptions);

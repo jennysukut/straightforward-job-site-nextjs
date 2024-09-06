@@ -28,10 +28,10 @@ const SiteButton: React.FC<ButtonProps> = ({
   const [isPressed, setIsPressed] = useState(false);
 
   const buttonClasses = clsx(
-    "SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 hover:saturate-[120%]",
+    "SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 tracking-superwide hover:saturate-[120%]",
     {
       // size
-      "px-6 py-4 text-sm": size === "large",
+      "px-8 py-4 text-sm": size === "large",
       "px-4 py-2 text-xs min-w-[65px]": size !== "large",
 
       // variant
@@ -53,10 +53,10 @@ const SiteButton: React.FC<ButtonProps> = ({
   );
 
   const shadowClasses = clsx(
-    "ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent font-semibold",
+    "ButtonShadow absolute -right-1.5 top-1.5 rounded-full text-transparent font-semibold tracking-superwide",
     {
       // size
-      "px-6 py-4 text-sm": size === "large",
+      "px-8 py-4 text-sm": size === "large",
       "px-4 py-2 text-xs min-w-[65px]": size !== "large",
 
       // variant

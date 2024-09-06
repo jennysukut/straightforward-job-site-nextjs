@@ -4,12 +4,12 @@ export default function Home() {
   return (
     <main className="Main flex flex-col items-center p-24 align-middle">
       <div className="MainSection flex h-[36vh] w-full max-w-[1000px] items-center justify-center">
-        <h1 className="MainText max-w-[37vw] font-bold text-apricot">
+        <h1 className="MainText max-w-[37vw] font-bold text-jade">
           here, we utilize{" "}
-          <span className="font-extrabold text-darkApricot">honesty </span> and{" "}
-          <span className="font-extrabold text-darkApricot">transparency </span>{" "}
+          <span className="font-extrabold text-darkJade">honesty </span> and{" "}
+          <span className="font-extrabold text-darkJade">transparency </span>{" "}
           to make job searching & hiring better for{" "}
-          <span className="font-extrabold text-darkApricot">
+          <span className="font-extrabold text-darkJade">
             every person involved.
           </span>
         </h1>
