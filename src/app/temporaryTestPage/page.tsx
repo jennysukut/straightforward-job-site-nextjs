@@ -38,14 +38,14 @@ export default function TemporaryPage() {
 
         <div className="LabelGroup flex flex-wrap max-w-lg">
 
-        <SiteLabel 
+        <SiteLabel
         variant="display"
         aria="test"
         >
           {`testing a label`}
         </SiteLabel>
 
-        <SiteLabel 
+        <SiteLabel
         variant="display"
         aria="test"
         colorScheme="b1"
@@ -53,14 +53,14 @@ export default function TemporaryPage() {
           {`testing another label`}
         </SiteLabel>
 
-        <SiteLabel 
+        <SiteLabel
         variant="display"
         aria="test"
         >
           {`testing a third label`}
         </SiteLabel>
 
-        <SiteLabel 
+        <SiteLabel
         variant="functional"
         aria="test"
         >
