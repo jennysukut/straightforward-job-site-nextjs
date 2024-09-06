@@ -8,11 +8,14 @@ export default function Footer() {
         <SiteButton variant="filled" colorScheme="b2" aria="contact us">
           contact
         </SiteButton>
-        <SiteButton variant="filled" colorScheme="c5" aria="our makers">
+        <SiteButton variant="filled" colorScheme="d4" aria="our makers">
           our makers
         </SiteButton>
-        <SiteButton variant="filled" colorScheme="f1" aria="our sponsors">
+        <SiteButton variant="filled" colorScheme="f3" aria="our sponsors">
           our sponsors
+        </SiteButton>
+        <SiteButton variant="filled" colorScheme="e6" aria="about">
+          about
         </SiteButton>
       </div>
       <div className="FooterInfo">

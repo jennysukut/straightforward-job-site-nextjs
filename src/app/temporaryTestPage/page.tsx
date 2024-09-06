@@ -36,6 +36,8 @@ export default function TemporaryPage() {
           {`disabled :(`}
         </RandomColorButton>
 
+        <div className="LabelGroup flex flex-wrap max-w-lg">
+
         <SiteLabel 
         variant="display"
         aria="test"
@@ -64,7 +66,7 @@ export default function TemporaryPage() {
         >
           {`testing a different label`}
         </SiteLabel>
-
+        </div>
       </div>
     </div>
   );

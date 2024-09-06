@@ -31,7 +31,7 @@ function handleRemove() {
 const removeButton = <button className="CloseButton ml-5 bg-[url('/utils/labelCloseButton.svg')]" onClick={handleRemove}>X</button>
 
 const labelClasses = clsx(
-    `Label relative z-[1] rounded-full font-semibold transition-all duration-200 hover:saturate-[120%] ${colorStyle[colorScheme]} text-eggshell text-xs py-1 tracking-widest`,
+    `Label relative z-[1] rounded-full font-semibold transition-all duration-200 hover:saturate-[120%] ${colorStyle[colorScheme]} text-eggshell text-xs py-1 tracking-widest m-1`,
     {
       // variant
       "px-4" : variant === "display",

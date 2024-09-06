@@ -17,6 +17,7 @@ const config: Config = {
         // teal + green shades
         sky: "#C1D8D3",
         jade: "#50B09F",
+        darkJade: "#46A392",
         emerald: "#308B7B",
         midnight: "#0C776D",
         lime: "#D5CB2C",
