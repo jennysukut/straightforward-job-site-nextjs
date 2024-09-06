@@ -13,6 +13,15 @@
   font-style: normal;
 }
 
+.radix-themes {
+  --default-font-family: "satoshi", sans-serif;
+  --heading-font-family: "satoshi", sans-serif;
+  --code-font-family: "satoshi", sans-serif;
+  --strong-font-family: "satoshi", sans-serif;
+  --em-font-family: "satoshi", sans-serif;
+  --quote-font-family: "satoshi", sans-serif;
+}
+
 h1,
 h2,
 h3 {

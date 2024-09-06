@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function NavBar() {
   return (
-    <div className="NavBar flex h-20 w-full justify-between px-16 pt-[50px]">
+    <div className="NavBar flex h-fit w-full justify-between px-16 pt-[50px]">
       <Link href={"/"}>
         <Image
           className="Logo max-w-48 cursor-pointer transition-transform duration-300 hover:scale-105"
