@@ -8,7 +8,6 @@ function getRandomLabelColors(): LabelColorOptions {
  const randomIndex = Math.floor(Math.random() * totalSchemes);
 
   // Return the new random color scheme
-  console.log(labelColorOptions[randomIndex]);
   return labelColorOptions[randomIndex];
 }
 
