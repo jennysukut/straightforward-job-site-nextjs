@@ -6,13 +6,15 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function NavBar() {
+  const [aboutClicked, setAboutClicked] = useState(false);
 
-const [aboutClicked, setAboutClicked] = useState(false);
-
-function handleAboutClick() {
-  setAboutClicked(true);
-  console.log("about clicked");
-}
+  function handleAboutClick() {
+    if (aboutClicked === true) {
+      setAboutClicked(false);
+    } else {
+      setAboutClicked(true);
+    }
+  }
 
   return (
     <div className="NavBar flex h-fit w-full justify-between px-16 pt-[50px]">
@@ -33,7 +35,12 @@ function handleAboutClick() {
         </Link>
       </div>
       <div className="NavButtonContainer flex gap-6">
-        <SiteButton variant="filled" colorScheme="b4" aria="About us" onClick={handleAboutClick}>
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="About us"
+          onClick={handleAboutClick}
+        >
           about
         </SiteButton>
         <SiteButton
@@ -51,6 +58,21 @@ function handleAboutClick() {
           signup
         </SiteButton>
       </div>
+      {aboutClicked === true ? (
+        <div className="AboutButtons relative flex flex-col items-start space-y-4">
+          <SiteButton variant="filled" colorScheme="b3" aria="our why">
+            our why
+          </SiteButton>
+          <SiteButton variant="filled" colorScheme="f1" aria="what we do">
+            what we do
+          </SiteButton>
+          <SiteButton variant="filled" colorScheme="c1" aria="pricing">
+            pricing
+          </SiteButton>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
