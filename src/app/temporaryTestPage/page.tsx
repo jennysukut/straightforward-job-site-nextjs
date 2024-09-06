@@ -31,29 +31,104 @@ export default function TemporaryPage() {
         >
           {`disabled :(`}
         </RandomColorButton>
+        <div className="LabelGroupContainer flex h-44 gap-4">
+          <div className="LabelGroup max-w-lg flex-wrap">
+            <SiteLabel variant="display" aria="test">
+              {`testing a label`}
+            </SiteLabel>
 
-        <div className="LabelGroup max-w-lg flex-wrap">
-          <SiteLabel variant="display" aria="test">
-            {`testing a label`}
-          </SiteLabel>
+            <SiteLabel variant="display" aria="test" colorScheme="b1">
+              {`label with a set scheme`}
+            </SiteLabel>
 
-          <SiteLabel variant="display" aria="test" colorScheme="b1">
-            {`label with a set scheme`}
-          </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a third label`}
+            </SiteLabel>
 
-          <SiteLabel variant="display" aria="test">
-            {`testing a third label`}
-          </SiteLabel>
-
-          <SiteLabel variant="functional" aria="test">
-            {`testing a different label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`labely label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`yet another label`}
-          </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`testing a different label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`labely label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`yet another label`}
+            </SiteLabel>
+          </div>
+          <div className="ScrollbarTest h-full overflow-y-scroll">
+            <SiteLabel variant="display" aria="test">
+              {`an absolute mess of labels`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test" colorScheme="b1">
+              {`to test the cutest little`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`scrollbar`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`testing a different label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`labely label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`yet another label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test" colorScheme="b1">
+              {`label with a set scheme`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a third label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`testing a different label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`labely label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`yet another label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test" colorScheme="b1">
+              {`label with a set scheme`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a third label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`testing a different label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`labely label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`yet another label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a label`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test" colorScheme="b1">
+              {`label with a set scheme`}
+            </SiteLabel>
+            <SiteLabel variant="display" aria="test">
+              {`testing a third label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`testing a different label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`labely label`}
+            </SiteLabel>
+            <SiteLabel variant="functional" aria="test">
+              {`yet another label`}
+            </SiteLabel>
+          </div>
         </div>
 
         <InfoBox
@@ -74,81 +149,6 @@ export default function TemporaryPage() {
             {`Transparency + decency is our bare minimum. `}{" "}
           </p>
         </InfoBox>
-
-        <div className="ScrollbarTest h-32 overflow-y-scroll">
-          <SiteLabel variant="display" aria="test">
-            {`an absolute mess of labels`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test" colorScheme="b1">
-            {`to test the cutest little`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`scrollbar`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`testing a different label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`labely label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`yet another label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test" colorScheme="b1">
-            {`label with a set scheme`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a third label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`testing a different label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`labely label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`yet another label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test" colorScheme="b1">
-            {`label with a set scheme`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a third label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`testing a different label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`labely label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`yet another label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a label`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test" colorScheme="b1">
-            {`label with a set scheme`}
-          </SiteLabel>
-          <SiteLabel variant="display" aria="test">
-            {`testing a third label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`testing a different label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`labely label`}
-          </SiteLabel>
-          <SiteLabel variant="functional" aria="test">
-            {`yet another label`}
-          </SiteLabel>
-        </div>
       </div>
     </div>
   );
