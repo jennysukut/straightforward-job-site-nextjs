@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import type { ButtonColorOption } from "@/lib/buttonColors";
+import type { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import getRandomColorScheme from "@/utils/getRandomColorScheme";
 import SiteButton from "./siteButton";
 
@@ -24,7 +24,6 @@ const RandomColorButton: React.FC<ButtonProps> = ({
   children,
   ...props
 }) => {
-  
   const [currentColor, setCurrentColor] = useState(colorScheme);
 
   function setNewColor(currentColor: ButtonColorOption) {

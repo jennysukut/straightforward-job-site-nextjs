@@ -1,8 +1,11 @@
-import { ButtonColorOption, buttonColorOptions } from "@/lib/buttonColors";
+import {
+  ButtonColorOption,
+  buttonColorOptions,
+} from "@/lib/stylingData/buttonColors";
 import {
   SmallShadowColorOption,
   smallShadowColorOptions,
-} from "@/lib/smallShadowColors";
+} from "@/lib/stylingData/smallShadowColors";
 
 type CurrentSchemeType = ButtonColorOption | SmallShadowColorOption;
 

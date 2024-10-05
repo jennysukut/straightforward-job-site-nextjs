@@ -37,7 +37,7 @@ export const largeShadowColors = {
   f1: "bg-orange drop-shadow-sky",
   f2: "bg-lime drop-shadow-sky",
   f3: "bg-olive drop-shadow-sky",
-  f4: "bg-apricot drop-shadow-olive",
+  f4: "bg-watermelon drop-shadow-olive",
   f5: "bg-peach drop-shadow-olive",
   f6: "bg-magenta drop-shadow-peach",
 };

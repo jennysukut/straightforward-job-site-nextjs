@@ -4,7 +4,7 @@ import clsx from "clsx";
 import {
   smallShadowColors,
   SmallShadowColorOption,
-} from "@/lib/smallShadowColors";
+} from "@/lib/stylingData/smallShadowColors";
 import getRandomColorScheme from "@/utils/getRandomColorScheme";
 import Image from "next/image";
 
@@ -13,6 +13,8 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   colorScheme?: SmallShadowColorOption;
   aria: string;
   type?: string;
+  addClasses?: string;
+  textSize?: "medium" | "large";
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -21,20 +23,27 @@ const SiteLabel: React.FC<LabelProps> = ({
   variant,
   colorScheme = getRandomColorScheme("a1"),
   children,
+  addClasses,
+  textSize,
   ...props
 }) => {
   function handleDelete() {
-    console.log("delete button clicked");
     // tie this into the data to update list of labels at it's source
   }
 
   const labelClasses = clsx(
-    `Label flex relative z-[1] rounded-full font-medium transition-all duration-200 ${smallShadowColors[colorScheme]} text-eggshell text-xs py-1 tracking-widest m-1`,
+    `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${smallShadowColors[colorScheme]} text-eggshell py-1 tracking-widest m-1`,
     {
       // variant
       "px-4": variant === "display",
       "pr-3 pl-4": variant === "functional",
+
+      //textSize
+      "text-xs": !textSize,
+      "text-sm": textSize === "medium",
+      "text-md": textSize === "large",
     },
+    addClasses,
   );
 
   return (
