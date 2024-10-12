@@ -4,9 +4,13 @@ import Image from "next/image";
 import SiteButton from "./siteButton";
 import Link from "next/link";
 import { useState } from "react";
+import { useModal } from "@/contexts/ModalContext";
+import LoginModal from "./modals/loginModal";
+import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 
 export default function NavBar() {
   const [aboutClicked, setAboutClicked] = useState(false);
+  const { showModal } = useModal();
 
   function handleAboutClick() {
     if (aboutClicked === true) {
@@ -47,6 +51,7 @@ export default function NavBar() {
           variant="filled"
           colorScheme="e5"
           aria="Login to your account"
+          onClick={() => showModal(<LoginModal />)}
         >
           login
         </SiteButton>
@@ -54,6 +59,7 @@ export default function NavBar() {
           variant="filled"
           colorScheme="f3"
           aria="Create a new account"
+          onClick={() => showModal(<SignupOptionsModal />)}
         >
           signup
         </SiteButton>
