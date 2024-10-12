@@ -9,6 +9,7 @@ interface ModalContextType {
   hideModal: () => void;
   goBack: () => void;
   isBackButtonVisible: boolean;
+  replaceModalStack: (newContent: ReactNode) => void;
 }
 
 const ModalContext = createContext<ModalContextType | undefined>(undefined);
@@ -36,11 +37,21 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     setModalStack((prev) => prev.slice(0, -1));
   };
 
+  const replaceModalStack = (newContent: ReactNode): void => {
+    setModalStack([newContent]);
+  };
+
   const isBackButtonVisible = modalStack.length > 1;
 
   return (
     <ModalContext.Provider
-      value={{ showModal, hideModal, goBack, isBackButtonVisible }}
+      value={{
+        showModal,
+        hideModal,
+        goBack,
+        isBackButtonVisible,
+        replaceModalStack,
+      }}
     >
       {children}
       {modalStack.length > 0 && (

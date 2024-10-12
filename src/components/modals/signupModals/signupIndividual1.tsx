@@ -4,14 +4,14 @@ import * as z from "zod";
 import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { SIGNUP_MUTATION } from "@/graphql/mutations";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SIGNUP_MUTATION } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
 
 import SiteButton from "../../siteButton";
-// import { sendFellowSignupEmail } from "@/utils/emailUtils";
+import { sendFellowSignupEmail } from "@/utils/emailUtils";
 import SignupModalIndividual2 from "./signupIndividual2";
-// import ErrorModal from "../errorModal";
+import ErrorModal from "../errorModal";
 
 const fellowSchema = z.object({
   name: z.string().min(2, { message: "Required" }),
@@ -32,7 +32,7 @@ export default function SignupModalIndividual1() {
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    // resolver: zodResolver(fellowSchema),
+    resolver: zodResolver(fellowSchema),
     defaultValues: {
       betaTester: false,
     },
@@ -44,23 +44,23 @@ export default function SignupModalIndividual1() {
     setBetaTester(newValue);
   };
 
-  // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
+  const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
-  // const onSubmit: SubmitHandler<FormData> = async (data) => {
-  //   setDisabledButton(true);
-  //   try {
-  //     const result = await signUp({ variables: data })
-  //       .then((result) => {
-  //         sendFellowSignupEmail(data.email, data.name, betaTester);
-  //         showModal(<SignupModalIndividual2 />);
-  //       })
-  //       .catch((error) => {
-  //         showModal(<ErrorModal />);
-  //       });
-  //   } catch (err) {
-  //     showModal(<ErrorModal />);
-  //   }
-  // };
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setDisabledButton(true);
+    try {
+      const result = await signUp({ variables: data })
+        .then((result) => {
+          sendFellowSignupEmail(data.email, data.name, betaTester);
+          showModal(<SignupModalIndividual2 />);
+        })
+        .catch((error) => {
+          showModal(<ErrorModal />);
+        });
+    } catch (err) {
+      showModal(<ErrorModal />);
+    }
+  };
 
   return (
     <div className="SignupModal flex max-w-[450px] flex-col gap-4 text-jade">
@@ -72,7 +72,7 @@ export default function SignupModalIndividual1() {
       </Dialog.Description>
       <form
         className="IndividualSignupForm xs:pt-8 flex flex-col gap-2"
-        // onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         {/* name input */}
         <label htmlFor="name">your name*</label>
@@ -125,7 +125,7 @@ export default function SignupModalIndividual1() {
             variant="hollow"
             colorScheme="f1"
             aria="submit"
-            // onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
             {disabledButton ? "Signing up..." : "sign me up!"}
