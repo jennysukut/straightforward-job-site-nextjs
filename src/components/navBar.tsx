@@ -10,41 +10,26 @@ import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 
 export default function NavBar() {
   const [aboutClicked, setAboutClicked] = useState(false);
+  const [clickedButton, setClickedButton] = useState("");
   const { showModal } = useModal();
 
-  function handleAboutClick() {
-    if (aboutClicked === true) {
-      setAboutClicked(false);
-    } else {
-      setAboutClicked(true);
-    }
+  function handleNavButtonClick(e: any) {
+    setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
 
   return (
-    <div className="NavBar flex h-fit w-full justify-between px-16 pt-[50px]">
+    <div className="NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16">
       <Link href={"/"}>
         <Image
-          className="Logo max-w-48 cursor-pointer transition-transform duration-300 hover:scale-105"
+          className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
           src="/sfjs-logo.svg"
           width={229}
           height={75}
           alt="Straightforward Job Site logo"
         />
       </Link>
-      <div className="TEMPORARYBUTTON">
-        <Link href={"/temporaryTestPage"}>
-          <SiteButton variant="hollow" colorScheme="a1" aria="test button">
-            temporary button to test page
-          </SiteButton>
-        </Link>
-      </div>
-      <div className="NavButtonContainer flex gap-6">
-        <SiteButton
-          variant="filled"
-          colorScheme="b4"
-          aria="About us"
-          onClick={handleAboutClick}
-        >
+      <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+        <SiteButton variant="filled" colorScheme="b4" aria="About us">
           about
         </SiteButton>
         <SiteButton
@@ -55,6 +40,18 @@ export default function NavBar() {
         >
           login
         </SiteButton>
+        <Link href={"/pricing"}>
+          <SiteButton
+            variant="filled"
+            colorScheme="d4"
+            aria="pricing"
+            value="pricing"
+            onClick={handleNavButtonClick}
+            isSelected={clickedButton === "pricing"}
+          >
+            pricing
+          </SiteButton>
+        </Link>
         <SiteButton
           variant="filled"
           colorScheme="f3"
@@ -64,21 +61,6 @@ export default function NavBar() {
           signup
         </SiteButton>
       </div>
-      {aboutClicked === true ? (
-        <div className="AboutButtons absolute right-56 top-24 flex flex-col items-start space-y-4">
-          <SiteButton variant="filled" colorScheme="b3" aria="our why">
-            our why
-          </SiteButton>
-          <SiteButton variant="filled" colorScheme="f1" aria="what we do">
-            what we do
-          </SiteButton>
-          <SiteButton variant="filled" colorScheme="c1" aria="pricing">
-            pricing
-          </SiteButton>
-        </div>
-      ) : (
-        ""
-      )}
     </div>
   );
 }
