@@ -5,7 +5,7 @@ import {
   smallShadowColors,
   SmallShadowColorOption,
 } from "@/lib/stylingData/smallShadowColors";
-import getRandomColorScheme from "@/utils/getRandomColorScheme";
+import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import Image from "next/image";
 
 interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {

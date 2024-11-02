@@ -25,8 +25,7 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function SignupModalIndividual1() {
   const router = useRouter();
-  const { showModal } = useModal();
-  const [betaTester, setBetaTester] = useState(false);
+  const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
   const {
     register,
@@ -44,6 +43,7 @@ export default function SignupModalIndividual1() {
     setDisabledButton(true);
     //navigate to the next page where you'll put information
     router.push("/individualSignup2");
+    hideModal();
     //send details to the server to be saved and rendered on the next page
     try {
       // const result = await signUp({ variables: data })

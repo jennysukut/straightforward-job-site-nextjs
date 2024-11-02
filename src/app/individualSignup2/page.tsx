@@ -15,6 +15,14 @@ import InfoBox from "@/components/infoBox";
 import IndividualSignupNavBar from "@/components/signUpIndividualNavBar";
 import SiteLabel from "@/components/siteLabel";
 
+import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+
+import {
+  ButtonColorOption,
+  buttonColorOptions,
+} from "@/lib/stylingData/buttonColors";
+type CurrentSchemeType = ButtonColorOption;
+
 const fellowSchema = z.object({
   firstName: z.string().min(2, { message: "Required" }),
   lastName: z.string().min(2, { message: "Required" }),
@@ -46,6 +54,8 @@ export default function IndividualSignupPage1() {
   const [email, setEmail] = useState("jennysukut@email.com");
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+
+  const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
 
   // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
@@ -84,6 +94,12 @@ export default function IndividualSignupPage1() {
     setSkills((prevSkills) => [...prevSkills, newSkill]);
     setNewSkill("");
   };
+
+  useEffect(() => {
+    const colors = getRandomColorArray(30);
+    setColorArray(colors);
+    console.log(colors);
+  }, []);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 pt-6 md:pb-8 md:pt-8">
@@ -215,10 +231,14 @@ export default function IndividualSignupPage1() {
             </InfoBox>
             {skills.length >= 1 ? (
               <div className="SkillsContainer flex flex-wrap gap-2">
-                {" "}
-                {skills.map((skill) => {
+                {skills.map((skill, index) => {
                   return (
-                    <SiteLabel aria={skill} variant="functional" key={skill}>
+                    <SiteLabel
+                      aria={skill}
+                      variant="functional"
+                      key={skill}
+                      colorScheme={colorArray[index % colorArray.length]}
+                    >
                       {skill}
                     </SiteLabel>
                   );

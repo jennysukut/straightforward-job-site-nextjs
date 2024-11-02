@@ -31,4 +31,22 @@ function getRandomColorScheme(
   return colorOptions[randomIndex];
 }
 
-export default getRandomColorScheme;
+// Updated function to create a random array of color options
+function getRandomColorArray(size: number): CurrentSchemeType[] {
+  const randomColors: CurrentSchemeType[] = [];
+  let lastIndex: number | null = null; // Store the last index
+
+  for (let i = 0; i < size; i++) {
+    let randomIndex: number;
+    do {
+      randomIndex = Math.floor(Math.random() * buttonColorOptions.length);
+    } while (randomIndex === lastIndex); // Ensure it doesn't match the last index
+
+    randomColors.push(buttonColorOptions[randomIndex]);
+    lastIndex = randomIndex; // Update the last index
+  }
+
+  return randomColors;
+}
+
+export { getRandomColorScheme, getRandomColorArray };
