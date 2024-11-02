@@ -74,11 +74,10 @@ export default function IndividualSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    // Include the current skills in the submitted data
-    const formData = { ...data, skills, jobTitles }; // Add skills to the submitted data
+    const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
     try {
-      //sending details to the server
-      console.log(formData); // Log the updated data
+      //send details to the server
+      console.log(formData);
       router.push("/individual-signup/step2");
     } catch (err) {
       showModal(<ErrorModal />);
@@ -87,13 +86,7 @@ export default function IndividualSignupPage1() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    if (name === "firstName") {
-      setFirstName(value);
-    } else if (name === "lastName") {
-      setLastName(value);
-    } else if (name === "email") {
-      setEmail(value);
-    } else if (name === "skill") {
+    if (name === "skill") {
       setNewSkill(value);
     } else if (name === "jobTitle") {
       setNewJobTitle(value);
@@ -141,11 +134,14 @@ export default function IndividualSignupPage1() {
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
                 type="text"
-                name="firstName"
                 value={firstName}
                 placeholder="Your First Name"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setFirstName(value);
+                  setValue("firstName", value);
+                }}
               />
             </InfoBox>
             {errors.firstName?.message && (
@@ -158,11 +154,14 @@ export default function IndividualSignupPage1() {
             <InfoBox variant="hollow" size="extraSmall" aria="lastName">
               <input
                 type="text"
-                name="lastName"
                 value={lastName}
                 placeholder="Your Last Name"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLastName(value);
+                  setValue("lastName", value);
+                }}
               />
             </InfoBox>
             {errors.lastName?.message && (
@@ -175,11 +174,14 @@ export default function IndividualSignupPage1() {
             <InfoBox variant="hollow" size="extraSmall" aria="email">
               <input
                 type="email"
-                name="email"
                 value={email}
                 placeholder="Fantasticemail@emailexample.com"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={handleInputChange}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setEmail(value);
+                  setValue("email", value);
+                }}
               />
             </InfoBox>
             {errors.email?.message && (
@@ -301,6 +303,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.jobTitles?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.jobTitles.message.toString()}
+              </p>
+            )}
             {jobTitles.length >= 1 ? (
               <div className="SkillsContainer flex flex-wrap gap-2">
                 {jobTitles.map((jobTitle, index) => {
