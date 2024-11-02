@@ -95,10 +95,15 @@ export default function IndividualSignupPage1() {
     setNewSkill("");
   };
 
+  const deleteLabel = (skillToDelete: string) => {
+    setSkills((prevSkills) =>
+      prevSkills.filter((skill) => skill !== skillToDelete),
+    );
+  };
+
   useEffect(() => {
     const colors = getRandomColorArray(30);
     setColorArray(colors);
-    console.log(colors);
   }, []);
 
   return (
@@ -236,8 +241,9 @@ export default function IndividualSignupPage1() {
                     <SiteLabel
                       aria={skill}
                       variant="functional"
-                      key={skill}
+                      key={index}
                       colorScheme={colorArray[index % colorArray.length]}
+                      handleDelete={() => deleteLabel(skill)}
                     >
                       {skill}
                     </SiteLabel>

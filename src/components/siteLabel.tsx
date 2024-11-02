@@ -15,6 +15,7 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
   addClasses?: string;
   textSize?: "medium" | "large";
+  handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -25,12 +26,9 @@ const SiteLabel: React.FC<LabelProps> = ({
   children,
   addClasses,
   textSize,
+  handleDelete,
   ...props
 }) => {
-  function handleDelete() {
-    // tie this into the data to update list of labels at it's source
-  }
-
   const labelClasses = clsx(
     `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${smallShadowColors[colorScheme]} text-eggshell py-1 tracking-widest m-1`,
     {
