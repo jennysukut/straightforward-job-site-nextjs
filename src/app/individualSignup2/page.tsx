@@ -54,6 +54,8 @@ export default function IndividualSignupPage1() {
   const [email, setEmail] = useState("jennysukut@email.com");
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
+  const [newJobTitle, setNewJobTitle] = useState("");
+  const [jobTitles, setJobTitles] = useState<string[]>([]);
 
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
 
@@ -87,6 +89,8 @@ export default function IndividualSignupPage1() {
       setEmail(value);
     } else if (name === "skill") {
       setNewSkill(value);
+    } else if (name === "jobTitle") {
+      setNewJobTitle(value);
     }
   };
 
@@ -95,9 +99,20 @@ export default function IndividualSignupPage1() {
     setNewSkill("");
   };
 
-  const deleteLabel = (skillToDelete: string) => {
+  const addJobTitle = () => {
+    setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
+    setNewJobTitle("");
+  };
+
+  const deleteSkill = (skillToDelete: string) => {
     setSkills((prevSkills) =>
       prevSkills.filter((skill) => skill !== skillToDelete),
+    );
+  };
+
+  const deleteJobTitle = (jobTitleToDelete: string) => {
+    setJobTitles((prevJobTitles) =>
+      prevJobTitles.filter((jobTitle) => jobTitle !== jobTitleToDelete),
     );
   };
 
@@ -226,7 +241,7 @@ export default function IndividualSignupPage1() {
               }}
             >
               <input
-                type="location"
+                type="skills"
                 placeholder="Your Skills"
                 value={newSkill}
                 name="skill"
@@ -243,7 +258,7 @@ export default function IndividualSignupPage1() {
                       variant="functional"
                       key={index}
                       colorScheme={colorArray[index % colorArray.length]}
-                      handleDelete={() => deleteLabel(skill)}
+                      handleDelete={() => deleteSkill(skill)}
                     >
                       {skill}
                     </SiteLabel>
@@ -261,13 +276,38 @@ export default function IndividualSignupPage1() {
               aria="job titles"
               canAdd
               addClasses="flex"
+              addClick={() => {
+                addJobTitle();
+              }}
             >
               <input
-                type="job titles"
+                type="jobTitle"
                 placeholder="Job Titles For You"
+                value={newJobTitle}
+                name="jobTitle"
                 className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+                onChange={handleInputChange}
               />
             </InfoBox>
+            {jobTitles.length >= 1 ? (
+              <div className="SkillsContainer flex flex-wrap gap-2">
+                {jobTitles.map((jobTitle, index) => {
+                  return (
+                    <SiteLabel
+                      aria={jobTitle}
+                      variant="functional"
+                      key={index}
+                      colorScheme={colorArray[index % colorArray.length]}
+                      handleDelete={() => deleteJobTitle(jobTitle)}
+                    >
+                      {jobTitle}
+                    </SiteLabel>
+                  );
+                })}
+              </div>
+            ) : (
+              ""
+            )}
           </div>
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
             <SiteButton
