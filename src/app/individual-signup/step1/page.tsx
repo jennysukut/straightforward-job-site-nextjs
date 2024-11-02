@@ -95,13 +95,17 @@ export default function IndividualSignupPage1() {
   };
 
   const addSkill = () => {
-    setSkills((prevSkills) => [...prevSkills, newSkill]);
-    setNewSkill("");
+    if (newSkill !== "") {
+      setSkills((prevSkills) => [...prevSkills, newSkill]);
+      setNewSkill("");
+    }
   };
 
   const addJobTitle = () => {
-    setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
-    setNewJobTitle("");
+    if (newJobTitle !== "") {
+      setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
+      setNewJobTitle("");
+    }
   };
 
   const deleteSkill = (skillToDelete: string) => {
@@ -228,8 +232,8 @@ export default function IndividualSignupPage1() {
         </div>
         <div className="IndividualSignupRight flex w-[35vw] flex-col">
           <Image
-            className="AvatarImage -mt-14 justify-end self-end drop-shadow-jade"
-            src="/tape-avatar.svg"
+            className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
+            src="/avatars/orange-floral.svg"
             width={75}
             height={75}
             alt="avatar"

@@ -23,6 +23,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   collapseClick?: Function;
   canAdd?: boolean;
   addClick?: Function;
+  canEdit?: boolean;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
@@ -41,10 +42,11 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   collapseClick,
   canAdd,
   addClick,
+  canEdit,
   ...props
 }) => {
   const boxClasses = clsx(
-    "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide",
+    "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
       // variant + shadowSize
       "bg-cream border-jade drop-shadow-jade text-jade font-semibold border-[3px]":
@@ -78,10 +80,11 @@ const InfoBox: React.FC<InfoBoxProps> = ({
 
   return (
     <div className={boxClasses}>
-      <h3 className="Title my-1 text-lg">{title}</h3>
+      <h3 className="Title my-1text-lg">{title}</h3>
       {children}
 
-      {canCollapse ? (
+      {/* collapse button */}
+      {canCollapse && (
         <button
           className="CollapseButton opacity-100 hover:opacity-50"
           onClick={collapseClick as React.MouseEventHandler<HTMLButtonElement>}
@@ -93,12 +96,12 @@ const InfoBox: React.FC<InfoBoxProps> = ({
             height={16}
           ></Image>
         </button>
-      ) : (
-        ""
       )}
-      {canAdd ? (
+
+      {/* add button */}
+      {canAdd && (
         <button
-          className="AddButton right-0 self-end opacity-75 hover:opacity-100"
+          className="AddButton right-0 opacity-75 hover:opacity-100"
           onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           <Image
@@ -108,8 +111,21 @@ const InfoBox: React.FC<InfoBoxProps> = ({
             height={16}
           ></Image>
         </button>
-      ) : (
-        ""
+      )}
+
+      {/* edit button */}
+      {canEdit && (
+        <button
+          className="EditButton self-end opacity-100 hover:opacity-50"
+          // onClick={collapseClick as React.MouseEventHandler<HTMLButtonElement>}
+        >
+          <Image
+            src="/edit-icon.svg"
+            alt="editButton"
+            width={16}
+            height={16}
+          ></Image>
+        </button>
       )}
     </div>
   );
