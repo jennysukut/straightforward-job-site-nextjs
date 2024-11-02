@@ -13,6 +13,7 @@ import SiteButton from "@/components/siteButton";
 import ErrorModal from "@/components/modals/errorModal";
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
+import AvatarModal from "@/components/modals/chooseAvatarModal";
 
 import {
   getRandomColorArray,
@@ -123,7 +124,7 @@ export default function IndividualSignupPage1() {
   }, []);
 
   return (
-    <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 pt-6 md:pb-8 md:pt-8">
+    <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="IndividualSignupContainer flex w-[84%] max-w-[1600px] justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="IndividualSignupLeft flex w-[35vw] flex-col">
           <form
@@ -233,7 +234,10 @@ export default function IndividualSignupPage1() {
             height={75}
             alt="avatar"
           />
-          <button className="py-4 text-right text-xs opacity-80 hover:opacity-100">
+          <button
+            className="py-4 text-right text-xs opacity-80 hover:opacity-100"
+            onClick={() => showModal(<AvatarModal />)}
+          >
             choose your avatar
           </button>
 
