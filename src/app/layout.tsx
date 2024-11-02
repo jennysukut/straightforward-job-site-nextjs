@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
+import IndividualSignupNavBar from "@/components/signUpIndividualNavBar";
 
 const ApolloWrapper = dynamic(() => import("@/app/apolloClient"), {
   ssr: false,
@@ -34,16 +35,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        {/* <script
-          type="text/javascript"
-          src="https://app.termly.io/resource-blocker/5cd2fd80-d409-4cff-86d5-0b15346f99db?autoBlock=on"
-        ></script> */}
-      </head>
+      <head></head>
       <Analytics />
       <body className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-cream">
         <ApolloWrapper>
           <ModalProvider>
+            {/* find how to make this navBar change depending on the login status or current page - maybe set some kind of signal that we can update depending on the page to show different types of headers? */}
             <NavBar />
             <main className="Main flex flex-1 flex-col">{children}</main>
             <Footer />

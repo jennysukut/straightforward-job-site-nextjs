@@ -20,13 +20,21 @@ function HeaderSection() {
           colorScheme="b1"
           onClick={() => showModal(<SignupOptionsModal />)}
         >
-          sign me up!
+          sign up
         </SiteButton>
         <SiteButton
           aria="support us"
           size="large"
           variant="filled"
           colorScheme="e5"
+        >
+          learn more
+        </SiteButton>
+        <SiteButton
+          aria="support us"
+          size="large"
+          variant="filled"
+          colorScheme="f1"
         >
           explore jobs
         </SiteButton>

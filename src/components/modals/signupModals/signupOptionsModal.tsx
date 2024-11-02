@@ -37,14 +37,14 @@ export default function SignupOptionsModal() {
           business
         </SiteButton>
       </div>
-      <div className="LoginButtonContainer mt-4 flex w-full justify-end">
+      <div className="LoginButtonContainer -mb-6 -mr-6 mt-8 flex w-full justify-end">
         <button
           className="LoginButton text-sm opacity-80 hover:opacity-100"
           aria-label="Login"
           onClick={() => replaceModalStack(<LoginModal />)}
           type="button"
         >
-          Or Login
+          or login
         </button>
       </div>
     </div>

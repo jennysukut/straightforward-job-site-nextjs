@@ -26,7 +26,15 @@ export default function LoginModal() {
             />
           </div>
         </div>
-        <div className="FormButtons mt-6 flex justify-between">
+        <div className="FormButtons mt-8 flex justify-between">
+          <button
+            className="SignupButton text-sm opacity-80 hover:opacity-100"
+            aria-label="Sign Up"
+            onClick={() => replaceModalStack(<SignupOptionsModal />)}
+            type="button"
+          >
+            or sign up
+          </button>
           <SiteButton
             addClasses="w-32"
             variant="hollow"
@@ -35,14 +43,6 @@ export default function LoginModal() {
           >
             Enter
           </SiteButton>
-          <button
-            className="SignupButton text-sm opacity-80 hover:opacity-100"
-            aria-label="Sign Up"
-            onClick={() => replaceModalStack(<SignupOptionsModal />)}
-            type="button"
-          >
-            Or Sign Up
-          </button>
         </div>
       </form>
     </div>

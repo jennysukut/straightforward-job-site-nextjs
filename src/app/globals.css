@@ -26,6 +26,7 @@ h1,
 h2,
 h3 {
   letter-spacing: 0.2em;
+  color: #308b7b;
 }
 
 h1 {
@@ -34,13 +35,13 @@ h1 {
 }
 
 body {
-  color: rgb(248, 242, 236);
+  color: #50b09f;
   font-family: "satoshi", sans-serif;
   font-weight: 700;
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -55,4 +56,19 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #d2c720;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .rounded-4xl {
+    border-radius: 3.5rem;
+  }
+  .tracking-extra-wide {
+    letter-spacing: 0.2em;
+  }
+  .scrollbar-thumb-rounded-full {
+    --scrollbar-thumb-radius: 9999px;
+  }
 }
