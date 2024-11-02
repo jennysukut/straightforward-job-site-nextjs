@@ -73,7 +73,7 @@ export default function IndividualSignupPage1() {
       //sending details to the server
       //navigate to the next page
       console.log(data);
-      router.push("/individualSignup3");
+      router.push("/individual-signup/step2");
     } catch (err) {
       showModal(<ErrorModal />);
     }
@@ -125,7 +125,6 @@ export default function IndividualSignupPage1() {
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 pt-6 md:pb-8 md:pt-8">
-      <IndividualSignupNavBar />
       <div className="IndividualSignupContainer flex w-[84%] max-w-[1600px] justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="IndividualSignupLeft flex w-[35vw] flex-col">
           <form

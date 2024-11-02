@@ -42,8 +42,11 @@ export default function SignupModalIndividual1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     //navigate to the next page where you'll put information
-    router.push("/individualSignup2");
-    hideModal();
+    router.push("/individual-signup/step1");
+    setTimeout(() => {
+      hideModal();
+    }, 1500);
+
     //send details to the server to be saved and rendered on the next page
     try {
       // const result = await signUp({ variables: data })
