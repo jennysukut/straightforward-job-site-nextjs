@@ -12,10 +12,12 @@ import Image from "next/image";
 import SiteButton from "@/components/siteButton";
 import ErrorModal from "@/components/modals/errorModal";
 import InfoBox from "@/components/infoBox";
-import IndividualSignupNavBar from "@/components/signUpIndividualNavBar";
 import SiteLabel from "@/components/siteLabel";
 
-import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+import {
+  getRandomColorArray,
+  shuffleButtonColors,
+} from "@/utils/getRandomColorScheme";
 
 import {
   ButtonColorOption,
@@ -27,8 +29,10 @@ const fellowSchema = z.object({
   firstName: z.string().min(2, { message: "Required" }),
   lastName: z.string().min(2, { message: "Required" }),
   email: z.string().email(),
-  smallBio: z.string().min(10, { message: "Required" }),
-  location: z.string().min(10, { message: "Required" }),
+  smallBio: z.string().min(5, { message: "Required" }),
+  location: z.string().min(5, { message: "Required" }),
+  skills: z.array(z.string()),
+  jobTitles: z.array(z.string()),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
@@ -63,16 +67,18 @@ export default function IndividualSignupPage1() {
       firstName: firstName,
       lastName: lastName,
       email: email,
+      skills: skills,
+      jobTitles: jobTitles,
     },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    //send details to the server to be saved and rendered on the next page
+    // Include the current skills in the submitted data
+    const formData = { ...data, skills, jobTitles }; // Add skills to the submitted data
     try {
       //sending details to the server
-      //navigate to the next page
-      console.log(data);
+      console.log(formData); // Log the updated data
       router.push("/individual-signup/step2");
     } catch (err) {
       showModal(<ErrorModal />);
@@ -117,9 +123,9 @@ export default function IndividualSignupPage1() {
   };
 
   useEffect(() => {
-    const colors = getRandomColorArray(20);
+    const colors = getRandomColorArray(36);
     setColorArray(colors);
-    const secondaryColors = getRandomColorArray(20);
+    const secondaryColors = shuffleButtonColors(36);
     setSecondaryColorArray(secondaryColors);
   }, []);
 
@@ -142,6 +148,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.firstName?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.firstName.message.toString()}
+              </p>
+            )}
 
             {/* last name input */}
             <InfoBox variant="hollow" size="extraSmall" aria="lastName">
@@ -154,6 +165,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.lastName?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.lastName.message.toString()}
+              </p>
+            )}
 
             {/* email input */}
             <InfoBox variant="hollow" size="extraSmall" aria="email">
@@ -166,6 +182,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.email?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.email.message.toString()}
+              </p>
+            )}
 
             {/* smallBio input */}
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
@@ -179,7 +200,7 @@ export default function IndividualSignupPage1() {
               />
             </InfoBox>
             {errors.smallBio?.message && (
-              <p className="m-0 p-0 text-xs font-medium text-orange">
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
                 {errors.smallBio.message.toString()}
               </p>
             )}
@@ -196,7 +217,7 @@ export default function IndividualSignupPage1() {
               />
             </InfoBox>
             {errors.location?.message && (
-              <p className="m-0 p-0 text-xs font-medium text-orange">
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
                 {errors.location.message.toString()}
               </p>
             )}
@@ -235,6 +256,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.skills?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.skills.message.toString()}
+              </p>
+            )}
             {skills.length >= 1 ? (
               <div className="SkillsContainer flex flex-wrap gap-2">
                 {skills.map((skill, index) => {

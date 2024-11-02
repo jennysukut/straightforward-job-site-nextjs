@@ -8,7 +8,6 @@ import { Analytics } from "@vercel/analytics/react";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
-import IndividualSignupNavBar from "@/components/signUpIndividualNavBar";
 
 const ApolloWrapper = dynamic(() => import("@/app/apolloClient"), {
   ssr: false,

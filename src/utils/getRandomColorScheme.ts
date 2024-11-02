@@ -49,4 +49,12 @@ function getRandomColorArray(size: number): CurrentSchemeType[] {
   return randomColors;
 }
 
-export { getRandomColorScheme, getRandomColorArray };
+function shuffleButtonColors(size: number): CurrentSchemeType[] {
+  // Shuffle the buttonColorOptions array
+  const shuffledOptions = buttonColorOptions.sort(() => Math.random() - 0.5);
+
+  // Return the first 'size' elements from the shuffled array
+  return shuffledOptions.slice(0, size);
+}
+
+export { getRandomColorScheme, getRandomColorArray, shuffleButtonColors };
