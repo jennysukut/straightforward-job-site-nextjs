@@ -33,23 +33,11 @@ const fellowSchema = z.object({
 
 type FormData = z.infer<typeof fellowSchema>;
 
-export default function IndividualSignupPage1() {
+export default function IndividualSignupPage2() {
   //grab the data from the previous form input via the server and use it to fill out the firstName, lastName, and email states
   const router = useRouter();
   const { showModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [firstName, setFirstName] = useState("Jenny");
-  const [lastName, setLastName] = useState("Sukut");
-  const [email, setEmail] = useState("jennysukut@email.com");
-  const [newSkill, setNewSkill] = useState("");
-  const [skills, setSkills] = useState<string[]>([]);
-  const [newJobTitle, setNewJobTitle] = useState("");
-  const [jobTitles, setJobTitles] = useState<string[]>([]);
-
-  const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [secondaryColorArray, setSecondaryColorArray] = useState<
-    CurrentSchemeType[]
-  >([]);
 
   const {
     register,
@@ -59,21 +47,33 @@ export default function IndividualSignupPage1() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
-    defaultValues: {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-    },
   });
+
+  const [firstName, setFirstName] = useState("Jenny");
+  const [lastName, setLastName] = useState("Sukut");
+  const [email, setEmail] = useState("jennysukut@email.com");
+  const [newSkill, setNewSkill] = useState("");
+  const [skills, setSkills] = useState<string[]>([]);
+  const [newJobTitle, setNewJobTitle] = useState("");
+  const [jobTitles, setJobTitles] = useState<string[]>([]);
+
+  const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
+
+  // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    router.push("/individualSignup3");
     //send details to the server to be saved and rendered on the next page
     try {
-      //sending details to the server
-      //navigate to the next page
-      console.log(data);
-      router.push("/individualSignup3");
+      // const result = await signUp({ variables: data })
+      //   .then((result) => {
+      //     sendFellowSignupEmail(data.email, data.name, betaTester);
+      //     showModal(<SignupModalIndividual2 />);
+      //   })
+      //   .catch((error) => {
+      //     showModal(<ErrorModal />);
+      //   });
     } catch (err) {
       showModal(<ErrorModal />);
     }
@@ -117,10 +117,8 @@ export default function IndividualSignupPage1() {
   };
 
   useEffect(() => {
-    const colors = getRandomColorArray(20);
+    const colors = getRandomColorArray(30);
     setColorArray(colors);
-    const secondaryColors = getRandomColorArray(20);
-    setSecondaryColorArray(secondaryColors);
   }, []);
 
   return (
@@ -143,6 +141,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.firstName?.message && (
+              <p className="m-0 p-0 text-xs font-medium text-orange">
+                {errors.firstName.message.toString()}
+              </p>
+            )}
 
             {/* last name input */}
             <InfoBox variant="hollow" size="extraSmall" aria="lastName">
@@ -155,6 +158,11 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.lastName?.message && (
+              <p className="m-0 p-0 text-xs font-medium text-orange">
+                {errors.lastName.message.toString()}
+              </p>
+            )}
 
             {/* email input */}
             <InfoBox variant="hollow" size="extraSmall" aria="email">
@@ -167,11 +175,16 @@ export default function IndividualSignupPage1() {
                 onChange={handleInputChange}
               />
             </InfoBox>
+            {errors.email?.message && (
+              <p className="m-0 p-0 text-xs font-medium text-orange">
+                {errors.email.message.toString()}
+              </p>
+            )}
 
             {/* smallBio input */}
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
-                type="text"
+                type="smallBio"
                 placeholder="Your Small Bio"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
                 {...register("smallBio", {
@@ -188,7 +201,7 @@ export default function IndividualSignupPage1() {
             {/* location input */}
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
-                type="text"
+                type="location"
                 placeholder="Your Location"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
                 {...register("location", {
@@ -284,9 +297,7 @@ export default function IndividualSignupPage1() {
                       aria={jobTitle}
                       variant="functional"
                       key={index}
-                      colorScheme={
-                        secondaryColorArray[index % secondaryColorArray.length]
-                      }
+                      colorScheme={colorArray[index % colorArray.length]}
                       handleDelete={() => deleteJobTitle(jobTitle)}
                     >
                       {jobTitle}
