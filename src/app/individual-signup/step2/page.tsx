@@ -1,11 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import { useModal } from "@/contexts/ModalContext";
+
+import Image from "next/image";
 import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
-import Image from "next/image";
-import { useModal } from "@/contexts/ModalContext";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
-import { useState } from "react";
+import EditExperienceModal from "@/components/modals/profilePopulationModals/editExperienceModal";
+import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
+import EditEducationModal from "@/components/modals/profilePopulationModals/editEducationModal";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -14,6 +18,9 @@ export default function IndividualSignupPage2() {
 
   const EduTitle = "Educational Title";
   const EduYears = "2015-2020";
+
+  const ExpTitle = "My Experience";
+  const ExpCompany = "Company Name";
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -39,6 +46,19 @@ export default function IndividualSignupPage2() {
         ></InfoBox>
 
         {/* if there's experience, display them in an info box here, with a little pencil for editing */}
+        <div className="ExperienceDetailsContainer flex flex-col">
+          {/* loop through an experience list here and return info boxes with details */}
+          <InfoBox
+            variant="hollow"
+            aria="experienceInfo"
+            size="extraSmall"
+            canEdit
+            width="extraWide"
+            title={`${ExpTitle}, ${ExpCompany}`}
+            addClasses="flex w-[90%] self-end justify-between"
+            editClick={() => showModal(<EditExperienceModal />)}
+          ></InfoBox>
+        </div>
 
         {/* add education / certificates */}
         <InfoBox
@@ -49,11 +69,12 @@ export default function IndividualSignupPage2() {
           width="extraWide"
           title={`Your Education / Certificates`}
           addClasses="flex justify-between w-full"
-          addClick={() => showModal(<AddExperienceModal />)}
+          addClick={() => showModal(<AddEducationModal />)}
         ></InfoBox>
 
+        {/* if there's education, display them in an info box here, with a little pencil for editing */}
         <div className="EducationDetailsContainer flex flex-col">
-          {/* if there's education, display them in an info box here, with a little pencil for editing */}
+          {/* loop through an education list here and return info boxes with details */}
           <InfoBox
             variant="hollow"
             aria="educationInfo"
@@ -62,6 +83,7 @@ export default function IndividualSignupPage2() {
             width="extraWide"
             title={`${EduTitle}, ${EduYears}`}
             addClasses="flex w-[90%] self-end justify-between"
+            editClick={() => showModal(<EditEducationModal />)}
           ></InfoBox>
         </div>
 

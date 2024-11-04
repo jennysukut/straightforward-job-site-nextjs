@@ -12,16 +12,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
 
-const ExperienceSchema = z.object({
-  title: z.string().min(2, { message: "Job Title Required" }),
-  companyName: z.string().min(2, { message: "Company Name Required" }),
-  yearDetails: z.string().optional(),
-  details: z.string().optional(),
+const EducationSchema = z.object({
+  degree: z.string().min(2, { message: "Job Title Required" }),
+  school: z.string().min(2, { message: "Company Name Required" }),
+  fieldOfStudy: z.string().optional(),
 });
 
-type FormData = z.infer<typeof ExperienceSchema>;
+type FormData = z.infer<typeof EducationSchema>;
 
-export default function AddExperienceModal() {
+export default function AddEducationModal() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -32,7 +31,7 @@ export default function AddExperienceModal() {
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(ExperienceSchema),
+    resolver: zodResolver(EducationSchema),
   });
 
   // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
@@ -62,73 +61,57 @@ export default function AddExperienceModal() {
   };
 
   return (
-    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div className="AddEducationModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
-        experience
+        education
       </Dialog.Title>
       <form
         className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* title input */}
-        <label htmlFor="title">title*</label>
+        {/* degree input */}
+        <label htmlFor="title">degree / certificate*</label>
         <input
           type="text"
-          placeholder="Job Title"
+          placeholder="Your Degree or Certificate"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("title")}
+          {...register("degree")}
         />
-        {errors.title?.message && (
+        {errors.degree?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.title.message.toString()}
+            {errors.degree.message.toString()}
           </p>
         )}
 
-        {/* company name input */}
+        {/* school name input */}
         <label htmlFor="companyName" className="pt-4">
-          company*
+          school*
         </label>
         <input
           type="text"
-          placeholder="Company Name"
+          placeholder="Your School"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("companyName")}
+          {...register("school")}
         />
-        {errors.companyName?.message && (
+        {errors.school?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.companyName.message.toString()}
+            {errors.school.message.toString()}
           </p>
         )}
 
-        {/* year/years input */}
+        {/* field of study input */}
         <label htmlFor="years" className="mt-4">
-          year/years
+          field of study
         </label>
         <input
           type="text"
-          placeholder="Optional: Time You Held Position"
+          placeholder="Your Field Of Study"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("yearDetails")}
+          {...register("fieldOfStudy")}
         />
-        {errors.yearDetails?.message && (
+        {errors.fieldOfStudy?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.yearDetails.message.toString()}
-          </p>
-        )}
-
-        {/* details input */}
-        <label htmlFor="details" className="mt-4">
-          details
-        </label>
-        <input
-          type="text"
-          placeholder="Details Describing Your Experience / Role"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("details")}
-        />
-        {errors.details?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.details.message.toString()}
+            {errors.fieldOfStudy.message.toString()}
           </p>
         )}
 
@@ -141,7 +124,7 @@ export default function AddExperienceModal() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Adding Experience..." : "add experience"}
+            {disabledButton ? "Adding Education..." : "add education"}
           </SiteButton>
         </div>
       </form>

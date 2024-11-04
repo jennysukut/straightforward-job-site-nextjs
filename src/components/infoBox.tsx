@@ -24,6 +24,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   canAdd?: boolean;
   addClick?: Function;
   canEdit?: boolean;
+  editClick?: Function;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
@@ -43,6 +44,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   canAdd,
   addClick,
   canEdit,
+  editClick,
   ...props
 }) => {
   const boxClasses = clsx(
@@ -117,7 +119,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {canEdit && (
         <button
           className="EditButton self-end opacity-100 hover:opacity-50"
-          // onClick={collapseClick as React.MouseEventHandler<HTMLButtonElement>}
+          onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           <Image
             src="/edit-icon.svg"

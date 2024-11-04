@@ -9,19 +9,21 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
+import AddExperienceModal from "./addExperienceModal";
 
-const ExperienceSchema = z.object({
+const ExperienceEducationSchema = z.object({
   title: z.string().min(2, { message: "Job Title Required" }),
   companyName: z.string().min(2, { message: "Company Name Required" }),
   yearDetails: z.string().optional(),
   details: z.string().optional(),
 });
 
-type FormData = z.infer<typeof ExperienceSchema>;
+type FormData = z.infer<typeof ExperienceEducationSchema>;
 
-export default function AddExperienceModal() {
+export default function EditExperienceModal() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -32,10 +34,16 @@ export default function AddExperienceModal() {
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(ExperienceSchema),
+    resolver: zodResolver(ExperienceEducationSchema),
   });
 
   // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
+
+  const deleteExperience = () => {
+    console.log("deleting experience");
+    // make a confirmation modal and insert here
+    showModal(<AddExperienceModal />);
+  };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
@@ -62,9 +70,9 @@ export default function AddExperienceModal() {
   };
 
   return (
-    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div className="EditExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
-        experience
+        edit experience
       </Dialog.Title>
       <form
         className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
@@ -133,15 +141,27 @@ export default function AddExperienceModal() {
         )}
 
         {/* form submission button */}
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
+        <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
+          {/* delete button - when it's clicked, we need to open a verification modal */}
+          <button onClick={deleteExperience}>
+            <Image
+              className="DeleteButton opacity-75 hover:opacity-100"
+              src="/delete-icon.svg"
+              width={18}
+              height={18}
+              alt="delete"
+            />
+          </button>
+
           <SiteButton
             variant="hollow"
             colorScheme="f1"
             aria="submit"
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
+            addClasses="px-8"
           >
-            {disabledButton ? "Adding Experience..." : "add experience"}
+            {disabledButton ? "Adding Experience..." : "update"}
           </SiteButton>
         </div>
       </form>
