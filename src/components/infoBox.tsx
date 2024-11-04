@@ -73,7 +73,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
 
       //width
       "max-w-screen-sm": width === "standard",
-      "max-w-screen-lg": width === "extraWide",
+      "w-[84%] max-w-[1600px] ": width === "extraWide",
     },
     addClasses,
   );

@@ -8,20 +8,18 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SIGNUP_MUTATION } from "@/graphql/mutations";
-import { useMutation } from "@apollo/client";
 
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
 
-const fellowSchema = z.object({
-  firstName: z.string().min(2, { message: "Required" }),
-  lastName: z.string().min(2, { message: "Required" }),
-  email: z.string().email(),
-  password: z.string().min(6, { message: "Required" }),
+const ExperienceEducationSchema = z.object({
+  title: z.string().min(2, { message: "Job Title Required" }),
+  companyName: z.string().min(2, { message: "Company Name Required" }),
+  yearDetails: z.string().optional(),
+  details: z.string().optional(),
 });
 
-type FormData = z.infer<typeof fellowSchema>;
+type FormData = z.infer<typeof ExperienceEducationSchema>;
 
 export default function AddExperienceModal() {
   const router = useRouter();
@@ -34,15 +32,16 @@ export default function AddExperienceModal() {
     watch,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: zodResolver(fellowSchema),
+    resolver: zodResolver(ExperienceEducationSchema),
   });
 
   // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    console.log(data);
     //navigate to the next page where you'll put information
-    router.push("/individual-signup/step1");
+    // router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();
     }, 1500);
@@ -63,73 +62,73 @@ export default function AddExperienceModal() {
   };
 
   return (
-    <div className="SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
-        sign up
+        experience
       </Dialog.Title>
       <form
-        className="IndividualSignupForm xs:pt-8 flex flex-col gap-2"
+        className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* first name input */}
-        <label htmlFor="name">first name*</label>
+        {/* title input */}
+        <label htmlFor="title">title*</label>
         <input
-          type="firstName"
-          placeholder="your first name"
+          type="text"
+          placeholder="Job Title"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("firstName")}
+          {...register("title")}
         />
-        {errors.firstName?.message && (
+        {errors.title?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.firstName.message.toString()}
+            {errors.title.message.toString()}
           </p>
         )}
 
-        {/* last name input */}
-        <label htmlFor="name" className="pt-4">
-          last name*
+        {/* company name input */}
+        <label htmlFor="companyName" className="pt-4">
+          company*
         </label>
         <input
-          type="lastName"
-          placeholder="your last name"
+          type="text"
+          placeholder="Company Name"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("lastName")}
+          {...register("companyName")}
         />
-        {errors.lastName?.message && (
+        {errors.companyName?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.lastName.message.toString()}
+            {errors.companyName.message.toString()}
           </p>
         )}
 
-        {/* email input */}
-        <label htmlFor="email" className="mt-4">
-          your email*
+        {/* year/years input */}
+        <label htmlFor="years" className="mt-4">
+          year/years
         </label>
         <input
-          type="email"
-          placeholder="fantasticemail@emailexample.com"
+          type="text"
+          placeholder="Optional: Time You Held Position"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("email", { required: "Email Address is required" })}
+          {...register("yearDetails")}
         />
-        {errors.email?.message && (
+        {errors.yearDetails?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.email.message.toString()}
+            {errors.yearDetails.message.toString()}
           </p>
         )}
 
-        {/* password input */}
-        <label htmlFor="password" className="mt-4">
-          your password*
+        {/* details input */}
+        <label htmlFor="details" className="mt-4">
+          details
         </label>
         <input
-          type="password"
-          placeholder="secret password here"
+          type="text"
+          placeholder="Details Describing Your Experience / Role"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("password", { required: "Email Address is required" })}
+          {...register("details")}
         />
-        {errors.password?.message && (
+        {errors.details?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.password.message.toString()}
+            {errors.details.message.toString()}
           </p>
         )}
 
@@ -142,7 +141,7 @@ export default function AddExperienceModal() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Creating Account..." : "create account"}
+            {disabledButton ? "Adding Experience..." : "add experience"}
           </SiteButton>
         </div>
       </form>
