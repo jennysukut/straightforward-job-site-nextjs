@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import InfoBox from "@/components/infoBox";
@@ -15,16 +16,11 @@ import EditEducationModal from "@/components/modals/profilePopulationModals/edit
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
+  const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
-  const [educationDetails, setEducationDetails] = useState(fellow?.education);
-
-  const EduTitle = "Educational Title";
-  const EduYears = "2015-2020";
-
-  const ExpTitle = "My Experience";
-  const ExpCompany = "Company Name";
+  const [educationDetails, setEducationDetails] = useState<any[]>([]);
 
   const addExperience = (experience: any) => {
     setExperienceDetails((prevDetails) => {
@@ -35,9 +31,22 @@ export default function IndividualSignupPage2() {
     });
   };
 
-  useEffect(() => {
-    console.log(experienceDetails);
-  }, [experienceDetails]);
+  const addEducation = (education: any) => {
+    setEducationDetails((prevDetails) => {
+      if (!prevDetails || !Array.isArray(prevDetails)) {
+        return [education];
+      }
+      return [...prevDetails, education];
+    });
+  };
+
+  const handleSubmit = () => {
+    setFellow({ experience: experienceDetails, education: educationDetails });
+    //send this data to the server as well
+    console.log(fellow);
+    //navigate to the next page
+    // router.push("/individual-signup/step2");
+  };
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -64,20 +73,26 @@ export default function IndividualSignupPage2() {
           }
         ></InfoBox>
 
-        {/* if there's experience, display them in an info box here, with a little pencil for editing */}
-        <div className="ExperienceDetailsContainer flex flex-col">
-          {/* loop through an experience list here and return info boxes with details */}
-          <InfoBox
-            variant="hollow"
-            aria="experienceInfo"
-            size="extraSmall"
-            canEdit
-            width="extraWide"
-            title={`${ExpTitle}, ${ExpCompany}`}
-            addClasses="flex w-[90%] self-end justify-between"
-            editClick={() => showModal(<EditExperienceModal />)}
-          ></InfoBox>
-        </div>
+        {/* experience details */}
+        {experienceDetails.length > 0 && (
+          <div className="ExperienceDetailsContainer flex flex-col gap-4">
+            {experienceDetails.map((experience) => {
+              return (
+                <InfoBox
+                  key={experience}
+                  variant="hollow"
+                  aria="experienceInfo"
+                  size="extraSmall"
+                  canEdit
+                  width="extraWide"
+                  title={`${experience.title}, ${experience.companyName}`}
+                  addClasses="flex w-[90%] self-end justify-between"
+                  editClick={() => showModal(<EditExperienceModal />)}
+                ></InfoBox>
+              );
+            })}
+          </div>
+        )}
 
         {/* add education / certificates */}
         <InfoBox
@@ -88,23 +103,31 @@ export default function IndividualSignupPage2() {
           width="extraWide"
           title={`Your Education / Certificates`}
           addClasses="flex justify-between w-full"
-          addClick={() => showModal(<AddEducationModal />)}
+          addClick={() =>
+            showModal(<AddEducationModal addEducation={addEducation} />)
+          }
         ></InfoBox>
 
-        {/* if there's education, display them in an info box here, with a little pencil for editing */}
-        <div className="EducationDetailsContainer flex flex-col">
-          {/* loop through an education list here and return info boxes with details */}
-          <InfoBox
-            variant="hollow"
-            aria="educationInfo"
-            size="extraSmall"
-            canEdit
-            width="extraWide"
-            title={`${EduTitle}, ${EduYears}`}
-            addClasses="flex w-[90%] self-end justify-between"
-            editClick={() => showModal(<EditEducationModal />)}
-          ></InfoBox>
-        </div>
+        {/* education details*/}
+        {educationDetails.length > 0 && (
+          <div className="EducationDetailsContainer flex flex-col gap-4">
+            {educationDetails.map((education) => {
+              return (
+                <InfoBox
+                  key={education}
+                  variant="hollow"
+                  aria="educationInfo"
+                  size="extraSmall"
+                  canEdit
+                  width="extraWide"
+                  title={`${education.degree}, ${education.school}`}
+                  addClasses="flex w-[90%] self-end justify-between"
+                  editClick={() => showModal(<EditEducationModal />)}
+                ></InfoBox>
+              );
+            })}
+          </div>
+        )}
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton
@@ -112,6 +135,7 @@ export default function IndividualSignupPage2() {
             colorScheme="f1"
             aria="submit"
             // onClick={handleSubmit(onSubmit)}
+            onClick={handleSubmit}
             disabled={disabledButton}
           >
             {disabledButton ? "Saving Information..." : "continue"}

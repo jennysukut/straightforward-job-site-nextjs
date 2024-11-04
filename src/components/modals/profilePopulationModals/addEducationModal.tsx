@@ -20,7 +20,7 @@ const EducationSchema = z.object({
 
 type FormData = z.infer<typeof EducationSchema>;
 
-export default function AddEducationModal() {
+export default function AddEducationModal({ addEducation }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -39,6 +39,7 @@ export default function AddEducationModal() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     console.log(data);
+    addEducation(data);
     //navigate to the next page where you'll put information
     // router.push("/individual-signup/step1");
     setTimeout(() => {
