@@ -12,11 +12,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
-import AddExperienceModal from "./addExperienceModal";
+import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const EducationSchema = z.object({
-  degree: z.string().min(2, { message: "Job Title Required" }),
-  school: z.string().min(2, { message: "Company Name Required" }),
+  degree: z.string().min(2, { message: "Required" }),
+  school: z.string().min(2, { message: "School Name Required" }),
   fieldOfStudy: z.string().optional(),
 });
 
@@ -62,10 +62,19 @@ export default function EditEducationModal() {
     }
   };
 
-  const deleteExperience = () => {
-    console.log("deleting experience");
-    // make a confirmation modal and insert here
-    showModal(<AddExperienceModal />);
+  const handleDelete = () => {
+    console.log("handling deletion");
+  };
+
+  const deleteEducation = () => {
+    console.log("delete? need confirmation");
+    // make a confirmation modal and insert here - send it details necessary to delete exp.
+    showModal(
+      <DeleteConfirmationModal
+        handleDelete={handleDelete}
+        item="these education details"
+      />,
+    );
   };
 
   return (
@@ -126,7 +135,7 @@ export default function EditEducationModal() {
         {/* form submission button */}
         <div className="ButtonContainer -mb-6 mt-4 flex justify-between">
           {/* delete button - when it's clicked, we need to open a verification modal */}
-          <button onClick={deleteExperience}>
+          <button onClick={deleteEducation}>
             <Image
               className="DeleteButton opacity-75 hover:opacity-100"
               src="/delete-icon.svg"

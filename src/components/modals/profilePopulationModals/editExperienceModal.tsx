@@ -13,6 +13,7 @@ import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
 import AddExperienceModal from "./addExperienceModal";
+import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const ExperienceEducationSchema = z.object({
   title: z.string().min(2, { message: "Job Title Required" }),
@@ -39,10 +40,16 @@ export default function EditExperienceModal() {
 
   // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
+  const handleDelete = () => {
+    console.log("handling deletion");
+  };
+
   const deleteExperience = () => {
-    console.log("deleting experience");
+    console.log("deleting - will need confirmation");
     // make a confirmation modal and insert here
-    showModal(<AddExperienceModal />);
+    showModal(
+      <DeleteConfirmationModal handleDelete={handleDelete} item="this experience" />,
+    );
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
