@@ -21,7 +21,7 @@ const ExperienceSchema = z.object({
 
 type FormData = z.infer<typeof ExperienceSchema>;
 
-export default function AddExperienceModal() {
+export default function AddExperienceModal({ addExperience }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -39,6 +39,7 @@ export default function AddExperienceModal() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    addExperience(data);
     console.log(data);
     //navigate to the next page where you'll put information
     // router.push("/individual-signup/step1");

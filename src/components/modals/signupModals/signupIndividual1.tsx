@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SIGNUP_MUTATION } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
+import { useFellow } from "@/contexts/FellowContext";
 
 import SiteButton from "../../siteButton";
 import { sendFellowSignupEmail } from "@/utils/emailUtils";
@@ -26,6 +27,8 @@ type FormData = z.infer<typeof fellowSchema>;
 export default function SignupModalIndividual1() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
+  const { fellow, setFellow } = useFellow();
+
   const [disabledButton, setDisabledButton] = useState(false);
   const {
     register,
@@ -42,6 +45,11 @@ export default function SignupModalIndividual1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     //navigate to the next page where you'll put information
+    setFellow({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+    });
     router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();

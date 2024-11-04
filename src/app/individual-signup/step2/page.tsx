@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
+import { useFellow } from "@/contexts/FellowContext";
 
 import Image from "next/image";
 import InfoBox from "@/components/infoBox";
@@ -13,14 +14,30 @@ import EditEducationModal from "@/components/modals/profilePopulationModals/edit
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
+  const { fellow, setFellow } = useFellow();
 
   const [disabledButton, setDisabledButton] = useState(false);
+  const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
+  const [educationDetails, setEducationDetails] = useState(fellow?.education);
 
   const EduTitle = "Educational Title";
   const EduYears = "2015-2020";
 
   const ExpTitle = "My Experience";
   const ExpCompany = "Company Name";
+
+  const addExperience = (experience: any) => {
+    setExperienceDetails((prevDetails) => {
+      if (!prevDetails || !Array.isArray(prevDetails)) {
+        return [experience];
+      }
+      return [...prevDetails, experience];
+    });
+  };
+
+  useEffect(() => {
+    console.log(experienceDetails);
+  }, [experienceDetails]);
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -42,7 +59,9 @@ export default function IndividualSignupPage2() {
           width="extraWide"
           title={`Your Experience`}
           addClasses="flex justify-between w-full"
-          addClick={() => showModal(<AddExperienceModal />)}
+          addClick={() =>
+            showModal(<AddExperienceModal addExperience={addExperience} />)
+          }
         ></InfoBox>
 
         {/* if there's experience, display them in an info box here, with a little pencil for editing */}

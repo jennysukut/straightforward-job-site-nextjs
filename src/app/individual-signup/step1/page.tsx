@@ -7,6 +7,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useFellow } from "@/contexts/FellowContext";
 
 import Image from "next/image";
 import SiteButton from "@/components/siteButton";
@@ -42,10 +43,12 @@ export default function IndividualSignupPage1() {
   //grab the data from the previous form input via the server and use it to fill out the firstName, lastName, and email states
   const router = useRouter();
   const { showModal } = useModal();
+  const { fellow, setFellow } = useFellow();
+
   const [disabledButton, setDisabledButton] = useState(false);
-  const [firstName, setFirstName] = useState("Jenny");
-  const [lastName, setLastName] = useState("Sukut");
-  const [email, setEmail] = useState("jennysukut@email.com");
+  const [firstName, setFirstName] = useState(fellow?.firstName);
+  const [lastName, setLastName] = useState(fellow?.lastName);
+  const [email, setEmail] = useState(fellow?.email);
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [newJobTitle, setNewJobTitle] = useState("");
@@ -77,7 +80,17 @@ export default function IndividualSignupPage1() {
     setDisabledButton(true);
     const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
     try {
-      //send details to the server
+      //set FellowContext details
+      setFellow({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        smallBio: data.smallBio,
+        location: data.location,
+        skills: skills,
+        jobTitles: jobTitles,
+      });
+      //then send details to the server
       console.log(formData);
       router.push("/individual-signup/step2");
     } catch (err) {
