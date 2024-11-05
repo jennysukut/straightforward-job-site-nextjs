@@ -9,8 +9,10 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
+import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const EducationSchema = z.object({
   degree: z.string().min(2, { message: "Job Title Required" }),
@@ -20,7 +22,7 @@ const EducationSchema = z.object({
 
 type FormData = z.infer<typeof EducationSchema>;
 
-export default function AddEducationModal({ addEducation }: any) {
+export default function AddEducationModal({ addEducation, canDelete }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -59,6 +61,21 @@ export default function AddEducationModal({ addEducation }: any) {
     } catch (err) {
       showModal(<ErrorModal />);
     }
+  };
+
+  const handleDelete = () => {
+    console.log("handling deletion");
+  };
+
+  const deleteEducation = () => {
+    console.log("delete? need confirmation");
+    // make a confirmation modal and insert here - send it details necessary to delete exp.
+    showModal(
+      <DeleteConfirmationModal
+        handleDelete={handleDelete}
+        item="these education details"
+      />,
+    );
   };
 
   return (
@@ -117,17 +134,41 @@ export default function AddEducationModal({ addEducation }: any) {
         )}
 
         {/* form submission button */}
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-          <SiteButton
-            variant="hollow"
-            colorScheme="f1"
-            aria="submit"
-            onClick={handleSubmit(onSubmit)}
-            disabled={disabledButton}
-          >
-            {disabledButton ? "Adding Education..." : "add education"}
-          </SiteButton>
-        </div>
+        {canDelete ? (
+          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
+            <button onClick={deleteEducation}>
+              <Image
+                className="DeleteButton opacity-75 hover:opacity-100"
+                src="/delete-icon.svg"
+                width={18}
+                height={18}
+                alt="delete"
+              />
+            </button>
+            <SiteButton
+              variant="hollow"
+              colorScheme="f1"
+              aria="submit"
+              onClick={handleSubmit(onSubmit)}
+              disabled={disabledButton}
+              addClasses="px-8"
+            >
+              {disabledButton ? "Updating..." : "update"}
+            </SiteButton>
+          </div>
+        ) : (
+          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
+            <SiteButton
+              variant="hollow"
+              colorScheme="f1"
+              aria="submit"
+              onClick={handleSubmit(onSubmit)}
+              disabled={disabledButton}
+            >
+              {disabledButton ? "Adding Education..." : "add education"}
+            </SiteButton>
+          </div>
+        )}
       </form>
     </div>
   );

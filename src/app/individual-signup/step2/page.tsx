@@ -9,9 +9,7 @@ import Image from "next/image";
 import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
-import EditExperienceModal from "@/components/modals/profilePopulationModals/editExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
-import EditEducationModal from "@/components/modals/profilePopulationModals/editEducationModal";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -45,7 +43,7 @@ export default function IndividualSignupPage2() {
     //send this data to the server as well
     console.log(fellow);
     //navigate to the next page
-    // router.push("/individual-signup/step2");
+    router.push("/individual-signup/step3");
   };
 
   return (
@@ -87,7 +85,7 @@ export default function IndividualSignupPage2() {
                   width="extraWide"
                   title={`${experience.title}, ${experience.companyName}`}
                   addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() => showModal(<EditExperienceModal />)}
+                  editClick={() => showModal(<AddExperienceModal canDelete />)}
                 ></InfoBox>
               );
             })}
@@ -122,7 +120,7 @@ export default function IndividualSignupPage2() {
                   width="extraWide"
                   title={`${education.degree}, ${education.school}`}
                   addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() => showModal(<EditEducationModal />)}
+                  editClick={() => showModal(<AddEducationModal canDelete />)}
                 ></InfoBox>
               );
             })}

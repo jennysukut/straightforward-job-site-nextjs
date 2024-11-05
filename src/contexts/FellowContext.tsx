@@ -12,6 +12,9 @@ interface Fellow {
   jobTitles?: Array<string>;
   experience?: Record<string, any>;
   education?: Record<string, any>;
+  awards?: Record<string, any>;
+  experienceLevels?: Record<string, any>;
+  accomplishments?: Record<string, any>;
 }
 
 interface FellowContextType {

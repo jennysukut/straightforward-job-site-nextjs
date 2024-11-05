@@ -9,8 +9,10 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
+import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const ExperienceSchema = z.object({
   title: z.string().min(2, { message: "Job Title Required" }),
@@ -21,7 +23,7 @@ const ExperienceSchema = z.object({
 
 type FormData = z.infer<typeof ExperienceSchema>;
 
-export default function AddExperienceModal({ addExperience }: any) {
+export default function AddExperienceModal({ addExperience, canDelete }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -60,6 +62,21 @@ export default function AddExperienceModal({ addExperience }: any) {
     } catch (err) {
       showModal(<ErrorModal />);
     }
+  };
+
+  const handleDelete = () => {
+    console.log("handling deletion");
+  };
+
+  const deleteExperience = () => {
+    console.log("deleting - will need confirmation");
+    // make a confirmation modal and insert here
+    showModal(
+      <DeleteConfirmationModal
+        handleDelete={handleDelete}
+        item="this experience"
+      />,
+    );
   };
 
   return (
@@ -134,17 +151,41 @@ export default function AddExperienceModal({ addExperience }: any) {
         )}
 
         {/* form submission button */}
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-          <SiteButton
-            variant="hollow"
-            colorScheme="f1"
-            aria="submit"
-            onClick={handleSubmit(onSubmit)}
-            disabled={disabledButton}
-          >
-            {disabledButton ? "Adding Experience..." : "add experience"}
-          </SiteButton>
-        </div>
+        {canDelete ? (
+          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
+            <button onClick={deleteExperience}>
+              <Image
+                className="DeleteButton opacity-75 hover:opacity-100"
+                src="/delete-icon.svg"
+                width={18}
+                height={18}
+                alt="delete"
+              />
+            </button>
+            <SiteButton
+              variant="hollow"
+              colorScheme="f1"
+              aria="submit"
+              onClick={handleSubmit(onSubmit)}
+              disabled={disabledButton}
+              addClasses="px-8"
+            >
+              {disabledButton ? "Updating..." : "update"}
+            </SiteButton>
+          </div>
+        ) : (
+          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
+            <SiteButton
+              variant="hollow"
+              colorScheme="f1"
+              aria="submit"
+              onClick={handleSubmit(onSubmit)}
+              disabled={disabledButton}
+            >
+              {disabledButton ? "Adding Experience..." : "add experience"}
+            </SiteButton>
+          </div>
+        )}
       </form>
     </div>
   );
