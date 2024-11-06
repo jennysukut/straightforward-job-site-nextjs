@@ -49,6 +49,8 @@ export default function IndividualSignupPage1() {
   const [firstName, setFirstName] = useState(fellow?.firstName);
   const [lastName, setLastName] = useState(fellow?.lastName);
   const [email, setEmail] = useState(fellow?.email);
+  const [smallBio, setSmallBio] = useState(fellow?.smallBio);
+  const [location, setLocation] = useState(fellow?.location);
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [newJobTitle, setNewJobTitle] = useState("");
@@ -78,24 +80,34 @@ export default function IndividualSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
-    try {
-      //set FellowContext details
-      setFellow({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        smallBio: data.smallBio,
-        location: data.location,
-        skills: skills,
-        jobTitles: jobTitles,
-      });
-      //then send details to the server
-      console.log(formData);
-      router.push("/individual-signup/step2");
-    } catch (err) {
-      showModal(<ErrorModal />);
-    }
+    // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
+    setFellow({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      smallBio: data.smallBio,
+      location: data.location,
+      skills: skills,
+      jobTitles: jobTitles,
+    });
+    router.push("/individual-signup/step2");
+    // try {
+    //   //set FellowContext details
+    //   setFellow({
+    //     firstName: data.firstName,
+    //     lastName: data.lastName,
+    //     email: data.email,
+    //     smallBio: data.smallBio,
+    //     location: data.location,
+    //     skills: skills,
+    //     jobTitles: jobTitles,
+    //   });
+    //   //then send details to the server
+    //   console.log(formData);
+    //   router.push("/individual-signup/step2");
+    // } catch (err) {
+    //   showModal(<ErrorModal />);
+    // }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -140,7 +152,14 @@ export default function IndividualSignupPage1() {
     setSecondaryColorArray(secondaryColors);
   }, []);
 
-  console.log(fellow);
+  // Setting Details on page from fellowContext
+  useEffect(() => {
+    setFirstName(fellow?.firstName);
+    setLastName(fellow?.lastName);
+    setEmail(fellow?.email);
+    setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
+    setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
+  }, []);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -214,11 +233,14 @@ export default function IndividualSignupPage1() {
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
                 type="text"
+                value={smallBio}
                 placeholder="Your Small Bio"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                {...register("smallBio", {
-                  required: "A Small Bio is required",
-                })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSmallBio(value);
+                  setValue("smallBio", value);
+                }}
               />
             </InfoBox>
             {errors.smallBio?.message && (
@@ -231,11 +253,14 @@ export default function IndividualSignupPage1() {
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
                 type="text"
+                value={location}
                 placeholder="Your Location"
                 className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                {...register("location", {
-                  required: "Your Location is required",
-                })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setLocation(value);
+                  setValue("location", value);
+                }}
               />
             </InfoBox>
             {errors.location?.message && (

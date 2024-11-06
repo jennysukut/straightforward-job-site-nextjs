@@ -91,6 +91,8 @@ export default function IndividualSignupPage2() {
       smallBio: fellow?.smallBio,
       location: fellow?.location,
       accomplishments: fellow?.accomplishments,
+      skills: fellow?.skills,
+      jobTitles: fellow?.jobTitles,
     });
     console.log(fellow);
   }, [experienceDetails]);
@@ -105,9 +107,13 @@ export default function IndividualSignupPage2() {
       smallBio: fellow?.smallBio,
       location: fellow?.location,
       accomplishments: fellow?.accomplishments,
+      skills: fellow?.skills,
+      jobTitles: fellow?.jobTitles,
     });
     console.log(fellow);
   }, [educationDetails]);
+
+  console.log(fellow);
 
   // Setting Details on page from fellowContext
   useEffect(() => {
