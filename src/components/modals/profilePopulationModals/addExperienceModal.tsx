@@ -5,7 +5,7 @@ import * as z from "zod";
 
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -23,10 +23,21 @@ const ExperienceSchema = z.object({
 
 type FormData = z.infer<typeof ExperienceSchema>;
 
-export default function AddExperienceModal({ addExperience, canDelete }: any) {
+export default function AddExperienceModal({
+  addExperience,
+  canDelete,
+  deleteExperience,
+  experienceInfo,
+  updateExperience,
+}: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [title, setTitle] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [yearDetails, setYearDetails] = useState("");
+  const [details, setDetails] = useState("");
+  const [id, setId] = useState("");
   const {
     register,
     handleSubmit,
@@ -35,21 +46,26 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ExperienceSchema),
+    defaultValues: {
+      title: title,
+      companyName: companyName,
+      yearDetails: yearDetails,
+      details: details,
+    },
   });
-
-  // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    addExperience(data);
-    console.log(data);
-    //navigate to the next page where you'll put information
-    // router.push("/individual-signup/step1");
+
+    if (canDelete) {
+      updateExperience(data, id);
+    } else {
+      addExperience(data);
+    }
     setTimeout(() => {
       hideModal();
-    }, 1500);
+    }, 500);
 
-    //send details to the server to be saved and rendered on the next page
     try {
       // const result = await signUp({ variables: data })
       //   .then((result) => {
@@ -65,12 +81,10 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
   };
 
   const handleDelete = () => {
-    console.log("handling deletion");
+    deleteExperience();
   };
 
-  const deleteExperience = () => {
-    console.log("deleting - will need confirmation");
-    // make a confirmation modal and insert here
+  const clickDelete = () => {
     showModal(
       <DeleteConfirmationModal
         handleDelete={handleDelete}
@@ -78,6 +92,16 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
       />,
     );
   };
+
+  useEffect(() => {
+    if (canDelete) {
+      setTitle(experienceInfo.title);
+      setCompanyName(experienceInfo.companyName);
+      setYearDetails(experienceInfo.yearDetails);
+      setDetails(experienceInfo.details);
+      setId(experienceInfo.id);
+    }
+  }, []);
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
@@ -92,9 +116,14 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
         <label htmlFor="title">title*</label>
         <input
           type="text"
+          value={title}
           placeholder="Job Title"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("title")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setTitle(value);
+            setValue("title", value);
+          }}
         />
         {errors.title?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -108,9 +137,14 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={companyName}
           placeholder="Company Name"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("companyName")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setCompanyName(value);
+            setValue("companyName", value);
+          }}
         />
         {errors.companyName?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -124,9 +158,14 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={yearDetails}
           placeholder="Optional: Time You Held Position"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("yearDetails")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setYearDetails(value);
+            setValue("yearDetails", value);
+          }}
         />
         {errors.yearDetails?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -140,9 +179,14 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={details}
           placeholder="Details Describing Your Experience / Role"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("details")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setDetails(value);
+            setValue("details", value);
+          }}
         />
         {errors.details?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -153,7 +197,7 @@ export default function AddExperienceModal({ addExperience, canDelete }: any) {
         {/* form submission button */}
         {canDelete ? (
           <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={deleteExperience}>
+            <button onClick={clickDelete}>
               <Image
                 className="DeleteButton opacity-75 hover:opacity-100"
                 src="/delete-icon.svg"

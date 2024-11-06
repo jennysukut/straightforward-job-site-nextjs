@@ -19,14 +19,46 @@ export default function IndividualSignupPage2() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
   const [educationDetails, setEducationDetails] = useState<any[]>([]);
+  const [experienceCounter, setExperienceCounter] = useState(1);
 
   const addExperience = (experience: any) => {
+    const newExperience = { ...experience, id: experienceCounter };
+    setExperienceCounter((prev) => prev + 1);
     setExperienceDetails((prevDetails) => {
       if (!prevDetails || !Array.isArray(prevDetails)) {
-        return [experience];
+        return [newExperience];
       }
-      return [...prevDetails, experience];
+      return [...prevDetails, newExperience];
     });
+    console.log("experience id:", newExperience.id);
+  };
+
+  const updateExperience = (updatedExperience: any, id: any) => {
+    //the ID is undefined here
+    console.log(
+      "trying to update an experience",
+      updatedExperience,
+      "with an id of:",
+      updatedExperience.id,
+    );
+    console.log(id);
+
+    setExperienceDetails((prevDetails) => {
+      return prevDetails.map((experience) => {
+        if (experience.id === id) {
+          return { ...experience, ...updatedExperience };
+        }
+        return experience;
+      });
+    });
+    console.log("Updated experience details:", experienceDetails);
+    setFellow({ experience: experienceDetails });
+  };
+
+  const deleteExperience = (experienceToDelete: any) => {
+    setExperienceDetails((prevDetails) =>
+      prevDetails.filter((experience) => experience !== experienceToDelete),
+    );
   };
 
   const addEducation = (education: any) => {
@@ -45,6 +77,15 @@ export default function IndividualSignupPage2() {
     //navigate to the next page
     router.push("/individual-signup/step3");
   };
+
+  useEffect(() => {
+    console.log("using effect to update fellow details");
+    setFellow({
+      experience: experienceDetails,
+      education: educationDetails,
+    });
+    console.log(fellow);
+  }, [experienceDetails]);
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -74,10 +115,10 @@ export default function IndividualSignupPage2() {
         {/* experience details */}
         {experienceDetails.length > 0 && (
           <div className="ExperienceDetailsContainer flex flex-col gap-4">
-            {experienceDetails.map((experience) => {
+            {/* {experienceDetails.map((experience) => {
               return (
                 <InfoBox
-                  key={experience}
+                  key={experience.title}
                   variant="hollow"
                   aria="experienceInfo"
                   size="extraSmall"
@@ -85,7 +126,40 @@ export default function IndividualSignupPage2() {
                   width="extraWide"
                   title={`${experience.title}, ${experience.companyName}`}
                   addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() => showModal(<AddExperienceModal canDelete />)}
+                  editClick={() =>
+                    showModal(
+                      <AddExperienceModal
+                        canDelete
+                        deleteExperience={deleteExperience}
+                        experienceInfo={experience}
+                        updateExperience={updateExperience}
+                      />,
+                    )
+                  }
+                ></InfoBox>
+              );
+            })} */}
+            {fellow?.experience?.map((experience: any) => {
+              return (
+                <InfoBox
+                  key={experience.title}
+                  variant="hollow"
+                  aria="experienceInfo"
+                  size="extraSmall"
+                  canEdit
+                  width="extraWide"
+                  title={`${experience.title}, ${experience.companyName}`}
+                  addClasses="flex w-[90%] self-end justify-between"
+                  editClick={() =>
+                    showModal(
+                      <AddExperienceModal
+                        canDelete
+                        deleteExperience={deleteExperience}
+                        experienceInfo={experience}
+                        updateExperience={updateExperience}
+                      />,
+                    )
+                  }
                 ></InfoBox>
               );
             })}
