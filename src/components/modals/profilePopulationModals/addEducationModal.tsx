@@ -5,7 +5,7 @@ import * as z from "zod";
 
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -22,10 +22,20 @@ const EducationSchema = z.object({
 
 type FormData = z.infer<typeof EducationSchema>;
 
-export default function AddEducationModal({ addEducation, canDelete }: any) {
-  const router = useRouter();
+export default function AddEducationModal({
+  handleAdd,
+  canDelete,
+  handleDelete,
+  educationInfo,
+  handleUpdate,
+}: any) {
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [degree, setDegree] = useState("");
+  const [school, setSchool] = useState("");
+  const [fieldOfStudy, setFieldOfStudy] = useState("");
+  const [id, setId] = useState("");
+  const type = "education";
   const {
     register,
     handleSubmit,
@@ -36,17 +46,17 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
     resolver: zodResolver(EducationSchema),
   });
 
-  // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data);
-    addEducation(data);
-    //navigate to the next page where you'll put information
-    // router.push("/individual-signup/step1");
+
+    if (canDelete) {
+      handleUpdate(type, data, id);
+    } else {
+      handleAdd(type, data);
+    }
     setTimeout(() => {
       hideModal();
-    }, 1500);
+    }, 500);
 
     //send details to the server to be saved and rendered on the next page
     try {
@@ -63,20 +73,31 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
     }
   };
 
-  const handleDelete = () => {
+  const continueDelete = () => {
     console.log("handling deletion");
+    handleDelete(type, id);
+    hideModal();
   };
 
-  const deleteEducation = () => {
+  const clickDelete = () => {
     console.log("delete? need confirmation");
     // make a confirmation modal and insert here - send it details necessary to delete exp.
     showModal(
       <DeleteConfirmationModal
-        handleDelete={handleDelete}
+        continueDelete={continueDelete}
         item="these education details"
       />,
     );
   };
+
+  useEffect(() => {
+    if (canDelete) {
+      setDegree(educationInfo.degree);
+      setSchool(educationInfo.school);
+      setFieldOfStudy(educationInfo.fieldOfStudy);
+      setId(educationInfo.id);
+    }
+  }, []);
 
   return (
     <div className="AddEducationModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
@@ -91,9 +112,14 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
         <label htmlFor="title">degree / certificate*</label>
         <input
           type="text"
+          value={degree}
           placeholder="Your Degree or Certificate"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("degree")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setDegree(value);
+            setValue("degree", value);
+          }}
         />
         {errors.degree?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -107,9 +133,14 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={school}
           placeholder="Your School"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("school")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setSchool(value);
+            setValue("school", value);
+          }}
         />
         {errors.school?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -123,9 +154,14 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={fieldOfStudy}
           placeholder="Your Field Of Study"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("fieldOfStudy")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setFieldOfStudy(value);
+            setValue("fieldOfStudy", value);
+          }}
         />
         {errors.fieldOfStudy?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -136,7 +172,7 @@ export default function AddEducationModal({ addEducation, canDelete }: any) {
         {/* form submission button */}
         {canDelete ? (
           <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={deleteEducation}>
+            <button onClick={clickDelete}>
               <Image
                 className="DeleteButton opacity-75 hover:opacity-100"
                 src="/delete-icon.svg"

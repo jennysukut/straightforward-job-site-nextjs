@@ -24,11 +24,11 @@ const ExperienceSchema = z.object({
 type FormData = z.infer<typeof ExperienceSchema>;
 
 export default function AddExperienceModal({
-  addExperience,
+  handleAdd,
   canDelete,
-  deleteExperience,
+  handleDelete,
   experienceInfo,
-  updateExperience,
+  handleUpdate,
 }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
@@ -38,6 +38,7 @@ export default function AddExperienceModal({
   const [yearDetails, setYearDetails] = useState("");
   const [details, setDetails] = useState("");
   const [id, setId] = useState("");
+  const type = "experience";
   const {
     register,
     handleSubmit,
@@ -58,9 +59,9 @@ export default function AddExperienceModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      updateExperience(data, id);
+      handleUpdate(type, data, id);
     } else {
-      addExperience(data);
+      handleAdd(type, data);
     }
     setTimeout(() => {
       hideModal();
@@ -80,16 +81,16 @@ export default function AddExperienceModal({
     }
   };
 
-  const handleDelete = () => {
+  const continueDelete = () => {
     console.log("trying to delete");
-    deleteExperience(id);
+    handleDelete(type, id);
     hideModal();
   };
 
   const clickDelete = () => {
     showModal(
       <DeleteConfirmationModal
-        handleDelete={handleDelete}
+        continueDelete={continueDelete}
         item="this experience"
       />,
     );

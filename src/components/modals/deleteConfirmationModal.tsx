@@ -3,7 +3,7 @@ import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "../siteButton";
 
-export default function DeleteConfirmationModal({ handleDelete, item }: any) {
+export default function DeleteConfirmationModal({ continueDelete, item }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
 
   return (
@@ -18,7 +18,7 @@ export default function DeleteConfirmationModal({ handleDelete, item }: any) {
           colorScheme="c1"
           aria="delete"
           addClasses="w-[200px]"
-          onClick={handleDelete}
+          onClick={continueDelete}
         >
           yes, delete
         </SiteButton>

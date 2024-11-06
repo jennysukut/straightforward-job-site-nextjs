@@ -140,6 +140,8 @@ export default function IndividualSignupPage1() {
     setSecondaryColorArray(secondaryColors);
   }, []);
 
+  console.log(fellow);
+
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="IndividualSignupContainer flex w-[84%] max-w-[1600px] justify-center gap-10 sm:gap-8 md:w-[75%]">

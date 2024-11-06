@@ -19,71 +19,105 @@ export default function IndividualSignupPage2() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
   const [educationDetails, setEducationDetails] = useState<any[]>([]);
+
+  // we use these counters for setting Ids for our education and experience events
+  // there might be a better way to do this, because this doesn't facilitate navigating back to the page and adding new data
   const [experienceCounter, setExperienceCounter] = useState(1);
+  const [educationCounter, setEducationCounter] = useState(1);
 
-  const addExperience = (experience: any) => {
-    const newExperience = { ...experience, id: experienceCounter };
-    setExperienceCounter((prev) => prev + 1);
-    setExperienceDetails((prevDetails) => {
-      if (!prevDetails || !Array.isArray(prevDetails)) {
-        return [newExperience];
-      }
-      return [...prevDetails, newExperience];
-    });
-    console.log("experience id:", newExperience.id);
+  // handlers for adding, updating, and deleting experiences and education details
+  const handleAdd = (type: "experience" | "education", data: any) => {
+    const newData = {
+      ...data,
+      id: type === "experience" ? experienceCounter : educationCounter,
+    };
+    if (type === "experience") {
+      setExperienceCounter((prev) => prev + 1);
+      setExperienceDetails((prevDetails) => [...prevDetails, newData]);
+    } else {
+      setEducationCounter((prev) => prev + 1);
+      setEducationDetails((prevDetails) => [...prevDetails, newData]);
+    }
   };
 
-  // experience handlers
-  const updateExperience = (updatedExperience: any, id: any) => {
-    setExperienceDetails((prevDetails) => {
-      return prevDetails.map((experience) => {
-        if (experience.id === id) {
-          return { ...experience, ...updatedExperience };
-        }
-        return experience;
-      });
-    });
-    console.log("Updated experience details:", experienceDetails);
-    setFellow({ experience: experienceDetails });
+  const handleUpdate = (
+    type: "experience" | "education",
+    updatedData: any,
+    id: any,
+  ) => {
+    if (type === "experience") {
+      setExperienceDetails((prevDetails) =>
+        prevDetails.map((exp) =>
+          exp.id === id ? { ...exp, ...updatedData } : exp,
+        ),
+      );
+    } else {
+      setEducationDetails((prevDetails) =>
+        prevDetails.map((edu) =>
+          edu.id === id ? { ...edu, ...updatedData } : edu,
+        ),
+      );
+    }
   };
 
-  const deleteExperience = (id: any) => {
-    console.log("trying to delete experience with the id:", id);
-    setExperienceDetails((prevDetails) =>
-      prevDetails.filter((experience) => experience.id !== id),
-    );
-  };
-
-  // education handlers
-  const addEducation = (education: any) => {
-    setEducationDetails((prevDetails) => {
-      if (!prevDetails || !Array.isArray(prevDetails)) {
-        return [education];
-      }
-      return [...prevDetails, education];
-    });
+  const handleDelete = (type: "experience" | "education", id: any) => {
+    if (type === "experience") {
+      setExperienceDetails((prevDetails) =>
+        prevDetails.filter((exp) => exp.id !== id),
+      );
+    } else {
+      setEducationDetails((prevDetails) =>
+        prevDetails.filter((edu) => edu.id !== id),
+      );
+    }
   };
 
   const handleSubmit = () => {
-    setFellow({ experience: experienceDetails, education: educationDetails });
-    //send this data to the server as well
-    console.log(fellow);
+    setDisabledButton(true);
+    //send this data to the server here?
     //navigate to the next page
     router.push("/individual-signup/step3");
   };
 
   // update Fellow context when experience or education details are updated
   useEffect(() => {
+    //there might be a shorter way to do this, but listing each piece was the only thing I could find.
     setFellow({
       experience: experienceDetails,
+      education: fellow?.education,
+      firstName: fellow?.firstName,
+      lastName: fellow?.lastName,
+      email: fellow?.email,
+      smallBio: fellow?.smallBio,
+      location: fellow?.location,
+      accomplishments: fellow?.accomplishments,
     });
+    console.log(fellow);
   }, [experienceDetails]);
 
   useEffect(() => {
     setFellow({
+      experience: fellow?.experience,
       education: educationDetails,
+      firstName: fellow?.firstName,
+      lastName: fellow?.lastName,
+      email: fellow?.email,
+      smallBio: fellow?.smallBio,
+      location: fellow?.location,
+      accomplishments: fellow?.accomplishments,
     });
+    console.log(fellow);
   }, [educationDetails]);
+
+  // Setting Details on page from fellowContext
+  useEffect(() => {
+    setExperienceDetails(
+      Array.isArray(fellow?.experience) ? fellow.experience : [],
+    );
+    setEducationDetails(
+      Array.isArray(fellow?.education) ? fellow.education : [],
+    );
+  }, []);
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -106,37 +140,13 @@ export default function IndividualSignupPage2() {
           title={`Your Experience`}
           addClasses="flex justify-between w-full"
           addClick={() =>
-            showModal(<AddExperienceModal addExperience={addExperience} />)
+            showModal(<AddExperienceModal handleAdd={handleAdd} />)
           }
         ></InfoBox>
 
         {/* experience details */}
         {experienceDetails.length > 0 && (
           <div className="ExperienceDetailsContainer flex flex-col gap-4">
-            {/* {experienceDetails.map((experience) => {
-              return (
-                <InfoBox
-                  key={experience.title}
-                  variant="hollow"
-                  aria="experienceInfo"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  title={`${experience.title}, ${experience.companyName}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() =>
-                    showModal(
-                      <AddExperienceModal
-                        canDelete
-                        deleteExperience={deleteExperience}
-                        experienceInfo={experience}
-                        updateExperience={updateExperience}
-                      />,
-                    )
-                  }
-                ></InfoBox>
-              );
-            })} */}
             {fellow?.experience?.map((experience: any) => {
               return (
                 <InfoBox
@@ -152,9 +162,10 @@ export default function IndividualSignupPage2() {
                     showModal(
                       <AddExperienceModal
                         canDelete
-                        deleteExperience={deleteExperience}
+                        handleDelete={handleDelete}
+                        // deleteExperience={deleteExperience}
                         experienceInfo={experience}
-                        updateExperience={updateExperience}
+                        handleUpdate={handleUpdate}
                       />,
                     )
                   }
@@ -174,14 +185,14 @@ export default function IndividualSignupPage2() {
           title={`Your Education / Certificates`}
           addClasses="flex justify-between w-full"
           addClick={() =>
-            showModal(<AddEducationModal addEducation={addEducation} />)
+            showModal(<AddEducationModal handleAdd={handleAdd} />)
           }
         ></InfoBox>
 
         {/* education details*/}
         {educationDetails.length > 0 && (
           <div className="EducationDetailsContainer flex flex-col gap-4">
-            {educationDetails.map((education) => {
+            {fellow?.education?.map((education: any) => {
               return (
                 <InfoBox
                   key={education}
@@ -192,7 +203,16 @@ export default function IndividualSignupPage2() {
                   width="extraWide"
                   title={`${education.degree}, ${education.school}`}
                   addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() => showModal(<AddEducationModal canDelete />)}
+                  editClick={() =>
+                    showModal(
+                      <AddEducationModal
+                        canDelete
+                        handleDelete={handleDelete}
+                        educationInfo={education}
+                        handleUpdate={handleUpdate}
+                      />,
+                    )
+                  }
                 ></InfoBox>
               );
             })}
@@ -204,7 +224,6 @@ export default function IndividualSignupPage2() {
             variant="hollow"
             colorScheme="f1"
             aria="submit"
-            // onClick={handleSubmit(onSubmit)}
             onClick={handleSubmit}
             disabled={disabledButton}
           >

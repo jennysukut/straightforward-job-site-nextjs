@@ -49,11 +49,11 @@ export default function IndividualSignupPage3() {
   };
 
   const handleSubmit = () => {
-    setFellow({
-      awards: awards,
-      experienceLevels: experienceLevels,
-      accomplishments: accomplishments,
-    });
+    // setFellow({
+    //   awards: awards,
+    //   experienceLevels: experienceLevels,
+    //   accomplishments: accomplishments,
+    // });
     //send this data to the server as well
     console.log(fellow);
     //navigate to the next page

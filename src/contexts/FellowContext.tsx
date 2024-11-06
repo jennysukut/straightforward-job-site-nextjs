@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
-interface Fellow {
+export interface Fellow {
   firstName?: string;
   lastName?: string;
   email?: string;
