@@ -33,16 +33,8 @@ export default function IndividualSignupPage2() {
     console.log("experience id:", newExperience.id);
   };
 
+  // experience handlers
   const updateExperience = (updatedExperience: any, id: any) => {
-    //the ID is undefined here
-    console.log(
-      "trying to update an experience",
-      updatedExperience,
-      "with an id of:",
-      updatedExperience.id,
-    );
-    console.log(id);
-
     setExperienceDetails((prevDetails) => {
       return prevDetails.map((experience) => {
         if (experience.id === id) {
@@ -55,12 +47,14 @@ export default function IndividualSignupPage2() {
     setFellow({ experience: experienceDetails });
   };
 
-  const deleteExperience = (experienceToDelete: any) => {
+  const deleteExperience = (id: any) => {
+    console.log("trying to delete experience with the id:", id);
     setExperienceDetails((prevDetails) =>
-      prevDetails.filter((experience) => experience !== experienceToDelete),
+      prevDetails.filter((experience) => experience.id !== id),
     );
   };
 
+  // education handlers
   const addEducation = (education: any) => {
     setEducationDetails((prevDetails) => {
       if (!prevDetails || !Array.isArray(prevDetails)) {
@@ -78,14 +72,18 @@ export default function IndividualSignupPage2() {
     router.push("/individual-signup/step3");
   };
 
+  // update Fellow context when experience or education details are updated
   useEffect(() => {
-    console.log("using effect to update fellow details");
     setFellow({
       experience: experienceDetails,
+    });
+  }, [experienceDetails]);
+
+  useEffect(() => {
+    setFellow({
       education: educationDetails,
     });
-    console.log(fellow);
-  }, [experienceDetails]);
+  }, [educationDetails]);
 
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">

@@ -81,7 +81,9 @@ export default function AddExperienceModal({
   };
 
   const handleDelete = () => {
-    deleteExperience();
+    console.log("trying to delete");
+    deleteExperience(id);
+    hideModal();
   };
 
   const clickDelete = () => {

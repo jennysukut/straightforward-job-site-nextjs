@@ -4,7 +4,7 @@ import { useModal } from "@/contexts/ModalContext";
 import SiteButton from "../siteButton";
 
 export default function DeleteConfirmationModal({ handleDelete, item }: any) {
-  const { showModal, replaceModalStack, goBack } = useModal();
+  const { showModal, replaceModalStack, goBack, hideModal } = useModal();
 
   return (
     <div className="DeleteConfirmationModal flex w-[250px] flex-col items-center gap-4">

@@ -9,7 +9,6 @@ export default function IndividualSignupPages({ children }: any) {
 
   useEffect(() => {
     setPageType("Individual Signup");
-    console.log("we're at an individual signup page");
   }, [setPageType]);
 
   return <>{children}</>;

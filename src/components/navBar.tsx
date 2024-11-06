@@ -19,11 +19,6 @@ export default function NavBar() {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
 
-  // 3. Conditional Rendering:
-  // Use state or context: In your navbar component, use state or context to determine which navbar to render
-  //based on the current route or user permissions.
-  console.log(pageType);
-
   return (
     <div className="NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16">
       <Link href={"/"}>
