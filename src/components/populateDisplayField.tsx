@@ -91,7 +91,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
                           handleAdd,
                           canDelete: true,
                           handleDelete,
-                          itemInfo: test,
+                          itemInfo: item,
                           handleUpdate,
                         },
                       ),

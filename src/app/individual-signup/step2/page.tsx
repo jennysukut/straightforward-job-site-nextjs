@@ -10,6 +10,7 @@ import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
+import PopulateDisplayField from "@/components/populateDisplayField";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -177,6 +178,21 @@ export default function IndividualSignupPage2() {
             })}
           </div>
         )}
+
+        {/* Testing the Add Field Component for Experience */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          type="experience"
+          title={`Your Experience`}
+          aria="experienceInfo"
+          addModal={<AddExperienceModal />}
+          selectedArray={experienceDetails}
+          displayOption1="title"
+          displayOption2="companyName"
+          test="award"
+        />
 
         {/* add education / certificates */}
         <InfoBox

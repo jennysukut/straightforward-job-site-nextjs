@@ -26,7 +26,7 @@ type FormData = z.infer<typeof AwardSchema>;
 export default function AddAwardsModal({
   handleAdd,
   canDelete,
-  awardInfo,
+  itemInfo,
   handleDelete,
   handleUpdate,
 }: any) {
@@ -84,14 +84,14 @@ export default function AddAwardsModal({
     );
   };
 
-  // useEffect(() => {
-  //   if (canDelete) {
-  //     setAwardTitle(awardInfo.awardTitle);
-  //     setGivenBy(awardInfo.givenBy);
-  //     setAwardDetails(awardInfo.awardDetails);
-  //     setId(awardInfo.id);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (canDelete) {
+      setAwardTitle(itemInfo.awardTitle);
+      setGivenBy(itemInfo.givenBy);
+      setAwardDetails(itemInfo.awardDetails);
+      setId(itemInfo.id);
+    }
+  }, []);
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">

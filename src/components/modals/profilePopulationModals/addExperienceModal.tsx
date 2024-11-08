@@ -27,8 +27,9 @@ export default function AddExperienceModal({
   handleAdd,
   canDelete,
   handleDelete,
-  experienceInfo,
+  // experienceInfo,
   handleUpdate,
+  itemInfo,
 }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
@@ -91,11 +92,11 @@ export default function AddExperienceModal({
 
   useEffect(() => {
     if (canDelete) {
-      setTitle(experienceInfo.title);
-      setCompanyName(experienceInfo.companyName);
-      setYearDetails(experienceInfo.yearDetails);
-      setDetails(experienceInfo.details);
-      setId(experienceInfo.id);
+      setTitle(itemInfo.title);
+      setCompanyName(itemInfo.companyName);
+      setYearDetails(itemInfo.yearDetails);
+      setDetails(itemInfo.details);
+      setId(itemInfo.id);
     }
   }, []);
 

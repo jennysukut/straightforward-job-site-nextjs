@@ -25,33 +25,6 @@ export default function IndividualSignupPage3() {
   const [experienceLevelCounter, setExperienceLevelCounter] = useState(1);
   const [accomplishmentCounter, setAccomplishmentCounter] = useState(1);
 
-  // const addAward = (award: any) => {
-  //   setAwards((prevAwards) => {
-  //     if (!prevAwards || !Array.isArray(prevAwards)) {
-  //       return [award];
-  //     }
-  //     return [...prevAwards, award];
-  //   });
-  // };
-
-  // const addExperienceLevel = (experienceLevel: any) => {
-  //   setExperienceLevels((prevExpLev) => {
-  //     if (!prevExpLev || !Array.isArray(prevExpLev)) {
-  //       return [experienceLevel];
-  //     }
-  //     return [...prevExpLev, experienceLevel];
-  //   });
-  // };
-
-  // const addAccomplishments = (accomplishment: any) => {
-  //   setAccomplishments((prevAccomplishment) => {
-  //     if (!prevAccomplishment || !Array.isArray(prevAccomplishment)) {
-  //       return [accomplishment];
-  //     }
-  //     return [...prevAccomplishment, accomplishment];
-  //   });
-  // };
-
   // handlers for adding, updating, and deleting details
   const handleAdd = (
     type: "award" | "experienceLevel" | "accomplishment",
@@ -86,6 +59,7 @@ export default function IndividualSignupPage3() {
     updatedData: any,
     id: any,
   ) => {
+    console.log("trying to update");
     if (type === "experienceLevel") {
       setExperienceLevels((prevDetails) =>
         prevDetails.map((exp) =>
@@ -113,6 +87,7 @@ export default function IndividualSignupPage3() {
     type: "award" | "experienceLevel" | "accomplishment",
     id: any,
   ) => {
+    console.log("trying to delete");
     if (type === "experienceLevel") {
       setExperienceLevels((prevDetails) =>
         prevDetails.filter((exp) => exp.id !== id),
