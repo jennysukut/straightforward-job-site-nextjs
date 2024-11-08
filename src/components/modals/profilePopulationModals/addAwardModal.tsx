@@ -5,7 +5,7 @@ import * as z from "zod";
 
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -16,17 +16,28 @@ import ErrorModal from "../errorModal";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const AwardSchema = z.object({
-  title: z.string().min(2, { message: "Award Title Required" }),
+  awardTitle: z.string().min(2, { message: "Award Title Required" }),
   givenBy: z.string().min(2),
   awardDetails: z.string().optional(),
 });
 
 type FormData = z.infer<typeof AwardSchema>;
 
-export default function AddAwardsModal({ addAward, canDelete }: any) {
+export default function AddAwardsModal({
+  handleAdd,
+  canDelete,
+  awardInfo,
+  handleDelete,
+  handleUpdate,
+}: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [awardTitle, setAwardTitle] = useState("");
+  const [givenBy, setGivenBy] = useState("");
+  const [awardDetails, setAwardDetails] = useState("");
+  const [id, setId] = useState("");
+  const type = "award";
   const {
     register,
     handleSubmit,
@@ -37,40 +48,50 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
     resolver: zodResolver(AwardSchema),
   });
 
-  const handleDelete = () => {
-    console.log("handling deletion");
-  };
-
-  const deleteExperience = () => {
-    console.log("deleting - will need confirmation");
-    showModal(
-      <DeleteConfirmationModal handleDelete={handleDelete} item="this award" />,
-    );
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    addAward(data);
-    console.log(data);
+
+    if (canDelete) {
+      handleUpdate(type, data, id);
+    } else {
+      handleAdd(type, data);
+    }
 
     setTimeout(() => {
       hideModal();
     }, 500);
 
     //send details to the server to be saved and rendered on the next page
-    try {
-      // const result = await signUp({ variables: data })
-      //   .then((result) => {
-      //     sendFellowSignupEmail(data.email, data.name, betaTester);
-      //     showModal(<SignupModalIndividual2 />);
-      //   })
-      //   .catch((error) => {
-      //     showModal(<ErrorModal />);
-      //   });
-    } catch (err) {
-      showModal(<ErrorModal />);
-    }
+    //   try {
+    //   } catch (err) {
+    //     showModal(<ErrorModal />);
+    //   }
   };
+
+  const continueDelete = () => {
+    console.log("handling deletion");
+    handleDelete(type, id);
+    hideModal();
+  };
+
+  const deleteExperience = () => {
+    console.log("deleting - will need confirmation");
+    showModal(
+      <DeleteConfirmationModal
+        continueDelete={continueDelete}
+        item="this award"
+      />,
+    );
+  };
+
+  // useEffect(() => {
+  //   if (canDelete) {
+  //     setAwardTitle(awardInfo.awardTitle);
+  //     setGivenBy(awardInfo.givenBy);
+  //     setAwardDetails(awardInfo.awardDetails);
+  //     setId(awardInfo.id);
+  //   }
+  // }, []);
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
@@ -82,16 +103,21 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* award / honor input */}
-        <label htmlFor="title">award / honor*</label>
+        <label htmlFor="award">award / honor*</label>
         <input
           type="text"
+          value={awardTitle}
           placeholder="Your Award or Honor"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("title")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setAwardTitle(value);
+            setValue("awardTitle", value);
+          }}
         />
-        {errors.title?.message && (
+        {errors.awardTitle?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.title.message.toString()}
+            {errors.awardTitle.message.toString()}
           </p>
         )}
 
@@ -101,9 +127,14 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={givenBy}
           placeholder="Given By"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("givenBy")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setGivenBy(value);
+            setValue("givenBy", value);
+          }}
         />
         {errors.givenBy?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -117,9 +148,14 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
         </label>
         <input
           type="text"
+          value={awardDetails}
           placeholder="Award / Honor Is For"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("awardDetails")}
+          onChange={(e) => {
+            const value = e.target.value;
+            setAwardDetails(value);
+            setValue("awardDetails", value);
+          }}
         />
         {errors.awardDetails?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -147,7 +183,7 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
               disabled={disabledButton}
               addClasses="px-8"
             >
-              {disabledButton ? "Updating Details..." : "update"}
+              {disabledButton ? "Updating..." : "update"}
             </SiteButton>
           </div>
         ) : (
@@ -160,7 +196,7 @@ export default function AddAwardsModal({ addAward, canDelete }: any) {
               disabled={disabledButton}
               addClasses="px-8"
             >
-              {disabledButton ? "Adding Details..." : "add"}
+              {disabledButton ? "Adding ..." : "add"}
             </SiteButton>
           </div>
         )}

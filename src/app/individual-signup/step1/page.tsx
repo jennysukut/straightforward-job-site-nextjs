@@ -28,8 +28,7 @@ import {
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
-  firstName: z.string().min(2, { message: "Required" }),
-  lastName: z.string().min(2, { message: "Required" }),
+  name: z.string().min(2, { message: "Required" }),
   email: z.string().email(),
   smallBio: z.string().min(5, { message: "Required" }),
   location: z.string().min(5, { message: "Required" }),
@@ -46,8 +45,7 @@ export default function IndividualSignupPage1() {
   const { fellow, setFellow } = useFellow();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [firstName, setFirstName] = useState(fellow?.firstName);
-  const [lastName, setLastName] = useState(fellow?.lastName);
+  const [name, setName] = useState(fellow?.name);
   const [email, setEmail] = useState(fellow?.email);
   const [smallBio, setSmallBio] = useState(fellow?.smallBio);
   const [location, setLocation] = useState(fellow?.location);
@@ -70,8 +68,7 @@ export default function IndividualSignupPage1() {
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
     defaultValues: {
-      firstName: firstName,
-      lastName: lastName,
+      name: name,
       email: email,
       skills: skills,
       jobTitles: jobTitles,
@@ -82,8 +79,7 @@ export default function IndividualSignupPage1() {
     setDisabledButton(true);
     // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
     setFellow({
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: data.name,
       email: data.email,
       smallBio: data.smallBio,
       location: data.location,
@@ -154,8 +150,7 @@ export default function IndividualSignupPage1() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setFirstName(fellow?.firstName);
-    setLastName(fellow?.lastName);
+    setName(fellow?.name);
     setEmail(fellow?.email);
     setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
     setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
@@ -169,8 +164,28 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {/* first name input */}
+            {/*  name input */}
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
+              <input
+                type="text"
+                value={name}
+                placeholder="First & Last Name"
+                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setName(value);
+                  setValue("name", value);
+                }}
+              />
+            </InfoBox>
+            {errors.name?.message && (
+              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+                {errors.name.message.toString()}
+              </p>
+            )}
+
+            {/* first name input */}
+            {/* <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
                 type="text"
                 value={firstName}
@@ -187,10 +202,10 @@ export default function IndividualSignupPage1() {
               <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
                 {errors.firstName.message.toString()}
               </p>
-            )}
+            )} */}
 
             {/* last name input */}
-            <InfoBox variant="hollow" size="extraSmall" aria="lastName">
+            {/* <InfoBox variant="hollow" size="extraSmall" aria="lastName">
               <input
                 type="text"
                 value={lastName}
@@ -207,7 +222,7 @@ export default function IndividualSignupPage1() {
               <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
                 {errors.lastName.message.toString()}
               </p>
-            )}
+            )} */}
 
             {/* email input */}
             <InfoBox variant="hollow" size="extraSmall" aria="email">

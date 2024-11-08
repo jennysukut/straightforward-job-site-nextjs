@@ -67,18 +67,11 @@ export default function AddExperienceModal({
       hideModal();
     }, 500);
 
-    try {
-      // const result = await signUp({ variables: data })
-      //   .then((result) => {
-      //     sendFellowSignupEmail(data.email, data.name, betaTester);
-      //     showModal(<SignupModalIndividual2 />);
-      //   })
-      //   .catch((error) => {
-      //     showModal(<ErrorModal />);
-      //   });
-    } catch (err) {
-      showModal(<ErrorModal />);
-    }
+    //send data to the server
+    //   try {
+    //   } catch (err) {
+    //     showModal(<ErrorModal />);
+    //   }
   };
 
   const continueDelete = () => {
@@ -121,7 +114,7 @@ export default function AddExperienceModal({
           type="text"
           value={title}
           placeholder="Job Title"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setTitle(value);
@@ -142,7 +135,7 @@ export default function AddExperienceModal({
           type="text"
           value={companyName}
           placeholder="Company Name"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setCompanyName(value);
@@ -163,7 +156,7 @@ export default function AddExperienceModal({
           type="text"
           value={yearDetails}
           placeholder="Optional: Time You Held Position"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setYearDetails(value);
@@ -184,7 +177,7 @@ export default function AddExperienceModal({
           type="text"
           value={details}
           placeholder="Details Describing Your Experience / Role"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setDetails(value);

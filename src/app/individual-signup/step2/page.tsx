@@ -85,8 +85,7 @@ export default function IndividualSignupPage2() {
     setFellow({
       experience: experienceDetails,
       education: fellow?.education,
-      firstName: fellow?.firstName,
-      lastName: fellow?.lastName,
+      name: fellow?.name,
       email: fellow?.email,
       smallBio: fellow?.smallBio,
       location: fellow?.location,
@@ -101,8 +100,7 @@ export default function IndividualSignupPage2() {
     setFellow({
       experience: fellow?.experience,
       education: educationDetails,
-      firstName: fellow?.firstName,
-      lastName: fellow?.lastName,
+      name: fellow?.name,
       email: fellow?.email,
       smallBio: fellow?.smallBio,
       location: fellow?.location,
@@ -169,7 +167,6 @@ export default function IndividualSignupPage2() {
                       <AddExperienceModal
                         canDelete
                         handleDelete={handleDelete}
-                        // deleteExperience={deleteExperience}
                         experienceInfo={experience}
                         handleUpdate={handleUpdate}
                       />,

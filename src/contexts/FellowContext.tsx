@@ -3,8 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Fellow {
-  firstName?: string;
-  lastName?: string;
+  name?: string;
   email?: string;
   smallBio?: string;
   location?: string;

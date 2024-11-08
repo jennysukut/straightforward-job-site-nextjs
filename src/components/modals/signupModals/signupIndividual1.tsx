@@ -6,18 +6,13 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SIGNUP_MUTATION } from "@/graphql/mutations";
-import { useMutation } from "@apollo/client";
 import { useFellow } from "@/contexts/FellowContext";
 
 import SiteButton from "../../siteButton";
-import { sendFellowSignupEmail } from "@/utils/emailUtils";
-import SignupModalIndividual2 from "./signupIndividual2";
 import ErrorModal from "../errorModal";
 
 const fellowSchema = z.object({
-  firstName: z.string().min(2, { message: "Required" }),
-  lastName: z.string().min(2, { message: "Required" }),
+  name: z.string().min(2, { message: "Required" }),
   email: z.string().email(),
   password: z.string().min(6, { message: "Required" }),
 });
@@ -40,14 +35,10 @@ export default function SignupModalIndividual1() {
     resolver: zodResolver(fellowSchema),
   });
 
-  // const [signUp, { loading, error }] = useMutation(SIGNUP_MUTATION);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    //navigate to the next page where you'll put information
     setFellow({
-      firstName: data.firstName,
-      lastName: data.lastName,
+      name: data.name,
       email: data.email,
     });
     router.push("/individual-signup/step1");
@@ -56,18 +47,10 @@ export default function SignupModalIndividual1() {
     }, 1500);
 
     //send details to the server to be saved and rendered on the next page
-    try {
-      // const result = await signUp({ variables: data })
-      //   .then((result) => {
-      //     sendFellowSignupEmail(data.email, data.name, betaTester);
-      //     showModal(<SignupModalIndividual2 />);
-      //   })
-      //   .catch((error) => {
-      //     showModal(<ErrorModal />);
-      //   });
-    } catch (err) {
-      showModal(<ErrorModal />);
-    }
+    // try {
+    // } catch (err) {
+    //   showModal(<ErrorModal />);
+    // }
   };
 
   return (
@@ -80,32 +63,16 @@ export default function SignupModalIndividual1() {
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* first name input */}
-        <label htmlFor="name">first name*</label>
+        <label htmlFor="name">your name*</label>
         <input
           type="firstName"
-          placeholder="your first name"
+          placeholder="first & last name"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("firstName")}
+          {...register("name")}
         />
-        {errors.firstName?.message && (
+        {errors.name?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.firstName.message.toString()}
-          </p>
-        )}
-
-        {/* last name input */}
-        <label htmlFor="name" className="pt-4">
-          last name*
-        </label>
-        <input
-          type="lastName"
-          placeholder="your last name"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("lastName")}
-        />
-        {errors.lastName?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.lastName.message.toString()}
+            {errors.name.message.toString()}
           </p>
         )}
 
@@ -124,7 +91,6 @@ export default function SignupModalIndividual1() {
             {errors.email.message.toString()}
           </p>
         )}
-
         {/* password input */}
         <label htmlFor="password" className="mt-4">
           your password*
@@ -140,7 +106,6 @@ export default function SignupModalIndividual1() {
             {errors.password.message.toString()}
           </p>
         )}
-
         {/* form submission button */}
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
           <SiteButton

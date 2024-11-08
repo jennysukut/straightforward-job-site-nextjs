@@ -114,7 +114,7 @@ export default function AddEducationModal({
           type="text"
           value={degree}
           placeholder="Your Degree or Certificate"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setDegree(value);
@@ -135,7 +135,7 @@ export default function AddEducationModal({
           type="text"
           value={school}
           placeholder="Your School"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setSchool(value);
@@ -156,7 +156,7 @@ export default function AddEducationModal({
           type="text"
           value={fieldOfStudy}
           placeholder="Your Field Of Study"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
             const value = e.target.value;
             setFieldOfStudy(value);

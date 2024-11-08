@@ -9,7 +9,8 @@ import Image from "next/image";
 import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
-import AddAwardsModal from "@/components/modals/profilePopulationModals/addAwardsModal";
+import AddAwardModal from "@/components/modals/profilePopulationModals/addAwardModal";
+import PopulateDisplayField from "@/components/populateDisplayField";
 
 export default function IndividualSignupPage3() {
   const { showModal } = useModal();
@@ -20,32 +21,111 @@ export default function IndividualSignupPage3() {
   const [awards, setAwards] = useState<any[]>([]);
   const [experienceLevels, setExperienceLevels] = useState<any[]>([]);
   const [accomplishments, setAccomplishments] = useState<any[]>([]);
+  const [awardCounter, setAwardCounter] = useState(1);
+  const [experienceLevelCounter, setExperienceLevelCounter] = useState(1);
+  const [accomplishmentCounter, setAccomplishmentCounter] = useState(1);
 
-  const addAward = (award: any) => {
-    setAwards((prevAwards) => {
-      if (!prevAwards || !Array.isArray(prevAwards)) {
-        return [award];
-      }
-      return [...prevAwards, award];
-    });
+  // const addAward = (award: any) => {
+  //   setAwards((prevAwards) => {
+  //     if (!prevAwards || !Array.isArray(prevAwards)) {
+  //       return [award];
+  //     }
+  //     return [...prevAwards, award];
+  //   });
+  // };
+
+  // const addExperienceLevel = (experienceLevel: any) => {
+  //   setExperienceLevels((prevExpLev) => {
+  //     if (!prevExpLev || !Array.isArray(prevExpLev)) {
+  //       return [experienceLevel];
+  //     }
+  //     return [...prevExpLev, experienceLevel];
+  //   });
+  // };
+
+  // const addAccomplishments = (accomplishment: any) => {
+  //   setAccomplishments((prevAccomplishment) => {
+  //     if (!prevAccomplishment || !Array.isArray(prevAccomplishment)) {
+  //       return [accomplishment];
+  //     }
+  //     return [...prevAccomplishment, accomplishment];
+  //   });
+  // };
+
+  // handlers for adding, updating, and deleting details
+  const handleAdd = (
+    type: "award" | "experienceLevel" | "accomplishment",
+    data: any,
+  ) => {
+    const newData = {
+      ...data,
+      id:
+        type === "experienceLevel"
+          ? experienceLevelCounter
+          : type === "award"
+            ? awardCounter
+            : accomplishmentCounter,
+    };
+    if (type === "experienceLevel") {
+      setExperienceLevelCounter((prev) => prev + 1);
+      setExperienceLevels((prevExpLev) => [...prevExpLev, newData]);
+    } else if (type === "award") {
+      setAwardCounter((prev) => prev + 1);
+      setAwards((prevAwards) => [...prevAwards, newData]);
+    } else {
+      setAccomplishmentCounter((prev) => prev + 1);
+      setAccomplishments((prevAccomplishment) => [
+        ...prevAccomplishment,
+        newData,
+      ]);
+    }
   };
 
-  const addExperienceLevel = (experienceLevel: any) => {
-    setExperienceLevels((prevExpLev) => {
-      if (!prevExpLev || !Array.isArray(prevExpLev)) {
-        return [experienceLevel];
-      }
-      return [...prevExpLev, experienceLevel];
-    });
+  const handleUpdate = (
+    type: "award" | "experienceLevel" | "accomplishment",
+    updatedData: any,
+    id: any,
+  ) => {
+    if (type === "experienceLevel") {
+      setExperienceLevels((prevDetails) =>
+        prevDetails.map((exp) =>
+          exp.id === id ? { ...exp, ...updatedData } : exp,
+        ),
+      );
+    } else if (type === "award") {
+      setAwards((prevDetails) =>
+        prevDetails.map((award) =>
+          award.id === id ? { ...award, ...updatedData } : award,
+        ),
+      );
+    } else if (type === "accomplishment") {
+      setAccomplishments((prevDetails) =>
+        prevDetails.map((accomplishment) =>
+          accomplishment.id === id
+            ? { ...accomplishment, ...updatedData }
+            : accomplishment,
+        ),
+      );
+    }
   };
 
-  const addAccomplishments = (accomplishment: any) => {
-    setAccomplishments((prevAccomplishment) => {
-      if (!prevAccomplishment || !Array.isArray(prevAccomplishment)) {
-        return [accomplishment];
-      }
-      return [...prevAccomplishment, accomplishment];
-    });
+  const handleDelete = (
+    type: "award" | "experienceLevel" | "accomplishment",
+    id: any,
+  ) => {
+    if (type === "experienceLevel") {
+      setExperienceLevels((prevDetails) =>
+        prevDetails.filter((exp) => exp.id !== id),
+      );
+    } else if (type === "award") {
+      setAwards((prevDetails) =>
+        prevDetails.filter((award) => award.id !== id),
+      );
+    } else if (type === "accomplishment") {
+      setAccomplishments((prevDetails) =>
+        prevDetails.filter((accomplishment) => accomplishment.id !== id),
+      );
+    }
   };
 
   const handleSubmit = () => {
@@ -80,7 +160,7 @@ export default function IndividualSignupPage3() {
           width="extraWide"
           title={`Your Awards or Honors`}
           addClasses="flex justify-between w-full"
-          addClick={() => showModal(<AddAwardsModal addAward={addAward} />)}
+          addClick={() => showModal(<AddAwardModal handleAdd={handleAdd} />)}
         ></InfoBox>
 
         {/* awards / honors details */}
@@ -95,14 +175,38 @@ export default function IndividualSignupPage3() {
                   size="extraSmall"
                   canEdit
                   width="extraWide"
-                  title={`${award.title}, ${award.givenBy}`}
+                  title={`${award.awardTitle}, ${award.givenBy}`}
                   addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() => showModal(<AddAwardsModal canDelete />)}
+                  editClick={() =>
+                    showModal(
+                      <AddAwardModal
+                        canDelete
+                        handleDelete={handleDelete}
+                        awardInfo={award}
+                        handleUpdate={handleUpdate}
+                      />,
+                    )
+                  }
                 ></InfoBox>
               );
             })}
           </div>
         )}
+
+        {/* Testing the Add Field Component */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          type="awards"
+          title={`Your Awards or Honors`}
+          aria="awardsInfo"
+          addModal={<AddAwardModal />}
+          selectedArray={awards}
+          displayOption1="awardTitle"
+          displayOption2="givenBy"
+          test="award"
+        />
 
         {/* add experience levels */}
         <InfoBox
@@ -114,9 +218,7 @@ export default function IndividualSignupPage3() {
           title={`Your Experience Levels`}
           addClasses="flex justify-between w-full"
           addClick={() =>
-            showModal(
-              <AddEducationModal addExperienceLevel={addExperienceLevel} />,
-            )
+            showModal(<AddEducationModal handleAdd={handleAdd} />)
           }
         ></InfoBox>
 
@@ -150,11 +252,11 @@ export default function IndividualSignupPage3() {
           width="extraWide"
           title={`Your Additional Accomplishments`}
           addClasses="flex justify-between w-full"
-          addClick={() =>
-            showModal(
-              <AddEducationModal addExperienceLevel={addExperienceLevel} />,
-            )
-          }
+          // addClick={() =>
+          //   showModal(
+          //     <AddEducationModal addExperienceLevel={addExperienceLevel} />,
+          //   )
+          // }
         ></InfoBox>
 
         {/* additional accomplishments  details*/}
