@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
-import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
 import AddAwardModal from "@/components/modals/profilePopulationModals/addAwardModal";
 import PopulateDisplayField from "@/components/populateDisplayField";
+import AddExperienceLevelModal from "@/components/modals/profilePopulationModals/addExperienceLevels";
+import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/addAccomplishmentsModal";
 
 export default function IndividualSignupPage3() {
   const { showModal } = useModal();
@@ -24,6 +25,8 @@ export default function IndividualSignupPage3() {
   const [awardCounter, setAwardCounter] = useState(1);
   const [experienceLevelCounter, setExperienceLevelCounter] = useState(1);
   const [accomplishmentCounter, setAccomplishmentCounter] = useState(1);
+
+  console.log(experienceLevels);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -104,16 +107,35 @@ export default function IndividualSignupPage3() {
   };
 
   const handleSubmit = () => {
-    // setFellow({
-    //   awards: awards,
-    //   experienceLevels: experienceLevels,
-    //   accomplishments: accomplishments,
-    // });
+    setFellow({
+      name: fellow?.name,
+      email: fellow?.email,
+      smallBio: fellow?.smallBio,
+      location: fellow?.location,
+      skills: fellow?.skills,
+      jobTitles: fellow?.jobTitles,
+      experience: fellow?.experience,
+      education: fellow?.education,
+      awards: awards,
+      experienceLevels: experienceLevels,
+      accomplishments: accomplishments,
+    });
     //send this data to the server as well
     console.log(fellow);
     //navigate to the next page
-    // router.push("/individual-signup/step2");
+    router.push("/individual-signup/step2");
   };
+
+  // Setting Details on page from fellowContext
+  useEffect(() => {
+    setAwards(Array.isArray(fellow?.awards) ? fellow.awards : []);
+    setExperienceLevels(
+      Array.isArray(fellow?.experienceLevels) ? fellow.experienceLevels : [],
+    );
+    setAccomplishments(
+      Array.isArray(fellow?.accomplishments) ? fellow.accomplishments : [],
+    );
+  }, []);
 
   return (
     <div className="IndividualSignupPage3 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -126,49 +148,7 @@ export default function IndividualSignupPage3() {
           alt="avatar"
         />
 
-        {/* add awards / honors */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          aria="awards"
-          canAdd
-          width="extraWide"
-          title={`Your Awards or Honors`}
-          addClasses="flex justify-between w-full"
-          addClick={() => showModal(<AddAwardModal handleAdd={handleAdd} />)}
-        ></InfoBox>
-
-        {/* awards / honors details */}
-        {awards.length > 0 && (
-          <div className="AwardsDetailsContainer flex flex-col gap-4">
-            {awards.map((award) => {
-              return (
-                <InfoBox
-                  key={award}
-                  variant="hollow"
-                  aria="awardsInfo"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  title={`${award.awardTitle}, ${award.givenBy}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() =>
-                    showModal(
-                      <AddAwardModal
-                        canDelete
-                        handleDelete={handleDelete}
-                        awardInfo={award}
-                        handleUpdate={handleUpdate}
-                      />,
-                    )
-                  }
-                ></InfoBox>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Testing the Add Field Component */}
+        {/* Add + Display Awards / Honors */}
         <PopulateDisplayField
           handleAdd={handleAdd}
           handleDelete={handleDelete}
@@ -180,87 +160,40 @@ export default function IndividualSignupPage3() {
           selectedArray={awards}
           displayOption1="awardTitle"
           displayOption2="givenBy"
-          test="award"
         />
 
-        {/* add experience levels */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          aria="experienceLevels"
-          canAdd
-          width="extraWide"
+        {/* Add + Display ExperienceLevels */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          type="experienceLevels"
           title={`Your Experience Levels`}
-          addClasses="flex justify-between w-full"
-          addClick={() =>
-            showModal(<AddEducationModal handleAdd={handleAdd} />)
-          }
-        ></InfoBox>
+          aria="experienceLevelsInfo"
+          addModal={<AddExperienceLevelModal />}
+          selectedArray={experienceLevels}
+          displayOption1="experienceLevel"
+          displayOption2="expLevelSkill"
+        />
 
-        {/* experience level details*/}
-        {experienceLevels.length > 0 && (
-          <div className="ExperienceLevelDetailsContainer flex flex-col gap-4">
-            {experienceLevels.map((level) => {
-              return (
-                <InfoBox
-                  key={level}
-                  variant="hollow"
-                  aria="experienceLevel"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  // title={`${education.degree}, ${education.school}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  // editClick={() => showModal(<EditEducationModal />)}
-                ></InfoBox>
-              );
-            })}
-          </div>
-        )}
-
-        {/* add additional accomplishments */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          aria="accomplishments"
-          canAdd
-          width="extraWide"
+        {/* Add + Display AdditionalAccomplishments */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          type="accomplishments"
           title={`Your Additional Accomplishments`}
-          addClasses="flex justify-between w-full"
-          // addClick={() =>
-          //   showModal(
-          //     <AddEducationModal addExperienceLevel={addExperienceLevel} />,
-          //   )
-          // }
-        ></InfoBox>
-
-        {/* additional accomplishments  details*/}
-        {accomplishments.length > 0 && (
-          <div className="AccomplishmentDetailsContainer flex flex-col gap-4">
-            {accomplishments.map((accomplishment) => {
-              return (
-                <InfoBox
-                  key={accomplishment}
-                  variant="hollow"
-                  aria="experienceLevel"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  // title={`${education.degree}, ${education.school}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  // editClick={() => showModal(<EditEducationModal />)}
-                ></InfoBox>
-              );
-            })}
-          </div>
-        )}
+          aria="experienceLevelsInfo"
+          addModal={<AddAccomplishmentModal />}
+          selectedArray={accomplishments}
+          displayOption1="accTitle"
+        />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton
             variant="hollow"
             colorScheme="f1"
             aria="submit"
-            // onClick={handleSubmit(onSubmit)}
             onClick={handleSubmit}
             disabled={disabledButton}
           >

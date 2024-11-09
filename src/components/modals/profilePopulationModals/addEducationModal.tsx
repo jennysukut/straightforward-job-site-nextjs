@@ -26,7 +26,7 @@ export default function AddEducationModal({
   handleAdd,
   canDelete,
   handleDelete,
-  educationInfo,
+  itemInfo,
   handleUpdate,
 }: any) {
   const { showModal, hideModal } = useModal();
@@ -92,10 +92,10 @@ export default function AddEducationModal({
 
   useEffect(() => {
     if (canDelete) {
-      setDegree(educationInfo.degree);
-      setSchool(educationInfo.school);
-      setFieldOfStudy(educationInfo.fieldOfStudy);
-      setId(educationInfo.id);
+      setDegree(itemInfo.degree);
+      setSchool(itemInfo.school);
+      setFieldOfStudy(itemInfo.fieldOfStudy);
+      setId(itemInfo.id);
     }
   }, []);
 

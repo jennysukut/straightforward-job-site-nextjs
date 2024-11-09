@@ -60,10 +60,8 @@ export default function IndividualSignupPage1() {
   >([]);
 
   const {
-    register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -183,46 +181,6 @@ export default function IndividualSignupPage1() {
                 {errors.name.message.toString()}
               </p>
             )}
-
-            {/* first name input */}
-            {/* <InfoBox variant="hollow" size="extraSmall" aria="firstName">
-              <input
-                type="text"
-                value={firstName}
-                placeholder="Your First Name"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setFirstName(value);
-                  setValue("firstName", value);
-                }}
-              />
-            </InfoBox>
-            {errors.firstName?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.firstName.message.toString()}
-              </p>
-            )} */}
-
-            {/* last name input */}
-            {/* <InfoBox variant="hollow" size="extraSmall" aria="lastName">
-              <input
-                type="text"
-                value={lastName}
-                placeholder="Your Last Name"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setLastName(value);
-                  setValue("lastName", value);
-                }}
-              />
-            </InfoBox>
-            {errors.lastName?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.lastName.message.toString()}
-              </p>
-            )} */}
 
             {/* email input */}
             <InfoBox variant="hollow" size="extraSmall" aria="email">

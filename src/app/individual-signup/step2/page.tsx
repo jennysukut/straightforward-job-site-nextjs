@@ -75,44 +75,23 @@ export default function IndividualSignupPage2() {
 
   const handleSubmit = () => {
     setDisabledButton(true);
-    //send this data to the server here?
-    //navigate to the next page
-    router.push("/individual-signup/step3");
-  };
-
-  // update Fellow context when experience or education details are updated
-  useEffect(() => {
-    //there might be a shorter way to do this, but listing each piece was the only thing I could find.
     setFellow({
       experience: experienceDetails,
-      education: fellow?.education,
-      name: fellow?.name,
-      email: fellow?.email,
-      smallBio: fellow?.smallBio,
-      location: fellow?.location,
-      accomplishments: fellow?.accomplishments,
-      skills: fellow?.skills,
-      jobTitles: fellow?.jobTitles,
-    });
-    console.log(fellow);
-  }, [experienceDetails]);
-
-  useEffect(() => {
-    setFellow({
-      experience: fellow?.experience,
       education: educationDetails,
       name: fellow?.name,
       email: fellow?.email,
       smallBio: fellow?.smallBio,
       location: fellow?.location,
-      accomplishments: fellow?.accomplishments,
       skills: fellow?.skills,
       jobTitles: fellow?.jobTitles,
+      awards: fellow?.awards,
+      experienceLevels: fellow?.experienceLevels,
+      accomplishments: fellow?.accomplishments,
     });
-    console.log(fellow);
-  }, [educationDetails]);
-
-  console.log(fellow);
+    //send this data to the server here?
+    //navigate to the next page
+    router.push("/individual-signup/step3");
+  };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
@@ -135,108 +114,33 @@ export default function IndividualSignupPage2() {
           alt="avatar"
         />
 
-        {/* add experience */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          aria="experience"
-          canAdd
-          width="extraWide"
-          title={`Your Experience`}
-          addClasses="flex justify-between w-full"
-          addClick={() =>
-            showModal(<AddExperienceModal handleAdd={handleAdd} />)
-          }
-        ></InfoBox>
-
-        {/* experience details */}
-        {experienceDetails.length > 0 && (
-          <div className="ExperienceDetailsContainer flex flex-col gap-4">
-            {fellow?.experience?.map((experience: any) => {
-              return (
-                <InfoBox
-                  key={experience.title}
-                  variant="hollow"
-                  aria="experienceInfo"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  title={`${experience.title}, ${experience.companyName}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() =>
-                    showModal(
-                      <AddExperienceModal
-                        canDelete
-                        handleDelete={handleDelete}
-                        experienceInfo={experience}
-                        handleUpdate={handleUpdate}
-                      />,
-                    )
-                  }
-                ></InfoBox>
-              );
-            })}
-          </div>
-        )}
-
-        {/* Testing the Add Field Component for Experience */}
+        {/* Add + Display Experience */}
         <PopulateDisplayField
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          type="experience"
-          title={`Your Experience`}
-          aria="experienceInfo"
-          addModal={<AddExperienceModal />}
           selectedArray={experienceDetails}
+          type="experience"
+          aria="experienceInfo"
+          title={`Your Experience`}
+          addModal={<AddExperienceModal />}
           displayOption1="title"
           displayOption2="companyName"
-          test="award"
         />
 
-        {/* add education / certificates */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          aria="education"
-          canAdd
-          width="extraWide"
+        {/* Add + Display Education */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          selectedArray={educationDetails}
+          type="education"
+          aria="educationInfo"
           title={`Your Education / Certificates`}
-          addClasses="flex justify-between w-full"
-          addClick={() =>
-            showModal(<AddEducationModal handleAdd={handleAdd} />)
-          }
-        ></InfoBox>
-
-        {/* education details*/}
-        {educationDetails.length > 0 && (
-          <div className="EducationDetailsContainer flex flex-col gap-4">
-            {fellow?.education?.map((education: any) => {
-              return (
-                <InfoBox
-                  key={education}
-                  variant="hollow"
-                  aria="educationInfo"
-                  size="extraSmall"
-                  canEdit
-                  width="extraWide"
-                  title={`${education.degree}, ${education.school}`}
-                  addClasses="flex w-[90%] self-end justify-between"
-                  editClick={() =>
-                    showModal(
-                      <AddEducationModal
-                        canDelete
-                        handleDelete={handleDelete}
-                        educationInfo={education}
-                        handleUpdate={handleUpdate}
-                      />,
-                    )
-                  }
-                ></InfoBox>
-              );
-            })}
-          </div>
-        )}
+          addModal={<AddEducationModal />}
+          displayOption1="degree"
+          displayOption2="school"
+        />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton

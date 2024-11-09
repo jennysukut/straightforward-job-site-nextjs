@@ -22,9 +22,8 @@ interface PopulateDisplayField {
   addModal: React.ReactNode;
   selectedArray: Array<any>;
   type: string;
-  test: string;
   displayOption1: string;
-  displayOption2: string;
+  displayOption2?: string;
 }
 
 // Define the interface for the items in selectedArray
@@ -39,7 +38,6 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   title,
   type,
   aria,
-  test,
   selectedArray,
   addModal,
   displayOption1,
@@ -49,7 +47,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   const { showModal } = useModal();
 
   return (
-    <div>
+    <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       <InfoBox
         variant="hollow"
         size="extraSmall"
@@ -80,7 +78,11 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
                 size="extraSmall"
                 canEdit
                 width="extraWide"
-                title={`${item[displayOption1]}, ${item[displayOption2]}`}
+                title={
+                  displayOption2 && item[displayOption2]
+                    ? `${item[displayOption1]}, ${item[displayOption2]}`
+                    : item[displayOption1]
+                }
                 addClasses="flex w-[90%] self-end justify-between"
                 editClick={() => {
                   if (React.isValidElement(addModal)) {
