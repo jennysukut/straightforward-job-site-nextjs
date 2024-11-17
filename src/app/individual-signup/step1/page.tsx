@@ -15,6 +15,7 @@ import ErrorModal from "@/components/modals/errorModal";
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
+import InputComponent from "@/components/inputComponent";
 
 import {
   getRandomColorArray,
@@ -25,10 +26,14 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
-  name: z.string().min(2, { message: "Required" }),
-  email: z.string().email(),
-  smallBio: z.string().min(5, { message: "Required" }),
-  location: z.string().min(5, { message: "Required" }),
+  name: z.string().min(2, { message: "Your name is Required" }),
+  email: z.string().email({ message: "test" }),
+  smallBio: z
+    .string()
+    .min(5, { message: "Your Small Bio must be more than 5 Letters" }),
+  location: z
+    .string()
+    .min(5, { message: "Your Location must be more than 5 Letters in Length" }),
   skills: z.array(z.string()),
   jobTitles: z.array(z.string()),
 });
@@ -66,6 +71,8 @@ export default function IndividualSignupPage1() {
       email: email,
       skills: skills,
       jobTitles: jobTitles,
+      smallBio: smallBio,
+      location: location,
     },
   });
 
@@ -111,30 +118,25 @@ export default function IndividualSignupPage1() {
     }
   };
 
-  const addSkill = () => {
-    if (newSkill !== "") {
+  // handlers for adding, updating, and deleting skills & job titles
+  const handleAdd = (type: "skill" | "jobTitle") => {
+    if (type === "skill" && newSkill !== "") {
       setSkills((prevSkills) => [...prevSkills, newSkill]);
       setNewSkill("");
-    }
-  };
-
-  const addJobTitle = () => {
-    if (newJobTitle !== "") {
+    } else if (type === "jobTitle" && newJobTitle !== "") {
       setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
       setNewJobTitle("");
     }
   };
 
-  const deleteSkill = (skillToDelete: string) => {
-    setSkills((prevSkills) =>
-      prevSkills.filter((skill) => skill !== skillToDelete),
-    );
-  };
-
-  const deleteJobTitle = (jobTitleToDelete: string) => {
-    setJobTitles((prevJobTitles) =>
-      prevJobTitles.filter((jobTitle) => jobTitle !== jobTitleToDelete),
-    );
+  const handleDelete = (type: "skill" | "jobTitle", item: any) => {
+    if (type === "skill") {
+      setSkills((prevSkills) => prevSkills.filter((skill) => skill !== item));
+    } else if (type === "jobTitle") {
+      setJobTitles((prevJobTitles) =>
+        prevJobTitles.filter((jobTitle) => jobTitle !== item),
+      );
+    }
   };
 
   useEffect(() => {
@@ -160,26 +162,18 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {/* maybe make an input element component that has the infobox + input + errors all together */}
-            {/*  name input */}
-            <InfoBox variant="hollow" size="extraSmall" aria="firstName">
-              <input
-                type="text"
-                value={name}
-                placeholder="First & Last Name"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setName(value);
-                  setValue("name", value);
-                }}
-              />
-            </InfoBox>
-            {errors.name?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.name.message.toString()}
-              </p>
-            )}
+            {/* name input */}
+            <InputComponent
+              type="text"
+              value={name}
+              placeholderText="First & Last Name"
+              errors={errors}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                setName(value);
+                setValue("name", value);
+              }}
+            />
 
             {/* email input */}
             <InfoBox variant="hollow" size="extraSmall" aria="email">
@@ -266,8 +260,9 @@ export default function IndividualSignupPage1() {
               aria="skills"
               canAdd
               addClasses="flex"
+              type="skills"
               addClick={() => {
-                addSkill();
+                handleAdd("skill");
               }}
             >
               <input
@@ -293,7 +288,7 @@ export default function IndividualSignupPage1() {
                       variant="functional"
                       key={index}
                       colorScheme={colorArray[index % colorArray.length]}
-                      handleDelete={() => deleteSkill(skill)}
+                      handleDelete={() => handleDelete("skill", skill)}
                     >
                       {skill}
                     </SiteLabel>
@@ -312,7 +307,7 @@ export default function IndividualSignupPage1() {
               canAdd
               addClasses="flex"
               addClick={() => {
-                addJobTitle();
+                handleAdd("jobTitle");
               }}
             >
               <input
@@ -340,7 +335,7 @@ export default function IndividualSignupPage1() {
                       colorScheme={
                         secondaryColorArray[index % secondaryColorArray.length]
                       }
-                      handleDelete={() => deleteJobTitle(jobTitle)}
+                      handleDelete={() => handleDelete("jobTitle", jobTitle)}
                     >
                       {jobTitle}
                     </SiteLabel>
