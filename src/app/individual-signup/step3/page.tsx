@@ -164,6 +164,7 @@ export default function IndividualSignupPage3() {
           selectedArray={experienceLevels}
           displayOption1="experienceLevel"
           displayOption2="expLevelSkill"
+          displayPunct=":"
         />
 
         {/* Add + Display AdditionalAccomplishments */}

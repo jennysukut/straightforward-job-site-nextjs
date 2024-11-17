@@ -34,16 +34,16 @@ const fellowSchema = z.object({
   location: z
     .string()
     .min(5, { message: "Your Location must be more than 5 Letters in Length" }),
-  skills: z.array(z.string()),
-  jobTitles: z.array(z.string()),
+  skills: z.array(z.string()).min(1),
+  jobTitles: z.array(z.string()).min(1),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage1() {
   const router = useRouter();
-  const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
+  const { showModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [name, setName] = useState(fellow?.name);
@@ -79,6 +79,7 @@ export default function IndividualSignupPage1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     setFellow({
+      ...fellow,
       name: data.name,
       email: data.email,
       smallBio: data.smallBio,
@@ -89,18 +90,7 @@ export default function IndividualSignupPage1() {
     router.push("/individual-signup/step2");
 
     // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
-
     // try {
-    //   //set FellowContext details
-    //   setFellow({
-    //     firstName: data.firstName,
-    //     lastName: data.lastName,
-    //     email: data.email,
-    //     smallBio: data.smallBio,
-    //     location: data.location,
-    //     skills: skills,
-    //     jobTitles: jobTitles,
-    //   });
     //   //then send details to the server
     //   console.log(formData);
     //   router.push("/individual-signup/step2");
@@ -139,6 +129,7 @@ export default function IndividualSignupPage1() {
     }
   };
 
+  // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
     const colors = getRandomColorArray(36);
     setColorArray(colors);
@@ -162,6 +153,9 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
+            {/* These input components take the details and display error messages beneath them if the validation throws errors */}
+            {/* It's not currently showing errors with the wording I've got typed out in the zod schema message, so I'll see if I can fix that */}
+
             {/* name input */}
             <InputComponent
               type="text"
@@ -176,64 +170,43 @@ export default function IndividualSignupPage1() {
             />
 
             {/* email input */}
-            <InfoBox variant="hollow" size="extraSmall" aria="email">
-              <input
-                type="email"
-                value={email}
-                placeholder="Fantasticemail@emailexample.com"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setEmail(value);
-                  setValue("email", value);
-                }}
-              />
-            </InfoBox>
-            {errors.email?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.email.message.toString()}
-              </p>
-            )}
+            <InputComponent
+              type="email"
+              value={email}
+              placeholderText="Fantasticemail@emailexample.com"
+              errors={errors}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                setEmail(value);
+                setValue("email", value);
+              }}
+            />
 
             {/* smallBio input */}
-            <InfoBox variant="hollow" size="extraSmall" aria="firstName">
-              <input
-                type="text"
-                value={smallBio}
-                placeholder="Your Small Bio"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setSmallBio(value);
-                  setValue("smallBio", value);
-                }}
-              />
-            </InfoBox>
-            {errors.smallBio?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.smallBio.message.toString()}
-              </p>
-            )}
+            <InputComponent
+              type="text"
+              value={smallBio}
+              placeholderText="Your Small Bio"
+              errors={errors}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                setSmallBio(value);
+                setValue("smallBio", value);
+              }}
+            />
 
             {/* location input */}
-            <InfoBox variant="hollow" size="extraSmall" aria="firstName">
-              <input
-                type="text"
-                value={location}
-                placeholder="Your Location"
-                className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setLocation(value);
-                  setValue("location", value);
-                }}
-              />
-            </InfoBox>
-            {errors.location?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.location.message.toString()}
-              </p>
-            )}
+            <InputComponent
+              type="text"
+              value={location}
+              placeholderText="Your Location"
+              errors={errors}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                setLocation(value);
+                setValue("location", value);
+              }}
+            />
           </form>
         </div>
         <div className="IndividualSignupRight flex w-[35vw] flex-col">
