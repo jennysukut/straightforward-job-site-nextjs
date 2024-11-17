@@ -24,6 +24,7 @@ interface PopulateDisplayField {
   displayOption1: string;
   displayOption2?: string;
   addClasses?: string;
+  displayPunct?: string;
 }
 
 // Define the interface for the items in selectedArray
@@ -42,6 +43,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   displayOption1,
   displayOption2,
   addClasses,
+  displayPunct,
   ...props
 }) => {
   const { showModal } = useModal();
@@ -80,7 +82,9 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
                 width="extraWide"
                 title={
                   displayOption2 && item[displayOption2]
-                    ? `${item[displayOption1]}, ${item[displayOption2]}`
+                    ? displayPunct
+                      ? `${item[displayOption1]} ${displayPunct} ${item[displayOption2]}`
+                      : `${item[displayOption1]}, ${item[displayOption2]}`
                     : item[displayOption1]
                 }
                 addClasses="flex w-[90%] self-end justify-between text-midnight"

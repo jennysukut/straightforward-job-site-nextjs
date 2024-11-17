@@ -101,6 +101,7 @@ export default function IndividualSignupPage4() {
           selectedArray={links}
           displayOption1="linkType"
           displayOption2="link"
+          displayPunct=":"
         />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">

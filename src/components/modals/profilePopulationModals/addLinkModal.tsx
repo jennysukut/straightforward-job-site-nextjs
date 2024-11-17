@@ -50,9 +50,9 @@ export default function AddLinkModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(type, data, id);
+      handleUpdate(data, id);
     } else {
-      handleAdd(type, data);
+      handleAdd(data);
     }
 
     setTimeout(() => {
