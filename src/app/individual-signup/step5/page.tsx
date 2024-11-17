@@ -10,12 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import Image from "next/image";
+import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
 
 const fellowSchema = z.object({
   links: z.array(z.string()).optional(),
+  aboutMe: z.string().optional(),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
@@ -28,6 +30,7 @@ export default function IndividualSignupPage4() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [links, setLinks] = useState<any[]>([]);
   const [linkCounter, setLinkCounter] = useState(1);
+  const [aboutMe, setAboutMe] = useState("");
 
   const {
     handleSubmit,
@@ -35,7 +38,6 @@ export default function IndividualSignupPage4() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
-    defaultValues: {},
   });
 
   // handlers for adding, updating, and deleting details
@@ -65,6 +67,7 @@ export default function IndividualSignupPage4() {
     setFellow({
       ...fellow,
       links: links,
+      aboutMe: aboutMe,
     });
     router.push("/individual-signup/step4");
   };
@@ -72,6 +75,7 @@ export default function IndividualSignupPage4() {
   // Setting Details on page from fellowContext
   useEffect(() => {
     setLinks(Array.isArray(fellow?.links) ? fellow.links : []);
+    setAboutMe(fellow?.aboutMe || "");
   }, []);
 
   return (
@@ -79,7 +83,7 @@ export default function IndividualSignupPage4() {
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg text-jade">
-            optional: links + socials
+            optional: links + more about you
           </h2>
           <Image
             className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
@@ -103,6 +107,32 @@ export default function IndividualSignupPage4() {
           displayOption2="link"
           displayPunct=":"
         />
+
+        {/*  more about me input */}
+        <InfoBox
+          variant="hollow"
+          size="extraSmall"
+          width="extraWide"
+          aria="moreAboutMe"
+          addClasses="w-full"
+        >
+          <input
+            type="text"
+            value={aboutMe}
+            placeholder="More about you..."
+            className="text-md w-full text-wrap bg-transparent text-midnight placeholder:text-jade focus:outline-none"
+            onChange={(e) => {
+              const value = e.target.value;
+              setAboutMe(value);
+              setValue("aboutMe", value);
+            }}
+          />
+        </InfoBox>
+        {errors.aboutMe?.message && (
+          <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+            {errors.aboutMe.message.toString()}
+          </p>
+        )}
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton

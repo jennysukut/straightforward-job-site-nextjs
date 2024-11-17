@@ -20,6 +20,7 @@ export interface Fellow {
   bookOrQuote?: Array<string>;
   petDetails?: string;
   links?: Array<string>;
+  aboutMe?: string;
 }
 
 interface FellowContextType {

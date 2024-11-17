@@ -213,6 +213,7 @@ export default function IndividualSignupPage4() {
           selectedArray={bookOrQuote}
           displayOption1="bookOrQuote"
           displayOption2="author"
+          displayPunct=" - "
         />
 
         {/*  pet details  input */}
