@@ -85,6 +85,8 @@ export default function AddLinkModal({
       setLinkType(itemInfo.linkType);
       setLink(itemInfo.link);
       setId(itemInfo.id);
+      setValue("linkType", itemInfo.linkType);
+      setValue("link", itemInfo.link);
     }
   }, []);
 

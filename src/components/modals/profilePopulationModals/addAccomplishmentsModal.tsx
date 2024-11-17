@@ -87,6 +87,8 @@ export default function AddAccomplishmentModal({
       setAccTitle(itemInfo.accTitle);
       setAccDetails(itemInfo.accDetails);
       setId(itemInfo.id);
+      setValue("accTitle", itemInfo.accTitle);
+      setValue("accDetails", itemInfo.accDetails);
     }
   }, []);
 

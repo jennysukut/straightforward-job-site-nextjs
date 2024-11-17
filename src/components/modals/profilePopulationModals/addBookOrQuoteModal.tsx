@@ -80,11 +80,14 @@ export default function AddBookOrQuoteModal({
     );
   };
 
+  // grab the info from the item info and set the value so form validation is satisfied with the unupdated fields
   useEffect(() => {
     if (canDelete) {
       setBookOrQuote(itemInfo.bookOrQuote);
       setAuthor(itemInfo.author);
       setId(itemInfo.id);
+      setValue("bookOrQuote", itemInfo.bookOrQuote);
+      setValue("author", itemInfo.author);
     }
   }, []);
 

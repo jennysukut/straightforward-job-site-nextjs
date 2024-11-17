@@ -61,6 +61,12 @@ export default function IndividualSignupPage1() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
+    defaultValues: {
+      name: name,
+      email: email,
+      skills: skills,
+      jobTitles: jobTitles,
+    },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

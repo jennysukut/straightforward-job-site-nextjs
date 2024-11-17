@@ -96,6 +96,10 @@ export default function AddExperienceModal({
       setYearDetails(itemInfo.yearDetails);
       setDetails(itemInfo.details);
       setId(itemInfo.id);
+      setValue("title", itemInfo.title);
+      setValue("companyName", itemInfo.companyName);
+      setValue("yearDetails", itemInfo.yearDetails);
+      setValue("details", itemInfo.details);
     }
   }, []);
 

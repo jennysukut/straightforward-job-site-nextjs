@@ -90,6 +90,9 @@ export default function AddExperienceLevelModal({
       setExpLevelSkill(itemInfo.expLevelSkill);
       setSkillYears(itemInfo.skillYears);
       setId(itemInfo.id);
+      setValue("experienceLevel", itemInfo.experienceLevel);
+      setValue("expLevelSkill", itemInfo.expLevelSkill);
+      setValue("skillYears", itemInfo.skillYears);
     }
   }, []);
 

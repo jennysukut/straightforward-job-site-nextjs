@@ -90,6 +90,9 @@ export default function AddAwardsModal({
       setGivenBy(itemInfo.givenBy);
       setAwardDetails(itemInfo.awardDetails);
       setId(itemInfo.id);
+      setValue("awardTitle", itemInfo.awardTitle);
+      setValue("givenBy", itemInfo.givenBy);
+      setValue("awardDetails", itemInfo.awardDetails);
     }
   }, []);
 

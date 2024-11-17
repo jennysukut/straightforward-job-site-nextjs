@@ -96,6 +96,9 @@ export default function AddEducationModal({
       setSchool(itemInfo.school);
       setFieldOfStudy(itemInfo.fieldOfStudy);
       setId(itemInfo.id);
+      setValue("degree", itemInfo.degree);
+      setValue("school", itemInfo.school);
+      setValue("fieldOfStudy", itemInfo.fieldOfStudy);
     }
   }, []);
 

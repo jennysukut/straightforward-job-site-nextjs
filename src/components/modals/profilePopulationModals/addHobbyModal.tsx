@@ -85,6 +85,8 @@ export default function AddHobbyModal({
       setHobbyTitle(itemInfo.hobbyTitle);
       setHowLong(itemInfo.howLong);
       setId(itemInfo.id);
+      setValue("hobbyTitle", itemInfo.hobbyTitle);
+      setValue("howLong", itemInfo.howLong);
     }
   }, []);
 
