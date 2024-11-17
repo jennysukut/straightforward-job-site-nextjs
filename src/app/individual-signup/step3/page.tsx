@@ -6,7 +6,6 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import AddAwardModal from "@/components/modals/profilePopulationModals/addAwardModal";
 import PopulateDisplayField from "@/components/populateDisplayField";
@@ -108,22 +107,16 @@ export default function IndividualSignupPage3() {
 
   const handleSubmit = () => {
     setFellow({
-      name: fellow?.name,
-      email: fellow?.email,
-      smallBio: fellow?.smallBio,
-      location: fellow?.location,
-      skills: fellow?.skills,
-      jobTitles: fellow?.jobTitles,
-      experience: fellow?.experience,
-      education: fellow?.education,
+      ...fellow,
       awards: awards,
       experienceLevels: experienceLevels,
       accomplishments: accomplishments,
     });
+
     //send this data to the server as well
     console.log(fellow);
     //navigate to the next page
-    router.push("/individual-signup/step2");
+    router.push("/individual-signup/step4");
   };
 
   // Setting Details on page from fellowContext
@@ -153,7 +146,6 @@ export default function IndividualSignupPage3() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          type="awards"
           title={`Your Awards or Honors`}
           aria="awardsInfo"
           addModal={<AddAwardModal />}
@@ -167,7 +159,6 @@ export default function IndividualSignupPage3() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          type="experienceLevels"
           title={`Your Experience Levels`}
           aria="experienceLevelsInfo"
           addModal={<AddExperienceLevelModal />}
@@ -181,7 +172,6 @@ export default function IndividualSignupPage3() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          type="accomplishments"
           title={`Your Additional Accomplishments`}
           aria="experienceLevelsInfo"
           addModal={<AddAccomplishmentModal />}

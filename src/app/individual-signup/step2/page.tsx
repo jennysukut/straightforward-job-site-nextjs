@@ -76,17 +76,9 @@ export default function IndividualSignupPage2() {
   const handleSubmit = () => {
     setDisabledButton(true);
     setFellow({
-      experience: experienceDetails,
-      education: educationDetails,
-      name: fellow?.name,
-      email: fellow?.email,
-      smallBio: fellow?.smallBio,
-      location: fellow?.location,
-      skills: fellow?.skills,
-      jobTitles: fellow?.jobTitles,
-      awards: fellow?.awards,
-      experienceLevels: fellow?.experienceLevels,
-      accomplishments: fellow?.accomplishments,
+      ...fellow, // Spread the existing fellow data
+      experience: experienceDetails, // Add or update experience
+      education: educationDetails, // Add or update education
     });
     //send this data to the server here?
     //navigate to the next page
@@ -120,7 +112,6 @@ export default function IndividualSignupPage2() {
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
           selectedArray={experienceDetails}
-          type="experience"
           aria="experienceInfo"
           title={`Your Experience`}
           addModal={<AddExperienceModal />}
@@ -134,7 +125,6 @@ export default function IndividualSignupPage2() {
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
           selectedArray={educationDetails}
-          type="education"
           aria="educationInfo"
           title={`Your Education / Certificates`}
           addModal={<AddEducationModal />}

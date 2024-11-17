@@ -14,6 +14,12 @@ export interface Fellow {
   awards?: Record<string, any>;
   experienceLevels?: Record<string, any>;
   accomplishments?: Record<string, any>;
+  passions?: string;
+  lookingFor?: string;
+  hobbies?: Array<string>;
+  bookOrQuote?: Array<string>;
+  petDetails?: string;
+  links?: Array<string>;
 }
 
 interface FellowContextType {

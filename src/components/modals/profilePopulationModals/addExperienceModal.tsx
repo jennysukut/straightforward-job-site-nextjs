@@ -27,7 +27,6 @@ export default function AddExperienceModal({
   handleAdd,
   canDelete,
   handleDelete,
-  // experienceInfo,
   handleUpdate,
   itemInfo,
 }: any) {

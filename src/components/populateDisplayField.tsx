@@ -21,9 +21,9 @@ interface PopulateDisplayField {
   aria: string;
   addModal: React.ReactNode;
   selectedArray: Array<any>;
-  type: string;
   displayOption1: string;
   displayOption2?: string;
+  addClasses?: string;
 }
 
 // Define the interface for the items in selectedArray
@@ -36,12 +36,12 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   handleDelete,
   handleUpdate,
   title,
-  type,
   aria,
   selectedArray,
   addModal,
   displayOption1,
   displayOption2,
+  addClasses,
   ...props
 }) => {
   const { showModal } = useModal();
@@ -55,7 +55,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
         canAdd
         width="extraWide"
         title={title}
-        addClasses="flex justify-between w-full"
+        addClasses={`flex justify-between w-full ${addClasses}`}
         addClick={() => {
           if (React.isValidElement(addModal)) {
             showModal(
@@ -83,7 +83,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
                     ? `${item[displayOption1]}, ${item[displayOption2]}`
                     : item[displayOption1]
                 }
-                addClasses="flex w-[90%] self-end justify-between"
+                addClasses="flex w-[90%] self-end justify-between text-midnight"
                 editClick={() => {
                   if (React.isValidElement(addModal)) {
                     showModal(

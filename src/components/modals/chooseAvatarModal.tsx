@@ -14,7 +14,7 @@ export default function AvatarModal() {
         key={option.title}
         variant="avatar"
         colorScheme="b1"
-        size="largeCircle"
+        size="extraLargeCircle"
         aria={option.title}
         addClasses={`${option.shadow}`}
         addImage={`${option.img}`}

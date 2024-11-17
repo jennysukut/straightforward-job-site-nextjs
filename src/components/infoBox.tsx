@@ -81,8 +81,10 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   );
 
   return (
-    <div className={boxClasses}>
-      <h3 className="Title my-1text-lg">{title}</h3>
+    <div className={`${boxClasses}`}>
+      <h3 className="Title w-[95%] overflow-hidden truncate text-nowrap">
+        {title}
+      </h3>
       {children}
 
       {/* collapse button */}

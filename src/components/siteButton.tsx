@@ -9,7 +9,12 @@ import clsx from "clsx";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   addClasses?: string;
-  size?: "large" | "largeCircle" | "smallCircle" | "extraLarge";
+  size?:
+    | "large"
+    | "largeCircle"
+    | "extraLargeCircle"
+    | "smallCircle"
+    | "extraLarge";
   variant: "hollow" | "filled" | "avatar";
   colorScheme: ButtonColorOption;
   aria: string;
@@ -39,6 +44,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       // size
       "px-8 py-4 text-[0.85rem] sm:px-10 md:text-sm": size === "large",
       "h-16 w-16": size === "largeCircle",
+      "h-20 w-20": size === "extraLargeCircle",
       "h-6 w-6": size === "smallCircle",
       "px-4 py-2 text-xs min-w-[65px]": size === "default",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:py-4 md:text-sm":
@@ -81,6 +87,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       "px-8 py-4 text-[0.85rem] sm:px-10 md:text-sm left-2 -right-2 top-2":
         size === "large",
       "h-16 w-16 -right-1.5 top-1.5 left-1.5": size === "largeCircle",
+      "h-20 w-20 -right-2 top-2 left-2": size === "extraLargeCircle",
       "h-6 w-6 -right-1 top-1 left-1": size === "smallCircle",
       "px-4 py-2 text-xs min-w-[65px] -right-1.5 top-1.5  left-1.5":
         size === "default",
