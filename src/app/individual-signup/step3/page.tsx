@@ -13,7 +13,6 @@ import AddExperienceLevelModal from "@/components/modals/profilePopulationModals
 import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/addAccomplishmentsModal";
 
 export default function IndividualSignupPage3() {
-  const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
 

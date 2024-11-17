@@ -23,7 +23,6 @@ const fellowSchema = z.object({
 type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage4() {
-  const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
 

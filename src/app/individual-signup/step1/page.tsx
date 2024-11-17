@@ -21,10 +21,7 @@ import {
   shuffleButtonColors,
 } from "@/utils/getRandomColorScheme";
 
-import {
-  ButtonColorOption,
-  buttonColorOptions,
-} from "@/lib/stylingData/buttonColors";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
@@ -39,7 +36,6 @@ const fellowSchema = z.object({
 type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage1() {
-  //grab the data from the previous form input via the server and use it to fill out the firstName, lastName, and email states
   const router = useRouter();
   const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
@@ -65,17 +61,10 @@ export default function IndividualSignupPage1() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
-    defaultValues: {
-      name: name,
-      email: email,
-      skills: skills,
-      jobTitles: jobTitles,
-    },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
     setFellow({
       name: data.name,
       email: data.email,
@@ -85,6 +74,9 @@ export default function IndividualSignupPage1() {
       jobTitles: jobTitles,
     });
     router.push("/individual-signup/step2");
+
+    // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
+
     // try {
     //   //set FellowContext details
     //   setFellow({
@@ -162,6 +154,7 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
+            {/* maybe make an input element component that has the infobox + input + errors all together */}
             {/*  name input */}
             <InfoBox variant="hollow" size="extraSmall" aria="firstName">
               <input
@@ -258,6 +251,7 @@ export default function IndividualSignupPage1() {
             choose your avatar
           </button>
 
+          {/* make a label generator component that you can plug in here and elsewhere */}
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">
             {/* skills input & generator */}
             <InfoBox

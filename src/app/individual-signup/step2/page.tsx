@@ -6,7 +6,6 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
@@ -76,9 +75,9 @@ export default function IndividualSignupPage2() {
   const handleSubmit = () => {
     setDisabledButton(true);
     setFellow({
-      ...fellow, // Spread the existing fellow data
-      experience: experienceDetails, // Add or update experience
-      education: educationDetails, // Add or update education
+      ...fellow,
+      experience: experienceDetails,
+      education: educationDetails,
     });
     //send this data to the server here?
     //navigate to the next page
