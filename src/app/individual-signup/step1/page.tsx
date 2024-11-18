@@ -16,6 +16,7 @@ import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
+import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 import {
   getRandomColorArray,
@@ -101,6 +102,8 @@ export default function IndividualSignupPage1() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
+    console.log("trying to add a skill");
+    console.log(name, value);
     if (name === "skill") {
       setNewSkill(value);
     } else if (name === "jobTitle") {
@@ -227,97 +230,32 @@ export default function IndividualSignupPage1() {
           {/* make a label generator component that you can plug in here and elsewhere */}
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">
             {/* skills input & generator */}
-            <InfoBox
-              variant="hollow"
-              size="extraSmall"
-              aria="skills"
-              canAdd
-              addClasses="flex"
-              type="skills"
-              addClick={() => {
-                handleAdd("skill");
-              }}
-            >
-              <input
-                type="skills"
-                placeholder="Your Skills"
-                value={newSkill}
-                name="skill"
-                className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={handleInputChange}
-              />
-            </InfoBox>
-            {errors.skills?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.skills.message.toString()}
-              </p>
-            )}
-            {skills.length >= 1 ? (
-              <div className="SkillsContainer flex flex-wrap gap-2">
-                {skills.map((skill, index) => {
-                  return (
-                    <SiteLabel
-                      aria={skill}
-                      variant="functional"
-                      key={index}
-                      colorScheme={colorArray[index % colorArray.length]}
-                      handleDelete={() => handleDelete("skill", skill)}
-                    >
-                      {skill}
-                    </SiteLabel>
-                  );
-                })}
-              </div>
-            ) : (
-              ""
-            )}
+            <LabelGeneratorAndDisplayComp
+              handleAdd={handleAdd}
+              value={newSkill}
+              handleInputChange={handleInputChange}
+              errors={errors}
+              selectedArray={skills}
+              handleDelete={handleDelete}
+              placeholder="Your Skills"
+              colorArray={colorArray}
+              name="skill"
+              variant="functional"
+            />
 
             {/* job titles generator */}
-            <InfoBox
-              variant="hollow"
-              size="extraSmall"
-              aria="job titles"
-              canAdd
-              addClasses="flex"
-              addClick={() => {
-                handleAdd("jobTitle");
-              }}
-            >
-              <input
-                type="jobTitle"
-                placeholder="Job Titles For You"
-                value={newJobTitle}
-                name="jobTitle"
-                className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-                onChange={handleInputChange}
-              />
-            </InfoBox>
-            {errors.jobTitles?.message && (
-              <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-                {errors.jobTitles.message.toString()}
-              </p>
-            )}
-            {jobTitles.length >= 1 ? (
-              <div className="SkillsContainer flex flex-wrap gap-2">
-                {jobTitles.map((jobTitle, index) => {
-                  return (
-                    <SiteLabel
-                      aria={jobTitle}
-                      variant="functional"
-                      key={index}
-                      colorScheme={
-                        secondaryColorArray[index % secondaryColorArray.length]
-                      }
-                      handleDelete={() => handleDelete("jobTitle", jobTitle)}
-                    >
-                      {jobTitle}
-                    </SiteLabel>
-                  );
-                })}
-              </div>
-            ) : (
-              ""
-            )}
+            <LabelGeneratorAndDisplayComp
+              handleAdd={handleAdd}
+              value={newJobTitle}
+              handleInputChange={handleInputChange}
+              errors={errors}
+              selectedArray={jobTitles}
+              handleDelete={handleDelete}
+              placeholder="Job Titles For You"
+              colorArray={secondaryColorArray}
+              name="jobTitle"
+              variant="functional"
+            />
           </div>
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
             <SiteButton
