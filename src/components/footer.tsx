@@ -3,7 +3,7 @@ import SiteButton from "./siteButton";
 export default function Footer() {
   return (
     <div className="Footer flex h-24 w-full items-end justify-between p-6">
-      <div className="FooterButtonContainer flex gap-6">
+      <div className="FooterButtonContainer flex gap-4">
         <SiteButton variant="filled" colorScheme="b2" aria="contact us">
           contact
         </SiteButton>
@@ -11,7 +11,7 @@ export default function Footer() {
           our makers
         </SiteButton>
         <SiteButton variant="filled" colorScheme="f3" aria="our sponsors">
-          our sponsors
+          our supporters
         </SiteButton>
         <SiteButton variant="filled" colorScheme="e6" aria="about">
           about
