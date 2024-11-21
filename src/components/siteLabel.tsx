@@ -55,7 +55,7 @@ const SiteLabel: React.FC<LabelProps> = ({
           onClick={handleDelete}
         >
           <Image
-            src="/labelCloseButton.svg"
+            src="/label-close-button.svg"
             alt="closebutton"
             width={10}
             height={10}
