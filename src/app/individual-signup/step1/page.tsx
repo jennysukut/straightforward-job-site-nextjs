@@ -12,8 +12,6 @@ import { useFellow } from "@/contexts/FellowContext";
 import Image from "next/image";
 import SiteButton from "@/components/siteButton";
 import ErrorModal from "@/components/modals/errorModal";
-import InfoBox from "@/components/infoBox";
-import SiteLabel from "@/components/siteLabel";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
