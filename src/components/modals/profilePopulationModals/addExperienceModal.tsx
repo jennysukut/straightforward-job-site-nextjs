@@ -33,33 +33,20 @@ export default function AddExperienceModal({
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [title, setTitle] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [yearDetails, setYearDetails] = useState("");
-  const [details, setDetails] = useState("");
-  const [id, setId] = useState("");
   const type = "experience";
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ExperienceSchema),
-    defaultValues: {
-      title: title,
-      companyName: companyName,
-      yearDetails: yearDetails,
-      details: details,
-    },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(type, data, id);
+      handleUpdate(type, data, itemInfo.id);
     } else {
       handleAdd(type, data);
     }
@@ -76,7 +63,7 @@ export default function AddExperienceModal({
 
   const continueDelete = () => {
     console.log("trying to delete");
-    handleDelete(type, id);
+    handleDelete(type, itemInfo.id);
     hideModal();
   };
 
@@ -89,19 +76,7 @@ export default function AddExperienceModal({
     );
   };
 
-  useEffect(() => {
-    if (canDelete) {
-      setTitle(itemInfo.title);
-      setCompanyName(itemInfo.companyName);
-      setYearDetails(itemInfo.yearDetails);
-      setDetails(itemInfo.details);
-      setId(itemInfo.id);
-      setValue("title", itemInfo.title);
-      setValue("companyName", itemInfo.companyName);
-      setValue("yearDetails", itemInfo.yearDetails);
-      setValue("details", itemInfo.details);
-    }
-  }, []);
+  console.log(itemInfo);
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
@@ -116,14 +91,10 @@ export default function AddExperienceModal({
         <label htmlFor="title">title*</label>
         <input
           type="text"
-          value={title}
+          defaultValue={itemInfo?.title}
+          {...register("title")}
           placeholder="Job Title"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setTitle(value);
-            setValue("title", value);
-          }}
         />
         {errors.title?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -137,14 +108,11 @@ export default function AddExperienceModal({
         </label>
         <input
           type="text"
-          value={companyName}
+          //this is the issue right here, when I give the companyName a default value, it won't let me delete the item, strange...
+          // defaultValue={itemInfo?.companyName}
+          {...register("companyName")}
           placeholder="Company Name"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setCompanyName(value);
-            setValue("companyName", value);
-          }}
         />
         {errors.companyName?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -158,14 +126,10 @@ export default function AddExperienceModal({
         </label>
         <input
           type="text"
-          value={yearDetails}
+          defaultValue={itemInfo?.yearDetails}
+          {...register("yearDetails")}
           placeholder="Optional: Time You Held Position"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setYearDetails(value);
-            setValue("yearDetails", value);
-          }}
         />
         {errors.yearDetails?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -179,14 +143,10 @@ export default function AddExperienceModal({
         </label>
         <input
           type="text"
-          value={details}
+          defaultValue={itemInfo?.details}
+          {...register("details")}
           placeholder="Details Describing Your Experience / Role"
           className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setDetails(value);
-            setValue("details", value);
-          }}
         />
         {errors.details?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">

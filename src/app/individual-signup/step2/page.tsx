@@ -24,6 +24,7 @@ export default function IndividualSignupPage2() {
   // there might be a better way to do this, because this doesn't facilitate navigating back to the page and adding new data
   const [experienceCounter, setExperienceCounter] = useState(1);
   const [educationCounter, setEducationCounter] = useState(1);
+  //try setting the ID to using the array index?
 
   // handlers for adding, updating, and deleting experiences and education details
   const handleAdd = (type: "experience" | "education", data: any) => {
@@ -60,7 +61,7 @@ export default function IndividualSignupPage2() {
     }
   };
 
-  const handleDelete = (type: "experience" | "education", id: any) => {
+  const handleDelete = (type: "experience" | "education", id: number) => {
     if (type === "experience") {
       setExperienceDetails((prevDetails) =>
         prevDetails.filter((exp) => exp.id !== id),
