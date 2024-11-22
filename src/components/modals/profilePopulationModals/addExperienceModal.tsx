@@ -37,6 +37,7 @@ export default function AddExperienceModal({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ExperienceSchema),
@@ -67,7 +68,8 @@ export default function AddExperienceModal({
     hideModal();
   };
 
-  const clickDelete = () => {
+  const clickDelete = (event: React.MouseEvent) => {
+    event.preventDefault();
     showModal(
       <DeleteConfirmationModal
         continueDelete={continueDelete}
@@ -77,6 +79,10 @@ export default function AddExperienceModal({
   };
 
   console.log(itemInfo);
+
+  useEffect(() => {
+    console.log("add experience modal was rendered");
+  });
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
@@ -109,7 +115,7 @@ export default function AddExperienceModal({
         <input
           type="text"
           //this is the issue right here, when I give the companyName a default value, it won't let me delete the item, strange...
-          // defaultValue={itemInfo?.companyName}
+          defaultValue={itemInfo?.companyName}
           {...register("companyName")}
           placeholder="Company Name"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
