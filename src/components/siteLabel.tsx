@@ -16,6 +16,8 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   addClasses?: string;
   textSize?: "medium" | "large";
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
+  canAdd?: boolean;
+  handleAdd?: any;
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -26,6 +28,8 @@ const SiteLabel: React.FC<LabelProps> = ({
   children,
   addClasses,
   textSize,
+  canAdd,
+  handleAdd,
   handleDelete,
   ...props
 }) => {
@@ -57,6 +61,19 @@ const SiteLabel: React.FC<LabelProps> = ({
             alt="closebutton"
             width={10}
             height={10}
+          ></Image>
+        </button>
+      )}
+      {canAdd && (
+        <button
+          className="CloseButton ml-5 opacity-100 hover:opacity-50"
+          onClick={handleAdd}
+        >
+          <Image
+            src="/labelAddButton.svg"
+            alt="closebutton"
+            width={12}
+            height={12}
           ></Image>
         </button>
       )}

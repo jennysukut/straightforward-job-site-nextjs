@@ -21,6 +21,7 @@ export interface Fellow {
   petDetails?: string;
   links?: Array<string>;
   aboutMe?: string;
+  avatar?: any;
 }
 
 interface FellowContextType {

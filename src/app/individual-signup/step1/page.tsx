@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
+import { skillsList } from "@/lib/skillsList";
 
 import Image from "next/image";
 import SiteButton from "@/components/siteButton";
@@ -92,16 +93,20 @@ export default function IndividualSignupPage1() {
   };
 
   // handlers for adding, updating, and deleting skills & job titles
-  const handleAdd = (type: "skill" | "jobTitle") => {
-    if (type === "skill" && newSkill !== "") {
-      setSkills((prevSkills) => [...prevSkills, newSkill]);
-      setNewSkill("");
-      setValue("skills", [...skills, newSkill]);
-    } else if (type === "jobTitle" && newJobTitle !== "") {
-      setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
-      setNewJobTitle("");
-      setValue("jobTitles", [...jobTitles, newJobTitle]);
+  const handleAdd = (type: "skill" | "jobTitle", item: any) => {
+    if (type === "skill") {
+      setSkills((prevSkills) => [...prevSkills, item]);
+      console.log(skills);
     }
+    // if (type === "skill" && newSkill !== "") {
+    //   setSkills((prevSkills) => [...prevSkills, newSkill]);
+    //   setNewSkill("");
+    //   setValue("skills", [...skills, newSkill]);
+    // } else if (type === "jobTitle" && newJobTitle !== "") {
+    //   setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
+    //   setNewJobTitle("");
+    //   setValue("jobTitles", [...jobTitles, newJobTitle]);
+    // }
   };
 
   const handleDelete = (type: "skill" | "jobTitle", item: any) => {
@@ -199,7 +204,6 @@ export default function IndividualSignupPage1() {
             {/* skills input & generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              // value={newSkill}
               handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={skills}
@@ -208,12 +212,13 @@ export default function IndividualSignupPage1() {
               colorArray={colorArray}
               name="skill"
               variant="functional"
+              options
+              searchData={skillsList}
             />
 
             {/* job titles generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              // value={newJobTitle}
               handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={jobTitles}
