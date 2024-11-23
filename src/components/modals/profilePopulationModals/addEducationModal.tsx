@@ -131,8 +131,6 @@ export default function AddEducationModal({
           clickDelete={clickDelete}
           disabledButton={disabledButton}
           handleSubmit={handleSubmit(onSubmit)}
-          updateText="update"
-          updatingText="Updating..."
           addText="add education"
           addingText="Adding Education..."
         />

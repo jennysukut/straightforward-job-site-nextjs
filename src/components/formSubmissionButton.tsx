@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { inputClasses } from "@/lib/stylingData/stylingClasses";
 import Image from "next/image";
 import SiteButton from "./siteButton";
 
@@ -10,8 +9,7 @@ interface FormSubmissionComponent {
   clickDelete: any;
   disabledButton: boolean;
   handleSubmit: any;
-  updateText: string;
-  updatingText: string;
+
   addText: string;
   addingText: string;
 }
@@ -21,8 +19,6 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
   clickDelete,
   disabledButton,
   handleSubmit,
-  updateText,
-  updatingText,
   addText,
   addingText,
   ...props
@@ -48,7 +44,7 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
             disabled={disabledButton}
             addClasses="px-8"
           >
-            {disabledButton ? updatingText : updateText}
+            {disabledButton ? "Updating..." : "update"}
           </SiteButton>
         </div>
       ) : (

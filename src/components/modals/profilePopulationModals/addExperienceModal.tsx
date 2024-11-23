@@ -8,12 +8,10 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { inputClasses } from "@/lib/stylingData/stylingClasses";
 
-import Image from "next/image";
-import SiteButton from "../../siteButton";
-import ErrorModal from "../errorModal";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
+import FormSubmissionButton from "@/components/formSubmissionButton";
+import FormInputComponent from "@/components/formInputComponent";
 
 const ExperienceSchema = z.object({
   title: z.string().min(2, { message: "Job Title Required" }),
@@ -88,107 +86,58 @@ export default function AddExperienceModal({
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* title input */}
-        <label htmlFor="title">title*</label>
-        <input
+        <FormInputComponent
           type="text"
+          title="title*"
           defaultValue={itemInfo?.title}
-          {...register("title")}
-          placeholder="Job Title"
-          className={inputClasses}
+          placeholderText="Job Title"
+          register={register}
+          registerValue="title"
+          errors={errors.title}
         />
-        {errors.title?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.title.message.toString()}
-          </p>
-        )}
 
         {/* company name input */}
-        <label htmlFor="companyName" className="pt-4">
-          company*
-        </label>
-        <input
+        <FormInputComponent
           type="text"
+          title="company*"
           defaultValue={itemInfo?.companyName}
-          {...register("companyName")}
-          placeholder="Company Name"
-          className={inputClasses}
+          placeholderText="Company Name"
+          register={register}
+          registerValue="companyName"
+          errors={errors.companyName}
         />
-        {errors.companyName?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.companyName.message.toString()}
-          </p>
-        )}
 
-        {/* year/years input */}
-        <label htmlFor="years" className="mt-4">
-          year/years
-        </label>
-        <input
+        {/* year/years  input */}
+        <FormInputComponent
           type="text"
+          title="year/years"
           defaultValue={itemInfo?.yearDetails}
-          {...register("yearDetails")}
-          placeholder="Optional: Time You Held Position"
-          className={inputClasses}
+          placeholderText="Optional: Time You Held Position"
+          register={register}
+          registerValue="yearDetails"
+          errors={errors.yearDetails}
         />
-        {errors.yearDetails?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.yearDetails.message.toString()}
-          </p>
-        )}
 
-        {/* details input */}
-        <label htmlFor="details" className="mt-4">
-          details
-        </label>
-        <input
+        {/*  details input */}
+        <FormInputComponent
           type="text"
+          title="details"
           defaultValue={itemInfo?.details}
-          {...register("details")}
-          placeholder="Details Describing Your Experience / Role"
-          className={inputClasses}
+          placeholderText="Details Describing Your Experience / Role"
+          register={register}
+          registerValue="details"
+          errors={errors.details}
         />
-        {errors.details?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.details.message.toString()}
-          </p>
-        )}
 
         {/* form submission button */}
-        {canDelete ? (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={clickDelete}>
-              <Image
-                className="DeleteButton opacity-75 hover:opacity-100"
-                src="/delete-icon.svg"
-                width={18}
-                height={18}
-                alt="delete"
-              />
-            </button>
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Updating..." : "update"}
-            </SiteButton>
-          </div>
-        ) : (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-            >
-              {disabledButton ? "Adding Experience..." : "add experience"}
-            </SiteButton>
-          </div>
-        )}
+        <FormSubmissionButton
+          canDelete={canDelete}
+          clickDelete={clickDelete}
+          disabledButton={disabledButton}
+          handleSubmit={handleSubmit(onSubmit)}
+          addText="add experience"
+          addingText="Adding Experience..."
+        />
       </form>
     </div>
   );
