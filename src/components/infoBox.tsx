@@ -26,6 +26,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   canEdit?: boolean;
   editClick?: Function;
   height?: "tall" | null;
+  canSearch?: boolean;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
@@ -47,6 +48,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   canEdit,
   editClick,
   height = "standard",
+  canSearch,
   ...props
 }) => {
   const boxClasses = clsx(
@@ -118,6 +120,21 @@ const InfoBox: React.FC<InfoBoxProps> = ({
             alt="addButton"
             width={16}
             height={16}
+          ></Image>
+        </button>
+      )}
+
+      {/* add button */}
+      {canSearch && (
+        <button
+          className="AddButton right-0 opacity-75 hover:opacity-100"
+          // onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
+        >
+          <Image
+            src="/search.svg"
+            alt="searchButton"
+            width={18}
+            height={18}
           ></Image>
         </button>
       )}

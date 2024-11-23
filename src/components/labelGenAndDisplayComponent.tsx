@@ -70,6 +70,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         size="extraSmall"
         aria={name}
         canAdd={!options}
+        canSearch={options}
         addClasses="flex"
         type={name}
         addClick={() => addItem(name)}
@@ -109,19 +110,22 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       )}
       {selectedArray.length >= 1 ? (
         <div className="SkillsContainer -mt-4 flex flex-wrap gap-2">
-          {selectedArray.map((item, index) => {
-            return (
-              <SiteLabel
-                aria={item}
-                variant={variant}
-                key={index}
-                colorScheme={colorArray[index % colorArray.length]}
-                handleDelete={() => handleDelete(name, item)}
-              >
-                {item}
-              </SiteLabel>
-            );
-          })}
+          {selectedArray
+            .slice()
+            .reverse()
+            .map((item, index) => {
+              return (
+                <SiteLabel
+                  aria={item}
+                  variant={variant}
+                  key={index}
+                  colorScheme={colorArray[index % colorArray.length]}
+                  handleDelete={() => handleDelete(name, item)}
+                >
+                  {item}
+                </SiteLabel>
+              );
+            })}
         </div>
       ) : (
         ""
