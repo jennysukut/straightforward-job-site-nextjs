@@ -3,16 +3,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Image from "next/image";
-import SiteButton from "../../siteButton";
-import ErrorModal from "../errorModal";
-
+import FormInputComponent from "@/components/formInputComponent";
+import FormSubmissionButton from "@/components/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const HobbySchema = z.object({
@@ -29,18 +26,13 @@ export default function AddHobbyModal({
   handleDelete,
   handleUpdate,
 }: any) {
-  const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [hobbyTitle, setHobbyTitle] = useState("");
-  const [howLong, setHowLong] = useState("");
-  const [id, setId] = useState("");
   const type = "hobby";
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
+
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(HobbySchema),
@@ -50,7 +42,7 @@ export default function AddHobbyModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(type, data, id);
+      handleUpdate(type, data, itemInfo.id);
     } else {
       handleAdd(type, data);
     }
@@ -67,11 +59,12 @@ export default function AddHobbyModal({
   };
 
   const continueDelete = () => {
-    handleDelete(type, id);
+    handleDelete(type, itemInfo.id);
     hideModal();
   };
 
-  const deleteItem = () => {
+  const clickDelete = (event: React.MouseEvent) => {
+    event.preventDefault();
     showModal(
       <DeleteConfirmationModal
         continueDelete={continueDelete}
@@ -80,102 +73,46 @@ export default function AddHobbyModal({
     );
   };
 
-  useEffect(() => {
-    if (canDelete) {
-      setHobbyTitle(itemInfo.hobbyTitle);
-      setHowLong(itemInfo.howLong);
-      setId(itemInfo.id);
-      setValue("hobbyTitle", itemInfo.hobbyTitle);
-      setValue("howLong", itemInfo.howLong);
-    }
-  }, []);
-
   return (
     <div className="AddHobbyModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
-      <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
+      <Dialog.Title className="Title mb-4 max-w-[450px] self-center text-center text-xl font-bold">
         share your hobby
       </Dialog.Title>
       <form
-        className="AddHobbyForm xs:pt-8 flex flex-col gap-2"
+        className="AddHobbyForm xs:pt-8 flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* hobby input */}
-        <label htmlFor="award">hobby*</label>
-        <input
+        <FormInputComponent
           type="text"
-          value={hobbyTitle}
-          placeholder="Your Fantastic Hobby"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setHobbyTitle(value);
-            setValue("hobbyTitle", value);
-          }}
+          title="hobby*"
+          defaultValue={itemInfo?.hobbyTitle}
+          placeholderText="Your Fantastic Hobby"
+          register={register}
+          registerValue="hobbyTitle"
+          errors={errors.hobbyTitle}
         />
-        {errors.hobbyTitle?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.hobbyTitle.message.toString()}
-          </p>
-        )}
 
-        {/* how long input */}
-        <label htmlFor="howLong" className="pt-4">
-          how long have you had this hobby?
-        </label>
-        <input
+        {/* hobby input */}
+        <FormInputComponent
           type="text"
-          value={howLong}
-          placeholder="2 Days - 200 Years"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setHowLong(value);
-            setValue("howLong", value);
-          }}
+          title="how long have you had this pastime?"
+          defaultValue={itemInfo?.howLong}
+          placeholderText="Hobby Timeline"
+          register={register}
+          registerValue="howLong"
+          errors={errors.howLong}
         />
-        {errors.howLong?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.howLong.message.toString()}
-          </p>
-        )}
 
         {/* form submission button */}
-        {canDelete ? (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={deleteItem}>
-              <Image
-                className="DeleteButton opacity-75 hover:opacity-100"
-                src="/delete-icon.svg"
-                width={18}
-                height={18}
-                alt="delete"
-              />
-            </button>
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Updating..." : "update"}
-            </SiteButton>
-          </div>
-        ) : (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Adding ..." : "add"}
-            </SiteButton>
-          </div>
-        )}
+        <FormSubmissionButton
+          canDelete={canDelete}
+          clickDelete={clickDelete}
+          disabledButton={disabledButton}
+          handleSubmit={handleSubmit(onSubmit)}
+          addText="add"
+          addingText="Adding..."
+        />
       </form>
     </div>
   );

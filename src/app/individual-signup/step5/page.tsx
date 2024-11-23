@@ -112,7 +112,6 @@ export default function IndividualSignupPage4() {
         />
 
         {/* more about me input */}
-        {/* make this a multiline input area */}
         <InputComponent
           type="text"
           placeholderText="More about you..."
@@ -132,7 +131,7 @@ export default function IndividualSignupPage4() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Continuing..." : "continue"}
+            {disabledButton ? "Generating Your Profile..." : "continue"}
           </SiteButton>
         </div>
       </div>

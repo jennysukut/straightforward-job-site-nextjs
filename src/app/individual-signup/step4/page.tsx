@@ -17,8 +17,8 @@ import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/add
 import InputComponent from "@/components/inputComponent";
 
 const fellowSchema = z.object({
-  passions: z.string().min(2).optional(),
-  lookingFor: z.string().min(2).optional(),
+  passions: z.string().optional(),
+  lookingFor: z.string().optional(),
   hobbies: z.array(z.string()).optional(),
   bookOrQuote: z.array(z.string()).optional(),
   petDetails: z.string().optional(),
@@ -135,18 +135,6 @@ export default function IndividualSignupPage4() {
           />
         </div>
 
-        {/* passionate-about input */}
-        <InputComponent
-          type="text"
-          placeholderText="What are you passionate about?"
-          errors={errors.passions}
-          register={register}
-          registerValue="passions"
-          defaultValue={fellow?.passions}
-          size="medium"
-          width="full"
-        />
-
         {/*  looking for input */}
         <InputComponent
           type="text"
@@ -164,7 +152,7 @@ export default function IndividualSignupPage4() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          title={`Your Hobbies`}
+          title={`Your Hobbies / Fun Pastimes`}
           aria="hobbiesInfo"
           addModal={<AddHobbyModal />}
           selectedArray={hobbies}
@@ -176,13 +164,25 @@ export default function IndividualSignupPage4() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          title={`Your Favorite Books / Quotes`}
+          title={`Some Books / Quotes You Enjoy`}
           aria="bookOrQuote"
           addModal={<AddBookOrQuoteModal />}
           selectedArray={bookOrQuote}
           displayOption1="bookOrQuote"
           displayOption2="author"
           displayPunct=" - "
+        />
+
+        {/* passionate-about input */}
+        <InputComponent
+          type="text"
+          placeholderText="What are you passionate about?"
+          errors={errors.passions}
+          register={register}
+          registerValue="passions"
+          defaultValue={fellow?.passions}
+          size="medium"
+          width="full"
         />
 
         {/* pet details input */}
