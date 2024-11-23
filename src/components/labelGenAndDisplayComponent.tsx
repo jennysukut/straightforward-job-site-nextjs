@@ -7,7 +7,6 @@ import { useState } from "react";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
-  handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   errors: any;
   selectedArray: Array<any>;
   handleDelete: Function;
@@ -21,7 +20,6 @@ interface LabelGeneratorAndDisplayComp {
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   handleAdd,
-  handleInputChange,
   errors,
   selectedArray,
   handleDelete,
@@ -33,19 +31,25 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   searchData,
   ...props
 }) => {
-  const [filteredItems, setFilteredItems] = useState<string[]>([]); // Add state for filtered skills
-  const [inputValue, setInputValue] = useState<string>(""); // Add state for input value
+  const [filteredItems, setFilteredItems] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
 
-  const findOptions = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("trying to find options");
     const value = event.target.value;
-    setInputValue(value); // Update input value state
-    handleInputChange(event);
+    setInputValue(value);
+    if (options) {
+      findOptions(value);
+    }
+  };
 
+  const findOptions = (value: any) => {
     if (value.length >= 2) {
       const matches =
-        searchData?.filter((item) =>
-          item.toLowerCase().includes(value.toLowerCase()),
+        searchData?.filter(
+          (item) =>
+            item.toLowerCase().includes(value.toLowerCase()) &&
+            !selectedArray.includes(item),
         ) || [];
       setFilteredItems(matches);
     } else {
@@ -53,8 +57,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
     }
   };
 
-  const addItem = (name: any, item: any) => {
-    handleAdd(name, item);
+  const addItem = (name: any, item?: any) => {
+    handleAdd(name, item || inputValue);
     setFilteredItems([]);
     setInputValue("");
   };
@@ -68,16 +72,15 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         canAdd={!options}
         addClasses="flex"
         type={name}
-        addClick={() => handleAdd(name)}
+        addClick={() => addItem(name)}
       >
         <input
           type={name}
           placeholder={placeholder}
           name={name}
-          // this won't work for free-form typing items
           value={inputValue}
           className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-          onChange={findOptions}
+          onChange={handleInput}
         />
       </InfoBox>
 
@@ -92,14 +95,12 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
               colorScheme={colorArray[index % colorArray.length]}
               canAdd
               handleAdd={() => addItem(name, item)}
-              // handleAdd={() => handleAdd(name, item)}
             >
               {item}
             </SiteLabel>
           ))}
         </div>
       )}
-      {/* make an options object that I can pass through and place here */}
 
       {errors.skills?.message && (
         <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">

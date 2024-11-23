@@ -83,30 +83,14 @@ export default function IndividualSignupPage1() {
     router.push("/individual-signup/step2");
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === "skill") {
-      setNewSkill(value);
-    } else if (name === "jobTitle") {
-      setNewJobTitle(value);
-    }
-  };
-
   // handlers for adding, updating, and deleting skills & job titles
   const handleAdd = (type: "skill" | "jobTitle", item: any) => {
     if (type === "skill") {
       setSkills((prevSkills) => [...prevSkills, item]);
       console.log(skills);
+    } else if (type === "jobTitle") {
+      setJobTitles((prevJobTitles) => [...prevJobTitles, item]);
     }
-    // if (type === "skill" && newSkill !== "") {
-    //   setSkills((prevSkills) => [...prevSkills, newSkill]);
-    //   setNewSkill("");
-    //   setValue("skills", [...skills, newSkill]);
-    // } else if (type === "jobTitle" && newJobTitle !== "") {
-    //   setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
-    //   setNewJobTitle("");
-    //   setValue("jobTitles", [...jobTitles, newJobTitle]);
-    // }
   };
 
   const handleDelete = (type: "skill" | "jobTitle", item: any) => {
@@ -204,7 +188,6 @@ export default function IndividualSignupPage1() {
             {/* skills input & generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={skills}
               handleDelete={handleDelete}
@@ -219,7 +202,6 @@ export default function IndividualSignupPage1() {
             {/* job titles generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={jobTitles}
               handleDelete={handleDelete}
