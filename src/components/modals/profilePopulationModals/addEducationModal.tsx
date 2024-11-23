@@ -89,7 +89,7 @@ export default function AddEducationModal({
         education
       </Dialog.Title>
       <form
-        className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
+        className="AddExperienceForm xs:pt-8 flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* degree input */}

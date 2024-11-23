@@ -3,9 +3,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -29,7 +28,6 @@ export default function AddExperienceModal({
   handleUpdate,
   itemInfo,
 }: any) {
-  const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
   const type = "experience";
@@ -82,7 +80,7 @@ export default function AddExperienceModal({
         experience
       </Dialog.Title>
       <form
-        className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
+        className="AddExperienceForm flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* title input */}

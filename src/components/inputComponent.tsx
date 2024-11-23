@@ -6,10 +6,14 @@ import { useForm } from "react-hook-form";
 
 interface InputComponent {
   type: string;
-  value: any;
   placeholderText: string;
   errors: any;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  register: any;
+  registerValue: string;
+  defaultValue: any;
+  width?: any;
+  height?: any;
+  size?: "extraSmall" | "tall";
 }
 
 // Define the interface for the items in selectedArray
@@ -19,26 +23,41 @@ interface Item {
 
 const InputComponent: React.FC<InputComponent> = ({
   type,
-  value,
   placeholderText,
   errors,
-  onChange,
+  register,
+  registerValue,
+  defaultValue,
+  width,
+  height,
+  size = "extraSmall",
   ...props
 }) => {
   return (
     <div className="InputComponentContainer flex flex-col gap-8">
-      <InfoBox variant="hollow" size="extraSmall" aria="firstName">
-        <input
-          type={type}
-          value={value}
-          placeholder={placeholderText}
-          className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
-          onChange={onChange}
-        />
+      <InfoBox variant="hollow" size={size} aria="firstName" width={width}>
+        {size !== "tall" && (
+          <input
+            type={type}
+            placeholder={placeholderText}
+            className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+            defaultValue={defaultValue}
+            {...(typeof register === "function" ? register(registerValue) : {})}
+          />
+        )}
+        {size === "tall" && (
+          <textarea
+            className="text-md h-full w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+            type={type}
+            placeholder={placeholderText}
+            defaultValue={defaultValue}
+            {...(typeof register === "function" ? register(registerValue) : {})}
+          />
+        )}
       </InfoBox>
-      {errors.name?.message && (
+      {errors?.message && (
         <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-          {errors.name.message.toString()}
+          {errors.message.toString()}
         </p>
       )}
     </div>

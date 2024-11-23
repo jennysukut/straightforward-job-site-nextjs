@@ -26,7 +26,7 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
   return (
     <div className="FormSubmissionButtonContainer flex flex-col gap-2 pt-4">
       {canDelete ? (
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
+        <div className="ButtonContainer -mb-6 -mt-4 flex justify-between">
           <button onClick={clickDelete}>
             <Image
               className="DeleteButton opacity-75 hover:opacity-100"
@@ -48,7 +48,7 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
           </SiteButton>
         </div>
       ) : (
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
+        <div className="ButtonContainer -mb-6 -mt-4 flex justify-end">
           <SiteButton
             variant="hollow"
             colorScheme="f1"

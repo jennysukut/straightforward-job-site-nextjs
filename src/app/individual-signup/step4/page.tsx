@@ -11,10 +11,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import Image from "next/image";
 import SiteButton from "@/components/siteButton";
-import InfoBox from "@/components/infoBox";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
 import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
+import InputComponent from "@/components/inputComponent";
 
 const fellowSchema = z.object({
   passions: z.string().min(2).optional(),
@@ -31,17 +31,18 @@ export default function IndividualSignupPage4() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [passions, setPassions] = useState("");
-  const [lookingFor, setLookingFor] = useState("");
+  const [passions, setPassions] = useState(fellow?.passions || "");
+  const [lookingFor, setLookingFor] = useState(fellow?.lookingFor || "");
   const [hobbies, setHobbies] = useState<any[]>([]);
   const [bookOrQuote, setBookOrQuote] = useState<any[]>([]);
-  const [petDetails, setPetDetails] = useState("");
+  const [petDetails, setPetDetails] = useState(fellow?.petDetails || "");
   const [hobbyCounter, setHobbyCounter] = useState(1);
   const [bookOrQuoteCounter, setBookOrQuoteCounter] = useState(1);
 
   const {
     handleSubmit,
     setValue,
+    register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -101,24 +102,21 @@ export default function IndividualSignupPage4() {
     setDisabledButton(true);
     setFellow({
       ...fellow,
-      passions: passions,
-      lookingFor: lookingFor,
+      passions: data.passions,
+      lookingFor: data.lookingFor,
       hobbies: hobbies,
       bookOrQuote: bookOrQuote,
-      petDetails: petDetails,
+      petDetails: data.petDetails,
     });
     router.push("/individual-signup/step5");
   };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setPassions(fellow?.passions || "");
-    setLookingFor(fellow?.lookingFor || "");
     setHobbies(Array.isArray(fellow?.hobbies) ? fellow.hobbies : []);
     setBookOrQuote(
       Array.isArray(fellow?.bookOrQuote) ? fellow.bookOrQuote : [],
     );
-    setPetDetails(fellow?.petDetails || "");
   }, []);
 
   return (
@@ -137,57 +135,27 @@ export default function IndividualSignupPage4() {
           />
         </div>
 
-        {/*  passionate about input */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          width="extraWide"
-          aria="passionateAbout"
-          addClasses="w-full"
-        >
-          <input
-            type="text"
-            value={passions}
-            placeholder="What are you passionate about?"
-            className="text-md w-full bg-transparent text-midnight placeholder:text-jade focus:outline-none"
-            onChange={(e) => {
-              const value = e.target.value;
-              setPassions(value);
-              setValue("passions", value);
-            }}
-          />
-        </InfoBox>
-        {errors.passions?.message && (
-          <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-            {errors.passions.message.toString()}
-          </p>
-        )}
+        {/* passionate-about input */}
+        <InputComponent
+          type="text"
+          placeholderText="What are you passionate about?"
+          errors={errors.passions}
+          register={register}
+          registerValue="passions"
+          defaultValue={fellow?.passions}
+          width="full"
+        />
 
         {/*  looking for input */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          width="extraWide"
-          aria="lookingFor"
-          addClasses="w-full"
-        >
-          <input
-            type="text"
-            value={lookingFor}
-            placeholder="What are you looking for in a job / company?"
-            className="text-md w-full bg-transparent text-midnight placeholder:text-jade focus:outline-none"
-            onChange={(e) => {
-              const value = e.target.value;
-              setLookingFor(value);
-              setValue("lookingFor", value);
-            }}
-          />
-        </InfoBox>
-        {errors.lookingFor?.message && (
-          <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-            {errors.lookingFor.message.toString()}
-          </p>
-        )}
+        <InputComponent
+          type="text"
+          placeholderText="What are you looking for in a job / company?"
+          errors={errors.lookingFor}
+          register={register}
+          registerValue="lookingFor"
+          defaultValue={fellow?.lookingFor}
+          width="full"
+        />
 
         {/* Add + Display Hobbies */}
         <PopulateDisplayField
@@ -215,31 +183,16 @@ export default function IndividualSignupPage4() {
           displayPunct=" - "
         />
 
-        {/*  pet details  input */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          width="extraWide"
-          aria="petDetails"
-          addClasses="w-full"
-        >
-          <input
-            type="text"
-            value={petDetails}
-            placeholder="Are you a cat person or a dog person? Do you have any pets?"
-            className="text-md w-full bg-transparent text-midnight placeholder:text-jade focus:outline-none"
-            onChange={(e) => {
-              const value = e.target.value;
-              setPetDetails(value);
-              setValue("petDetails", value);
-            }}
-          />
-        </InfoBox>
-        {errors.petDetails?.message && (
-          <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-            {errors.petDetails.message.toString()}
-          </p>
-        )}
+        {/* pet details input */}
+        <InputComponent
+          type="text"
+          placeholderText="Are you a cat person or a dog person? Do you have any pets?"
+          errors={errors.petDetails}
+          register={register}
+          registerValue="petDetails"
+          defaultValue={fellow?.petDetails}
+          width="full"
+        />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton

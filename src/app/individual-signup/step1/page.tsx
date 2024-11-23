@@ -25,8 +25,8 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
-  name: z.string().min(2, { message: "Your name is Required" }),
-  email: z.string().email({ message: "test" }),
+  name: z.string().min(2, { message: "Your Name is Required" }),
+  email: z.string().email({ message: "Your Email is Required" }),
   smallBio: z
     .string()
     .min(5, { message: "Your Small Bio must be more than 5 Letters" }),
@@ -45,15 +45,10 @@ export default function IndividualSignupPage1() {
   const { showModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [name, setName] = useState(fellow?.name);
-  const [email, setEmail] = useState(fellow?.email);
-  const [smallBio, setSmallBio] = useState(fellow?.smallBio);
-  const [location, setLocation] = useState(fellow?.location);
   const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
   const [newJobTitle, setNewJobTitle] = useState("");
   const [jobTitles, setJobTitles] = useState<string[]>([]);
-
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [secondaryColorArray, setSecondaryColorArray] = useState<
     CurrentSchemeType[]
@@ -62,21 +57,19 @@ export default function IndividualSignupPage1() {
   const {
     handleSubmit,
     setValue,
+    register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
     defaultValues: {
-      name: name,
-      email: email,
       skills: skills,
       jobTitles: jobTitles,
-      smallBio: smallBio,
-      location: location,
     },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    console.log(data, skills, jobTitles);
     setFellow({
       ...fellow,
       name: data.name,
@@ -87,21 +80,10 @@ export default function IndividualSignupPage1() {
       jobTitles: jobTitles,
     });
     router.push("/individual-signup/step2");
-
-    // const formData = { ...data, skills, jobTitles }; // Add skills & jobTitles to the submitted data
-    // try {
-    //   //then send details to the server
-    //   console.log(formData);
-    //   router.push("/individual-signup/step2");
-    // } catch (err) {
-    //   showModal(<ErrorModal />);
-    // }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    console.log("trying to add a skill");
-    console.log(name, value);
     if (name === "skill") {
       setNewSkill(value);
     } else if (name === "jobTitle") {
@@ -114,9 +96,11 @@ export default function IndividualSignupPage1() {
     if (type === "skill" && newSkill !== "") {
       setSkills((prevSkills) => [...prevSkills, newSkill]);
       setNewSkill("");
+      setValue("skills", [...skills, newSkill]);
     } else if (type === "jobTitle" && newJobTitle !== "") {
       setJobTitles((prevJobTitles) => [...prevJobTitles, newJobTitle]);
       setNewJobTitle("");
+      setValue("jobTitles", [...jobTitles, newJobTitle]);
     }
   };
 
@@ -140,11 +124,12 @@ export default function IndividualSignupPage1() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setName(fellow?.name);
-    setEmail(fellow?.email);
     setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
     setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
-  }, []);
+    // Update default values for the form
+    setValue("skills", fellow?.skills || []);
+    setValue("jobTitles", fellow?.jobTitles || []);
+  }, [fellow, setValue]);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -154,59 +139,44 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            {/* These input components take the details and display error messages beneath them if the validation throws errors */}
-            {/* It's not currently showing errors with the wording I've got typed out in the zod schema message, so I'll see if I can fix that */}
-
             {/* name input */}
             <InputComponent
               type="text"
-              value={name}
               placeholderText="First & Last Name"
-              errors={errors}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                setName(value);
-                setValue("name", value);
-              }}
+              errors={errors.name}
+              register={register}
+              registerValue="name"
+              defaultValue={fellow?.name}
             />
 
             {/* email input */}
             <InputComponent
               type="email"
-              value={email}
               placeholderText="Fantasticemail@emailexample.com"
-              errors={errors}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                setEmail(value);
-                setValue("email", value);
-              }}
+              errors={errors.email}
+              register={register}
+              registerValue="email"
+              defaultValue={fellow?.email}
             />
 
             {/* smallBio input */}
             <InputComponent
               type="text"
-              value={smallBio}
               placeholderText="Your Small Bio"
-              errors={errors}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                setSmallBio(value);
-                setValue("smallBio", value);
-              }}
+              errors={errors.smallBio}
+              register={register}
+              registerValue="smallBio"
+              defaultValue={fellow?.smallBio}
             />
 
             {/* location input */}
             <InputComponent
               type="text"
-              value={location}
               placeholderText="Your Location"
-              errors={errors}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                setLocation(value);
-                setValue("location", value);
-              }}
+              errors={errors.location}
+              register={register}
+              registerValue="location"
+              defaultValue={fellow?.location}
             />
           </form>
         </div>
@@ -225,12 +195,11 @@ export default function IndividualSignupPage1() {
             choose your avatar
           </button>
 
-          {/* make a label generator component that you can plug in here and elsewhere */}
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">
             {/* skills input & generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              value={newSkill}
+              // value={newSkill}
               handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={skills}
@@ -244,7 +213,7 @@ export default function IndividualSignupPage1() {
             {/* job titles generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              value={newJobTitle}
+              // value={newJobTitle}
               handleInputChange={handleInputChange}
               errors={errors}
               selectedArray={jobTitles}

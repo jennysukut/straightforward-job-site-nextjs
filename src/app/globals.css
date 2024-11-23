@@ -39,6 +39,14 @@ body {
   font-weight: 700;
 }
 
+/* .ModalInnerContents::-webkit-scrollbar {
+  width: 10px;
+} */
+
+textarea {
+  resize: none;
+}
+
 ::-webkit-scrollbar {
   width: 10px;
 }

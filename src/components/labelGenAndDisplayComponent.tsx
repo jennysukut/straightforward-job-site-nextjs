@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
-  value: string;
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   errors: any;
   selectedArray: Array<any>;
@@ -19,7 +18,6 @@ interface LabelGeneratorAndDisplayComp {
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   handleAdd,
-  value,
   handleInputChange,
   errors,
   selectedArray,
@@ -30,6 +28,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   variant,
   ...props
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       <InfoBox
@@ -41,15 +41,18 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         type={name}
         addClick={() => {
           handleAdd(name);
+          if (inputRef.current) {
+            inputRef.current.value = "";
+          }
         }}
       >
         <input
           type={name}
           placeholder={placeholder}
-          value={value}
           name={name}
           className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
           onChange={handleInputChange}
+          ref={inputRef}
         />
       </InfoBox>
       {errors.skills?.message && (

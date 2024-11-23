@@ -14,6 +14,8 @@ import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
+import InputComponent from "@/components/inputComponent";
+import { TextArea } from "@radix-ui/themes";
 
 const fellowSchema = z.object({
   links: z.array(z.string()).optional(),
@@ -34,6 +36,7 @@ export default function IndividualSignupPage4() {
   const {
     handleSubmit,
     setValue,
+    register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -63,10 +66,11 @@ export default function IndividualSignupPage4() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    console.log(data.aboutMe);
     setFellow({
       ...fellow,
       links: links,
-      aboutMe: aboutMe,
+      aboutMe: data.aboutMe,
     });
     router.push("/individual-signup/step4");
   };
@@ -107,31 +111,18 @@ export default function IndividualSignupPage4() {
           displayPunct=":"
         />
 
-        {/*  more about me input */}
-        <InfoBox
-          variant="hollow"
-          size="extraSmall"
-          width="extraWide"
-          aria="moreAboutMe"
-          addClasses="w-full"
-        >
-          <input
-            type="text"
-            value={aboutMe}
-            placeholder="More about you..."
-            className="text-md w-full text-wrap bg-transparent text-midnight placeholder:text-jade focus:outline-none"
-            onChange={(e) => {
-              const value = e.target.value;
-              setAboutMe(value);
-              setValue("aboutMe", value);
-            }}
-          />
-        </InfoBox>
-        {errors.aboutMe?.message && (
-          <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-            {errors.aboutMe.message.toString()}
-          </p>
-        )}
+        {/* more about me input */}
+        {/* make this a multiline input area */}
+        <InputComponent
+          type="text"
+          placeholderText="More about you..."
+          errors={errors.aboutMe}
+          register={register}
+          registerValue="aboutMe"
+          defaultValue={fellow?.aboutMe}
+          width="full"
+          size="tall"
+        />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
           <SiteButton

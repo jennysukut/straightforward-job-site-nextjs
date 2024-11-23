@@ -111,10 +111,6 @@ export default function IndividualSignupPage3() {
       experienceLevels: experienceLevels,
       accomplishments: accomplishments,
     });
-
-    //send this data to the server as well
-    console.log(fellow);
-    //navigate to the next page
     router.push("/individual-signup/step4");
   };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { inputClasses } from "@/lib/stylingData/stylingClasses";
 
 interface InputComponent {
@@ -24,7 +24,7 @@ const FormInputComponent: React.FC<InputComponent> = ({
   ...props
 }) => {
   return (
-    <div className="FormInputComponentContainer flex flex-col gap-2 pt-4">
+    <div className="FormInputComponentContainer flex flex-col gap-2">
       <label htmlFor={registerValue}>{title}</label>
       <input
         type={type}
