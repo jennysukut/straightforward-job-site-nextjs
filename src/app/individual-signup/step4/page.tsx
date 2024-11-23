@@ -143,6 +143,7 @@ export default function IndividualSignupPage4() {
           register={register}
           registerValue="passions"
           defaultValue={fellow?.passions}
+          size="medium"
           width="full"
         />
 
@@ -155,6 +156,7 @@ export default function IndividualSignupPage4() {
           registerValue="lookingFor"
           defaultValue={fellow?.lookingFor}
           width="full"
+          size="medium"
         />
 
         {/* Add + Display Hobbies */}

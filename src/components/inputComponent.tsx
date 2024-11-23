@@ -13,7 +13,7 @@ interface InputComponent {
   defaultValue: any;
   width?: any;
   height?: any;
-  size?: "extraSmall" | "tall";
+  size?: "extraSmall" | "tall" | "medium";
 }
 
 // Define the interface for the items in selectedArray
@@ -36,7 +36,7 @@ const InputComponent: React.FC<InputComponent> = ({
   return (
     <div className="InputComponentContainer flex flex-col gap-8">
       <InfoBox variant="hollow" size={size} aria="firstName" width={width}>
-        {size !== "tall" && (
+        {size === "extraSmall" && (
           <input
             type={type}
             placeholder={placeholderText}
@@ -45,7 +45,7 @@ const InputComponent: React.FC<InputComponent> = ({
             {...(typeof register === "function" ? register(registerValue) : {})}
           />
         )}
-        {size === "tall" && (
+        {size !== "extraSmall" && (
           <textarea
             className="text-md h-full w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
             type={type}

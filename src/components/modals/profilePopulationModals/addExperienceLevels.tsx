@@ -3,16 +3,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Image from "next/image";
-import SiteButton from "../../siteButton";
-import ErrorModal from "../errorModal";
-
+import FormInputComponent from "@/components/formInputComponent";
+import FormSubmissionButton from "@/components/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const ExperienceLevelSchema = z.object({
@@ -30,19 +27,12 @@ export default function AddExperienceLevelModal({
   handleDelete,
   handleUpdate,
 }: any) {
-  const router = useRouter();
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [experienceLevel, setExperienceLevel] = useState("");
-  const [expLevelSkill, setExpLevelSkill] = useState("");
-  const [skillYears, setSkillYears] = useState("");
-  const [id, setId] = useState("");
   const type = "experienceLevel";
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ExperienceLevelSchema),
@@ -52,7 +42,7 @@ export default function AddExperienceLevelModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(type, data, id);
+      handleUpdate(type, data, itemInfo.id);
     } else {
       handleAdd(type, data);
     }
@@ -70,12 +60,12 @@ export default function AddExperienceLevelModal({
 
   const continueDelete = () => {
     console.log("handling deletion");
-    handleDelete(type, id);
+    handleDelete(type, itemInfo.id);
     hideModal();
   };
 
-  const deleteExperience = () => {
-    console.log("deleting - will need confirmation");
+  const clickDelete = (event: React.MouseEvent) => {
+    event.preventDefault();
     showModal(
       <DeleteConfirmationModal
         continueDelete={continueDelete}
@@ -84,125 +74,57 @@ export default function AddExperienceLevelModal({
     );
   };
 
-  useEffect(() => {
-    if (canDelete) {
-      setExperienceLevel(itemInfo.experienceLevel);
-      setExpLevelSkill(itemInfo.expLevelSkill);
-      setSkillYears(itemInfo.skillYears);
-      setId(itemInfo.id);
-      setValue("experienceLevel", itemInfo.experienceLevel);
-      setValue("expLevelSkill", itemInfo.expLevelSkill);
-      setValue("skillYears", itemInfo.skillYears);
-    }
-  }, []);
-
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
-      <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
+      <Dialog.Title className="Title mb-4 max-w-[450px] self-center text-center text-xl font-bold">
         experience level
       </Dialog.Title>
       <form
-        className="AddExperienceForm xs:pt-8 flex flex-col gap-2"
+        className="AddExperienceForm xs:pt-8 flex flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* experience level input */}
-        <label htmlFor="award">experience level*</label>
-        <input
+        <FormInputComponent
           type="text"
-          value={experienceLevel}
-          placeholder="Entry / Intermediate / Senior / Etc..."
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setExperienceLevel(value);
-            setValue("experienceLevel", value);
-          }}
+          title="experience level*"
+          defaultValue={itemInfo?.experienceLevel}
+          placeholderText="Entry / Intermediate / Senior / Etc..."
+          register={register}
+          registerValue="experienceLevel"
+          errors={errors.experienceLevel}
         />
-        {errors.experienceLevel?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.experienceLevel.message.toString()}
-          </p>
-        )}
 
-        {/* ExpSkill input */}
-        <label htmlFor="companyName" className="pt-4">
-          selected skill*
-        </label>
-        <input
+        {/* experience skill input */}
+        <FormInputComponent
           type="text"
-          value={expLevelSkill}
-          placeholder="Your Particular Skill"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setExpLevelSkill(value);
-            setValue("expLevelSkill", value);
-          }}
+          title="selected skill*"
+          defaultValue={itemInfo?.expLevelSkill}
+          placeholderText="Your Particular Skill"
+          register={register}
+          registerValue="expLevelSkill"
+          errors={errors.expLevelSkill}
         />
-        {errors.expLevelSkill?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.expLevelSkill.message.toString()}
-          </p>
-        )}
 
         {/* skill years input */}
-        <label htmlFor="years" className="mt-4">
-          number of years
-        </label>
-        <input
+        <FormInputComponent
           type="text"
-          value={skillYears}
-          placeholder="Years You've Had Said Skill"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setSkillYears(value);
-            setValue("skillYears", value);
-          }}
+          title="number of years"
+          defaultValue={itemInfo?.skillYears}
+          placeholderText="Optional: Years You've Had Said Skill"
+          register={register}
+          registerValue="skillYears"
+          errors={errors.skillYears}
         />
-        {errors.skillYears?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.skillYears.message.toString()}
-          </p>
-        )}
 
         {/* form submission button */}
-        {canDelete ? (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={deleteExperience}>
-              <Image
-                className="DeleteButton opacity-75 hover:opacity-100"
-                src="/delete-icon.svg"
-                width={18}
-                height={18}
-                alt="delete"
-              />
-            </button>
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Updating..." : "update"}
-            </SiteButton>
-          </div>
-        ) : (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Adding ..." : "add"}
-            </SiteButton>
-          </div>
-        )}
+        <FormSubmissionButton
+          canDelete={canDelete}
+          clickDelete={clickDelete}
+          disabledButton={disabledButton}
+          handleSubmit={handleSubmit(onSubmit)}
+          addText="add"
+          addingText="Adding..."
+        />
       </form>
     </div>
   );

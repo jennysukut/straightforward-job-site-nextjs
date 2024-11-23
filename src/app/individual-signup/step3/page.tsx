@@ -147,6 +147,7 @@ export default function IndividualSignupPage3() {
           selectedArray={awards}
           displayOption1="awardTitle"
           displayOption2="givenBy"
+          displayPunct=": given by"
         />
 
         {/* Add + Display ExperienceLevels */}
