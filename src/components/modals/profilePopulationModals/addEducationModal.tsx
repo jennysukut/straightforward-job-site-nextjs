@@ -9,11 +9,10 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Image from "next/image";
-import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 import FormInputComponent from "@/components/formInputComponent";
+import FormSubmissionButton from "@/components/formSubmissionButton";
 
 const EducationSchema = z.object({
   degree: z.string().min(2, { message: "Degree / Certificate Required" }),
@@ -127,41 +126,16 @@ export default function AddEducationModal({
         />
 
         {/* form submission button */}
-        {canDelete ? (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-between">
-            <button onClick={clickDelete}>
-              <Image
-                className="DeleteButton opacity-75 hover:opacity-100"
-                src="/delete-icon.svg"
-                width={18}
-                height={18}
-                alt="delete"
-              />
-            </button>
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-              addClasses="px-8"
-            >
-              {disabledButton ? "Updating..." : "update"}
-            </SiteButton>
-          </div>
-        ) : (
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
-            <SiteButton
-              variant="hollow"
-              colorScheme="f1"
-              aria="submit"
-              onClick={handleSubmit(onSubmit)}
-              disabled={disabledButton}
-            >
-              {disabledButton ? "Adding Education..." : "add education"}
-            </SiteButton>
-          </div>
-        )}
+        <FormSubmissionButton
+          canDelete={canDelete}
+          clickDelete={clickDelete}
+          disabledButton={disabledButton}
+          handleSubmit={handleSubmit(onSubmit)}
+          updateText="update"
+          updatingText="Updating..."
+          addText="add education"
+          addingText="Adding Education..."
+        />
       </form>
     </div>
   );
