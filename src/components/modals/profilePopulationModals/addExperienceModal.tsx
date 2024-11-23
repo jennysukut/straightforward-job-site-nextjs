@@ -8,6 +8,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { inputClasses } from "@/lib/stylingData/stylingClasses";
 
 import Image from "next/image";
 import SiteButton from "../../siteButton";
@@ -37,7 +38,6 @@ export default function AddExperienceModal({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(ExperienceSchema),
@@ -78,12 +78,6 @@ export default function AddExperienceModal({
     );
   };
 
-  console.log(itemInfo);
-
-  useEffect(() => {
-    console.log("add experience modal was rendered");
-  });
-
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
@@ -100,7 +94,7 @@ export default function AddExperienceModal({
           defaultValue={itemInfo?.title}
           {...register("title")}
           placeholder="Job Title"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className={inputClasses}
         />
         {errors.title?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -114,11 +108,10 @@ export default function AddExperienceModal({
         </label>
         <input
           type="text"
-          //this is the issue right here, when I give the companyName a default value, it won't let me delete the item, strange...
           defaultValue={itemInfo?.companyName}
           {...register("companyName")}
           placeholder="Company Name"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className={inputClasses}
         />
         {errors.companyName?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -135,7 +128,7 @@ export default function AddExperienceModal({
           defaultValue={itemInfo?.yearDetails}
           {...register("yearDetails")}
           placeholder="Optional: Time You Held Position"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className={inputClasses}
         />
         {errors.yearDetails?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">
@@ -152,7 +145,7 @@ export default function AddExperienceModal({
           defaultValue={itemInfo?.details}
           {...register("details")}
           placeholder="Details Describing Your Experience / Role"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
+          className={inputClasses}
         />
         {errors.details?.message && (
           <p className="m-0 p-0 text-xs font-medium text-orange">

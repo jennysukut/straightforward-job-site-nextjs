@@ -13,10 +13,11 @@ import Image from "next/image";
 import SiteButton from "../../siteButton";
 import ErrorModal from "../errorModal";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
+import FormInputComponent from "@/components/formInputComponent";
 
 const EducationSchema = z.object({
-  degree: z.string().min(2, { message: "Job Title Required" }),
-  school: z.string().min(2, { message: "Company Name Required" }),
+  degree: z.string().min(2, { message: "Degree / Certificate Required" }),
+  school: z.string().min(2, { message: "School Name Required" }),
   fieldOfStudy: z.string().optional(),
 });
 
@@ -31,16 +32,10 @@ export default function AddEducationModal({
 }: any) {
   const { showModal, hideModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
-  const [degree, setDegree] = useState("");
-  const [school, setSchool] = useState("");
-  const [fieldOfStudy, setFieldOfStudy] = useState("");
-  const [id, setId] = useState("");
   const type = "education";
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(EducationSchema),
@@ -50,7 +45,7 @@ export default function AddEducationModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(type, data, id);
+      handleUpdate(type, data, itemInfo.id);
     } else {
       handleAdd(type, data);
     }
@@ -75,13 +70,12 @@ export default function AddEducationModal({
 
   const continueDelete = () => {
     console.log("handling deletion");
-    handleDelete(type, id);
+    handleDelete(type, itemInfo.id);
     hideModal();
   };
 
-  const clickDelete = () => {
-    console.log("delete? need confirmation");
-    // make a confirmation modal and insert here - send it details necessary to delete exp.
+  const clickDelete = (event: React.MouseEvent) => {
+    event.preventDefault();
     showModal(
       <DeleteConfirmationModal
         continueDelete={continueDelete}
@@ -90,21 +84,9 @@ export default function AddEducationModal({
     );
   };
 
-  useEffect(() => {
-    if (canDelete) {
-      setDegree(itemInfo.degree);
-      setSchool(itemInfo.school);
-      setFieldOfStudy(itemInfo.fieldOfStudy);
-      setId(itemInfo.id);
-      setValue("degree", itemInfo.degree);
-      setValue("school", itemInfo.school);
-      setValue("fieldOfStudy", itemInfo.fieldOfStudy);
-    }
-  }, []);
-
   return (
     <div className="AddEducationModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
-      <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
+      <Dialog.Title className="Title mb-4 max-w-[450px] self-center text-center text-xl font-bold">
         education
       </Dialog.Title>
       <form
@@ -112,65 +94,37 @@ export default function AddEducationModal({
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* degree input */}
-        <label htmlFor="title">degree / certificate*</label>
-        <input
+        <FormInputComponent
           type="text"
-          value={degree}
-          placeholder="Your Degree or Certificate"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setDegree(value);
-            setValue("degree", value);
-          }}
+          title="degree / certificate*"
+          defaultValue={itemInfo?.degree}
+          placeholderText="Your Degree or Certificate"
+          register={register}
+          registerValue="degree"
+          errors={errors.degree}
         />
-        {errors.degree?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.degree.message.toString()}
-          </p>
-        )}
 
-        {/* school name input */}
-        <label htmlFor="companyName" className="pt-4">
-          school*
-        </label>
-        <input
+        {/* school input */}
+        <FormInputComponent
           type="text"
-          value={school}
-          placeholder="Your School"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setSchool(value);
-            setValue("school", value);
-          }}
+          title="school*"
+          defaultValue={itemInfo?.school}
+          placeholderText="Your School"
+          register={register}
+          registerValue="school"
+          errors={errors.school}
         />
-        {errors.school?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.school.message.toString()}
-          </p>
-        )}
 
         {/* field of study input */}
-        <label htmlFor="years" className="mt-4">
-          field of study
-        </label>
-        <input
+        <FormInputComponent
           type="text"
-          value={fieldOfStudy}
-          placeholder="Your Field Of Study"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-midnight placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          onChange={(e) => {
-            const value = e.target.value;
-            setFieldOfStudy(value);
-            setValue("fieldOfStudy", value);
-          }}
+          title="field of study"
+          defaultValue={itemInfo?.fieldOfStudy}
+          placeholderText="Your Field Of Study"
+          register={register}
+          registerValue="fieldOfStudy"
+          errors={errors.fieldOfStudy}
         />
-        {errors.fieldOfStudy?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.fieldOfStudy.message.toString()}
-          </p>
-        )}
 
         {/* form submission button */}
         {canDelete ? (
