@@ -71,4 +71,58 @@ export const avatarOptions = [
     shadow: "bg-jade",
     colorScheme: "e5",
   },
+  {
+    title: "fish",
+    img: "bg-[url('/avatars/fish.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "flower",
+    img: "bg-[url('/avatars/flower.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "football",
+    img: "bg-[url('/avatars/football.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "groovy",
+    img: "bg-[url('/avatars/groovy.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "growth",
+    img: "bg-[url('/avatars/growth.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "flower",
+    img: "bg-[url('/avatars/flower.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "football",
+    img: "bg-[url('/avatars/football.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "groovy",
+    img: "bg-[url('/avatars/groovy.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
+  {
+    title: "growth",
+    img: "bg-[url('/avatars/growth.svg')]",
+    shadow: "bg-watermelon",
+    colorScheme: "c4",
+  },
 ];

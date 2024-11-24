@@ -17,6 +17,7 @@ import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
+import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 
 import { countries } from "@/lib/countriesList";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
@@ -31,13 +32,18 @@ const fellowSchema = z.object({
   email: z.string().email({ message: "Your Email is Required" }),
   smallBio: z
     .string()
-    .min(5, { message: "Your Small Bio must be more than 5 Letters" }),
-  country: z.string().min(3),
-  location: z
-    .string()
-    .min(5, { message: "Your Location must be more than 5 Letters in Length" }),
-  skills: z.array(z.string()).min(1),
-  jobTitles: z.array(z.string()).min(1),
+    .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" }),
+  country: z.string().min(3, { message: "Your Country is Required" }),
+  location: z.string().optional(),
+  locationOptions: z
+    .array(z.string())
+    .min(0, { message: "You Must Have At Least 1 Location Type Selected" }),
+  skills: z
+    .array(z.string())
+    .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
+  jobTitles: z
+    .array(z.string())
+    .min(0, { message: "You Must Have At Least 1 Job Title Listed" }),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
@@ -50,6 +56,7 @@ export default function IndividualSignupPage1() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
+  const [locationOptions, setLocationOptions] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [secondaryColorArray, setSecondaryColorArray] = useState<
     CurrentSchemeType[]
@@ -65,18 +72,22 @@ export default function IndividualSignupPage1() {
     defaultValues: {
       skills: skills,
       jobTitles: jobTitles,
+      country: fellow?.country,
+      locationOptions: locationOptions,
     },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data, skills, jobTitles);
+    console.log(data);
     setFellow({
       ...fellow,
       name: data.name,
       email: data.email,
       smallBio: data.smallBio,
+      country: data.country,
       location: data.location,
+      locationOptions: locationOptions,
       skills: skills,
       jobTitles: jobTitles,
     });
@@ -84,12 +95,26 @@ export default function IndividualSignupPage1() {
   };
 
   // handlers for adding, updating, and deleting skills & job titles
-  const handleAdd = (type: "skill" | "jobTitle", item: any) => {
+  const handleAdd = (
+    type: "skill" | "jobTitle" | "country" | "locationOption",
+    item: any,
+  ) => {
     if (type === "skill") {
       setSkills((prevSkills) => [...prevSkills, item]);
-      console.log(skills);
+      setValue("skills", skills);
     } else if (type === "jobTitle") {
       setJobTitles((prevJobTitles) => [...prevJobTitles, item]);
+      setValue("jobTitles", jobTitles);
+    } else if (type === "country") {
+      setValue("country", item);
+    } else if (type === "locationOption") {
+      setLocationOptions((prevLocationOptions) => {
+        if (prevLocationOptions.includes(item)) {
+          return prevLocationOptions.filter((opt) => opt !== item);
+        } else {
+          return [...prevLocationOptions, item];
+        }
+      });
     }
   };
 
@@ -167,17 +192,27 @@ export default function IndividualSignupPage1() {
               searchData={countries}
               colorArray={colorArray}
               options
+              defaultValue={fellow?.country}
             />
 
             {/* location input */}
             <InputComponent
               type="text"
-              placeholderText="Your State / Specific Location"
+              placeholderText="State / Province / Region / District"
               errors={errors.location}
               register={register}
               registerValue="location"
               defaultValue={fellow?.location}
               addClasses="-mt-2"
+            />
+
+            <ButtonOptionsComponent
+              type="locationOption"
+              title="location types:"
+              buttons={["remote", "on-site", "hybrid"]}
+              selectedArray={locationOptions}
+              handleAdd={handleAdd}
+              errors={errors.locationOptions}
             />
           </form>
         </div>
@@ -200,7 +235,7 @@ export default function IndividualSignupPage1() {
             {/* skills input & generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              errors={errors}
+              errors={errors.skills}
               selectedArray={skills}
               handleDelete={handleDelete}
               placeholder="Your Skills"
@@ -214,7 +249,7 @@ export default function IndividualSignupPage1() {
             {/* job titles generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}
-              errors={errors}
+              errors={errors.jobTitles}
               selectedArray={jobTitles}
               handleDelete={handleDelete}
               placeholder="Job Titles For You"

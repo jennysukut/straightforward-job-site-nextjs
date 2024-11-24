@@ -23,6 +23,7 @@ export interface Fellow {
   links?: Array<string>;
   aboutMe?: string;
   avatar?: any;
+  locationOptions?: Array<string>;
 }
 
 interface FellowContextType {

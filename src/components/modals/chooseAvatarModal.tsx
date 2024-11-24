@@ -28,7 +28,7 @@ export default function AvatarModal() {
       <Dialog.Title className="Title w-full pb-4 text-center text-xl font-bold">
         {`choose your avatar`}
       </Dialog.Title>
-      <div className="AvatarOptions flex max-w-[50vw] flex-wrap items-center justify-center gap-4">
+      <div className="AvatarOptions flex max-h-[55vh] max-w-[50vw] flex-wrap items-center justify-center gap-6 overflow-y-scroll">
         {renderAvatarOptions()}
       </div>
     </div>

@@ -15,6 +15,7 @@ interface InputComponentWithLabelOptions {
   searchData: Array<any>;
   colorArray: Array<any>;
   options?: boolean;
+  defaultValue?: any;
 }
 
 const InputComponentWithLabelOptions: React.FC<
@@ -29,10 +30,11 @@ const InputComponentWithLabelOptions: React.FC<
   colorArray,
   searchData,
   options,
+  defaultValue,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(defaultValue);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

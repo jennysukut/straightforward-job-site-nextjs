@@ -114,7 +114,7 @@ export default function IndividualSignupPage4() {
         {/* more about me input */}
         <InputComponent
           type="text"
-          placeholderText="More about you..."
+          placeholderText="Optional: Share more about you..."
           errors={errors.aboutMe}
           register={register}
           registerValue="aboutMe"
