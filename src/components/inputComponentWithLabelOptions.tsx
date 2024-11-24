@@ -3,53 +3,44 @@
 import React from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-interface LabelGeneratorAndDisplayComp {
+interface InputComponentWithLabelOptions {
   handleAdd: Function;
   errors: any;
-  selectedArray: Array<any>;
-  handleDelete: Function;
+  handleDelete?: Function;
   placeholder: string;
-  colorArray: Array<any>;
   name: string;
-  variant: any;
+  variant?: any;
+  searchData: Array<any>;
+  colorArray: Array<any>;
   options?: boolean;
-  searchData?: Array<any>;
 }
 
-const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
+const InputComponentWithLabelOptions: React.FC<
+  InputComponentWithLabelOptions
+> = ({
   handleAdd,
   errors,
-  selectedArray,
   handleDelete,
   placeholder,
-  colorArray,
   name,
   variant,
-  options,
+  colorArray,
   searchData,
+  options,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("trying to find options");
     const value = event.target.value;
     setInputValue(value);
-    if (options) {
-      findOptions(value);
-    }
-  };
-
-  const findOptions = (value: any) => {
-    if (value.length >= 2) {
+    if (value.length >= 3) {
       const matches =
-        searchData?.filter(
-          (item) =>
-            item.toLowerCase().includes(value.toLowerCase()) &&
-            !selectedArray.includes(item),
+        searchData?.filter((item) =>
+          item.toLowerCase().includes(value.toLowerCase()),
         ) || [];
       setFilteredItems(matches);
     } else {
@@ -57,10 +48,10 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
     }
   };
 
-  const addItem = (name: any, item?: any) => {
-    handleAdd(name, item || inputValue);
+  const selectItem = (name: any, item: any) => {
     setFilteredItems([]);
-    setInputValue("");
+    setInputValue(item);
+    handleAdd(name, item);
   };
 
   return (
@@ -69,11 +60,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         variant="hollow"
         size="extraSmall"
         aria={name}
-        canAdd={!options}
-        canSearch={options}
+        canSearch
         addClasses="flex"
         type={name}
-        addClick={() => addItem(name)}
       >
         <input
           type={name}
@@ -93,9 +82,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
               aria={item}
               variant="display"
               key={index}
-              colorScheme={colorArray[index % colorArray.length]}
               canAdd
-              handleAdd={() => addItem(name, item)}
+              colorScheme={colorArray[index % colorArray.length]}
+              handleAdd={() => selectItem(name, item)}
             >
               {item}
             </SiteLabel>
@@ -108,30 +97,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
           {errors.message.toString()}
         </p>
       )}
-      {selectedArray.length >= 1 ? (
-        <div className="SkillsContainer -mt-4 flex flex-wrap gap-2">
-          {selectedArray
-            .slice()
-            .reverse()
-            .map((item, index) => {
-              return (
-                <SiteLabel
-                  aria={item}
-                  variant={variant}
-                  key={index}
-                  colorScheme={colorArray[index % colorArray.length]}
-                  handleDelete={() => handleDelete(name, item)}
-                >
-                  {item}
-                </SiteLabel>
-              );
-            })}
-        </div>
-      ) : (
-        ""
-      )}
     </div>
   );
 };
 
-export default LabelGeneratorAndDisplayComp;
+export default InputComponentWithLabelOptions;

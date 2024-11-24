@@ -6,6 +6,7 @@ export interface Fellow {
   name?: string;
   email?: string;
   smallBio?: string;
+  country?: string;
   location?: string;
   skills?: Array<string>;
   jobTitles?: Array<string>;

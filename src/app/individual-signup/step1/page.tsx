@@ -16,13 +16,14 @@ import ErrorModal from "@/components/modals/errorModal";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
 
+import { countries } from "@/lib/countriesList";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import {
   getRandomColorArray,
   shuffleButtonColors,
 } from "@/utils/getRandomColorScheme";
-
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
@@ -31,6 +32,7 @@ const fellowSchema = z.object({
   smallBio: z
     .string()
     .min(5, { message: "Your Small Bio must be more than 5 Letters" }),
+  country: z.string().min(3),
   location: z
     .string()
     .min(5, { message: "Your Location must be more than 5 Letters in Length" }),
@@ -46,9 +48,7 @@ export default function IndividualSignupPage1() {
   const { showModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [newSkill, setNewSkill] = useState("");
   const [skills, setSkills] = useState<string[]>([]);
-  const [newJobTitle, setNewJobTitle] = useState("");
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [secondaryColorArray, setSecondaryColorArray] = useState<
@@ -158,14 +158,26 @@ export default function IndividualSignupPage1() {
               defaultValue={fellow?.smallBio}
             />
 
+            {/* country input */}
+            <InputComponentWithLabelOptions
+              handleAdd={handleAdd}
+              errors={errors.country}
+              placeholder="Your Country"
+              name="country"
+              searchData={countries}
+              colorArray={colorArray}
+              options
+            />
+
             {/* location input */}
             <InputComponent
               type="text"
-              placeholderText="Your Location"
+              placeholderText="Your State / Specific Location"
               errors={errors.location}
               register={register}
               registerValue="location"
               defaultValue={fellow?.location}
+              addClasses="-mt-2"
             />
           </form>
         </div>

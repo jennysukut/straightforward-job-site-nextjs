@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import InfoBox from "./infoBox";
 import { useForm } from "react-hook-form";
+import SiteLabel from "./siteLabel";
 
 interface InputComponent {
   type: string;
@@ -14,6 +15,7 @@ interface InputComponent {
   width?: any;
   height?: any;
   size?: "extraSmall" | "tall" | "medium";
+  addClasses?: string;
 }
 
 // Define the interface for the items in selectedArray
@@ -31,11 +33,18 @@ const InputComponent: React.FC<InputComponent> = ({
   width,
   height,
   size = "extraSmall",
+  addClasses,
   ...props
 }) => {
   return (
     <div className="InputComponentContainer flex flex-col gap-8">
-      <InfoBox variant="hollow" size={size} aria="firstName" width={width}>
+      <InfoBox
+        variant="hollow"
+        size={size}
+        aria="firstName"
+        width={width}
+        addClasses={addClasses}
+      >
         {size === "extraSmall" && (
           <input
             type={type}
@@ -55,6 +64,7 @@ const InputComponent: React.FC<InputComponent> = ({
           />
         )}
       </InfoBox>
+
       {errors?.message && (
         <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
           {errors.message.toString()}
