@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository: <br/>
+`https://github.com/jennysukut/straightforward-job-site-nextjs.git`
+2. Navigate to the project directory:<br/>
+`cd straightforward-job-site-nextjs`
+2. Install dependencies:<br/>
+`npm install`
+4. Run the development server:<br/>
 
 ```bash
 npm run dev
@@ -13,6 +19,9 @@ pnpm dev
 # or
 bun dev
 ```
+
+The application will start on `http://localhost:8082`.
+
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
