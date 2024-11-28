@@ -18,8 +18,10 @@ import InputComponent from "@/components/inputComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import AddHandler from "@/components/addHandler";
 
 import { countries } from "@/lib/countriesList";
+import { languageOptions } from "@/lib/languageOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import {
   getRandomColorArray,
@@ -43,6 +45,9 @@ const fellowSchema = z.object({
   skills: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
+  languages: z
+    .array(z.string())
+    .min(1, { message: "You Must Have At Least 1 Language Listed" }),
   jobTitles: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Job Title Listed" }),
@@ -59,6 +64,7 @@ export default function IndividualSignupPage1() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
+  const [languages, setLanguages] = useState<string[]>([]);
   const [locationOptions, setLocationOptions] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [secondaryColorArray, setSecondaryColorArray] = useState<
@@ -74,6 +80,7 @@ export default function IndividualSignupPage1() {
     handleSubmit,
     setValue,
     register,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -107,35 +114,82 @@ export default function IndividualSignupPage1() {
 
   // handlers for adding, updating, and deleting skills & job titles
   const handleAdd = (
-    type: "skill" | "jobTitle" | "country" | "locationOption",
+    type: "skill" | "jobTitle" | "country" | "locationOption" | "language",
     item: any,
   ) => {
-    if (type === "skill") {
-      setSkills((prevSkills) => [...prevSkills, item]);
-      setValue("skills", skills);
-    } else if (type === "jobTitle") {
-      setJobTitles((prevJobTitles) => [...prevJobTitles, item]);
-      setValue("jobTitles", jobTitles);
-    } else if (type === "country") {
-      setValue("country", item);
-    } else if (type === "locationOption") {
-      setLocationOptions((prevLocationOptions) => {
-        if (prevLocationOptions.includes(item)) {
-          return prevLocationOptions.filter((opt) => opt !== item);
-        } else {
-          return [...prevLocationOptions, item];
-        }
-      });
-      setValue("locationOptions", locationOptions);
-    }
+    AddHandler({
+      item,
+      type,
+      setFunctions: {
+        skill: setSkills,
+        jobTitle: setJobTitles,
+        locationOption: setLocationOptions,
+        language: setLanguages,
+      },
+      setValue,
+      clearErrors,
+    });
+
+    // if (type === "skill") {
+    //   setSkills((prevSkills) => {
+    //     const updatedSkills = [...prevSkills, item];
+    //     setValue("skills", updatedSkills);
+    //     clearErrors("skills");
+    //     return updatedSkills;
+    //   });
+    // } else if (type === "jobTitle") {
+    //   // AddHandler({
+    //   //   item,
+    //   //   type,
+    //   //   setFunction: setJobTitles,
+    //   //   setValue,
+    //   //   clearErrors,
+    //   // });
+    //   setJobTitles((prevJobTitles) => {
+    //     const updatedJobTitles = [...prevJobTitles, item];
+    //     setValue("jobTitles", updatedJobTitles);
+    //     clearErrors("jobTitles");
+    //     return updatedJobTitles;
+    //   });
+    // } else if (type === "country") {
+    //   setValue("country", item);
+    //   clearErrors("country");
+    // } else if (type === "language") {
+    //   setLanguages((prevLang) => {
+    //     const updatedLanguages = [...prevLang, item];
+    //     setValue("languages", updatedLanguages);
+    //     clearErrors("languages");
+    //     return updatedLanguages;
+    //   });
+    // } else if (type === "locationOption") {
+    //   setLocationOptions((prevLocationOptions) => {
+    //     if (prevLocationOptions.includes(item)) {
+    //       const updatedLocation = prevLocationOptions.filter(
+    //         (opt) => opt !== item,
+    //       );
+    //       setValue("locationOptions", updatedLocation);
+    //       clearErrors("locationOptions");
+    //       return updatedLocation;
+    //     } else {
+    //       const updatedLocation = [...prevLocationOptions, item];
+    //       setValue("locationOptions", updatedLocation);
+    //       clearErrors("locationOptions");
+    //       return updatedLocation;
+    //     }
+    //   });
+    // }
   };
 
-  const handleDelete = (type: "skill" | "jobTitle", item: any) => {
+  const handleDelete = (type: "skill" | "jobTitle" | "language", item: any) => {
     if (type === "skill") {
       setSkills((prevSkills) => prevSkills.filter((skill) => skill !== item));
     } else if (type === "jobTitle") {
       setJobTitles((prevJobTitles) =>
         prevJobTitles.filter((jobTitle) => jobTitle !== item),
+      );
+    } else if (type === "language") {
+      setLanguages((prevLang) =>
+        prevLang.filter((prevLang) => prevLang !== item),
       );
     }
   };
@@ -161,15 +215,6 @@ export default function IndividualSignupPage1() {
     setValue("jobTitles", fellow?.jobTitles || []);
     setValue("locationOptions", fellow?.locationOptions || []);
   }, [fellow, setValue]);
-
-  // useEffect(() => {
-  //   setFellow({
-  //     ...fellow,
-  //     avatar: avatarOptions.url,
-  //     shadow: avatarOptions.shadow,
-  //     colorScheme: avatarOptions.colorScheme,
-  //   });
-  // }, [avatarOptions]);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -255,6 +300,9 @@ export default function IndividualSignupPage1() {
             width={75}
             height={75}
             alt="avatar"
+            onClick={() =>
+              showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
+            }
           />
           <button
             className="py-4 text-right text-xs opacity-80 hover:opacity-100"
@@ -279,7 +327,6 @@ export default function IndividualSignupPage1() {
               options
               searchData={skillsList}
               required
-              note="please include language"
             />
 
             {/* job titles generator */}
@@ -292,6 +339,21 @@ export default function IndividualSignupPage1() {
               colorArray={secondaryColorArray}
               name="jobTitle"
               variant="functional"
+              required
+            />
+
+            {/* language input & generator */}
+            <LabelGeneratorAndDisplayComp
+              handleAdd={handleAdd}
+              errors={errors.languages}
+              selectedArray={languages}
+              handleDelete={handleDelete}
+              placeholder="Your Spoken Language(s)"
+              colorArray={colorArray}
+              name="language"
+              variant="functional"
+              options
+              searchData={languageOptions}
               required
             />
           </div>

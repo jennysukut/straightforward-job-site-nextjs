@@ -1,5 +1,4 @@
 export const skillsList = [
-  // need to add language options here
   "Software Development",
   "Nursing",
   "Accounting",
