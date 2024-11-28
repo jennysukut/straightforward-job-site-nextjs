@@ -65,6 +65,8 @@ export default function IndividualSignupPage1() {
     CurrentSchemeType[]
   >([]);
 
+  console.log(locationOptions);
+
   const {
     handleSubmit,
     setValue,
@@ -118,6 +120,7 @@ export default function IndividualSignupPage1() {
           return [...prevLocationOptions, item];
         }
       });
+      setValue("locationOptions", locationOptions);
     }
   };
 
@@ -254,6 +257,7 @@ export default function IndividualSignupPage1() {
               options
               searchData={skillsList}
               required
+              note="please include language"
             />
 
             {/* job titles generator */}

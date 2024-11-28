@@ -60,7 +60,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
       <InfoBox
         variant="hollow"
         size="extraSmall"
-        aria="awards"
+        aria="populateDisplayField"
         canAdd
         width="extraWide"
         title={title}

@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
-import { useState } from "react";
 import { span } from "framer-motion/client";
+import { getRandomColorArray } from "@/utils/getRandomColorScheme";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
@@ -38,6 +38,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
+  const [colorOptions, setColorOptions] = useState(Array<any>);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("trying to find options");
@@ -68,6 +69,11 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
     setInputValue("");
   };
 
+  useEffect(() => {
+    const colors = getRandomColorArray(25);
+    setColorOptions(colors);
+  }, []);
+
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       {required && (
@@ -95,7 +101,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         />
       </InfoBox>
       {note && (
-        <span className="note align-end m-0 text-end italic text-olive">
+        <span className="note align-end -mb-6 -mt-4 text-end text-xs text-lime">
           {note}
         </span>
       )}
@@ -124,17 +130,17 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         </p>
       )}
       {selectedArray.length >= 1 ? (
-        <div className="SkillsContainer -mt-4 flex flex-wrap gap-2">
+        <div className="SkillsContainer -mt-2 flex flex-wrap gap-2">
           {selectedArray
-            .slice()
-            .reverse()
+            // .slice()
+            // .reverse()
             .map((item, index) => {
               return (
                 <SiteLabel
                   aria={item}
                   variant={variant}
                   key={index}
-                  colorScheme={colorArray[index % colorArray.length]}
+                  colorScheme={colorOptions[index % colorOptions.length]}
                   handleDelete={() => handleDelete(name, item)}
                 >
                   {item}
