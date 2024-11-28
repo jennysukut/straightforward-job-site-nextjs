@@ -11,6 +11,7 @@ interface ButtonOptionsComponent {
   buttons: any;
   selectedArray: any;
   handleAdd: Function;
+  required?: boolean;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -20,6 +21,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   buttons,
   selectedArray,
   handleAdd,
+  required,
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
 
@@ -35,7 +37,14 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   return (
     <div className="ButtonOptionsComponentContainer mt-2">
       <div className="ButtonsContainer mb-4 flex gap-6">
-        <h2 className="ButtonOptionsTitle">{title}</h2>
+        <h2 className="ButtonOptionsTitle text-jade">
+          {title}
+          {required && (
+            <span className="required flex-end m-0 pl-1 text-start align-baseline text-2xl text-jade">
+              *
+            </span>
+          )}
+        </h2>
         {buttons.map((button: string, index: any) => {
           return (
             <SiteButton

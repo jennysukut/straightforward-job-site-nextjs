@@ -16,6 +16,7 @@ interface InputComponentWithLabelOptions {
   colorArray: Array<any>;
   options?: boolean;
   defaultValue?: any;
+  required?: boolean;
 }
 
 const InputComponentWithLabelOptions: React.FC<
@@ -31,6 +32,7 @@ const InputComponentWithLabelOptions: React.FC<
   searchData,
   options,
   defaultValue,
+  required,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -58,6 +60,11 @@ const InputComponentWithLabelOptions: React.FC<
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
+      {required && (
+        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+          *
+        </p>
+      )}
       <InfoBox
         variant="hollow"
         size="extraSmall"

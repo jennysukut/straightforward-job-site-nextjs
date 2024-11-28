@@ -25,6 +25,7 @@ interface PopulateDisplayField {
   displayOption2?: string;
   addClasses?: string;
   displayPunct?: string;
+  required?: boolean;
 }
 
 // Define the interface for the items in selectedArray
@@ -44,12 +45,18 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   displayOption2,
   addClasses,
   displayPunct,
+  required,
   ...props
 }) => {
   const { showModal } = useModal();
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
+      {required && (
+        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+          *
+        </p>
+      )}
       <InfoBox
         variant="hollow"
         size="extraSmall"

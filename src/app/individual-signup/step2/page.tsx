@@ -117,7 +117,9 @@ export default function IndividualSignupPage2() {
           addModal={<AddExperienceModal />}
           displayOption1="title"
           displayOption2="companyName"
+          required
         />
+        {/* not sure if this experience field should be required? */}
 
         {/* Add + Display Education */}
         <PopulateDisplayField

@@ -34,7 +34,9 @@ const fellowSchema = z.object({
     .string()
     .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" }),
   country: z.string().min(3, { message: "Your Country is Required" }),
-  location: z.string().optional(),
+  location: z
+    .string()
+    .min(3, { message: "Your Specific Location is Required" }),
   locationOptions: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Location Type Selected" }),
@@ -162,6 +164,7 @@ export default function IndividualSignupPage1() {
               register={register}
               registerValue="name"
               defaultValue={fellow?.name}
+              required
             />
 
             {/* email input */}
@@ -172,6 +175,7 @@ export default function IndividualSignupPage1() {
               register={register}
               registerValue="email"
               defaultValue={fellow?.email}
+              required
             />
 
             {/* smallBio input */}
@@ -182,6 +186,7 @@ export default function IndividualSignupPage1() {
               register={register}
               registerValue="smallBio"
               defaultValue={fellow?.smallBio}
+              required
             />
 
             {/* country input */}
@@ -194,6 +199,7 @@ export default function IndividualSignupPage1() {
               colorArray={colorArray}
               options
               defaultValue={fellow?.country}
+              required
             />
 
             {/* location input */}
@@ -205,6 +211,7 @@ export default function IndividualSignupPage1() {
               registerValue="location"
               defaultValue={fellow?.location}
               addClasses="-mt-2"
+              required
             />
 
             <ButtonOptionsComponent
@@ -214,6 +221,7 @@ export default function IndividualSignupPage1() {
               selectedArray={locationOptions}
               handleAdd={handleAdd}
               errors={errors.locationOptions}
+              required
             />
           </form>
         </div>
@@ -245,6 +253,7 @@ export default function IndividualSignupPage1() {
               variant="functional"
               options
               searchData={skillsList}
+              required
             />
 
             {/* job titles generator */}
@@ -257,6 +266,7 @@ export default function IndividualSignupPage1() {
               colorArray={secondaryColorArray}
               name="jobTitle"
               variant="functional"
+              required
             />
           </div>
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
