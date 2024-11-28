@@ -10,12 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import Image from "next/image";
-import InfoBox from "@/components/infoBox";
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
 import InputComponent from "@/components/inputComponent";
-import { TextArea } from "@radix-ui/themes";
+import Avatar from "@/components/avatarComponent";
 
 const fellowSchema = z.object({
   links: z.array(z.string()).optional(),
@@ -88,13 +87,7 @@ export default function IndividualSignupPage4() {
           <h2 className="OptionalTitle text-lg text-jade">
             optional: links + more about you
           </h2>
-          <Image
-            className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
-            src="/avatars/orange-floral.svg"
-            width={75}
-            height={75}
-            alt="avatar"
-          />
+          <Avatar />
         </div>
 
         {/* Add + Display Links */}

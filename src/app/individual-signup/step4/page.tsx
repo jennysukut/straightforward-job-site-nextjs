@@ -15,6 +15,7 @@ import PopulateDisplayField from "@/components/populateDisplayField";
 import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
 import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
 import InputComponent from "@/components/inputComponent";
+import Avatar from "@/components/avatarComponent";
 
 const fellowSchema = z.object({
   passions: z.string().optional(),
@@ -126,13 +127,7 @@ export default function IndividualSignupPage4() {
           <h2 className="OptionalTitle text-lg text-jade">
             optional: personal + human details
           </h2>
-          <Image
-            className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
-            src="/avatars/orange-floral.svg"
-            width={75}
-            height={75}
-            alt="avatar"
-          />
+          <Avatar />
         </div>
 
         {/*  looking for input */}

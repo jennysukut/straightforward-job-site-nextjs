@@ -23,7 +23,9 @@ export interface Fellow {
   links?: Array<string>;
   aboutMe?: string;
   avatar?: any;
+  shadow?: string;
   locationOptions?: Array<string>;
+  colorScheme?: string;
 }
 
 interface FellowContextType {
@@ -36,7 +38,11 @@ const FellowContext = createContext<FellowContextType | undefined>(undefined);
 export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [fellow, setFellow] = useState<Fellow | null>(null);
+  const [fellow, setFellow] = useState<Fellow | null>({
+    avatar: "/avatars/question.svg",
+    shadow: "drop-shadow-olive",
+    colorScheme: "b1",
+  });
 
   return (
     <FellowContext.Provider value={{ fellow, setFellow }}>

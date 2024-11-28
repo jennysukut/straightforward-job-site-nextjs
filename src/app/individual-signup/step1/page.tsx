@@ -64,8 +64,11 @@ export default function IndividualSignupPage1() {
   const [secondaryColorArray, setSecondaryColorArray] = useState<
     CurrentSchemeType[]
   >([]);
-
-  console.log(locationOptions);
+  const [avatarOptions, setAvatarOptions] = useState({
+    url: fellow?.avatar,
+    shadow: fellow?.shadow,
+    colorScheme: fellow?.colorScheme,
+  });
 
   const {
     handleSubmit,
@@ -95,6 +98,9 @@ export default function IndividualSignupPage1() {
       locationOptions: locationOptions,
       skills: skills,
       jobTitles: jobTitles,
+      avatar: avatarOptions.url,
+      shadow: avatarOptions.shadow,
+      colorScheme: avatarOptions.colorScheme,
     });
     router.push("/individual-signup/step2");
   };
@@ -146,10 +152,24 @@ export default function IndividualSignupPage1() {
   useEffect(() => {
     setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
     setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
+    setLocationOptions(
+      Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
+    );
+
     // Update default values for the form
     setValue("skills", fellow?.skills || []);
     setValue("jobTitles", fellow?.jobTitles || []);
+    setValue("locationOptions", fellow?.locationOptions || []);
   }, [fellow, setValue]);
+
+  // useEffect(() => {
+  //   setFellow({
+  //     ...fellow,
+  //     avatar: avatarOptions.url,
+  //     shadow: avatarOptions.shadow,
+  //     colorScheme: avatarOptions.colorScheme,
+  //   });
+  // }, [avatarOptions]);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -230,15 +250,17 @@ export default function IndividualSignupPage1() {
         </div>
         <div className="IndividualSignupRight flex w-[35vw] flex-col">
           <Image
-            className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
-            src="/avatars/orange-floral.svg"
+            className={`AvatarImage -mt-14 justify-end self-end ${avatarOptions.shadow}`}
+            src={avatarOptions.url}
             width={75}
             height={75}
             alt="avatar"
           />
           <button
             className="py-4 text-right text-xs opacity-80 hover:opacity-100"
-            onClick={() => showModal(<AvatarModal />)}
+            onClick={() =>
+              showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
+            }
           >
             choose your avatar
           </button>

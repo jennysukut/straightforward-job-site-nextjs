@@ -2,10 +2,19 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Image from "next/image";
 import SiteButton from "../siteButton";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { FcCloseUpMode } from "react-icons/fc";
+import { useModal } from "@/contexts/ModalContext";
 
-export default function AvatarModal() {
+export default function AvatarModal({ setAvatarOptions }: any) {
+  const { hideModal } = useModal();
   const handleClick = (option: any) => {
     console.log(`this avatar ${option.title} was clicked`);
+    setAvatarOptions({
+      url: option.url,
+      shadow: option.dropShadow,
+      colorScheme: option.colorScheme,
+    });
+    hideModal();
   };
 
   const renderAvatarOptions = () => {

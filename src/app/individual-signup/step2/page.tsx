@@ -10,6 +10,7 @@ import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
 import PopulateDisplayField from "@/components/populateDisplayField";
+import Avatar from "@/components/avatarComponent";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -98,13 +99,7 @@ export default function IndividualSignupPage2() {
   return (
     <div className="IndividualSignupPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <Image
-          className="AvatarImage -mt-14 justify-end self-end drop-shadow-lime"
-          src="/avatars/orange-floral.svg"
-          width={75}
-          height={75}
-          alt="avatar"
-        />
+        <Avatar />
 
         {/* Add + Display Experience */}
         <PopulateDisplayField
