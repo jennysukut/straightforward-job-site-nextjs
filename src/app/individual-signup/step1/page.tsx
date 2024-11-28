@@ -37,14 +37,15 @@ const fellowSchema = z.object({
   location: z.string().optional(),
   locationOptions: z
     .array(z.string())
-    .min(0, { message: "You Must Have At Least 1 Location Type Selected" }),
+    .min(1, { message: "You Must Have At Least 1 Location Type Selected" }),
   skills: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
   jobTitles: z
     .array(z.string())
-    .min(0, { message: "You Must Have At Least 1 Job Title Listed" }),
+    .min(1, { message: "You Must Have At Least 1 Job Title Listed" }),
 });
+// I set the necessary number of skills and jobTitles to 1, but it gives me issues when I only add one item?
 
 type FormData = z.infer<typeof fellowSchema>;
 
@@ -208,7 +209,7 @@ export default function IndividualSignupPage1() {
 
             <ButtonOptionsComponent
               type="locationOption"
-              title="location types:"
+              title="location options:"
               buttons={["remote", "on-site", "hybrid"]}
               selectedArray={locationOptions}
               handleAdd={handleAdd}

@@ -4,6 +4,7 @@ import React from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import { useState } from "react";
+import { span } from "framer-motion/client";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
@@ -16,6 +17,7 @@ interface LabelGeneratorAndDisplayComp {
   variant: any;
   options?: boolean;
   searchData?: Array<any>;
+  note?: string;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -29,6 +31,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   variant,
   options,
   searchData,
+  note,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -84,8 +87,13 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
           onChange={handleInput}
         />
       </InfoBox>
+      {note && (
+        <span className="note align-end m-0 text-end italic text-olive">
+          {note}
+        </span>
+      )}
 
-      {/* place options/search info here? */}
+      {/* options/search info */}
       {options && (
         <div className="OptionsContainer -mb-2 -mt-4 flex flex-wrap gap-2">
           {filteredItems.map((item, index) => (

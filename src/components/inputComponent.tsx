@@ -2,8 +2,6 @@
 
 import React, { useState } from "react";
 import InfoBox from "./infoBox";
-import { useForm } from "react-hook-form";
-import SiteLabel from "./siteLabel";
 
 interface InputComponent {
   type: string;
