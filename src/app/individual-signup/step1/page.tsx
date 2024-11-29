@@ -19,6 +19,7 @@ import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayCompone
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import AddHandler from "@/components/addHandler";
+import DeleteHandler from "@/components/deleteHandler";
 
 import { countries } from "@/lib/countriesList";
 import { languageOptions } from "@/lib/languageOptions";
@@ -112,7 +113,7 @@ export default function IndividualSignupPage1() {
     router.push("/individual-signup/step2");
   };
 
-  // handlers for adding, updating, and deleting skills & job titles
+  // handlers for adding, updating, and deleting information tied to States
   const handleAdd = (
     type: "skills" | "jobTitles" | "country" | "locationOptions" | "languages",
     item: any,
@@ -137,21 +138,16 @@ export default function IndividualSignupPage1() {
     item: any,
   ) => {
     console.log("deleting");
-    if (type === "skills") {
-      setSkills((prevSkills) => prevSkills.filter((skill) => skill !== item));
-    } else if (type === "jobTitles") {
-      setJobTitles((prevJobTitles) =>
-        prevJobTitles.filter((jobTitle) => jobTitle !== item),
-      );
-    } else if (type === "languages") {
-      setLanguages((prevLang) =>
-        prevLang.filter((prevLang) => prevLang !== item),
-      );
-    } else if (type === "locationOptions") {
-      setLocationOptions((prevLocations) =>
-        prevLocations.filter((location) => location !== item),
-      );
-    }
+    DeleteHandler({
+      item,
+      type,
+      setFunctions: {
+        skills: setSkills,
+        jobTitles: setJobTitles,
+        locationOptions: setLocationOptions,
+        languages: setLanguages,
+      },
+    });
   };
 
   // generating two separate random color arrays to loop through for our labels
