@@ -114,18 +114,18 @@ export default function IndividualSignupPage1() {
 
   // handlers for adding, updating, and deleting skills & job titles
   const handleAdd = (
-    type: "skill" | "jobTitle" | "country" | "locationOption" | "language",
+    type: "skills" | "jobTitles" | "country" | "locationOptions" | "languages",
     item: any,
   ) => {
-    console.log("handle add - ing");
+    console.log("handle add - ing", type);
     AddHandler({
       item,
       type,
       setFunctions: {
-        skill: setSkills,
-        jobTitle: setJobTitles,
-        locationOption: setLocationOptions,
-        language: setLanguages,
+        skills: setSkills,
+        jobTitles: setJobTitles,
+        locationOptions: setLocationOptions,
+        languages: setLanguages,
       },
       setValue,
       clearErrors,
@@ -133,21 +133,21 @@ export default function IndividualSignupPage1() {
   };
 
   const handleDelete = (
-    type: "skill" | "jobTitle" | "language" | "locationOption",
+    type: "skills" | "jobTitles" | "languages" | "locationOptions",
     item: any,
   ) => {
     console.log("deleting");
-    if (type === "skill") {
+    if (type === "skills") {
       setSkills((prevSkills) => prevSkills.filter((skill) => skill !== item));
-    } else if (type === "jobTitle") {
+    } else if (type === "jobTitles") {
       setJobTitles((prevJobTitles) =>
         prevJobTitles.filter((jobTitle) => jobTitle !== item),
       );
-    } else if (type === "language") {
+    } else if (type === "languages") {
       setLanguages((prevLang) =>
         prevLang.filter((prevLang) => prevLang !== item),
       );
-    } else if (type === "locationOption") {
+    } else if (type === "locationOptions") {
       setLocationOptions((prevLocations) =>
         prevLocations.filter((location) => location !== item),
       );
@@ -243,7 +243,7 @@ export default function IndividualSignupPage1() {
             />
 
             <ButtonOptionsComponent
-              type="locationOption"
+              type="locationOptions"
               title="location options:"
               buttons={["remote", "on-site", "hybrid"]}
               selectedArray={locationOptions}
@@ -283,7 +283,7 @@ export default function IndividualSignupPage1() {
               handleDelete={handleDelete}
               placeholder="Your Skills"
               colorArray={colorArray}
-              name="skill"
+              name="skills"
               variant="functional"
               options
               searchData={skillsList}
@@ -298,7 +298,7 @@ export default function IndividualSignupPage1() {
               handleDelete={handleDelete}
               placeholder="Job Titles For You"
               colorArray={secondaryColorArray}
-              name="jobTitle"
+              name="jobTitles"
               variant="functional"
               required
             />
@@ -311,7 +311,7 @@ export default function IndividualSignupPage1() {
               handleDelete={handleDelete}
               placeholder="Your Spoken Language(s)"
               colorArray={colorArray}
-              name="language"
+              name="languages"
               variant="functional"
               options
               searchData={languageOptions}
