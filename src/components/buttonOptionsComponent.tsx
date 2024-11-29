@@ -12,6 +12,7 @@ interface ButtonOptionsComponent {
   selectedArray: any;
   handleAdd: Function;
   required?: boolean;
+  handleDelete: Function;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -22,11 +23,16 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   selectedArray,
   handleAdd,
   required,
+  handleDelete,
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
 
   const buttonClick = (button: string) => {
-    handleAdd(type, button);
+    if (selectedArray.includes(button)) {
+      handleDelete(type, button);
+    } else {
+      handleAdd(type, button);
+    }
   };
 
   useEffect(() => {

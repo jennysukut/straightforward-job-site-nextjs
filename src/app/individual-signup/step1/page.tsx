@@ -117,6 +117,7 @@ export default function IndividualSignupPage1() {
     type: "skill" | "jobTitle" | "country" | "locationOption" | "language",
     item: any,
   ) => {
+    console.log("handle add - ing");
     AddHandler({
       item,
       type,
@@ -129,58 +130,13 @@ export default function IndividualSignupPage1() {
       setValue,
       clearErrors,
     });
-
-    // if (type === "skill") {
-    //   setSkills((prevSkills) => {
-    //     const updatedSkills = [...prevSkills, item];
-    //     setValue("skills", updatedSkills);
-    //     clearErrors("skills");
-    //     return updatedSkills;
-    //   });
-    // } else if (type === "jobTitle") {
-    //   // AddHandler({
-    //   //   item,
-    //   //   type,
-    //   //   setFunction: setJobTitles,
-    //   //   setValue,
-    //   //   clearErrors,
-    //   // });
-    //   setJobTitles((prevJobTitles) => {
-    //     const updatedJobTitles = [...prevJobTitles, item];
-    //     setValue("jobTitles", updatedJobTitles);
-    //     clearErrors("jobTitles");
-    //     return updatedJobTitles;
-    //   });
-    // } else if (type === "country") {
-    //   setValue("country", item);
-    //   clearErrors("country");
-    // } else if (type === "language") {
-    //   setLanguages((prevLang) => {
-    //     const updatedLanguages = [...prevLang, item];
-    //     setValue("languages", updatedLanguages);
-    //     clearErrors("languages");
-    //     return updatedLanguages;
-    //   });
-    // } else if (type === "locationOption") {
-    //   setLocationOptions((prevLocationOptions) => {
-    //     if (prevLocationOptions.includes(item)) {
-    //       const updatedLocation = prevLocationOptions.filter(
-    //         (opt) => opt !== item,
-    //       );
-    //       setValue("locationOptions", updatedLocation);
-    //       clearErrors("locationOptions");
-    //       return updatedLocation;
-    //     } else {
-    //       const updatedLocation = [...prevLocationOptions, item];
-    //       setValue("locationOptions", updatedLocation);
-    //       clearErrors("locationOptions");
-    //       return updatedLocation;
-    //     }
-    //   });
-    // }
   };
 
-  const handleDelete = (type: "skill" | "jobTitle" | "language", item: any) => {
+  const handleDelete = (
+    type: "skill" | "jobTitle" | "language" | "locationOption",
+    item: any,
+  ) => {
+    console.log("deleting");
     if (type === "skill") {
       setSkills((prevSkills) => prevSkills.filter((skill) => skill !== item));
     } else if (type === "jobTitle") {
@@ -190,6 +146,10 @@ export default function IndividualSignupPage1() {
     } else if (type === "language") {
       setLanguages((prevLang) =>
         prevLang.filter((prevLang) => prevLang !== item),
+      );
+    } else if (type === "locationOption") {
+      setLocationOptions((prevLocations) =>
+        prevLocations.filter((location) => location !== item),
       );
     }
   };
@@ -288,6 +248,7 @@ export default function IndividualSignupPage1() {
               buttons={["remote", "on-site", "hybrid"]}
               selectedArray={locationOptions}
               handleAdd={handleAdd}
+              handleDelete={handleDelete}
               errors={errors.locationOptions}
               required
             />

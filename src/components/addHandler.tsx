@@ -16,6 +16,9 @@ export default function AddHandler({
       return updatedList;
     });
   } else {
-    console.warn(`No function found for type: ${type}`);
+    // if there isn't a type of that in setFunctions, we can simply setValue and clearErrors based on type
+    setValue(type, item);
+    clearErrors(type);
+    console.log("this isn't an array");
   }
 }
