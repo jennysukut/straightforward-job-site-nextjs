@@ -14,6 +14,7 @@ import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/
 import Avatar from "@/components/avatarComponent";
 import DeleteHandler from "@/components/deleteHandler";
 import UpdateHandler from "@/components/updateHandler";
+import AddHandler from "@/components/addHandler";
 
 export default function IndividualSignupPage3() {
   const { fellow, setFellow } = useFellow();
@@ -34,28 +35,26 @@ export default function IndividualSignupPage3() {
     type: "award" | "experienceLevel" | "accomplishment",
     data: any,
   ) => {
-    const newData = {
-      ...data,
-      id:
-        type === "experienceLevel"
-          ? experienceLevelCounter
-          : type === "award"
-            ? awardCounter
-            : accomplishmentCounter,
-    };
-    if (type === "experienceLevel") {
-      setExperienceLevelCounter((prev) => prev + 1);
-      setExperienceLevels((prevExpLev) => [...prevExpLev, newData]);
-    } else if (type === "award") {
-      setAwardCounter((prev) => prev + 1);
-      setAwards((prevAwards) => [...prevAwards, newData]);
-    } else {
-      setAccomplishmentCounter((prev) => prev + 1);
-      setAccomplishments((prevAccomplishment) => [
-        ...prevAccomplishment,
-        newData,
-      ]);
-    }
+    AddHandler({
+      item: data,
+      type,
+      setFunctions: {
+        award: setAwards,
+        experienceLevel: setExperienceLevels,
+        accomplishment: setAccomplishments,
+      },
+      hasId: true,
+      counterFunctions: {
+        award: setAwardCounter,
+        experienceLevel: setExperienceLevelCounter,
+        accomplishment: setAccomplishmentCounter,
+      },
+      counterDetails: {
+        award: awardCounter,
+        experienceLevel: experienceLevelCounter,
+        accomplishment: accomplishmentCounter,
+      },
+    });
   };
 
   const handleUpdate = (
