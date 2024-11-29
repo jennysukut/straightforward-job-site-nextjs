@@ -11,6 +11,7 @@ import AddExperienceModal from "@/components/modals/profilePopulationModals/addE
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import Avatar from "@/components/avatarComponent";
+import DeleteHandler from "@/components/deleteHandler";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -63,15 +64,15 @@ export default function IndividualSignupPage2() {
   };
 
   const handleDelete = (type: "experience" | "education", id: number) => {
-    if (type === "experience") {
-      setExperienceDetails((prevDetails) =>
-        prevDetails.filter((exp) => exp.id !== id),
-      );
-    } else {
-      setEducationDetails((prevDetails) =>
-        prevDetails.filter((edu) => edu.id !== id),
-      );
-    }
+    DeleteHandler({
+      item: id,
+      type,
+      setFunctions: {
+        experience: setExperienceDetails,
+        education: setEducationDetails,
+      },
+      hasId: true,
+    });
   };
 
   const handleSubmit = () => {

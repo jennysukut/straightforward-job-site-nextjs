@@ -12,6 +12,8 @@ import PopulateDisplayField from "@/components/populateDisplayField";
 import AddExperienceLevelModal from "@/components/modals/profilePopulationModals/addExperienceLevels";
 import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/addAccomplishmentsModal";
 import Avatar from "@/components/avatarComponent";
+import DeleteHandler from "@/components/deleteHandler";
+import UpdateHandler from "@/components/updateHandler";
 
 export default function IndividualSignupPage3() {
   const { fellow, setFellow } = useFellow();
@@ -62,27 +64,17 @@ export default function IndividualSignupPage3() {
     id: any,
   ) => {
     console.log("trying to update");
-    if (type === "experienceLevel") {
-      setExperienceLevels((prevDetails) =>
-        prevDetails.map((exp) =>
-          exp.id === id ? { ...exp, ...updatedData } : exp,
-        ),
-      );
-    } else if (type === "award") {
-      setAwards((prevDetails) =>
-        prevDetails.map((award) =>
-          award.id === id ? { ...award, ...updatedData } : award,
-        ),
-      );
-    } else if (type === "accomplishment") {
-      setAccomplishments((prevDetails) =>
-        prevDetails.map((accomplishment) =>
-          accomplishment.id === id
-            ? { ...accomplishment, ...updatedData }
-            : accomplishment,
-        ),
-      );
-    }
+
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        award: setAwards,
+        experienceLevel: setExperienceLevels,
+        accomplishment: setAccomplishments,
+      },
+    });
   };
 
   const handleDelete = (
@@ -90,19 +82,16 @@ export default function IndividualSignupPage3() {
     id: any,
   ) => {
     console.log("trying to delete");
-    if (type === "experienceLevel") {
-      setExperienceLevels((prevDetails) =>
-        prevDetails.filter((exp) => exp.id !== id),
-      );
-    } else if (type === "award") {
-      setAwards((prevDetails) =>
-        prevDetails.filter((award) => award.id !== id),
-      );
-    } else if (type === "accomplishment") {
-      setAccomplishments((prevDetails) =>
-        prevDetails.filter((accomplishment) => accomplishment.id !== id),
-      );
-    }
+    DeleteHandler({
+      item: id,
+      type,
+      setFunctions: {
+        experienceLevel: setExperienceLevels,
+        award: setAwards,
+        accomplishment: setAccomplishments,
+      },
+      hasId: true,
+    });
   };
 
   const handleSubmit = () => {
