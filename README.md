@@ -43,6 +43,9 @@
 
   - InfoBox // this component is used for most information on our site. It has options for canAdd, canEdit, canSearch, etc... for manipulating to use for different types of displays. The InfoBox is used inside of other components as well, like the InputComponent.
   - SiteLabel // this component is a simple non-button display element that has options to display, add, or delete data, depending on props passed to it.
+  - AddHandler // this function will utilize props to call specific setFunctions, setValue and clearError functions when new information depending on the type passed into it.
+  - UpdateHandler // this function takes an item and updatedData and replaces the previous item with updatedData
+  - DeleteHandler // this function uses either Ids or a specific setFunction to search and delete selected data.
 
 - Other General Components:
   - NavBar & Footer // self-explanatory
