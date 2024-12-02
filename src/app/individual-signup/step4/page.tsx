@@ -16,6 +16,9 @@ import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyM
 import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
 import InputComponent from "@/components/inputComponent";
 import Avatar from "@/components/avatarComponent";
+import DeleteHandler from "@/components/deleteHandler";
+import UpdateHandler from "@/components/updateHandler";
+import AddHandler from "@/components/addHandler";
 
 const fellowSchema = z.object({
   passions: z.string().optional(),
@@ -52,17 +55,23 @@ export default function IndividualSignupPage4() {
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "hobby" | "bookOrQuote", data: any) => {
-    const newData = {
-      ...data,
-      id: type === "hobby" ? hobbyCounter : bookOrQuoteCounter,
-    };
-    if (type === "hobby") {
-      setHobbyCounter((prev) => prev + 1);
-      setHobbies((prevHobbies) => [...prevHobbies, newData]);
-    } else {
-      setBookOrQuoteCounter((prev) => prev + 1);
-      setBookOrQuote((prevBookOrQuote) => [...prevBookOrQuote, newData]);
-    }
+    AddHandler({
+      item: data,
+      type,
+      setFunctions: {
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
+      },
+      hasId: true,
+      counterFunctions: {
+        hobby: setHobbyCounter,
+        bookOrQuote: setBookOrQuoteCounter,
+      },
+      counterDetails: {
+        hobby: hobbyCounter,
+        bookOrQuote: bookOrQuoteCounter,
+      },
+    });
   };
 
   const handleUpdate = (
@@ -70,33 +79,27 @@ export default function IndividualSignupPage4() {
     updatedData: any,
     id: any,
   ) => {
-    if (type === "hobby") {
-      setHobbies((prevHobbies) =>
-        prevHobbies.map((hobby) =>
-          hobby.id === id ? { ...hobby, ...updatedData } : hobby,
-        ),
-      );
-    } else if (type === "bookOrQuote") {
-      setBookOrQuote((prevBookOrQuote) =>
-        prevBookOrQuote.map((bookOrQuote) =>
-          bookOrQuote.id === id
-            ? { ...bookOrQuote, ...updatedData }
-            : bookOrQuote,
-        ),
-      );
-    }
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
+      },
+    });
   };
 
   const handleDelete = (type: "hobby" | "bookOrQuote", id: any) => {
-    if (type === "hobby") {
-      setHobbies((prevHobbies) =>
-        prevHobbies.filter((hobby) => hobby.id !== id),
-      );
-    } else if (type === "bookOrQuote") {
-      setBookOrQuote((prevBookOrQuote) =>
-        prevBookOrQuote.filter((bookOrQuote) => bookOrQuote.id !== id),
-      );
-    }
+    DeleteHandler({
+      item: id,
+      type,
+      setFunctions: {
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
+      },
+      hasId: true,
+    });
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -147,7 +150,7 @@ export default function IndividualSignupPage4() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          title={`Your Hobbies / Fun Pastimes`}
+          title={`Your Hobbies / Pastimes`}
           aria="hobbiesInfo"
           addModal={<AddHobbyModal />}
           selectedArray={hobbies}

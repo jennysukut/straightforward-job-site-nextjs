@@ -3,18 +3,19 @@
 import * as z from "zod";
 
 import { useState, useEffect } from "react";
-import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import Image from "next/image";
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
 import InputComponent from "@/components/inputComponent";
 import Avatar from "@/components/avatarComponent";
+import AddHandler from "@/components/addHandler";
+import UpdateHandler from "@/components/updateHandler";
+import DeleteHandler from "@/components/deleteHandler";
 
 const fellowSchema = z.object({
   links: z.array(z.string()).optional(),
@@ -34,7 +35,6 @@ export default function IndividualSignupPage4() {
 
   const {
     handleSubmit,
-    setValue,
     register,
     formState: { errors },
   } = useForm<FormData>({
@@ -42,16 +42,33 @@ export default function IndividualSignupPage4() {
   });
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (data: any) => {
-    const newData = {
-      ...data,
-      id: linkCounter,
-    };
-    setLinkCounter((prev) => prev + 1);
-    setLinks((prevLinks) => [...prevLinks, newData]);
+  const handleAdd = (type: "link", data: any) => {
+    AddHandler({
+      item: data,
+      type,
+      setFunctions: {
+        link: setLinks,
+      },
+      hasId: true,
+      counterFunctions: {
+        link: setLinkCounter,
+      },
+      counterDetails: {
+        link: linkCounter,
+      },
+    });
   };
 
-  const handleUpdate = (updatedData: any, id: any) => {
+  const handleUpdate = (type: "link", updatedData: any, id: any) => {
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        link: setLinks,
+      },
+    });
+
     setLinks((prevLinks) =>
       prevLinks.map((link) =>
         link.id === id ? { ...link, ...updatedData } : link,
@@ -59,8 +76,15 @@ export default function IndividualSignupPage4() {
     );
   };
 
-  const handleDelete = (id: any) => {
-    setLinks((prevLinks) => prevLinks.filter((link) => link.id !== id));
+  const handleDelete = (type: "link", id: any) => {
+    DeleteHandler({
+      item: id,
+      type,
+      setFunctions: {
+        link: setLinks,
+      },
+      hasId: true,
+    });
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {

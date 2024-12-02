@@ -50,9 +50,9 @@ export default function AddLinkModal({
     setDisabledButton(true);
 
     if (canDelete) {
-      handleUpdate(data, id);
+      handleUpdate(type, data, itemInfo.id);
     } else {
-      handleAdd(data);
+      handleAdd(type, data);
     }
 
     setTimeout(() => {
@@ -67,11 +67,12 @@ export default function AddLinkModal({
   };
 
   const continueDelete = () => {
-    handleDelete(type, id);
+    handleDelete(type, itemInfo.id);
     hideModal();
   };
 
-  const deleteItem = () => {
+  const deleteItem = (event: React.MouseEvent) => {
+    event.preventDefault();
     showModal(
       <DeleteConfirmationModal
         continueDelete={continueDelete}
@@ -103,7 +104,8 @@ export default function AddLinkModal({
         <label htmlFor="award">link type*</label>
         <input
           type="text"
-          value={linkType}
+          defaultValue={itemInfo?.linkType}
+          // value={linkType}
           placeholder="Personal Website / Portfolio / Instagram / Etc..."
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {
@@ -124,7 +126,8 @@ export default function AddLinkModal({
         </label>
         <input
           type="url"
-          value={link}
+          // value={link}
+          defaultValue={itemInfo?.link}
           placeholder="http://website.com"
           className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
           onChange={(e) => {

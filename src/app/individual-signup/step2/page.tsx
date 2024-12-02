@@ -12,6 +12,8 @@ import AddEducationModal from "@/components/modals/profilePopulationModals/addEd
 import PopulateDisplayField from "@/components/populateDisplayField";
 import Avatar from "@/components/avatarComponent";
 import DeleteHandler from "@/components/deleteHandler";
+import AddHandler from "@/components/addHandler";
+import UpdateHandler from "@/components/updateHandler";
 
 export default function IndividualSignupPage2() {
   const { showModal } = useModal();
@@ -30,17 +32,23 @@ export default function IndividualSignupPage2() {
 
   // handlers for adding, updating, and deleting experiences and education details
   const handleAdd = (type: "experience" | "education", data: any) => {
-    const newData = {
-      ...data,
-      id: type === "experience" ? experienceCounter : educationCounter,
-    };
-    if (type === "experience") {
-      setExperienceCounter((prev) => prev + 1);
-      setExperienceDetails((prevDetails) => [...prevDetails, newData]);
-    } else {
-      setEducationCounter((prev) => prev + 1);
-      setEducationDetails((prevDetails) => [...prevDetails, newData]);
-    }
+    AddHandler({
+      item: data,
+      type,
+      setFunctions: {
+        experience: setExperienceDetails,
+        education: setEducationDetails,
+      },
+      hasId: true,
+      counterFunctions: {
+        experience: setExperienceCounter,
+        education: setEducationCounter,
+      },
+      counterDetails: {
+        experience: experienceCounter,
+        education: educationCounter,
+      },
+    });
   };
 
   const handleUpdate = (
@@ -48,19 +56,15 @@ export default function IndividualSignupPage2() {
     updatedData: any,
     id: any,
   ) => {
-    if (type === "experience") {
-      setExperienceDetails((prevDetails) =>
-        prevDetails.map((exp) =>
-          exp.id === id ? { ...exp, ...updatedData } : exp,
-        ),
-      );
-    } else {
-      setEducationDetails((prevDetails) =>
-        prevDetails.map((edu) =>
-          edu.id === id ? { ...edu, ...updatedData } : edu,
-        ),
-      );
-    }
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        experience: setExperienceDetails,
+        education: setEducationDetails,
+      },
+    });
   };
 
   const handleDelete = (type: "experience" | "education", id: number) => {
