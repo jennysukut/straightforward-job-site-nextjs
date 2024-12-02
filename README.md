@@ -1,4 +1,25 @@
-## About SFJS
+## Getting Started
+
+Clone the repository:
+https://github.com/jennysukut/straightforward-job-site-nextjs.git
+Navigate to the project directory:
+cd straightforward-job-site-nextjs
+Install dependencies:
+npm install
+Run the development server:
+npm run dev
+
+# or
+
+yarn dev
+
+# or
+
+pnpm dev
+
+# or
+
+bun dev
 
 ## Our Current Pages
 
