@@ -84,6 +84,7 @@ export default function IndividualSignupPage4() {
     setLocationOptions(
       Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
     );
+    setValue("locationOptions", fellow?.locationOptions || []);
   }, []);
 
   return (

@@ -164,7 +164,7 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h1 className="FellowName -mb-4 ml-8">
+            <h1 className="FellowName -mb-4 ml-8 tracking-superwide">
               {fellow?.name || "Test Name"}
             </h1>
 

@@ -106,7 +106,7 @@ export default function IndividualSignupPage5() {
       bookOrQuote: bookOrQuote,
       petDetails: data.petDetails,
     });
-    router.push("/individual-signup/step5");
+    router.push("/individual-signup/step6");
   };
 
   // Setting Details on page from fellowContext
