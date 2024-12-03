@@ -64,9 +64,13 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   };
 
   const addItem = (name: any, item?: any) => {
-    handleAdd(name, item || inputValue);
-    setFilteredItems([]);
-    setInputValue("");
+    if (inputValue.length >= 2) {
+      handleAdd(name, item || inputValue);
+      setFilteredItems([]);
+      setInputValue("");
+    } else {
+      console.log("Input value must be at least 2 characters long.");
+    }
   };
 
   useEffect(() => {
@@ -105,10 +109,15 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
           {note}
         </span>
       )}
+      {errors?.message && (
+        <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+          {errors.message.toString()}
+        </p>
+      )}
 
       {/* options/search info */}
       {options && (
-        <div className="OptionsContainer -mb-2 -mt-4 flex flex-wrap gap-2">
+        <div className="OptionsContainer -mb-4 -mt-4 flex flex-wrap gap-2">
           {filteredItems.map((item, index) => (
             <SiteLabel
               aria={item}
@@ -124,13 +133,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         </div>
       )}
 
-      {errors?.message && (
-        <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
-          {errors.message.toString()}
-        </p>
-      )}
       {selectedArray.length >= 1 ? (
-        <div className="SkillsContainer -mt-2 flex flex-wrap gap-2">
+        <div className="SkillsContainer -mb-2 -mt-2 flex flex-wrap gap-2">
           {selectedArray
             // .slice()
             // .reverse()

@@ -3,6 +3,7 @@
 import * as z from "zod";
 
 import { useState, useEffect } from "react";
+import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,78 +11,88 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
-import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
+import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
+import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
 import InputComponent from "@/components/inputComponent";
 import Avatar from "@/components/avatarComponent";
-import AddHandler from "@/components/addHandler";
-import UpdateHandler from "@/components/updateHandler";
 import DeleteHandler from "@/components/deleteHandler";
+import UpdateHandler from "@/components/updateHandler";
+import AddHandler from "@/components/addHandler";
+import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 
 const fellowSchema = z.object({
-  links: z.array(z.string()).optional(),
-  aboutMe: z.string().optional(),
+  hobbies: z.array(z.string()).optional(),
+  bookOrQuote: z.array(z.string()).optional(),
+  petDetails: z.string().optional(),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
 
-export default function IndividualSignupPage4() {
+export default function IndividualSignupPage5() {
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [links, setLinks] = useState<any[]>([]);
-  const [linkCounter, setLinkCounter] = useState(1);
-  const [aboutMe, setAboutMe] = useState("");
+  const [hobbies, setHobbies] = useState<any[]>([]);
+  const [bookOrQuote, setBookOrQuote] = useState<any[]>([]);
+  const [petDetails, setPetDetails] = useState(fellow?.petDetails || "");
+  const [hobbyCounter, setHobbyCounter] = useState(1);
+  const [bookOrQuoteCounter, setBookOrQuoteCounter] = useState(1);
 
   const {
     handleSubmit,
+    setValue,
     register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
+    defaultValues: {},
   });
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "link", data: any) => {
+  const handleAdd = (type: "hobby" | "bookOrQuote", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        link: setLinks,
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
       },
       hasId: true,
       counterFunctions: {
-        link: setLinkCounter,
+        hobby: setHobbyCounter,
+        bookOrQuote: setBookOrQuoteCounter,
       },
       counterDetails: {
-        link: linkCounter,
+        hobby: hobbyCounter,
+        bookOrQuote: bookOrQuoteCounter,
       },
     });
   };
 
-  const handleUpdate = (type: "link", updatedData: any, id: any) => {
+  const handleUpdate = (
+    type: "hobby" | "bookOrQuote",
+    updatedData: any,
+    id: any,
+  ) => {
     UpdateHandler({
       item: id,
       updatedData,
       type,
       setFunctions: {
-        link: setLinks,
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
       },
     });
-
-    setLinks((prevLinks) =>
-      prevLinks.map((link) =>
-        link.id === id ? { ...link, ...updatedData } : link,
-      ),
-    );
   };
 
-  const handleDelete = (type: "link", id: any) => {
+  const handleDelete = (type: "hobby" | "bookOrQuote", id: any) => {
     DeleteHandler({
       item: id,
       type,
       setFunctions: {
-        link: setLinks,
+        hobby: setHobbies,
+        bookOrQuote: setBookOrQuote,
       },
       hasId: true,
     });
@@ -89,55 +100,68 @@ export default function IndividualSignupPage4() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data.aboutMe);
     setFellow({
       ...fellow,
-      links: links,
-      aboutMe: data.aboutMe,
+      hobbies: hobbies,
+      bookOrQuote: bookOrQuote,
+      petDetails: data.petDetails,
     });
-    router.push("/individual-signup/step4");
+    router.push("/individual-signup/step5");
   };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setLinks(Array.isArray(fellow?.links) ? fellow.links : []);
-    setAboutMe(fellow?.aboutMe || "");
+    setHobbies(Array.isArray(fellow?.hobbies) ? fellow.hobbies : []);
+    setBookOrQuote(
+      Array.isArray(fellow?.bookOrQuote) ? fellow.bookOrQuote : [],
+    );
   }, []);
 
   return (
-    <div className="IndividualSignupPage5 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div className="IndividualSignupPage4 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg text-jade">
-            optional: links + more about you
+            optional: human details
           </h2>
           <Avatar />
         </div>
 
-        {/* Add + Display Links */}
+        {/* Add + Display Hobbies */}
         <PopulateDisplayField
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           handleUpdate={handleUpdate}
-          title={`Your Portfolio / Website / Social Media Links`}
-          aria="linksInfo"
-          addModal={<AddLinkModal />}
-          selectedArray={links}
-          displayOption1="linkType"
-          displayOption2="link"
-          displayPunct=":"
+          title={`Your Hobbies / Pastimes`}
+          aria="hobbiesInfo"
+          addModal={<AddHobbyModal />}
+          selectedArray={hobbies}
+          displayOption1="hobbyTitle"
         />
 
-        {/* more about me input */}
+        {/* Add + Display Book or Quote */}
+        <PopulateDisplayField
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          handleUpdate={handleUpdate}
+          title={`Some Books / Quotes You Enjoy`}
+          aria="bookOrQuote"
+          addModal={<AddBookOrQuoteModal />}
+          selectedArray={bookOrQuote}
+          displayOption1="bookOrQuote"
+          displayOption2="author"
+          displayPunct=" - "
+        />
+
+        {/* pet details input */}
         <InputComponent
           type="text"
-          placeholderText="Optional: Share more about you..."
-          errors={errors.aboutMe}
+          placeholderText="Are you a cat person or a dog person? Do you have any pets?"
+          errors={errors.petDetails}
           register={register}
-          registerValue="aboutMe"
-          defaultValue={fellow?.aboutMe}
+          registerValue="petDetails"
+          defaultValue={fellow?.petDetails}
           width="full"
-          size="tall"
         />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
@@ -148,7 +172,7 @@ export default function IndividualSignupPage4() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Generating Your Profile..." : "continue"}
+            {disabledButton ? "Continuing..." : "continue"}
           </SiteButton>
         </div>
       </div>

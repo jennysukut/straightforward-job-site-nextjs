@@ -13,6 +13,8 @@ interface ButtonOptionsComponent {
   handleAdd: Function;
   required?: boolean;
   handleDelete: Function;
+  classesForButtons?: string;
+  addClasses?: string;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -24,6 +26,8 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   handleAdd,
   required,
   handleDelete,
+  classesForButtons,
+  addClasses,
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
 
@@ -41,8 +45,8 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   }, []);
 
   return (
-    <div className="ButtonOptionsComponentContainer mt-2">
-      <div className="ButtonsContainer mb-4 flex gap-6">
+    <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
+      <div className="ButtonsContainer mb-4 flex justify-center gap-6">
         <h2 className="ButtonOptionsTitle text-jade">
           {title}
           {required && (
@@ -59,7 +63,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
               aria={button}
               colorScheme={colorArray[index % colorArray.length]}
               onClick={() => buttonClick(button)}
-              addClasses="text-nowrap"
+              addClasses={`text-nowrap ${classesForButtons || ""}`}
               isSelected={selectedArray.includes(button)}
             >
               {button}

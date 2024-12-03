@@ -8,8 +8,8 @@ export default function Avatar() {
     <Image
       className={`AvatarImage -mt-14 justify-end self-end ${fellow?.shadow}`}
       src={fellow?.avatar}
-      width={75}
-      height={75}
+      width={65}
+      height={65}
       alt="avatar"
     />
   );

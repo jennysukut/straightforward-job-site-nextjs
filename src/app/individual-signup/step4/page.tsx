@@ -3,29 +3,24 @@
 import * as z from "zod";
 
 import { useState, useEffect } from "react";
-import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import Image from "next/image";
 import SiteButton from "@/components/siteButton";
-import PopulateDisplayField from "@/components/populateDisplayField";
-import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
-import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
 import InputComponent from "@/components/inputComponent";
 import Avatar from "@/components/avatarComponent";
 import DeleteHandler from "@/components/deleteHandler";
-import UpdateHandler from "@/components/updateHandler";
 import AddHandler from "@/components/addHandler";
+import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 
 const fellowSchema = z.object({
   passions: z.string().optional(),
   lookingFor: z.string().optional(),
-  hobbies: z.array(z.string()).optional(),
-  bookOrQuote: z.array(z.string()).optional(),
-  petDetails: z.string().optional(),
+  locationOptions: z
+    .array(z.string())
+    .min(1, { message: "You Must Have At Least 1 Location Type Selected" }),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
@@ -35,70 +30,41 @@ export default function IndividualSignupPage4() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [passions, setPassions] = useState(fellow?.passions || "");
-  const [lookingFor, setLookingFor] = useState(fellow?.lookingFor || "");
-  const [hobbies, setHobbies] = useState<any[]>([]);
-  const [bookOrQuote, setBookOrQuote] = useState<any[]>([]);
-  const [petDetails, setPetDetails] = useState(fellow?.petDetails || "");
-  const [hobbyCounter, setHobbyCounter] = useState(1);
-  const [bookOrQuoteCounter, setBookOrQuoteCounter] = useState(1);
+  const [locationOptions, setLocationOptions] = useState<string[]>([]);
 
   const {
     handleSubmit,
     setValue,
     register,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
-    defaultValues: {},
+    defaultValues: {
+      locationOptions: locationOptions,
+    },
   });
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "hobby" | "bookOrQuote", data: any) => {
+  const handleAdd = (type: "locationOptions", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        hobby: setHobbies,
-        bookOrQuote: setBookOrQuote,
+        locationOptions: setLocationOptions,
       },
-      hasId: true,
-      counterFunctions: {
-        hobby: setHobbyCounter,
-        bookOrQuote: setBookOrQuoteCounter,
-      },
-      counterDetails: {
-        hobby: hobbyCounter,
-        bookOrQuote: bookOrQuoteCounter,
-      },
+      setValue,
+      clearErrors,
     });
   };
 
-  const handleUpdate = (
-    type: "hobby" | "bookOrQuote",
-    updatedData: any,
-    id: any,
-  ) => {
-    UpdateHandler({
-      item: id,
-      updatedData,
-      type,
-      setFunctions: {
-        hobby: setHobbies,
-        bookOrQuote: setBookOrQuote,
-      },
-    });
-  };
-
-  const handleDelete = (type: "hobby" | "bookOrQuote", id: any) => {
+  const handleDelete = (type: "locationOptions", id: any) => {
     DeleteHandler({
       item: id,
       type,
       setFunctions: {
-        hobby: setHobbies,
-        bookOrQuote: setBookOrQuote,
+        locationOptions: setLocationOptions,
       },
-      hasId: true,
     });
   };
 
@@ -108,18 +74,15 @@ export default function IndividualSignupPage4() {
       ...fellow,
       passions: data.passions,
       lookingFor: data.lookingFor,
-      hobbies: hobbies,
-      bookOrQuote: bookOrQuote,
-      petDetails: data.petDetails,
+      locationOptions: locationOptions,
     });
     router.push("/individual-signup/step5");
   };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setHobbies(Array.isArray(fellow?.hobbies) ? fellow.hobbies : []);
-    setBookOrQuote(
-      Array.isArray(fellow?.bookOrQuote) ? fellow.bookOrQuote : [],
+    setLocationOptions(
+      Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
     );
   }, []);
 
@@ -128,7 +91,7 @@ export default function IndividualSignupPage4() {
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg text-jade">
-            optional: personal + human details
+            optional: work-related details
           </h2>
           <Avatar />
         </div>
@@ -145,30 +108,18 @@ export default function IndividualSignupPage4() {
           size="medium"
         />
 
-        {/* Add + Display Hobbies */}
-        <PopulateDisplayField
+        {/* location options details */}
+        <ButtonOptionsComponent
+          type="locationOptions"
+          title="Which location type do you prefer?"
+          buttons={["remote", "on-site", "hybrid"]}
+          selectedArray={locationOptions}
           handleAdd={handleAdd}
           handleDelete={handleDelete}
-          handleUpdate={handleUpdate}
-          title={`Your Hobbies / Pastimes`}
-          aria="hobbiesInfo"
-          addModal={<AddHobbyModal />}
-          selectedArray={hobbies}
-          displayOption1="hobbyTitle"
-        />
-
-        {/* Add + Display Book or Quote */}
-        <PopulateDisplayField
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          handleUpdate={handleUpdate}
-          title={`Some Books / Quotes You Enjoy`}
-          aria="bookOrQuote"
-          addModal={<AddBookOrQuoteModal />}
-          selectedArray={bookOrQuote}
-          displayOption1="bookOrQuote"
-          displayOption2="author"
-          displayPunct=" - "
+          errors={errors.locationOptions}
+          required
+          classesForButtons="px-8"
+          addClasses="mt-4 -mb-2"
         />
 
         {/* passionate-about input */}
@@ -180,17 +131,6 @@ export default function IndividualSignupPage4() {
           registerValue="passions"
           defaultValue={fellow?.passions}
           size="medium"
-          width="full"
-        />
-
-        {/* pet details input */}
-        <InputComponent
-          type="text"
-          placeholderText="Are you a cat person or a dog person? Do you have any pets?"
-          errors={errors.petDetails}
-          register={register}
-          registerValue="petDetails"
-          defaultValue={fellow?.petDetails}
           width="full"
         />
 

@@ -26,6 +26,7 @@ export interface Fellow {
   shadow?: string;
   locationOptions?: Array<string>;
   colorScheme?: string;
+  languages?: Array<string>;
 }
 
 interface FellowContextType {
