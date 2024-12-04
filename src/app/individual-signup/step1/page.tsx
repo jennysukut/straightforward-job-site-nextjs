@@ -12,7 +12,6 @@ import { skillsList } from "@/lib/skillsList";
 
 import Image from "next/image";
 import SiteButton from "@/components/siteButton";
-import ErrorModal from "@/components/modals/errorModal";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
@@ -23,10 +22,7 @@ import DeleteHandler from "@/components/deleteHandler";
 import { countries } from "@/lib/countriesList";
 import { languageOptions } from "@/lib/languageOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import {
-  getRandomColorArray,
-  shuffleButtonColors,
-} from "@/utils/getRandomColorScheme";
+import { getRandomColorArray } from "@/utils/getRandomColorScheme";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
@@ -60,13 +56,13 @@ export default function IndividualSignupPage1() {
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [secondaryColorArray, setSecondaryColorArray] = useState<
-    CurrentSchemeType[]
-  >([]);
   const [avatarOptions, setAvatarOptions] = useState({
-    url: fellow?.avatar || "/avatars/question.svg",
-    shadow: fellow?.shadow || "drop-shadow-olive",
-    colorScheme: fellow?.colorScheme || "b1",
+    // url: fellow?.avatar || "/avatars/peach.svg",
+    // shadow: fellow?.shadow || "drop-shadow-lime",
+    // colorScheme: fellow?.colorScheme || "b6",
+    url: fellow?.avatar,
+    shadow: fellow?.shadow,
+    colorScheme: fellow?.colorScheme,
   });
 
   const {
@@ -140,8 +136,6 @@ export default function IndividualSignupPage1() {
   useEffect(() => {
     const colors = getRandomColorArray(36);
     setColorArray(colors);
-    const secondaryColors = shuffleButtonColors(36);
-    setSecondaryColorArray(secondaryColors);
   }, []);
 
   // Setting Details on page from fellowContext
@@ -211,7 +205,6 @@ export default function IndividualSignupPage1() {
               selectedArray={languages}
               handleDelete={handleDelete}
               placeholder="Your Spoken Language(s)"
-              colorArray={colorArray}
               name="languages"
               variant="functional"
               options
@@ -232,12 +225,12 @@ export default function IndividualSignupPage1() {
             }
           />
           <button
-            className="py-4 text-right text-xs opacity-80 hover:opacity-100"
+            className="max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
             onClick={() =>
               showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
             }
           >
-            choose your avatar
+            choose your avatar & colors
           </button>
 
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">
@@ -248,7 +241,6 @@ export default function IndividualSignupPage1() {
               selectedArray={jobTitles}
               handleDelete={handleDelete}
               placeholder="Job Titles For You"
-              colorArray={secondaryColorArray}
               name="jobTitles"
               variant="functional"
               required
@@ -261,7 +253,6 @@ export default function IndividualSignupPage1() {
               selectedArray={skills}
               handleDelete={handleDelete}
               placeholder="Your Skills"
-              colorArray={colorArray}
               name="skills"
               variant="functional"
               options

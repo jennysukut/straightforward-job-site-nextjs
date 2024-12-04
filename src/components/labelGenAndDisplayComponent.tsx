@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
-import { span } from "framer-motion/client";
-import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
@@ -12,7 +11,6 @@ interface LabelGeneratorAndDisplayComp {
   selectedArray: Array<any>;
   handleDelete: Function;
   placeholder: string;
-  colorArray: Array<any>;
   name: string;
   variant: any;
   options?: boolean;
@@ -27,7 +25,6 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   selectedArray,
   handleDelete,
   placeholder,
-  colorArray,
   name,
   variant,
   options,
@@ -38,10 +35,10 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
-  const [colorOptions, setColorOptions] = useState(Array<any>);
+  const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
+  const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("trying to find options");
     const value = event.target.value;
     setInputValue(value);
     if (options) {
@@ -74,8 +71,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   };
 
   useEffect(() => {
-    const colors = getRandomColorArray(25);
-    setColorOptions(colors);
+    ShuffleIdealButtonPattern(setPrimaryColorArray);
+    ShuffleIdealButtonPattern(setSecondaryColorArray);
   }, []);
 
   return (
@@ -123,7 +120,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
               aria={item}
               variant="display"
               key={index}
-              colorScheme={colorArray[index % colorArray.length]}
+              colorScheme={primaryColorArray[index % primaryColorArray.length]}
               canAdd
               handleAdd={() => addItem(name, item)}
             >
@@ -144,7 +141,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
                   aria={item}
                   variant={variant}
                   key={index}
-                  colorScheme={colorOptions[index % colorOptions.length]}
+                  colorScheme={
+                    secondaryColorArray[index % secondaryColorArray.length]
+                  }
                   handleDelete={() => handleDelete(name, item)}
                 >
                   {item}

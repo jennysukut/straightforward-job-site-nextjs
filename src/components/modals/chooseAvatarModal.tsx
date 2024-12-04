@@ -1,8 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import Image from "next/image";
 import SiteButton from "../siteButton";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
-import { FcCloseUpMode } from "react-icons/fc";
 import { useModal } from "@/contexts/ModalContext";
 
 export default function AvatarModal({ setAvatarOptions }: any) {
@@ -23,7 +21,7 @@ export default function AvatarModal({ setAvatarOptions }: any) {
         key={option.title}
         variant="avatar"
         colorScheme="b1"
-        size="extraLargeCircle"
+        size="largeCircle"
         aria={option.title}
         addClasses={`${option.shadow}`}
         addImage={`${option.img}`}

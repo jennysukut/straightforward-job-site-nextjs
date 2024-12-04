@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 
 import SiteButton from "../../siteButton";
-import ErrorModal from "../errorModal";
 
 const fellowSchema = z.object({
   name: z.string().min(2, { message: "Required" }),
@@ -28,8 +27,6 @@ export default function SignupModalIndividual1() {
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -38,19 +35,17 @@ export default function SignupModalIndividual1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     setFellow({
+      ...fellow,
       name: data.name,
       email: data.email,
+      avatar: "/avatars/peach.svg",
+      shadow: "drop-shadow-lime",
+      colorScheme: "b6",
     });
     router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();
     }, 1500);
-
-    //send details to the server to be saved and rendered on the next page
-    // try {
-    // } catch (err) {
-    //   showModal(<ErrorModal />);
-    // }
   };
 
   return (

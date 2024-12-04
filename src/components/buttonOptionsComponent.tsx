@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import SiteButton from "./siteButton";
-import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 interface ButtonOptionsComponent {
   type: string;
@@ -30,6 +30,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   addClasses,
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
+  const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
@@ -40,8 +41,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   };
 
   useEffect(() => {
-    const colors = getRandomColorArray(buttons.length);
-    setColorArray(colors);
+    ShuffleIdealButtonPattern(setBetterColorArray);
   }, []);
 
   return (
@@ -61,7 +61,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
               variant="hollow"
               key={button}
               aria={button}
-              colorScheme={colorArray[index % colorArray.length]}
+              colorScheme={betterColorArray[index % betterColorArray.length]}
               onClick={() => buttonClick(button)}
               addClasses={`text-nowrap ${classesForButtons || ""}`}
               isSelected={selectedArray.includes(button)}

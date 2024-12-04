@@ -16,6 +16,14 @@ export const avatarOptions = [
     colorScheme: "d5",
   },
   {
+    title: "orange",
+    img: "bg-[url('/avatars/orange.svg')]",
+    url: "/avatars/orange.svg",
+    shadow: "bg-sky",
+    dropShadow: "drop-shadow-sky",
+    colorScheme: "f1",
+  },
+  {
     title: "backpack",
     img: "bg-[url('/avatars/backpack.svg')]",
     url: "/avatars/backpack.svg",
@@ -39,7 +47,14 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-sky",
     colorScheme: "f1",
   },
-
+  {
+    title: "peach",
+    img: "bg-[url('/avatars/peach.svg')]",
+    url: "/avatars/peach.svg",
+    shadow: "bg-lime",
+    dropShadow: "drop-shadow-lime",
+    colorScheme: "b6",
+  },
   {
     title: "chess",
     img: "bg-[url('/avatars/chess.svg')]",
@@ -65,6 +80,14 @@ export const avatarOptions = [
     colorScheme: "b1",
   },
   {
+    title: "purple",
+    img: "bg-[url('/avatars/purple.svg')]",
+    url: "/avatars/purple.svg",
+    shadow: "bg-lime",
+    dropShadow: "drop-shadow-lime",
+    colorScheme: "b3",
+  },
+  {
     title: "code",
     img: "bg-[url('/avatars/code.svg')]",
     url: "/avatars/code.svg",
@@ -88,7 +111,14 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-lime",
     colorScheme: "b4",
   },
-
+  {
+    title: "watermelon",
+    img: "bg-[url('/avatars/watermelon.svg')]",
+    url: "/avatars/watermelon.svg",
+    shadow: "bg-jade",
+    dropShadow: "drop-shadow-jade",
+    colorScheme: "e5",
+  },
   {
     title: "dino",
     img: "bg-[url('/avatars/dino.svg')]",
@@ -96,6 +126,15 @@ export const avatarOptions = [
     shadow: "bg-sky",
     dropShadow: "drop-shadow-sky",
     colorScheme: "f1",
+  },
+
+  {
+    title: "emerald",
+    img: "bg-[url('/avatars/emerald.svg')]",
+    url: "/avatars/emerald.svg",
+    shadow: "bg-lilac",
+    dropShadow: "drop-shadow-lilac",
+    colorScheme: "d1",
   },
   {
     title: "fish",
@@ -148,6 +187,14 @@ export const avatarOptions = [
     colorScheme: "e5",
   },
   {
+    title: "jade",
+    img: "bg-[url('/avatars/jade.svg')]",
+    url: "/avatars/jade.svg",
+    shadow: "bg-lime",
+    dropShadow: "drop-shadow-lime",
+    colorScheme: "b1",
+  },
+  {
     title: "growth",
     img: "bg-[url('/avatars/growth.svg')]",
     url: "/avatars/growth.svg",
@@ -164,7 +211,14 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-lime",
     colorScheme: "b3",
   },
-
+  {
+    title: "magenta",
+    img: "bg-[url('/avatars/magenta.svg')]",
+    url: "/avatars/magenta.svg",
+    shadow: "bg-lime",
+    dropShadow: "drop-shadow-lime",
+    colorScheme: "b4",
+  },
   {
     title: "orange-floral",
     img: "bg-[url('/avatars/orange-floral.svg')]",
@@ -173,6 +227,7 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-lime",
     colorScheme: "b5",
   },
+
   {
     title: "music",
     img: "bg-[url('/avatars/music.svg')]",
@@ -190,6 +245,15 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-magenta",
     colorScheme: "a6",
   },
+
+  {
+    title: "olive",
+    img: "bg-[url('/avatars/olive.svg')]",
+    url: "/avatars/olive.svg",
+    shadow: "bg-sky",
+    dropShadow: "drop-shadow-sky",
+    colorScheme: "f3",
+  },
   {
     title: "plant",
     img: "bg-[url('/avatars/plant.svg')]",
@@ -198,7 +262,6 @@ export const avatarOptions = [
     dropShadow: "drop-shadow-lime",
     colorScheme: "b6",
   },
-
   {
     title: "weights",
     img: "bg-[url('/avatars/weights.svg')]",
