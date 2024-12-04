@@ -10,6 +10,7 @@ import SiteButton from "./siteButton";
 import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
+import NavButton from "./navButton";
 
 export default function NavBar() {
   const [clickedButton, setClickedButton] = useState("");
@@ -45,55 +46,38 @@ export default function NavBar() {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              <SiteButton
-                variant="filled"
+              <NavButton
+                onClick={handleNavButtonClick}
                 colorScheme="b4"
-                aria="mail"
-                value="mail"
+                title="mailbox"
+                clickedButton={clickedButton}
+              />
+              <NavButton
                 onClick={handleNavButtonClick}
-                isSelected={clickedButton === "mail"}
-              >
-                mailbox
-              </SiteButton>
-              <SiteButton
-                variant="filled"
                 colorScheme="e5"
-                aria="jobs"
-                value="jobs"
+                title="jobs"
+                clickedButton={clickedButton}
+              />
+              <NavButton
                 onClick={handleNavButtonClick}
-                isSelected={clickedButton === "jobs"}
-              >
-                jobs
-              </SiteButton>
-              <SiteButton
-                variant="filled"
                 colorScheme="d4"
-                aria="saved jobs"
-                value="saved jobs"
+                title="saved"
+                clickedButton={clickedButton}
+              />
+              <NavButton
                 onClick={handleNavButtonClick}
-                isSelected={clickedButton === "saved jobs"}
-              >
-                saved
-              </SiteButton>
-              <SiteButton
-                variant="filled"
                 colorScheme="f3"
-                aria="applications"
-                value="applications"
+                title="applications"
+                clickedButton={clickedButton}
+              />
+              <NavButton
                 onClick={handleNavButtonClick}
-                isSelected={clickedButton === "applications"}
-              >
-                applications
-              </SiteButton>
-              <SiteButton
+                colorScheme="b6"
+                title="account"
+                clickedButton={clickedButton}
                 variant="avatar"
                 size="mediumCircle"
                 addImage="bg-[url('/avatars/peach.svg')]"
-                colorScheme="b6"
-                aria="account"
-                value="account"
-                onClick={handleNavButtonClick}
-                isSelected={clickedButton === "account"}
               />
             </div>
           );
