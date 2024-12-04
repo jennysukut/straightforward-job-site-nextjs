@@ -16,8 +16,15 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
   textSize?: "small" | "medium" | "large";
   addClasses?: string;
-  size?: "extraSmall" | "small" | "standard" | "large" | "tall" | "medium";
-  width?: "extraWide" | "full" | null;
+  size?:
+    | "extraSmall"
+    | "small"
+    | "standard"
+    | "large"
+    | "tall"
+    | "medium"
+    | "profile";
+  width?: "small" | "medium" | "extraWide" | "full" | null;
   shadowSize?: "small";
   canCollapse?: boolean;
   collapseClick?: Function;
@@ -78,20 +85,27 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         size === "large",
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[200px]": size === "tall",
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[100px]": size === "medium",
+      "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl":
+        size === "profile",
 
       //width
       "max-w-screen-sm": width === "standard",
       "w-full": width === "full",
       "w-[84%] max-w-[1600px] ": width === "extraWide",
+      "w-[40%]": width === "small",
+      "w-[50%]": width === "medium",
     },
     addClasses,
   );
 
   return (
     <div className={`${boxClasses}`}>
-      <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
-        {title}
-      </h3>
+      {title && (
+        <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
+          {title}
+        </h3>
+      )}
+
       {children}
 
       {/* collapse button */}

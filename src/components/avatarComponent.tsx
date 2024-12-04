@@ -1,15 +1,15 @@
 import Image from "next/image";
 import { useFellow } from "@/contexts/FellowContext";
 
-export default function Avatar() {
+export default function Avatar({ addClasses }: any) {
   const { fellow } = useFellow();
 
   return (
     <Image
-      className={`AvatarImage -mt-14 justify-end self-end ${fellow?.shadow}`}
+      className={`AvatarImage ${fellow?.shadow} ${addClasses}`}
       src={fellow?.avatar}
-      width={65}
-      height={65}
+      width={60}
+      height={60}
       alt="avatar"
     />
   );

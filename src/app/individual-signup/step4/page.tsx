@@ -94,7 +94,7 @@ export default function IndividualSignupPage4() {
           <h2 className="OptionalTitle text-lg text-jade">
             optional: work-related details
           </h2>
-          <Avatar />
+          <Avatar addClasses="self-end -mt-14" />
         </div>
 
         {/*  looking for input */}

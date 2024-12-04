@@ -111,7 +111,7 @@ export default function IndividualSignupPage6() {
           <h2 className="OptionalTitle text-lg text-jade">
             optional: links + more about you
           </h2>
-          <Avatar />
+          <Avatar addClasses="self-end -mt-14" />
         </div>
 
         {/* Add + Display Links */}

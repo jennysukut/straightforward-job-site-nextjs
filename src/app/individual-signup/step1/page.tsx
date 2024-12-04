@@ -230,7 +230,7 @@ export default function IndividualSignupPage1() {
               showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
             }
           >
-            choose your avatar & colors
+            {`choose your avatar & colors`}
           </button>
 
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">

@@ -13,15 +13,14 @@ import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
 
 export default function NavBar() {
-  const [clickedButton, setClickedButton] = useState("");
   const { showModal } = useModal();
   const { pageType } = usePageContext();
+  const { fellow } = useFellow();
+  const [clickedButton, setClickedButton] = useState("");
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
-  const { fellow } = useFellow();
-
   return (
     <div className="NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16">
       <Link href={"/"}>
@@ -85,36 +84,32 @@ export default function NavBar() {
           return (
             // STANDARD / MAIN NAV BAR
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              <SiteButton variant="filled" colorScheme="b4" aria="About us">
-                about
-              </SiteButton>
-              <SiteButton
-                variant="filled"
-                colorScheme="e5"
-                aria="Login to your account"
+              <NavButton
+                onClick={handleNavButtonClick}
+                colorScheme="b4"
+                title="about"
+                clickedButton={clickedButton}
+              />
+              <NavButton
                 onClick={() => showModal(<LoginModal />)}
-              >
-                login
-              </SiteButton>
+                colorScheme="e5"
+                title="login"
+                clickedButton={clickedButton}
+              />
               <Link href={"/pricing"}>
-                <SiteButton
-                  variant="filled"
-                  colorScheme="d4"
-                  aria="pricing"
-                  value="pricing"
+                <NavButton
                   onClick={handleNavButtonClick}
-                >
-                  pricing
-                </SiteButton>
+                  colorScheme="d4"
+                  title="pricing"
+                  clickedButton={clickedButton}
+                />
               </Link>
-              <SiteButton
-                variant="filled"
-                colorScheme="f3"
-                aria="Create a new account"
+              <NavButton
                 onClick={() => showModal(<SignupOptionsModal />)}
-              >
-                signup
-              </SiteButton>
+                colorScheme="f3"
+                title="signup"
+                clickedButton={clickedButton}
+              />
             </div>
           );
         }

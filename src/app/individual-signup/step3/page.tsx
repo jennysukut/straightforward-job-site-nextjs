@@ -117,7 +117,7 @@ export default function IndividualSignupPage3() {
   return (
     <div className="IndividualSignupPage3 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <Avatar />
+        <Avatar addClasses="self-end -mt-14" />
 
         {/* Add + Display Awards / Honors */}
         <PopulateDisplayField
