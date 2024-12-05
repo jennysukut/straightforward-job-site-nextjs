@@ -92,8 +92,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "max-w-screen-sm": width === "standard",
       "w-full": width === "full",
       "w-[84%] max-w-[1600px] ": width === "extraWide",
-      "w-[40%]": width === "small",
-      "w-[50%]": width === "medium",
+      "w-[30vw]": width === "small",
+      "w-[40vw]": width === "medium",
     },
     addClasses,
   );

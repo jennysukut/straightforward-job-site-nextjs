@@ -95,7 +95,7 @@ export default function IndividualSignupPage6() {
       links: links,
       aboutMe: data.aboutMe,
     });
-    router.push("/individual-signup/step4");
+    router.push("/profile");
   };
 
   // Setting Details on page from fellowContext
@@ -103,6 +103,8 @@ export default function IndividualSignupPage6() {
     setLinks(Array.isArray(fellow?.links) ? fellow.links : []);
     setAboutMe(fellow?.aboutMe || "");
   }, []);
+
+  console.log(fellow);
 
   return (
     <div className="IndividualSignupPage5 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
