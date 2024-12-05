@@ -104,8 +104,6 @@ export default function IndividualSignupPage6() {
     setAboutMe(fellow?.aboutMe || "");
   }, []);
 
-  console.log(fellow);
-
   return (
     <div className="IndividualSignupPage5 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">

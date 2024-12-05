@@ -28,8 +28,6 @@ export default function IndividualSignupPage3() {
   const [experienceLevelCounter, setExperienceLevelCounter] = useState(1);
   const [accomplishmentCounter, setAccomplishmentCounter] = useState(1);
 
-  console.log(experienceLevels);
-
   // handlers for adding, updating, and deleting details
   const handleAdd = (
     type: "award" | "experienceLevel" | "accomplishment",
@@ -62,8 +60,6 @@ export default function IndividualSignupPage3() {
     updatedData: any,
     id: any,
   ) => {
-    console.log("trying to update");
-
     UpdateHandler({
       item: id,
       updatedData,

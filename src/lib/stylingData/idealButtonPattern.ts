@@ -1,5 +1,4 @@
 export const idealButtonPattern = [
-  "e5",
   "c1",
   "f1",
   "c4",

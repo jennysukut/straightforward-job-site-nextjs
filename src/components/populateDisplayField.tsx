@@ -78,10 +78,10 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
       />
       {selectedArray.length > 0 && (
         <div className="AwardsDetailsContainer flex flex-col gap-4">
-          {selectedArray.map((item: Item) => {
+          {selectedArray.map((item: Item, index: number) => {
             return (
               <InfoBox
-                key={item.id}
+                key={index}
                 variant="hollow"
                 aria={title}
                 size="extraSmall"
