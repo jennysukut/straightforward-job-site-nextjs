@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
-import Image from "next/image";
 import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
@@ -16,12 +14,10 @@ import AddHandler from "@/components/addHandler";
 import UpdateHandler from "@/components/updateHandler";
 
 export default function IndividualSignupPage2() {
-  const { showModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [disabledProfileButton, setDisabledProfileButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
   const [educationDetails, setEducationDetails] = useState<any[]>([]);
 

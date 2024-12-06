@@ -7,15 +7,15 @@ cd straightforward-job-site-nextjs
 Install dependencies:
 npm install
 Run the development server:
+
 1. Clone the repository: <br/>
-`https://github.com/jennysukut/straightforward-job-site-nextjs.git`
+   `https://github.com/jennysukut/straightforward-job-site-nextjs.git`
 2. Navigate to the project directory:<br/>
-`cd straightforward-job-site-nextjs`
-2. Install dependencies:<br/>
-`npm install`
+   `cd straightforward-job-site-nextjs`
+3. Install dependencies:<br/>
+   `npm install`
 4. Run the development server:<br/>
 
-```bash
 npm run dev
 
 # or
@@ -30,6 +30,10 @@ pnpm dev
 
 bun dev
 
+## Notes
+
+Our current rendition of the MVP has some placeholder Data in the Fellow Context - to remove and walkthrough creating a profile yourself, simply comment out the placeholder info and you're good to go!
+
 ## Our Current Pages
 
 - Main Page: with all navigation options
@@ -41,6 +45,7 @@ bun dev
 - Modal Context, for setting up our modal popup structure
 - Page Context, for keeping track of current active page and displaying relevant information, like different headers depending on the current page.
 - Fellow Context, for manipulating + adding information for populating fellow's profiles while using localhost. In the future, we can use this in tandem with server calls or have it replaced by server calls completely if we'd like.
+- Color Context, this is in the works - we'll need this to add additional color options to our site
 
 ## Current Components
 
@@ -78,4 +83,8 @@ bun dev
   - DeleteHandler // this function uses either Ids or a specific setFunction to search and delete selected data.
 
 - Other General Components:
+
   - NavBar & Footer // self-explanatory
+
+- Big Components:
+  - FellowProfile // this is a functional component used to display fellow's profiles throughout the site. We have one set up for an individual's profile, but we'll also use this inside our applications for businesses to look at. We'll need to pass in the fellowData to be displayed in the component. We also have some controlled button options and will have other components inside this FellowProfile that'll be handled based on it's rendered context {ie. if it's someone looking at their own profile, or if the profile is being viewed in a job application}

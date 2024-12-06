@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
 
-import Image from "next/image";
 import SiteButton from "@/components/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
 import InputComponent from "@/components/inputComponent";
@@ -52,7 +51,6 @@ export default function IndividualSignupPage1() {
   const { showModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [disabledProfileButton, setDisabledProfileButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
