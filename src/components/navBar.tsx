@@ -11,6 +11,7 @@ import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -71,12 +72,14 @@ export default function NavBar() {
               />
               <NavButton
                 onClick={handleNavButtonClick}
-                colorScheme="b6"
+                // colorScheme="b6"
+                colorScheme={fellow?.colorScheme as ButtonColorOption}
                 title="account"
                 clickedButton={clickedButton}
                 variant="avatar"
                 size="mediumCircle"
-                addImage="bg-[url('/avatars/peach.svg')]"
+                addImage={fellow?.buttonImg}
+                // addImage="bg-[url('/avatars/peach.svg')]"
               />
             </div>
           );

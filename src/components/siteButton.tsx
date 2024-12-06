@@ -101,7 +101,9 @@ const SiteButton: React.FC<ButtonProps> = ({
       // variant
       [`border-[2px] border-jade bg-jade ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         variant === "hollow",
-      [`${buttonColors[colorScheme].color2}`]: variant === "filled" || "avatar",
+      [`${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color3}`]:
+        variant === "avatar",
+      [`${buttonColors[colorScheme].color2}`]: variant === "filled",
 
       //selected state
       [` ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:

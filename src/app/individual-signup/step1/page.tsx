@@ -219,17 +219,7 @@ export default function IndividualSignupPage1() {
           </form>
         </div>
         <div className="IndividualSignupRight flex w-[35vw] flex-col">
-          {/* <Image
-            className={`AvatarImage -mt-8 justify-end self-end ${avatarOptions.shadow}`}
-            src={avatarOptions.url}
-            width={65}
-            height={65}
-            alt="avatar"
-            onClick={() =>
-              showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-            }
-          /> */}
-          <div className="AvatarButtonContainer -mt-14 items-end">
+          <div className="AvatarButtonContainer -mt-14 items-end self-end">
             <SiteButton
               variant="avatar"
               colorScheme={avatarOptions.colorScheme as ButtonColorOption}
