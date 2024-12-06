@@ -29,6 +29,7 @@ export interface Fellow {
   languages?: Array<string>;
   buttonShadow?: string;
   buttonImg?: any;
+  profileIsBeingEdited?: boolean;
 }
 
 interface FellowContextType {
@@ -60,6 +61,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     skills: ["Web Development", "Graphic Design", "Content Writing"],
     jobTitles: ["Web Developer", "Graphic Designer", "Front-End Engineer"],
     languages: ["English"],
+    profileIsBeingEdited: false,
     aboutMe:
       "More about me - lots of details and words and whatnot telling about me and where I come from and what I do and why I do it and all that good stuff.",
     experience: [

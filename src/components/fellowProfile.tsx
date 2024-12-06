@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
+import { useRouter } from "next/navigation";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
@@ -8,16 +9,25 @@ import Avatar from "./avatarComponent";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 export default function FellowProfile({ fellow }: any, isOwn: boolean) {
-  // const { fellow } = useFellow();
+  const { setFellow } = useFellow();
+  const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [canEdit, setCanEdit] = useState(false);
 
+  const handleEditClick = (url: any) => {
+    setFellow({ ...fellow, profileIsBeingEdited: true });
+    console.log("edit button was clicked, redirecting to: ", url);
+    router.push(url);
+  };
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
   }, []);
+
+  // WE NEED TO ADD LINKS IN A SEPARATE BOX AND ADD LOCATION OPTIONS TO THE LOCATION BOX
 
   return (
     <div className="ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
@@ -29,6 +39,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           addClasses="gap-8 justify-between"
           size="profile"
           canEdit={canEdit}
+          editClick={() => handleEditClick("/individual-signup/step1")}
         >
           <div className="NameBioAvatarContainer flex justify-between gap-8">
             <Avatar addClasses="self-center" />
@@ -51,6 +62,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             size="profile"
             width="small"
             canEdit={canEdit}
+            editClick={() => handleEditClick("/individual-signup/step1")}
           >
             <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
             <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
@@ -81,6 +93,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step2")}
             >
               <h2 className="EducationTitle mb-4 pl-2">{`My Education:`}</h2>
               <ul className="EducationList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -108,6 +121,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step2")}
             >
               <h2 className="ExperienceTitle mb-4 pl-2">{`My Experience:`}</h2>
               <ul className="ExperienceList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -145,6 +159,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="AwardsTitle mb-4 pl-2">{`Awards / Honors:`}</h2>
               <ul className="AwardsList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -171,6 +186,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="ExperienceLevelTitle mb-4 pl-2">{`Experience Levels:`}</h2>
               <ul className="ExperienceLevelList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -198,6 +214,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="BookOrQuoteTitle mb-4 pl-2">{`Books / Quotes I Enjoy:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -219,6 +236,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="small"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="PetDetailsTitle mb-4 pl-2">{`Pertaining To Pets:`}</h2>
               <p className="PetDetails ml-8 text-olive">{fellow.petDetails}</p>
@@ -232,6 +250,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             size="profile"
             width="medium"
             canEdit={canEdit}
+            editClick={() => handleEditClick("/individual-signup/step1")}
           >
             <div className="LocationAndLinks flex flex-col gap-2">
               <p className="Location text-emerald">
@@ -266,6 +285,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             size="profile"
             width="medium"
             canEdit={canEdit}
+            editClick={() => handleEditClick("/individual-signup/step1")}
           >
             <h2 className="JobTitlesTitle text-center">{`My Job Titles:`}</h2>
             <div className="JobTitlesContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
@@ -297,6 +317,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="medium"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step4")}
             >
               <h2 className="PassionateAboutTitle mb-4 pl-2 text-emerald">{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
@@ -311,6 +332,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="medium"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step4")}
             >
               <h2 className="LookingForTitle mb-4 pl-2 text-emerald">{`What I'm Looking For:`}</h2>
               <p className="LookingForSubtitle -mt-4 px-3 italic">{`in a job/company`}</p>
@@ -326,6 +348,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="medium"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="HobbiesTitle mb-4 pl-2">{`My Hobbies / Pastimes:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -354,6 +377,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="medium"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="AccomplishmentsTitle mb-4 pl-2">{`Other Accomplishments:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -379,6 +403,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               size="profile"
               width="medium"
               canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step6")}
             >
               <h2 className="AboutMeTitle mb-4 pl-2 text-emerald">{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">

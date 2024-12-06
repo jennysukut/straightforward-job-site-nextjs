@@ -75,8 +75,13 @@ export default function IndividualSignupPage4() {
       passions: data.passions,
       lookingFor: data.lookingFor,
       locationOptions: locationOptions,
+      profileIsBeingEdited: false,
     });
-    router.push("/individual-signup/step5");
+    if (fellow?.profileIsBeingEdited) {
+      router.push("/profile");
+    } else {
+      router.push("/individual-signup/step5");
+    }
   };
 
   // Setting Details on page from fellowContext
@@ -143,7 +148,13 @@ export default function IndividualSignupPage4() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Saving Information..." : "continue"}
+            {disabledButton && fellow?.profileIsBeingEdited === true
+              ? "Returning To Profile..."
+              : !disabledButton && fellow?.profileIsBeingEdited === true
+                ? "update"
+                : disabledButton && fellow?.profileIsBeingEdited === false
+                  ? "Saving Information.."
+                  : "continue"}
           </SiteButton>
         </div>
       </div>

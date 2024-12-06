@@ -89,11 +89,11 @@ export default function IndividualSignupPage6() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data.aboutMe);
     setFellow({
       ...fellow,
       links: links,
       aboutMe: data.aboutMe,
+      profileIsBeingEdited: false,
     });
     router.push("/profile");
   };
@@ -148,7 +148,13 @@ export default function IndividualSignupPage6() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Generating Your Profile..." : "continue"}
+            {disabledButton && fellow?.profileIsBeingEdited === true
+              ? "Returning To Profile..."
+              : !disabledButton && fellow?.profileIsBeingEdited === true
+                ? "update"
+                : disabledButton && fellow?.profileIsBeingEdited === false
+                  ? "Generating Profile..."
+                  : "continue"}
           </SiteButton>
         </div>
       </div>

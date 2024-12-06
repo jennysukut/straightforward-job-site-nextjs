@@ -99,11 +99,11 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   );
 
   return (
-    <div className={`${boxClasses} flex flex-col`}>
+    <div className={`${boxClasses}`}>
       {/* profile edit button */}
       {canEdit && size === "profile" && (
         <button
-          className="EditButton absolute -mx-3 -mt-6 self-end opacity-100 hover:opacity-50"
+          className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           <Image

@@ -95,8 +95,13 @@ export default function IndividualSignupPage3() {
       awards: awards,
       experienceLevels: experienceLevels,
       accomplishments: accomplishments,
+      profileIsBeingEdited: false,
     });
-    router.push("/individual-signup/step4");
+    if (fellow?.profileIsBeingEdited) {
+      router.push("/profile");
+    } else {
+      router.push("/individual-signup/step4");
+    }
   };
 
   // Setting Details on page from fellowContext
@@ -163,7 +168,13 @@ export default function IndividualSignupPage3() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton ? "Saving Information..." : "continue"}
+            {disabledButton && fellow?.profileIsBeingEdited === true
+              ? "Returning To Profile..."
+              : !disabledButton && fellow?.profileIsBeingEdited === true
+                ? "update"
+                : disabledButton && fellow?.profileIsBeingEdited === false
+                  ? "Saving Information.."
+                  : "continue"}{" "}
           </SiteButton>
         </div>
       </div>

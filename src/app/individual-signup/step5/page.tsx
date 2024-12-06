@@ -102,11 +102,16 @@ export default function IndividualSignupPage5() {
     setDisabledButton(true);
     setFellow({
       ...fellow,
+      profileIsBeingEdited: false,
       hobbies: hobbies,
       bookOrQuote: bookOrQuote,
       petDetails: data.petDetails,
     });
-    router.push("/individual-signup/step6");
+    if (fellow?.profileIsBeingEdited) {
+      router.push("/profile");
+    } else {
+      router.push("/individual-signup/step6");
+    }
   };
 
   // Setting Details on page from fellowContext
@@ -172,7 +177,13 @@ export default function IndividualSignupPage5() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton ? "Saving Information..." : "continue"}
+            {disabledButton && fellow?.profileIsBeingEdited === true
+              ? "Returning To Profile..."
+              : !disabledButton && fellow?.profileIsBeingEdited === true
+                ? "update"
+                : disabledButton && fellow?.profileIsBeingEdited === false
+                  ? "Saving Information.."
+                  : "continue"}
           </SiteButton>
         </div>
       </div>
