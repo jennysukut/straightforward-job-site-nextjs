@@ -25,6 +25,11 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
     router.push(url);
   };
 
+  const addMoreInfo = () => {
+    setFellow({ ...fellow, addMoreInfo: true });
+    router.push("/individual-signup/step1");
+  };
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
@@ -249,7 +254,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             </InfoBox>
           )}
           {isOwn && (
-            <div className="EditButtonContainer self-end">
+            <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
               <SiteButton
                 variant="filled"
                 colorScheme="b6"
@@ -258,6 +263,15 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 onClick={() => setCanEdit(!canEdit)}
               >
                 edit details
+              </SiteButton>
+              <SiteButton
+                variant="filled"
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                onClick={addMoreInfo}
+              >
+                add more info
               </SiteButton>
             </div>
           )}

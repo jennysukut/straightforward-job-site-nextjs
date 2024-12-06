@@ -52,22 +52,18 @@ export default function IndividualSignupPage1() {
   const { showModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
+  const [disabledProfileButton, setDisabledProfileButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatarOptions, setAvatarOptions] = useState({
-    // url: fellow?.avatar || "/avatars/peach.svg",
-    // shadow: fellow?.shadow || "drop-shadow-lime",
-    // colorScheme: fellow?.colorScheme || "b6",
     url: fellow?.avatar,
     shadow: fellow?.shadow,
     colorScheme: fellow?.colorScheme,
     buttonShadow: fellow?.shadow,
     buttonImg: fellow?.buttonImg,
   });
-
-  console.log(avatarOptions);
 
   const {
     handleSubmit,
@@ -87,6 +83,7 @@ export default function IndividualSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+
     setFellow({
       ...fellow,
       smallBio: data.smallBio,
@@ -271,7 +268,7 @@ export default function IndividualSignupPage1() {
               required
             />
           </div>
-          <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
+          <div className="ButtonContainer -mb-6 mt-6 flex justify-end gap-4 self-end">
             <SiteButton
               variant="hollow"
               colorScheme="f1"

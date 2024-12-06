@@ -21,6 +21,7 @@ export default function IndividualSignupPage2() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
+  const [disabledProfileButton, setDisabledProfileButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
   const [educationDetails, setEducationDetails] = useState<any[]>([]);
 
@@ -81,6 +82,7 @@ export default function IndividualSignupPage2() {
 
   const handleSubmit = () => {
     setDisabledButton(true);
+
     setFellow({
       ...fellow,
       experience: experienceDetails,
@@ -88,7 +90,7 @@ export default function IndividualSignupPage2() {
       profileIsBeingEdited: false,
     });
     if (fellow?.profileIsBeingEdited) {
-      router.push("/iprofile");
+      router.push("/profile");
     } else {
       router.push("/individual-signup/step3");
     }
@@ -135,7 +137,7 @@ export default function IndividualSignupPage2() {
           displayOption2="school"
         />
 
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
+        <div className="ButtonContainer -mb-6 mt-6 flex justify-end gap-4 self-end">
           <SiteButton
             variant="hollow"
             colorScheme="f1"

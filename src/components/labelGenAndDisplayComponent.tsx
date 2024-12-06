@@ -75,7 +75,6 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
     ShuffleIdealButtonPattern(setSecondaryColorArray);
   }, []);
 
-  console.log(secondaryColorArray);
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       {required && (
