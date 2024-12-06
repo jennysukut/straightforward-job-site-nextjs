@@ -14,10 +14,13 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
+  const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
+
   const [canEdit, setCanEdit] = useState(false);
 
   const handleEditClick = (url: any) => {
     setFellow({ ...fellow, profileIsBeingEdited: true });
+    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
@@ -25,6 +28,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
+    ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
 
   // WE NEED TO ADD LINKS IN A SEPARATE BOX AND ADD LOCATION OPTIONS TO THE LOCATION BOX
@@ -239,8 +243,23 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="PetDetailsTitle mb-4 pl-2">{`Pertaining To Pets:`}</h2>
-              <p className="PetDetails ml-8 text-olive">{fellow.petDetails}</p>
+              <p className="PetDetails ml-8 font-medium text-olive">
+                {fellow.petDetails}
+              </p>
             </InfoBox>
+          )}
+          {isOwn && (
+            <div className="EditButtonContainer self-end">
+              <SiteButton
+                variant="filled"
+                colorScheme="b6"
+                aria="edit"
+                addClasses="px-8"
+                onClick={() => setCanEdit(!canEdit)}
+              >
+                edit details
+              </SiteButton>
+            </div>
           )}
         </div>
         <div className="ProfileRightColumn flex flex-col gap-8">
@@ -252,33 +271,79 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             canEdit={canEdit}
             editClick={() => handleEditClick("/individual-signup/step1")}
           >
-            <div className="LocationAndLinks flex flex-col gap-2">
-              <p className="Location text-emerald">
+            <div className="LocationInfo flex flex-col gap-2">
+              <p className="Location ml-2 text-emerald">
                 Location: {fellow?.location}, {fellow?.country}
               </p>
-              {fellow?.links && (
-                <div className="LinksList mt-2 flex flex-col gap-2">
-                  {fellow.links.map((link: any, index: number) => {
-                    return (
-                      <div className="Link" key={index}>
-                        <p className="Link text-emerald">
-                          {link.linkType} {`: `}
-                        </p>
-                        <a
-                          href={link.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm font-medium italic text-olive"
-                        >
-                          {link.link}
-                        </a>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
             </div>
           </InfoBox>
+
+          <InfoBox
+            variant="hollow"
+            aria="locationTypes"
+            size="profile"
+            width="medium"
+            canEdit={canEdit}
+            editClick={() => handleEditClick("/individual-signup/step4")}
+          >
+            <div className="LocationTypesInfo flex flex-col gap-2">
+              <h2 className="JobTitlesTitle text-center">{`Location Types For Me:`}</h2>
+              <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
+                {fellow?.locationOptions.map((opt: any, index: number) => {
+                  return (
+                    <SiteLabel
+                      variant="display"
+                      aria="locationOption"
+                      key={index}
+                      addClasses="px-8"
+                      colorScheme={
+                        thirdColorArray[index % thirdColorArray.length]
+                      }
+                    >
+                      {opt}
+                    </SiteLabel>
+                  );
+                })}
+              </div>
+            </div>
+          </InfoBox>
+
+          {fellow?.links && (
+            <InfoBox
+              variant="hollow"
+              aria="links"
+              size="profile"
+              width="medium"
+              canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step6")}
+            >
+              <h2 className="LinksTitle mb-4 pl-2">{`${fellow.name}'s Links:`}</h2>
+              <div className="Links ml-8 flex flex-col gap-2">
+                {fellow?.links && (
+                  <div className="LinksList mt-2 flex flex-col gap-2">
+                    {fellow.links.map((link: any, index: number) => {
+                      return (
+                        <div className="Link" key={index}>
+                          <p className="Link text-emerald">
+                            {link.linkType} {`: `}
+                          </p>
+                          <a
+                            href={link.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm font-medium italic text-olive"
+                          >
+                            {link.link}
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </InfoBox>
+          )}
+
           <InfoBox
             variant="hollow"
             aria="jobTitles"
@@ -306,7 +371,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                   );
                 })
               ) : (
-                <p>No skills available.</p>
+                <p>No job titles available.</p>
               )}
             </div>
           </InfoBox>
@@ -410,17 +475,6 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 {fellow.aboutMe}
               </p>
             </InfoBox>
-          )}
-          {isOwn && (
-            <SiteButton
-              variant="filled"
-              colorScheme="b6"
-              aria="edit"
-              addClasses="px-8"
-              onClick={() => setCanEdit(!canEdit)}
-            >
-              edit details
-            </SiteButton>
           )}
         </div>
       </div>

@@ -85,10 +85,13 @@ export default function IndividualSignupPage2() {
       ...fellow,
       experience: experienceDetails,
       education: educationDetails,
+      profileIsBeingEdited: false,
     });
-    //send this data to the server here?
-    //navigate to the next page
-    router.push("/individual-signup/step3");
+    if (fellow?.profileIsBeingEdited) {
+      router.push("/iprofile");
+    } else {
+      router.push("/individual-signup/step3");
+    }
   };
 
   // Setting Details on page from fellowContext
@@ -140,7 +143,13 @@ export default function IndividualSignupPage2() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton ? "Saving Information..." : "continue"}
+            {disabledButton && fellow?.profileIsBeingEdited === true
+              ? "Returning To Profile..."
+              : !disabledButton && fellow?.profileIsBeingEdited === true
+                ? "update"
+                : disabledButton && fellow?.profileIsBeingEdited === false
+                  ? "Saving Information.."
+                  : "continue"}
           </SiteButton>
         </div>
       </div>

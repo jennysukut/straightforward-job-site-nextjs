@@ -100,8 +100,13 @@ export default function IndividualSignupPage1() {
       buttonShadow: avatarOptions.shadow,
       buttonImg: avatarOptions.buttonImg,
       languages: languages,
+      profileIsBeingEdited: false,
     });
-    router.push("/individual-signup/step2");
+    if (fellow?.profileIsBeingEdited) {
+      router.push("/profile");
+    } else {
+      router.push("/individual-signup/step2");
+    }
   };
 
   // handlers for adding, updating, and deleting information tied to States
@@ -274,7 +279,13 @@ export default function IndividualSignupPage1() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton ? "Saving Information..." : "continue"}
+              {disabledButton && fellow?.profileIsBeingEdited === true
+                ? "Returning To Profile..."
+                : !disabledButton && fellow?.profileIsBeingEdited === true
+                  ? "update"
+                  : disabledButton && fellow?.profileIsBeingEdited === false
+                    ? "Saving Information.."
+                    : "continue"}{" "}
             </SiteButton>
           </div>
         </div>
