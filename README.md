@@ -16,6 +16,7 @@ Run the development server:
    `npm install`
 4. Run the development server:<br/>
 
+```
 npm run dev
 
 # or
@@ -29,6 +30,7 @@ pnpm dev
 # or
 
 bun dev
+```
 
 ## Notes
 
