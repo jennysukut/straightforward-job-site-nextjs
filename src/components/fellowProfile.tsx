@@ -301,7 +301,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/individual-signup/step4")}
           >
             <div className="LocationTypesInfo flex flex-col gap-2">
-              <h2 className="JobTitlesTitle text-center">{`Location Types For Me:`}</h2>
+              <h2 className="JobTitlesTitle text-center">{`My Work Location Types:`}</h2>
               <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
                 {fellow?.locationOptions.map((opt: any, index: number) => {
                   return (

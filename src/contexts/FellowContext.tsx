@@ -55,7 +55,8 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     buttonShadow: "bg-lime",
     buttonImg: "bg-[url('/avatars/magenta.svg')]",
     email: "jennysukut@gmail.com",
-    smallBio: "Founder of Straightforward Job Site || Lover of Color",
+    smallBio:
+      "Founder of Straightforward Job Site || Lover of Color || I Like Coding Things || Could Snuggle Animals All Day",
     country: "United States",
     location: "Montana",
     skills: ["Web Development", "Graphic Design", "Content Writing"],
