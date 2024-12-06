@@ -63,7 +63,11 @@ export default function IndividualSignupPage1() {
     url: fellow?.avatar,
     shadow: fellow?.shadow,
     colorScheme: fellow?.colorScheme,
+    buttonShadow: fellow?.shadow,
+    buttonImg: fellow?.buttonImg,
   });
+
+  console.log(avatarOptions);
 
   const {
     handleSubmit,
@@ -83,7 +87,6 @@ export default function IndividualSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data);
     setFellow({
       ...fellow,
       smallBio: data.smallBio,
@@ -94,6 +97,8 @@ export default function IndividualSignupPage1() {
       avatar: avatarOptions.url,
       shadow: avatarOptions.shadow,
       colorScheme: avatarOptions.colorScheme,
+      buttonShadow: avatarOptions.shadow,
+      buttonImg: avatarOptions.buttonImg,
       languages: languages,
     });
     router.push("/individual-signup/step2");
@@ -214,7 +219,7 @@ export default function IndividualSignupPage1() {
           </form>
         </div>
         <div className="IndividualSignupRight flex w-[35vw] flex-col">
-          <Image
+          {/* <Image
             className={`AvatarImage -mt-8 justify-end self-end ${avatarOptions.shadow}`}
             src={avatarOptions.url}
             width={65}
@@ -223,7 +228,19 @@ export default function IndividualSignupPage1() {
             onClick={() =>
               showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
             }
-          />
+          /> */}
+          <div className="AvatarButtonContainer -mt-14 items-end">
+            <SiteButton
+              variant="avatar"
+              colorScheme={avatarOptions.colorScheme as ButtonColorOption}
+              size="largeCircle"
+              aria="avatar"
+              addImage={`${avatarOptions.buttonImg}`}
+              onClick={() =>
+                showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
+              }
+            />
+          </div>
           <button
             className="max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
             onClick={() =>
@@ -232,7 +249,6 @@ export default function IndividualSignupPage1() {
           >
             {`choose your avatar & colors`}
           </button>
-
           <div className="SkillsAndJobTitlesContainer flex flex-col gap-8">
             {/* job titles generator */}
             <LabelGeneratorAndDisplayComp

@@ -27,6 +27,8 @@ export interface Fellow {
   locationOptions?: Array<string>;
   colorScheme?: string;
   languages?: Array<string>;
+  buttonShadow?: string;
+  buttonImg?: any;
 }
 
 interface FellowContextType {
@@ -49,6 +51,8 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",
     colorScheme: "b4",
+    buttonShadow: "bg-lime",
+    buttonImg: "bg-[url('/avatars/magenta.svg')]",
     email: "jennysukut@gmail.com",
     smallBio: "Founder of Straightforward Job Site || Lover of Color",
     country: "United States",

@@ -6,11 +6,12 @@ import { useModal } from "@/contexts/ModalContext";
 export default function AvatarModal({ setAvatarOptions }: any) {
   const { hideModal } = useModal();
   const handleClick = (option: any) => {
-    console.log(`this avatar ${option.title} was clicked`);
     setAvatarOptions({
       url: option.url,
       shadow: option.dropShadow,
       colorScheme: option.colorScheme,
+      buttonShadow: option.shadow,
+      buttonImg: option.img,
     });
     hideModal();
   };
