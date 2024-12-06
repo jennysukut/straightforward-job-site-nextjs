@@ -1,7 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
 
+Clone the repository:
+https://github.com/jennysukut/straightforward-job-site-nextjs.git
+Navigate to the project directory:
+cd straightforward-job-site-nextjs
+Install dependencies:
+npm install
+Run the development server:
 1. Clone the repository: <br/>
 `https://github.com/jennysukut/straightforward-job-site-nextjs.git`
 2. Navigate to the project directory:<br/>
@@ -12,34 +17,65 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ```bash
 npm run dev
+
 # or
+
 yarn dev
+
 # or
+
 pnpm dev
+
 # or
+
 bun dev
-```
 
-The application will start on `http://localhost:8082`.
+## Our Current Pages
 
+- Main Page: with all navigation options
+- Individual Signup Pages: 5 steps, each with their own page, to grab fellow's data to display on their profile
+- Pricing Page: a copy of our pricing page from our landing page
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Current Contexts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Modal Context, for setting up our modal popup structure
+- Page Context, for keeping track of current active page and displaying relevant information, like different headers depending on the current page.
+- Fellow Context, for manipulating + adding information for populating fellow's profiles while using localhost. In the future, we can use this in tandem with server calls or have it replaced by server calls completely if we'd like.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Current Components
 
-## Learn More
+- Modals for:
 
-To learn more about Next.js, take a look at the following resources:
+  - Logging In
+  - Signing Up
+  - Profile Population
+  - Choosing an Avatar
+  - Deletion Confirmation
+  - Baseline Error Modal, copied from the landing page
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Button Components:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+  - ButtonContainer // adds a framer motion effect to any buttons within it
+  - ButtonOptionsComponent // takes input and displays separate buttons to be used in within forms + data handling
+  - DropDownButtons // these buttons are ones that have the ability to open and display longer-form information. We use them in our landing page, but I don't think we'll keep them in the MVP.
+  - RandomColorButton // I believe this generates a button with a random color?
+  - Form Submission Button // this button component is used on our modals used to gather and handle information. It has options to display deletion abilities depending on the "canDelete" prop.
+  - SiteButton // Our fantastic + fun interactive drop-shadow buttons. You can drop lots of different options into this component to make all our site's buttons.
 
-## Deploy on Vercel
+- Input Components:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+  - InputComponent // creates an input inside our hollow-design InfoBox - can register the input and displays the associated error when passed the correct props - it takes plain text and passes it into a form, we use this on step1 of profile population
+  - InputComponentWithLabelOptions // this input component comes with a magnifying glass/search type ability, where it looks through an array that gets passed to the component and displays labels that match 2+ letters - The input can only be chosen through the labels. We can use this for necessary items that we need to have within certain parameters, like our Location Options, etc... This is generally used for setting a string input.
+  - Label Generator And Display Component // this component is similiar to the inputComponentWithLabelOptions, but it displays the the array where the values are added as labels below the generator. This is generally used for creating and setting arrays within certain parameters, like our Skills List, etc...
+  - Form Input Component // this is the inputComponent to be used on modals that are used to gather and populate information.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Data Display + Functional Components:
+
+  - InfoBox // this component is used for most information on our site. It has options for canAdd, canEdit, canSearch, etc... for manipulating to use for different types of displays. The InfoBox is used inside of other components as well, like the InputComponent.
+  - SiteLabel // this component is a simple non-button display element that has options to display, add, or delete data, depending on props passed to it.
+  - AddHandler // this function will utilize props to call specific setFunctions, setValue and clearError functions when new information depending on the type passed into it.
+  - UpdateHandler // this function takes an item and updatedData and replaces the previous item with updatedData
+  - DeleteHandler // this function uses either Ids or a specific setFunction to search and delete selected data.
+
+- Other General Components:
+  - NavBar & Footer // self-explanatory

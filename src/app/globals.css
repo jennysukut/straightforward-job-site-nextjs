@@ -23,24 +23,41 @@
 }
 
 h1,
-h2,
-h3 {
-  letter-spacing: 0.2em;
+h2 {
+  color: #308b7b;
 }
 
 h1 {
   font-size: 1.35em;
   line-height: 2rem;
+  letter-spacing: 0.2em;
+}
+
+h2 {
+  font-size: 1.15em;
+  letter-spacing: 0.15em;
+}
+
+p {
+  line-height: 1.5rem;
 }
 
 body {
-  color: rgb(248, 242, 236);
+  color: #50b09f;
   font-family: "satoshi", sans-serif;
   font-weight: 700;
 }
 
+/* .ModalInnerContents::-webkit-scrollbar {
+  width: 10px;
+} */
+
+textarea {
+  resize: none;
+}
+
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
@@ -55,4 +72,19 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #d2c720;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .rounded-4xl {
+    border-radius: 3.5rem;
+  }
+  .tracking-extra-wide {
+    letter-spacing: 0.2em;
+  }
+  .scrollbar-thumb-rounded-full {
+    --scrollbar-thumb-radius: 9999px;
+  }
 }

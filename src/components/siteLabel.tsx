@@ -5,7 +5,7 @@ import {
   smallShadowColors,
   SmallShadowColorOption,
 } from "@/lib/stylingData/smallShadowColors";
-import getRandomColorScheme from "@/utils/getRandomColorScheme";
+import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import Image from "next/image";
 
 interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,6 +15,9 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   type?: string;
   addClasses?: string;
   textSize?: "medium" | "large";
+  handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
+  canAdd?: boolean;
+  handleAdd?: any;
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -25,12 +28,11 @@ const SiteLabel: React.FC<LabelProps> = ({
   children,
   addClasses,
   textSize,
+  canAdd,
+  handleAdd,
+  handleDelete,
   ...props
 }) => {
-  function handleDelete() {
-    // tie this into the data to update list of labels at it's source
-  }
-
   const labelClasses = clsx(
     `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${smallShadowColors[colorScheme]} text-eggshell py-1 tracking-widest m-1`,
     {
@@ -59,6 +61,19 @@ const SiteLabel: React.FC<LabelProps> = ({
             alt="closebutton"
             width={10}
             height={10}
+          ></Image>
+        </button>
+      )}
+      {canAdd && (
+        <button
+          className="CloseButton ml-5 opacity-100 hover:opacity-50"
+          onClick={handleAdd}
+        >
+          <Image
+            src="/labelAddButton.svg"
+            alt="closebutton"
+            width={12}
+            height={12}
           ></Image>
         </button>
       )}

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import type { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import getRandomColorScheme from "@/utils/getRandomColorScheme";
+import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import SiteButton from "./siteButton";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
