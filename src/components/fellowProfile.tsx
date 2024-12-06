@@ -3,14 +3,16 @@ import { useFellow } from "@/contexts/FellowContext";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
+import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
-export default function FellowProfile() {
-  const { fellow } = useFellow();
+export default function FellowProfile({ fellow }: any, isOwn: boolean) {
+  // const { fellow } = useFellow();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
+  const [canEdit, setCanEdit] = useState(false);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -24,27 +26,36 @@ export default function FellowProfile() {
         <InfoBox
           aria="fellow"
           variant="hollow"
-          addClasses="flex gap-8 justify-between"
+          addClasses="gap-8 justify-between"
           size="profile"
+          canEdit={canEdit}
         >
-          <Avatar addClasses="self-center" />
-          <div className="NameBioContainer">
-            <h1 className="Name">{fellow?.name}</h1>
-            <p className="SmallBio pt-4 leading-6">
-              {fellow?.smallBio ||
-                "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
-            </p>
+          <div className="NameBioAvatarContainer flex justify-between gap-8">
+            <Avatar addClasses="self-center" />
+            <div className="NameBioContainer">
+              <h1 className="Name">{fellow?.name}</h1>
+              <p className="SmallBio pt-4 leading-6">
+                {fellow?.smallBio ||
+                  "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
+              </p>
+            </div>
           </div>
         </InfoBox>
       </div>
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn flex flex-col gap-8">
-          <InfoBox variant="hollow" aria="skills" size="profile" width="small">
+          <InfoBox
+            variant="hollow"
+            aria="skills"
+            size="profile"
+            width="small"
+            canEdit={canEdit}
+          >
             <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
             <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
               {fellow?.skills && fellow.skills.length > 0 ? (
-                fellow.skills.map((skill, index) => {
+                fellow.skills.map((skill: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={skill}
@@ -69,6 +80,7 @@ export default function FellowProfile() {
               aria="education"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="EducationTitle mb-4 pl-2">{`My Education:`}</h2>
               <ul className="EducationList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -95,6 +107,7 @@ export default function FellowProfile() {
               aria="experience"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="ExperienceTitle mb-4 pl-2">{`My Experience:`}</h2>
               <ul className="ExperienceList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -131,6 +144,7 @@ export default function FellowProfile() {
               aria="awards"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="AwardsTitle mb-4 pl-2">{`Awards / Honors:`}</h2>
               <ul className="AwardsList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -156,6 +170,7 @@ export default function FellowProfile() {
               aria="expLevels"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="ExperienceLevelTitle mb-4 pl-2">{`Experience Levels:`}</h2>
               <ul className="ExperienceLevelList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -182,6 +197,7 @@ export default function FellowProfile() {
               aria="bookOrQuote"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="BookOrQuoteTitle mb-4 pl-2">{`Books / Quotes I Enjoy:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -202,6 +218,7 @@ export default function FellowProfile() {
               aria="petInfo"
               size="profile"
               width="small"
+              canEdit={canEdit}
             >
               <h2 className="PetDetailsTitle mb-4 pl-2">{`Pertaining To Pets:`}</h2>
               <p className="PetDetails ml-8 text-olive">{fellow.petDetails}</p>
@@ -214,6 +231,7 @@ export default function FellowProfile() {
             aria="location"
             size="profile"
             width="medium"
+            canEdit={canEdit}
           >
             <div className="LocationAndLinks flex flex-col gap-2">
               <p className="Location text-emerald">
@@ -247,11 +265,12 @@ export default function FellowProfile() {
             aria="jobTitles"
             size="profile"
             width="medium"
+            canEdit={canEdit}
           >
             <h2 className="JobTitlesTitle text-center">{`My Job Titles:`}</h2>
             <div className="JobTitlesContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
               {fellow?.jobTitles && fellow.jobTitles.length > 0 ? (
-                fellow.jobTitles.map((title, index) => {
+                fellow.jobTitles.map((title: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={title}
@@ -277,6 +296,7 @@ export default function FellowProfile() {
               aria="passionateAbout"
               size="profile"
               width="medium"
+              canEdit={canEdit}
             >
               <h2 className="PassionateAboutTitle mb-4 pl-2 text-emerald">{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
@@ -290,6 +310,7 @@ export default function FellowProfile() {
               aria="lookingFor"
               size="profile"
               width="medium"
+              canEdit={canEdit}
             >
               <h2 className="LookingForTitle mb-4 pl-2 text-emerald">{`What I'm Looking For:`}</h2>
               <p className="LookingForSubtitle -mt-4 px-3 italic">{`in a job/company`}</p>
@@ -304,6 +325,7 @@ export default function FellowProfile() {
               aria="hobbies"
               size="profile"
               width="medium"
+              canEdit={canEdit}
             >
               <h2 className="HobbiesTitle mb-4 pl-2">{`My Hobbies / Pastimes:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -331,6 +353,7 @@ export default function FellowProfile() {
               aria="accomplishments"
               size="profile"
               width="medium"
+              canEdit={canEdit}
             >
               <h2 className="AccomplishmentsTitle mb-4 pl-2">{`Other Accomplishments:`}</h2>
               <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -355,12 +378,24 @@ export default function FellowProfile() {
               aria="moreAboutMe"
               size="profile"
               width="medium"
+              canEdit={canEdit}
             >
               <h2 className="AboutMeTitle mb-4 pl-2 text-emerald">{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">
                 {fellow.aboutMe}
               </p>
             </InfoBox>
+          )}
+          {isOwn && (
+            <SiteButton
+              variant="filled"
+              colorScheme="b6"
+              aria="edit"
+              addClasses="px-8"
+              onClick={() => setCanEdit(!canEdit)}
+            >
+              edit details
+            </SiteButton>
           )}
         </div>
       </div>

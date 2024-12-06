@@ -99,7 +99,21 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   );
 
   return (
-    <div className={`${boxClasses}`}>
+    <div className={`${boxClasses} flex flex-col`}>
+      {/* profile edit button */}
+      {canEdit && size === "profile" && (
+        <button
+          className="EditButton absolute -mx-3 -mt-6 self-end opacity-100 hover:opacity-50"
+          onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
+        >
+          <Image
+            src="/edit-icon.svg"
+            alt="editButton"
+            width={16}
+            height={16}
+          ></Image>
+        </button>
+      )}
       {title && (
         <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
           {title}
@@ -154,7 +168,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       )}
 
       {/* edit button */}
-      {canEdit && (
+      {canEdit && size !== "profile" && (
         <button
           className="EditButton self-end opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
