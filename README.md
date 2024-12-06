@@ -7,6 +7,15 @@ cd straightforward-job-site-nextjs
 Install dependencies:
 npm install
 Run the development server:
+1. Clone the repository: <br/>
+`https://github.com/jennysukut/straightforward-job-site-nextjs.git`
+2. Navigate to the project directory:<br/>
+`cd straightforward-job-site-nextjs`
+2. Install dependencies:<br/>
+`npm install`
+4. Run the development server:<br/>
+
+```bash
 npm run dev
 
 # or
