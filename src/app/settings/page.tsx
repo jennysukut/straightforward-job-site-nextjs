@@ -24,7 +24,7 @@ export default function Settings() {
   // if the current subscription gets changed from 0 to an amount, we'll need to initiate a payment due on that day of the month
 
   return (
-    <div className="SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-12">
+    <div className="SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-20">
       <div className="SettingsContainer flex w-[84%] max-w-[1600px] flex-col gap-20 sm:gap-32 md:w-[75%]">
         <h1 className="SettingsTitle self-end pr-14">{`My Profile: Details & Subscription`}</h1>
         <div className="NameAndSubscriptionContainer flex items-start justify-between align-top">
