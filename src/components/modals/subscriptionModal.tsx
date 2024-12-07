@@ -9,7 +9,7 @@ import { useModal } from "@/contexts/ModalContext";
 import SiteButton from "../siteButton";
 import PaymentModal from "./paymentModal";
 
-export default function SubscriptionModal() {
+export default function SubscriptionModal(isBeingUpdated: any) {
   const { fellow, setFellow } = useFellow();
   const { showModal, hideModal } = useModal();
   const router = useRouter();
@@ -17,8 +17,11 @@ export default function SubscriptionModal() {
 
   const handleSubmit = () => {
     setFellow({ ...fellow, subscriptionAmount: selectedAmount });
-    if (selectedAmount !== "0") {
+    if (selectedAmount !== "0" && !isBeingUpdated) {
       showModal(<PaymentModal subscriptionAmount={selectedAmount} />);
+    } else if (isBeingUpdated) {
+      router.push("/settings");
+      hideModal();
     } else {
       router.push("/profile");
       hideModal();

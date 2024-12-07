@@ -48,6 +48,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     // avatar: "/avatars/peach.svg",
     // shadow: "drop-shadow-lime",
     // colorScheme: "b6",
+    subscriptionAmount: "10",
     name: "Jenny Sukut",
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",
