@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "../../siteButton";
 import SignupModalIndividual1 from "./signupIndividual1";
@@ -8,6 +9,17 @@ import LoginModal from "../loginModal";
 
 export default function SignupOptionsModal() {
   const { showModal, replaceModalStack } = useModal();
+  const { setAccountType } = usePageContext();
+
+  const selectCategory = (type: any) => {
+    if (type === "Fellow") {
+      setAccountType("Fellow");
+      showModal(<SignupModalIndividual1 />);
+    } else if (type === "Business") {
+      setAccountType("Business");
+      showModal(<SignupModalBusiness1 />);
+    }
+  };
 
   return (
     <div className="SignupOptionsModal flex w-[250px] flex-col items-center gap-4">
@@ -22,7 +34,7 @@ export default function SignupOptionsModal() {
           colorScheme="c1"
           aria="job-seeker"
           addClasses="w-[200px]"
-          onClick={() => showModal(<SignupModalIndividual1 />)}
+          onClick={() => selectCategory("Fellow")}
         >
           job-seeker
         </SiteButton>
@@ -32,7 +44,7 @@ export default function SignupOptionsModal() {
           colorScheme="b3"
           aria="business"
           addClasses="w-[200px]"
-          onClick={() => showModal(<SignupModalBusiness1 />)}
+          onClick={() => selectCategory("Business")}
         >
           business
         </SiteButton>

@@ -17,6 +17,7 @@ interface InputComponentWithLabelOptions {
   options?: boolean;
   defaultValue?: any;
   required?: boolean;
+  width?: any;
 }
 
 const InputComponentWithLabelOptions: React.FC<
@@ -33,6 +34,7 @@ const InputComponentWithLabelOptions: React.FC<
   options,
   defaultValue,
   required,
+  width,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -72,6 +74,7 @@ const InputComponentWithLabelOptions: React.FC<
         canSearch
         addClasses="flex"
         type={name}
+        width={width}
       >
         <input
           type={name}
