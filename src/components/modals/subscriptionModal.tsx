@@ -15,11 +15,14 @@ export default function SubscriptionModal(isBeingUpdated: any) {
   const router = useRouter();
   const [selectedAmount, setSelectedAmount] = useState("0");
 
+  console.log(isBeingUpdated);
+
   const handleSubmit = () => {
     setFellow({ ...fellow, subscriptionAmount: selectedAmount });
-    if (selectedAmount !== "0" && !isBeingUpdated) {
+
+    if (selectedAmount !== "0") {
       showModal(<PaymentModal subscriptionAmount={selectedAmount} />);
-    } else if (isBeingUpdated) {
+    } else if (isBeingUpdated === "true") {
       router.push("/settings");
       hideModal();
     } else {

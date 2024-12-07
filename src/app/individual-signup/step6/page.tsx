@@ -90,16 +90,23 @@ export default function IndividualSignupPage6() {
     });
   };
 
+  console.log(fellow?.profileIsBeingEdited, fellow?.addMoreInfo);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    if (
+      fellow?.profileIsBeingEdited === false &&
+      fellow?.addMoreInfo === false
+    ) {
+      showModal(<SubscriptionModal />);
+    }
     setFellow({
       ...fellow,
       links: links,
       aboutMe: data.aboutMe,
       profileIsBeingEdited: false,
+      addMoreInfo: false,
     });
     router.push("/profile");
-    showModal(<SubscriptionModal />);
   };
 
   // Setting Details on page from fellowContext

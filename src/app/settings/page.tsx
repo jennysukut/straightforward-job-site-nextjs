@@ -73,7 +73,9 @@ export default function Settings() {
               variant="hollow"
               colorScheme="b5"
               addClasses="px-8"
-              onClick={() => showModal(<SubscriptionModal isBeingUpdated />)}
+              onClick={() =>
+                showModal(<SubscriptionModal isBeingUpdated="true" />)
+              }
             >
               change
             </SiteButton>
