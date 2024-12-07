@@ -30,6 +30,7 @@ export interface Fellow {
   buttonShadow?: string;
   buttonImg?: any;
   profileIsBeingEdited?: boolean;
+  subscriptionAmount?: any;
 }
 
 interface FellowContextType {
@@ -47,7 +48,6 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     // avatar: "/avatars/peach.svg",
     // shadow: "drop-shadow-lime",
     // colorScheme: "b6",
-
     name: "Jenny Sukut",
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",

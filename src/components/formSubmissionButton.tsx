@@ -5,8 +5,8 @@ import Image from "next/image";
 import SiteButton from "./siteButton";
 
 interface FormSubmissionComponent {
-  canDelete: boolean;
-  clickDelete: any;
+  canDelete?: boolean;
+  clickDelete?: any;
   disabledButton: boolean;
   handleSubmit: any;
 

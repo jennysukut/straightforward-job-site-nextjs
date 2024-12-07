@@ -9,7 +9,7 @@ interface InputComponent {
   errors: any;
   register: any;
   registerValue: string;
-  defaultValue: any;
+  defaultValue?: any;
   width?: any;
   height?: any;
   size?: "extraSmall" | "tall" | "medium";
