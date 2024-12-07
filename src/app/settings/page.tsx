@@ -21,6 +21,7 @@ export default function Settings() {
   }, [setCurrentPage, setPageType]);
 
   // WE NEED TO MAKE AN OPTION TO CLOSE YOUR ACCOUNT ? HOW ABOUT OPTIONS TO RETRACT APPLICATIONS ?
+  // if the current subscription gets changed from 0 to an amount, we'll need to initiate a payment due on that day of the month
 
   return (
     <div className="SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-12">
@@ -78,32 +79,34 @@ export default function Settings() {
             </SiteButton>
           </div>
         </div>
-        <div className="BillingDetails flex flex-col items-center gap-6">
-          <InfoBox
-            aria="billingDetails"
-            variant="hollow"
-            size="profile"
-            width="small"
-            addClasses="items-center text-center self-center mr-40 -mt-20"
-          >
-            <div className="BillingDetails flex flex-col gap-4">
-              <h2 className="Name">Your Billing Details:</h2>
-              {/* I don't know if we should have this section? */}
-              <p className="Name text-jade">monthly payments on the 14th</p>
-              <p className="Name -mt-2 italic text-jade">
-                with card ending in 0000
-              </p>
-            </div>
-          </InfoBox>
-          <SiteButton
-            aria="editNameEmail"
-            variant="hollow"
-            colorScheme="e5"
-            addClasses="px-8"
-          >
-            update
-          </SiteButton>
-        </div>
+        {fellow?.subscriptionAmount !== "0" && (
+          <div className="BillingDetails flex flex-col items-center gap-6">
+            <InfoBox
+              aria="billingDetails"
+              variant="hollow"
+              size="profile"
+              width="small"
+              addClasses="items-center text-center self-center mr-40 -mt-20"
+            >
+              <div className="BillingDetails flex flex-col gap-4">
+                <h2 className="Name">Your Billing Details:</h2>
+                {/* I don't know if we should have this section? */}
+                <p className="Name text-jade">monthly payments on the 14th</p>
+                <p className="Name -mt-2 italic text-jade">
+                  with card ending in 0000
+                </p>
+              </div>
+            </InfoBox>
+            <SiteButton
+              aria="editNameEmail"
+              variant="hollow"
+              colorScheme="e5"
+              addClasses="px-8"
+            >
+              update
+            </SiteButton>
+          </div>
+        )}
       </div>
     </div>
   );
