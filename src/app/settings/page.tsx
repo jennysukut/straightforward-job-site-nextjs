@@ -20,6 +20,8 @@ export default function Settings() {
     setPageType("Individual");
   }, [setCurrentPage, setPageType]);
 
+  // WE NEED TO MAKE AN OPTION TO CLOSE YOUR ACCOUNT ? HOW ABOUT OPTIONS TO RETRACT APPLICATIONS ?
+
   return (
     <div className="SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-12">
       <div className="SettingsContainer flex w-[84%] max-w-[1600px] flex-col gap-20 sm:gap-32 md:w-[75%]">
@@ -76,21 +78,32 @@ export default function Settings() {
             </SiteButton>
           </div>
         </div>
-        <InfoBox
-          aria="billingDetails"
-          variant="hollow"
-          size="profile"
-          width="small"
-          addClasses="items-center text-center self-center mr-40 -mt-20"
-        >
-          <div className="BillingDetails flex flex-col gap-8">
-            <h2 className="Name">Your Billing Details:</h2>
-            {/* I don't know if we should have this section? */}
-            <p className="Name -mt-4 text-jade">
-              monthly payments with card ending in 0000
-            </p>
-          </div>
-        </InfoBox>
+        <div className="BillingDetails flex flex-col items-center gap-6">
+          <InfoBox
+            aria="billingDetails"
+            variant="hollow"
+            size="profile"
+            width="small"
+            addClasses="items-center text-center self-center mr-40 -mt-20"
+          >
+            <div className="BillingDetails flex flex-col gap-4">
+              <h2 className="Name">Your Billing Details:</h2>
+              {/* I don't know if we should have this section? */}
+              <p className="Name text-jade">monthly payments on the 14th</p>
+              <p className="Name -mt-2 italic text-jade">
+                with card ending in 0000
+              </p>
+            </div>
+          </InfoBox>
+          <SiteButton
+            aria="editNameEmail"
+            variant="hollow"
+            colorScheme="e5"
+            addClasses="px-8"
+          >
+            update
+          </SiteButton>
+        </div>
       </div>
     </div>
   );
