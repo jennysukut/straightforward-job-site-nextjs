@@ -70,17 +70,25 @@ export default function NavBar() {
                 title="applications"
                 clickedButton={clickedButton}
               />
-              <NavButton
-                onClick={handleNavButtonClick}
-                // colorScheme="b6"
-                colorScheme={fellow?.colorScheme as ButtonColorOption}
-                title="account"
-                clickedButton={clickedButton}
-                variant="avatar"
-                size="mediumCircle"
-                addImage={fellow?.buttonImg}
-                // addImage="bg-[url('/avatars/peach.svg')]"
-              />
+              <Link href={"/settings"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="b6"
+                  title="settings"
+                  clickedButton={clickedButton}
+                />
+              </Link>
+              <Link href={"/profile"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme={fellow?.colorScheme as ButtonColorOption}
+                  title="account"
+                  clickedButton={clickedButton}
+                  variant="avatar"
+                  size="mediumCircle"
+                  addImage={fellow?.buttonImg}
+                />
+              </Link>
             </div>
           );
         } else {

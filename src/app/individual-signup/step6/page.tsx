@@ -7,6 +7,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
@@ -16,6 +17,7 @@ import Avatar from "@/components/avatarComponent";
 import AddHandler from "@/components/addHandler";
 import UpdateHandler from "@/components/updateHandler";
 import DeleteHandler from "@/components/deleteHandler";
+import SubscriptionModal from "@/components/modals/subscriptionModal";
 
 const fellowSchema = z.object({
   links: z.array(z.string()).optional(),
@@ -26,6 +28,7 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage6() {
   const { fellow, setFellow } = useFellow();
+  const { showModal } = useModal();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -87,13 +90,21 @@ export default function IndividualSignupPage6() {
     });
   };
 
+  console.log(fellow?.profileIsBeingEdited, fellow?.addMoreInfo);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+    if (
+      fellow?.profileIsBeingEdited === false &&
+      fellow?.addMoreInfo === false
+    ) {
+      showModal(<SubscriptionModal />);
+    }
     setFellow({
       ...fellow,
       links: links,
       aboutMe: data.aboutMe,
       profileIsBeingEdited: false,
+      addMoreInfo: false,
     });
     router.push("/profile");
   };

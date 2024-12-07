@@ -74,6 +74,42 @@ textarea {
   background: #d2c720;
 }
 
+.custom-range {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Add standard property for compatibility */
+  width: 100%; /* Full width */
+  height: 8px; /* Height of the track */
+  background: #efe5db; /* Track color */
+  border-radius: 5px; /* Rounded track */
+}
+
+/* Style the thumb */
+.custom-range::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Add standard property for compatibility */
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #50b09f; /* Thumb color */
+  box-shadow: 3px 3px 0 rgba(210, 199, 32, 1);
+  border-radius: 50%; /* Rounded thumb */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.custom-range::-moz-range-thumb {
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #4caf50; /* Thumb color */
+  border-radius: 50%; /* Rounded thumb */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Style the track for Firefox */
+.custom-range::-moz-range-track {
+  background: #ddd; /* Track color */
+  height: 8px; /* Height of the track */
+  border-radius: 5px; /* Rounded track */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

@@ -7,9 +7,9 @@ interface InputComponent {
   type: string;
   title: string;
   placeholderText: string;
-  errors: any;
+  errors?: any;
   registerValue: string;
-  defaultValue: any;
+  defaultValue?: any;
   register: any;
 }
 

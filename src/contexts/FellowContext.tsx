@@ -30,6 +30,8 @@ export interface Fellow {
   buttonShadow?: string;
   buttonImg?: any;
   profileIsBeingEdited?: boolean;
+  addMoreInfo?: boolean;
+  subscriptionAmount?: any;
 }
 
 interface FellowContextType {
@@ -47,7 +49,8 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     // avatar: "/avatars/peach.svg",
     // shadow: "drop-shadow-lime",
     // colorScheme: "b6",
-
+    subscriptionAmount: "10",
+    addMoreInfo: false,
     name: "Jenny Sukut",
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",
@@ -126,7 +129,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
       },
     ],
     passions:
-      'I\'m passionate about love. According to the movie Moulin Rouge, "All You Need Is Love."',
+      "I'm passionate about a lot of things. At the end of the day, creativity and self-expression are things I strive to bring into every aspect of my life.",
     lookingFor:
       "I'm looking for a meaningful place to do meaningful work for meaningful pay. ",
     locationOptions: ["remote", "on-site", "hybrid"],
@@ -143,8 +146,14 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
         author: "Leif Enger",
         id: 1,
       },
+      {
+        bookOrQuote: "The Way Of Kings",
+        author: "Brandon Sanderson",
+        id: 2,
+      },
     ],
-    petDetails: "I love all the pets.",
+    petDetails:
+      "I love all the pets. I would have a collection of about 27 cats, dogs, ferrets, and spiders if I could!",
     links: [
       {
         linkType: "Personal Website",
