@@ -10,8 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import SiteButton from "../siteButton";
 import FormSubmissionButton from "@/components/formSubmissionButton";
-import FormInputComponent from "@/components/formInputComponent";
 import InputComponent from "../inputComponent";
+import PaymentSuccessfulModal from "./paymentSuccessfulModal";
 
 const PaymentSchema = z.object({
   nameOnCard: z.string().min(2, { message: "Name On Card Required" }),
@@ -52,11 +52,9 @@ export default function PaymentModal({ subscriptionAmount }: any) {
     if (agree) {
       setDisabledButton(true);
       console.log(data, agree);
-    } else {
+      showModal(<PaymentSuccessfulModal />);
     }
   };
-
-  console.log(errors?.agreeToTerms);
 
   return (
     <div className="PaymentModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
