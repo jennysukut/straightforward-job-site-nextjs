@@ -17,6 +17,8 @@ interface LabelGeneratorAndDisplayComp {
   searchData?: Array<any>;
   note?: string;
   required?: boolean;
+  title?: string;
+  width?: "full";
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -31,6 +33,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   searchData,
   note,
   required,
+  title,
+  width,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -77,6 +81,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
+      {title && <p className="Title -mb-4 pl-4">{title}</p>}
       {required && (
         <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
           *
@@ -91,6 +96,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         addClasses="flex"
         type={name}
         addClick={() => addItem(name)}
+        width={width}
       >
         <input
           type={name}

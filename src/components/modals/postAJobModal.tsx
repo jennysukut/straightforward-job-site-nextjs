@@ -10,7 +10,6 @@ import { useBusiness } from "@/contexts/BusinessContext";
 
 import SiteButton from "../siteButton";
 import ButtonOptionsComponent from "../buttonOptionsComponent";
-import InputComponent from "../inputComponent";
 import FormInputComponent from "../formInputComponent";
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
@@ -70,6 +69,7 @@ export default function PostAJobModal() {
       activeJobs: [
         ...(business?.activeJobs || ""),
         {
+          jobNumber: 1,
           jobTitle: data.jobTitle,
           positionType: data.positionType,
         },
@@ -111,7 +111,6 @@ export default function PostAJobModal() {
           classesForButtons="px-8 py-3"
           errors={errors.positionType}
           flexOpt="flex-col"
-          // buttonSize="large"
         />
 
         {/* form submission button */}

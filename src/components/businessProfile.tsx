@@ -27,6 +27,8 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
     setPageType("Business");
   }, []);
 
+  console.log(business?.activeJobs);
+
   return (
     <div className="BusinessProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
       {/* NAME AND SMALL BIO */}

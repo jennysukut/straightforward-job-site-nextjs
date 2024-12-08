@@ -121,16 +121,18 @@ export default function NavBar() {
                 title="mailbox"
                 clickedButton={clickedButton}
               />
+              {/* <Link href={"/post-a-job/step1"}> */}
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="e5"
-                title="jobs"
+                title="post a job"
                 clickedButton={clickedButton}
               />
+              {/* </Link> */}
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="f3"
-                title="applications"
+                title="ams"
                 clickedButton={clickedButton}
               />
               <Link href={"/settings"}>
