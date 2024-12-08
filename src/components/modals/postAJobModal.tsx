@@ -68,7 +68,7 @@ export default function PostAJobModal() {
     setBusiness({
       ...business,
       activeJobs: [
-        ...business?.activeJobs,
+        ...(business?.activeJobs || ""),
         {
           jobTitle: data.jobTitle,
           positionType: data.positionType,

@@ -45,6 +45,12 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
     // colorScheme: "b4",
     // buttonShadow: "bg-lime",
     // buttonImg: "bg-[url('/avatars/magenta.svg')]",
+    activeJobs: [
+      {
+        jobTitle: "Testing Job Title",
+        positionType: "part-time",
+      },
+    ],
     amountDue: "400",
     billingDetails: true,
     hasActiveJobs: true,
