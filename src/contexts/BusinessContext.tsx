@@ -20,6 +20,9 @@ export interface Business {
   businessField?: string;
   missionVision?: string;
   moreAboutBusiness?: string;
+  hasActiveJobs?: boolean;
+  billingDetails?: boolean;
+  amountDue?: string;
 }
 
 interface BusinessContextType {
@@ -41,6 +44,9 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
     // colorScheme: "b4",
     // buttonShadow: "bg-lime",
     // buttonImg: "bg-[url('/avatars/magenta.svg')]",
+    amountDue: "400",
+    billingDetails: true,
+    hasActiveJobs: true,
     businessName: "Straightforward Job Site ",
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",

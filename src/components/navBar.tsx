@@ -120,12 +120,6 @@ export default function NavBar() {
               />
               <NavButton
                 onClick={handleNavButtonClick}
-                colorScheme="d4"
-                title="saved"
-                clickedButton={clickedButton}
-              />
-              <NavButton
-                onClick={handleNavButtonClick}
                 colorScheme="f3"
                 title="applications"
                 clickedButton={clickedButton}
