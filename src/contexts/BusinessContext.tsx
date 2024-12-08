@@ -23,6 +23,7 @@ export interface Business {
   hasActiveJobs?: boolean;
   billingDetails?: boolean;
   amountDue?: string;
+  activeJobs?: any;
 }
 
 interface BusinessContextType {

@@ -2,16 +2,19 @@ import { useState, useEffect } from "react";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
+import { useModal } from "@/contexts/ModalContext";
 
 import InfoBox from "./infoBox";
 import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
+import PostAJobModal from "./modals/postAJobModal";
 
 export default function BusinessProfile({ business }: any, isOwn: boolean) {
   const { setBusiness } = useBusiness();
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
   const { setPageType } = usePageContext();
+  const { showModal } = useModal();
 
   const handleEditClick = (url: any) => {
     setBusiness({ ...business, profileIsBeingEdited: true });
@@ -92,7 +95,16 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
                 addClasses="px-8"
                 onClick={() => setCanEdit(!canEdit)}
               >
-                edit details
+                edit
+              </SiteButton>
+              <SiteButton
+                aria="post a job"
+                variant="filled"
+                colorScheme="f1"
+                addClasses="px-8"
+                onClick={() => showModal(<PostAJobModal />)}
+              >
+                post a job
               </SiteButton>
             </div>
           )}

@@ -44,6 +44,15 @@ export default function NavBar() {
               <p className="TellAboutYouTitle">tell us more about you!</p>
             </div>
           );
+        } else if (pageType === "Job Creation") {
+          // JOB CREATION NAV BAR
+          return (
+            <div className="TellUsAboutYou">
+              <p className="TellAboutYouTitle">
+                tell us more about your open position!
+              </p>
+            </div>
+          );
         } else if (pageType === "Business Signup") {
           // INDIVIDUAL SIGNUP NAV BAR
           return (

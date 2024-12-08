@@ -7,6 +7,7 @@ export default function AddHandler({
   hasId,
   counterFunctions,
   counterDetails,
+  oneChoice,
 }: any) {
   const value = `"${type}"`;
 
@@ -24,6 +25,10 @@ export default function AddHandler({
         };
         counterFunction((prev: any) => prev + 1);
         setFunction((prev: any) => [...prev, newData]);
+      } else if (oneChoice === true) {
+        setFunction(item);
+        setValue(value, item);
+        clearErrors(value);
       } else {
         setFunction((prevList: any) => {
           const updatedList = [...prevList, item];
