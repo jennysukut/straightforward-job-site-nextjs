@@ -43,7 +43,6 @@ const InputComponent: React.FC<InputComponent> = ({
           *
         </p>
       )}
-
       <InfoBox
         variant="hollow"
         size={size}

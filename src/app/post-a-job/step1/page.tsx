@@ -97,6 +97,14 @@ export default function PostAJobStep1() {
     return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
+  useEffect(() => {
+    setNonNegSkills(
+      Array.isArray(business?.activeJobs[latestArrayIndex].nonNegSkills)
+        ? business?.activeJobs[latestArrayIndex].nonNegSkills
+        : [],
+    );
+  }, []);
+
   return (
     <div className="PostAJobPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
@@ -127,7 +135,7 @@ export default function PostAJobStep1() {
             width="full"
           />
 
-          {/* skills input & generator */}
+          {/* non negotiable skills / parameters input & generator */}
           <LabelGeneratorAndDisplayComp
             handleAdd={handleAdd}
             errors={errors.nonNegSkills}

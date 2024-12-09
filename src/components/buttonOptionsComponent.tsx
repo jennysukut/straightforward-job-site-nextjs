@@ -6,10 +6,10 @@ import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 interface ButtonOptionsComponent {
   type: string;
-  title: string;
-  errors: any;
+  title?: string;
+  errors?: any;
   buttons: any;
-  selectedArray: any;
+  selectedArray?: any;
   handleAdd: Function;
   required?: boolean;
   handleDelete: Function;
@@ -53,7 +53,10 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
       <div
         className={`ButtonsContainer mb-4 flex justify-center gap-6 ${flexOpt}`}
       >
-        <label htmlFor={title} className="ButtonOptionsTitle text-jade">
+        <label
+          htmlFor={title}
+          className="ButtonOptionsTitle self-center text-jade"
+        >
           {title}
           {required && (
             <span className="required flex-end text-md m-0 pl-1 text-start align-baseline text-jade">

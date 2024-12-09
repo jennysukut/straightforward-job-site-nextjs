@@ -17,15 +17,18 @@ import AddHandler from "@/components/addHandler";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 
 const fellowSchema = z.object({
-  payscale: z.string().min(3, {
+  payscale: z.string().min(2, {
     message: "Payscale Information Required",
   }),
-  locationOptions: z
-    .array(z.string())
+  payOption: z.string(),
+  locationOption: z
+    .string()
     .min(1, { message: "You Must Have At Least 1 Location Type Selected" }),
   idealCandidate: z.string().min(3, {
     message: "Please Provide More Information About Your Ideal Candidate",
   }),
+  daysInOffice: z.string().optional(),
+  daysRemote: z.string().optional(),
 });
 
 type FormData = z.infer<typeof fellowSchema>;
@@ -35,8 +38,8 @@ export default function PostAJobStep2() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [locationOptions, setLocationOptions] = useState<string[]>([]);
-
+  const [locationOption, setLocationOption] = useState<string[]>([]);
+  const [payOption, setPayOption] = useState<string[]>([]);
   const {
     handleSubmit,
     setValue,
@@ -53,15 +56,17 @@ export default function PostAJobStep2() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "locationType", data: any) => {
+  const handleAdd = (type: "locationType" | "payOption", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        locationOptions: setLocationOptions,
+        locationOption: setLocationOption,
+        payOption: setPayOption,
       },
       setValue,
       clearErrors,
+      oneChoice: true,
     });
   };
 
@@ -70,7 +75,8 @@ export default function PostAJobStep2() {
       item: id,
       type,
       setFunctions: {
-        locationOptions: setLocationOptions,
+        locationOption: setLocationOption,
+        payOption: setPayOption,
       },
     });
   };
@@ -84,54 +90,130 @@ export default function PostAJobStep2() {
           if (index === business.activeJobs.length - 1) {
             return {
               ...job,
-              payscale: data.payscale,
-              locationType: data.locationOptions,
+              payDetails: {
+                payscale: data.payscale,
+                payOption: payOption,
+              },
+              locationType: data.locationOption,
               idealCandidate: data.idealCandidate,
+              hybridDetails: {
+                daysInOffice: data.daysInOffice,
+                daysRemote: data.daysRemote,
+              },
             };
           }
           return job;
         }) || [],
     });
-    router.push("/post-a-job/step3");
+    // router.push("/post-a-job/step3");
+    router.push("/profile");
   };
 
-  // Setting Details on page from fellowContext
-  // useEffect(() => {
-  //   setLocationOptions(
-  //     Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
-  //   );
-  //   setValue("locationOptions", fellow?.locationOptions || []);
-  // }, []);
+  useEffect(() => {
+    setPayOption(
+      Array.isArray(business?.activeJobs[latestArrayIndex].payOption)
+        ? business?.activeJobs[latestArrayIndex].payOption
+        : [],
+    );
+    setValue(
+      "payOption",
+      business?.activeJobs[latestArrayIndex].payOption || [],
+    );
+  }, []);
+
+  const capitalizeFirstLetter = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <div className="HeaderContainer flex justify-between">
-          <h2 className="OptionalTitle text-lg text-midnight">
-            {business?.activeJobs[latestArrayIndex].jobTitle ||
-              "Test Job Title"}
-          </h2>
-          <Avatar addClasses="self-end -mt-14" />
-        </div>
+        <h1 className="JobName pl-8 tracking-superwide text-midnight">
+          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+        </h1>
+        <p className="PositionTypeDetails -mt-8 pl-8 italic">
+          Position Type:{" "}
+          {capitalizeFirstLetter(
+            business?.activeJobs[latestArrayIndex].positionType,
+          )}
+        </p>
 
         <form
           className="PostAJobStep2Form xs:pt-8 flex flex-col gap-8"
           onSubmit={handleSubmit(onSubmit)}
         >
+          {/* Payscale Details */}
+          <div className="PayscaleDetails flex items-center justify-center gap-6">
+            {/* payscale input */}
+            <InputComponent
+              type="text"
+              placeholderText="Payscale"
+              errors={errors.payscale}
+              register={register}
+              registerValue="payscale"
+              defaultValue={business?.activeJobs[latestArrayIndex].payscale}
+              addClasses="-mt-2 min-w-[40vw]"
+              required
+            />
+
+            {/* hourly/annually option */}
+            <ButtonOptionsComponent
+              type="payOption"
+              buttons={["hourly", "annually"]}
+              selectedArray={payOption}
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+              errors={errors.payscale}
+              classesForButtons="px-[3rem] py-3"
+              addClasses="mt-4 -mb-2"
+            />
+          </div>
+
           {/* location options details */}
           <ButtonOptionsComponent
-            type="locationOptions"
+            type="locationOption"
             title="Location Type:"
             buttons={["remote", "on-site", "hybrid"]}
-            selectedArray={locationOptions}
+            selectedArray={locationOption}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
-            errors={errors.locationOptions}
+            errors={errors.locationOption}
             required
-            buttonSize="large"
-            classesForButtons="px-8"
+            classesForButtons="px-[3rem] py-3"
             addClasses="mt-4 -mb-2"
           />
+
+          {locationOption.includes("hybrid") && (
+            <div className="HybridDetails mb-6 flex justify-center gap-6">
+              <p className="HybridTitle">Hybrid Details:*</p>
+              {/* days in office */}
+              <InputComponent
+                type="text"
+                placeholderText="Days In Office"
+                errors={errors.daysInOffice}
+                register={register}
+                registerValue="daysInOffice"
+                // defaultValue={
+                //   business?.activeJobs[latestArrayIndex].hybridDetails
+                //     .daysInOffice
+                // }
+                addClasses="-mt-2"
+              />
+              {/* days remote */}
+              <InputComponent
+                type="text"
+                placeholderText="Days Remote"
+                errors={errors.daysRemote}
+                register={register}
+                registerValue="daysRemote"
+                // defaultValue={
+                //   business?.activeJobs[latestArrayIndex].hybridDetails
+                //     .daysRemote
+                // }
+                addClasses="-mt-2"
+              />
+            </div>
+          )}
 
           {/*  ideal candidate input */}
           <InputComponent
