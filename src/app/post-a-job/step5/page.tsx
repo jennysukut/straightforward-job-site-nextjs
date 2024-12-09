@@ -10,33 +10,28 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { skillsList } from "@/lib/skillsList";
 
 import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import UpdateHandler from "@/components/updateHandler";
+import PopulateDisplayField from "@/components/populateDisplayField";
+import AddInterviewProcessModal from "@/components/modals/postAJobModals/addInterviewProcessModal";
 
 const jobSchema = z.object({
-  experienceLevel: z.array(z.string()).min(2, {
-    message: "Experience Level Required",
-  }),
-  preferredSkills: z
+  interviewProcess: z
     .array(z.string())
-    .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
-  moreAboutPosition: z
-    .string()
-    .min(3, { message: "Please Provide More Details About This Position" }),
+    .min(1, { message: "You Must Have At Least 1 Responsibility Listed" }),
 });
 
 type FormData = z.infer<typeof jobSchema>;
 
-export default function PostAJobStep3() {
+export default function PostAJobStep5() {
   const { business, setBusiness } = useBusiness();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [preferredSkills, setPreferredSkills] = useState<string[]>([]);
-  const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
+  const [interviewProcess, setInterviewProcess] = useState<string[]>([]);
+  const [processCounter, setProcessCounter] = useState(1);
+
   const {
     handleSubmit,
     setValue,
@@ -53,35 +48,50 @@ export default function PostAJobStep3() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (
-    type: "experienceLevel" | "preferredSkills",
-    data: any,
-  ) => {
+  const handleAdd = (type: "interviewProcess", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        preferredSkills: setPreferredSkills,
-        experienceLevel: setExperienceLevel,
+        interviewProcess: setInterviewProcess,
+      },
+      counterFunctions: {
+        interviewProcess: setProcessCounter,
+      },
+      counterDetails: {
+        interviewProcess: processCounter,
       },
       setValue,
       clearErrors,
+      hasId: true,
     });
   };
 
-  const handleDelete = (
-    type: "experienceLevel" | "preferredSkills",
+  const handleUpdate = (
+    type: "interviewProcess",
+    updatedData: any,
     id: any,
   ) => {
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        interviewProcess: setInterviewProcess,
+      },
+    });
+  };
+
+  const handleDelete = (type: "interviewProcess", id: any) => {
     DeleteHandler({
       item: id,
       type,
       setFunctions: {
-        preferredSkills: setPreferredSkills,
-        experienceLevel: setExperienceLevel,
+        interviewProcess: setInterviewProcess,
       },
       setValue,
       clearErrors,
+      hasId: true,
     });
   };
 
@@ -94,42 +104,26 @@ export default function PostAJobStep3() {
           if (index === business.activeJobs.length - 1) {
             return {
               ...job,
-              experienceLevel: data.experienceLevel,
-              preferredSkills: preferredSkills,
-              moreAboutPosition: data.moreAboutPosition,
+              interviewProcess: interviewProcess,
             };
           }
           return job;
         }) || [],
     });
-    router.push("/post-a-job/step4");
-    // router.push("/profile");
+    // router.push("/post-a-job/step5");
+    router.push("/profile");
   };
 
   useEffect(() => {
-    setPreferredSkills(
-      Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
-        ? business?.activeJobs[latestArrayIndex].preferredSkills
-        : [],
-    );
-    setExperienceLevel(
-      Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
-        ? business?.activeJobs[latestArrayIndex].experienceLevel
-        : [],
-    );
-    setValue(
-      "preferredSkills",
-      business?.activeJobs[latestArrayIndex].preferredSkills || [],
-    );
-    setValue(
-      "experienceLevel",
-      business?.activeJobs[latestArrayIndex].experienceLevel || [],
-    );
-  }, []);
-
-  useEffect(() => {
-    const latestJob = business?.activeJobs[latestArrayIndex];
-    console.log(latestJob);
+    // setInterviewProcess(
+    //   Array.isArray(business?.activeJobs[latestArrayIndex].interviewProcess)
+    //     ? business?.activeJobs[latestArrayIndex].interviewProcess
+    //     : [],
+    // );
+    // setValue(
+    //   "interviewProcess",
+    //   business?.activeJobs[latestArrayIndex].interviewProcess || [],
+    // );
   }, []);
 
   const capitalizeFirstLetter = (str: string) => {
@@ -153,46 +147,19 @@ export default function PostAJobStep3() {
           className="PostAJobStep3Form xs:pt-8 flex flex-col gap-8"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* experience level details */}
-          <ButtonOptionsComponent
-            type="experienceLevel"
-            title="Experience Level:"
-            buttons={["entry", "junior", "senior"]}
-            selectedArray={experienceLevel}
+          {/* Add + Display Interview Process */}
+          <PopulateDisplayField
             handleAdd={handleAdd}
             handleDelete={handleDelete}
-            errors={errors.experienceLevel}
-            required
-            classesForButtons="px-[3rem] py-3"
-            addClasses="mt-4 -mb-2"
-          />
-
-          {/* preferred skills input & generator */}
-          <LabelGeneratorAndDisplayComp
-            handleAdd={handleAdd}
-            errors={errors.preferredSkills}
-            selectedArray={preferredSkills}
-            handleDelete={handleDelete}
-            placeholder="Preferred Skills"
-            name="preferredSkills"
-            variant="functional"
-            options
-            searchData={skillsList}
-            width="full"
-          />
-
-          {/*  more about the position input */}
-          <InputComponent
-            type="text"
-            placeholderText="More About This Position..."
-            errors={errors.moreAboutPosition}
-            register={register}
-            registerValue="moreAboutPosition"
-            defaultValue={
-              business?.activeJobs[latestArrayIndex].moreAboutPosition
-            }
-            size="medium"
-            width="full"
+            handleUpdate={handleUpdate}
+            selectedArray={interviewProcess}
+            aria="interviewProcess"
+            title={`Interview Process`}
+            addModal={<AddInterviewProcessModal />}
+            displayOption1="step"
+            displayOption2="step"
+            displayPunct=":"
+            id={processCounter}
           />
 
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">

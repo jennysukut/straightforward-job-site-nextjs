@@ -17,26 +17,23 @@ import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
-  experienceLevel: z.array(z.string()).min(2, {
-    message: "Experience Level Required",
-  }),
-  preferredSkills: z
+  responsibilities: z
     .array(z.string())
-    .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
-  moreAboutPosition: z
-    .string()
-    .min(3, { message: "Please Provide More Details About This Position" }),
+    .min(1, { message: "You Must Have At Least 1 Responsibility Listed" }),
+  perks: z
+    .array(z.string())
+    .min(1, { message: "You Must Have At Least 1 Perk Listed" }),
 });
 
 type FormData = z.infer<typeof jobSchema>;
 
-export default function PostAJobStep3() {
+export default function PostAJobStep4() {
   const { business, setBusiness } = useBusiness();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [preferredSkills, setPreferredSkills] = useState<string[]>([]);
-  const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
+  const [responsibilities, setResponsibilities] = useState<string[]>([]);
+  const [perks, setPerks] = useState<string[]>([]);
   const {
     handleSubmit,
     setValue,
@@ -53,32 +50,26 @@ export default function PostAJobStep3() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (
-    type: "experienceLevel" | "preferredSkills",
-    data: any,
-  ) => {
+  const handleAdd = (type: "responsibilities" | "perks", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        preferredSkills: setPreferredSkills,
-        experienceLevel: setExperienceLevel,
+        responsibilities: setResponsibilities,
+        perks: setPerks,
       },
       setValue,
       clearErrors,
     });
   };
 
-  const handleDelete = (
-    type: "experienceLevel" | "preferredSkills",
-    id: any,
-  ) => {
+  const handleDelete = (type: "responsibilities" | "perks", id: any) => {
     DeleteHandler({
       item: id,
       type,
       setFunctions: {
-        preferredSkills: setPreferredSkills,
-        experienceLevel: setExperienceLevel,
+        responsibilities: setResponsibilities,
+        perks: setPerks,
       },
       setValue,
       clearErrors,
@@ -94,42 +85,37 @@ export default function PostAJobStep3() {
           if (index === business.activeJobs.length - 1) {
             return {
               ...job,
-              experienceLevel: data.experienceLevel,
-              preferredSkills: preferredSkills,
-              moreAboutPosition: data.moreAboutPosition,
+              responsibilities: responsibilities,
+              perks: perks,
             };
           }
           return job;
         }) || [],
     });
-    router.push("/post-a-job/step4");
+    router.push("/post-a-job/step5");
     // router.push("/profile");
   };
 
   useEffect(() => {
-    setPreferredSkills(
-      Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
-        ? business?.activeJobs[latestArrayIndex].preferredSkills
+    setResponsibilities(
+      Array.isArray(business?.activeJobs[latestArrayIndex].responsibilities)
+        ? business?.activeJobs[latestArrayIndex].responsibilities
         : [],
     );
-    setExperienceLevel(
-      Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
-        ? business?.activeJobs[latestArrayIndex].experienceLevel
+    setPerks(
+      Array.isArray(business?.activeJobs[latestArrayIndex].perks)
+        ? business?.activeJobs[latestArrayIndex].perks
         : [],
     );
     setValue(
-      "preferredSkills",
-      business?.activeJobs[latestArrayIndex].preferredSkills || [],
+      "responsibilities",
+      business?.activeJobs[latestArrayIndex].responsibilities || [],
     );
-    setValue(
-      "experienceLevel",
-      business?.activeJobs[latestArrayIndex].experienceLevel || [],
-    );
+    setValue("perks", business?.activeJobs[latestArrayIndex].perks || []);
   }, []);
 
   useEffect(() => {
     const latestJob = business?.activeJobs[latestArrayIndex];
-    console.log(latestJob);
   }, []);
 
   const capitalizeFirstLetter = (str: string) => {
@@ -149,52 +135,36 @@ export default function PostAJobStep3() {
           )}
         </p>
 
+        {/* responsibilities generator */}
+        <LabelGeneratorAndDisplayComp
+          handleAdd={handleAdd}
+          errors={errors.responsibilities}
+          selectedArray={responsibilities}
+          handleDelete={handleDelete}
+          placeholder="Responsibilities Of The Position"
+          name="responsibilities"
+          variant="functional"
+          required
+          width="full"
+        />
+
+        {/* perks generator */}
+        <LabelGeneratorAndDisplayComp
+          handleAdd={handleAdd}
+          errors={errors.perks}
+          selectedArray={perks}
+          handleDelete={handleDelete}
+          placeholder="Perks Of The Position"
+          name="perks"
+          variant="functional"
+          required
+          width="full"
+        />
+
         <form
           className="PostAJobStep3Form xs:pt-8 flex flex-col gap-8"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* experience level details */}
-          <ButtonOptionsComponent
-            type="experienceLevel"
-            title="Experience Level:"
-            buttons={["entry", "junior", "senior"]}
-            selectedArray={experienceLevel}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            errors={errors.experienceLevel}
-            required
-            classesForButtons="px-[3rem] py-3"
-            addClasses="mt-4 -mb-2"
-          />
-
-          {/* preferred skills input & generator */}
-          <LabelGeneratorAndDisplayComp
-            handleAdd={handleAdd}
-            errors={errors.preferredSkills}
-            selectedArray={preferredSkills}
-            handleDelete={handleDelete}
-            placeholder="Preferred Skills"
-            name="preferredSkills"
-            variant="functional"
-            options
-            searchData={skillsList}
-            width="full"
-          />
-
-          {/*  more about the position input */}
-          <InputComponent
-            type="text"
-            placeholderText="More About This Position..."
-            errors={errors.moreAboutPosition}
-            register={register}
-            registerValue="moreAboutPosition"
-            defaultValue={
-              business?.activeJobs[latestArrayIndex].moreAboutPosition
-            }
-            size="medium"
-            width="full"
-          />
-
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
             <SiteButton
               variant="hollow"

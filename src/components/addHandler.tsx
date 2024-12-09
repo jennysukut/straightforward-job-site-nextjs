@@ -13,9 +13,16 @@ export default function AddHandler({
 
   // Check if there are setFunctions and if the type exists in setFunctions
   if (setFunctions) {
+    console.log(
+      "trying to add something with a setFunction - hasId:",
+      hasId,
+      "type:",
+      type,
+      "setFunctions:",
+      setFunctions,
+    );
     if (type in setFunctions) {
       const setFunction = setFunctions[type]; // Get the corresponding function
-
       if (hasId === true) {
         const counterFunction = counterFunctions[type]; // Get the corresponding function
         const counterData = counterDetails[type];
