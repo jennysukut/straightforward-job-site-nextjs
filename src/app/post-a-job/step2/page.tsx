@@ -103,21 +103,32 @@ export default function PostAJobStep2() {
           return job;
         }) || [],
     });
-    // router.push("/post-a-job/step3");
-    router.push("/profile");
+    router.push("/post-a-job/step3");
+    // router.push("/profile");
   };
 
-  // useEffect(() => {
-  //   setPayOption(
-  //     Array.isArray(business?.activeJobs[latestArrayIndex].payOption)
-  //       ? business?.activeJobs[latestArrayIndex].payOption
-  //       : [],
-  //   );
-  //   setValue(
-  //     "payOption",
-  //     business?.activeJobs[latestArrayIndex].payOption || [],
-  //   );
-  // }, []);
+  useEffect(() => {
+    const latestJob = business?.activeJobs[latestArrayIndex];
+    // Check if latestJob and its payDetails exist
+    if (latestJob?.payDetails) {
+      if (latestJob.payDetails.payOption) {
+        setPayOption(latestJob.payDetails.payOption);
+        setValue("payOption", latestJob.payDetails.payOption || []);
+      }
+    }
+
+    if (latestJob?.payDetails) {
+      if (latestJob.payDetails.payscale) {
+        setValue("payscale", latestJob.payDetails.payscale);
+      }
+    }
+
+    if (latestJob?.locationType) {
+      setLocationOption(latestJob?.locationType);
+      setValue("locationOption", latestJob?.locationType);
+    }
+    console.log(latestJob);
+  }, [business]);
 
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -211,6 +222,7 @@ export default function PostAJobStep2() {
             type="text"
             placeholderText="What does your ideal candidate look like?"
             errors={errors.idealCandidate}
+            defaultValue={business?.activeJobs[latestArrayIndex].idealCandidate}
             register={register}
             registerValue="idealCandidate"
             size="medium"

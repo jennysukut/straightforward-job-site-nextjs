@@ -101,25 +101,30 @@ export default function PostAJobStep2() {
     router.push("/profile");
   };
 
+  // useEffect(() => {
+  //   setPreferredSkills(
+  //     Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
+  //       ? business?.activeJobs[latestArrayIndex].preferredSkills
+  //       : [],
+  //   );
+  //   setExperienceLevel(
+  //     Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
+  //       ? business?.activeJobs[latestArrayIndex].experienceLevel
+  //       : [],
+  //   );
+  //   setValue(
+  //     "preferredSkills",
+  //     business?.activeJobs[latestArrayIndex].preferredSkills || [],
+  //   );
+  //   setValue(
+  //     "experienceLevel",
+  //     business?.activeJobs[latestArrayIndex].experienceLevel || [],
+  //   );
+  // }, []);
+
   useEffect(() => {
-    setPreferredSkills(
-      Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
-        ? business?.activeJobs[latestArrayIndex].preferredSkills
-        : [],
-    );
-    setExperienceLevel(
-      Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
-        ? business?.activeJobs[latestArrayIndex].experienceLevel
-        : [],
-    );
-    setValue(
-      "preferredSkills",
-      business?.activeJobs[latestArrayIndex].preferredSkills || [],
-    );
-    setValue(
-      "experienceLevel",
-      business?.activeJobs[latestArrayIndex].experienceLevel || [],
-    );
+    const latestJob = business?.activeJobs[latestArrayIndex];
+    console.log(latestJob);
   }, []);
 
   const capitalizeFirstLetter = (str: string) => {
@@ -168,7 +173,7 @@ export default function PostAJobStep2() {
             variant="functional"
             options
             searchData={skillsList}
-            title="preferred skills:"
+            // title="preferred skills:"
             width="full"
           />
 
