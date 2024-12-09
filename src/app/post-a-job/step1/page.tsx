@@ -23,7 +23,9 @@ const jobSchema = z.object({
   positionSummary: z
     .string()
     .min(5, { message: "Your Position Summary Must Be More Than 5 Letters" }),
-  nonNegSkills: z.array(z.string()),
+  nonNegParams: z.array(z.string()).max(3, {
+    message: "You Must Choose No More Than 3 Non-Negotiable Parameters",
+  }),
 });
 
 type FormData = z.infer<typeof jobSchema>;
@@ -33,7 +35,7 @@ export default function PostAJobStep1() {
   const { business, setBusiness } = useBusiness();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [nonNegSkills, setNonNegSkills] = useState<string[]>([]);
+  const [nonNegParams, setNonNegParams] = useState<string[]>([]);
 
   const {
     handleSubmit,
@@ -43,12 +45,11 @@ export default function PostAJobStep1() {
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(jobSchema),
-    defaultValues: { nonNegSkills: nonNegSkills },
+    defaultValues: { nonNegParams: nonNegParams },
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data.positionSummary, nonNegSkills);
     setBusiness({
       ...business,
       activeJobs:
@@ -57,7 +58,7 @@ export default function PostAJobStep1() {
             return {
               ...job,
               positionSummary: data.positionSummary,
-              nonNegSkills: nonNegSkills,
+              nonNegParams: nonNegParams,
             };
           }
           return job;
@@ -67,25 +68,27 @@ export default function PostAJobStep1() {
   };
 
   // handlers for adding, updating, and deleting information tied to States
-  const handleAdd = (type: "nonNegSkills", item: any) => {
+  const handleAdd = (type: "nonNegParams", item: any) => {
     AddHandler({
       item,
       type,
       setFunctions: {
-        nonNegSkills: setNonNegSkills,
+        nonNegParams: setNonNegParams,
       },
       setValue,
       clearErrors,
     });
   };
 
-  const handleDelete = (type: "nonNegSkills", item: any) => {
+  const handleDelete = (type: "nonNegParams", item: any) => {
     DeleteHandler({
       item,
       type,
       setFunctions: {
-        nonNegSkills: setNonNegSkills,
+        nonNegParams: setNonNegParams,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -98,9 +101,9 @@ export default function PostAJobStep1() {
   };
 
   useEffect(() => {
-    setNonNegSkills(
-      Array.isArray(business?.activeJobs[latestArrayIndex].nonNegSkills)
-        ? business?.activeJobs[latestArrayIndex].nonNegSkills
+    setNonNegParams(
+      Array.isArray(business?.activeJobs[latestArrayIndex].nonNegParams)
+        ? business?.activeJobs[latestArrayIndex].nonNegParams
         : [],
     );
   }, []);
@@ -138,11 +141,11 @@ export default function PostAJobStep1() {
           {/* non negotiable skills / parameters input & generator */}
           <LabelGeneratorAndDisplayComp
             handleAdd={handleAdd}
-            errors={errors.nonNegSkills}
-            selectedArray={nonNegSkills}
+            errors={errors.nonNegParams}
+            selectedArray={nonNegParams}
             handleDelete={handleDelete}
             placeholder="Non-Negotiable Parameters: pick 0-3"
-            name="nonNegSkills"
+            name="nonNegParams"
             variant="functional"
             options
             searchData={skillsList}

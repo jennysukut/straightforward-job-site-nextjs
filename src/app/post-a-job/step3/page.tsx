@@ -7,26 +7,25 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { skillsList } from "@/lib/skillsList";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
-  payscale: z.string().min(2, {
-    message: "Payscale Information Required",
+  experienceLevel: z.string().min(2, {
+    message: "Experience Level Required",
   }),
-  payOption: z.string(),
-  locationOption: z
+  preferredSkills: z
+    .array(z.string())
+    .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
+  moreAboutPosition: z
     .string()
-    .min(1, { message: "You Must Have At Least 1 Location Type Selected" }),
-  idealCandidate: z.string().min(3, {
-    message: "Please Provide More Information About Your Ideal Candidate",
-  }),
-  daysInOffice: z.string().optional(),
-  daysRemote: z.string().optional(),
+    .min(3, { message: "Please Provide More Details About This Position" }),
 });
 
 type FormData = z.infer<typeof jobSchema>;
@@ -36,8 +35,8 @@ export default function PostAJobStep2() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [locationOption, setLocationOption] = useState<string[]>([]);
-  const [payOption, setPayOption] = useState<string[]>([]);
+  const [preferredSkills, setPreferredSkills] = useState<string[]>([]);
+  const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
   const {
     handleSubmit,
     setValue,
@@ -54,13 +53,13 @@ export default function PostAJobStep2() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "locationType" | "payOption", data: any) => {
+  const handleAdd = (type: "experienceLevel" | "payOption", data: any) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
-        locationOption: setLocationOption,
-        payOption: setPayOption,
+        preferredSkills: setPreferredSkills,
+        experienceLevel: setExperienceLevel,
       },
       setValue,
       clearErrors,
@@ -73,9 +72,11 @@ export default function PostAJobStep2() {
       item: id,
       type,
       setFunctions: {
-        locationOption: setLocationOption,
-        payOption: setPayOption,
+        preferredSkills: setPreferredSkills,
+        experienceLevel: setExperienceLevel,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -88,16 +89,9 @@ export default function PostAJobStep2() {
           if (index === business.activeJobs.length - 1) {
             return {
               ...job,
-              payDetails: {
-                payscale: data.payscale,
-                payOption: payOption,
-              },
-              locationType: data.locationOption,
-              idealCandidate: data.idealCandidate,
-              hybridDetails: {
-                daysInOffice: data.daysInOffice,
-                daysRemote: data.daysRemote,
-              },
+              experienceLevel: data.experienceLevel,
+              preferredSkills: preferredSkills,
+              moreAboutPosition: data.moreAboutPosition,
             };
           }
           return job;
@@ -107,17 +101,26 @@ export default function PostAJobStep2() {
     router.push("/profile");
   };
 
-  // useEffect(() => {
-  //   setPayOption(
-  //     Array.isArray(business?.activeJobs[latestArrayIndex].payOption)
-  //       ? business?.activeJobs[latestArrayIndex].payOption
-  //       : [],
-  //   );
-  //   setValue(
-  //     "payOption",
-  //     business?.activeJobs[latestArrayIndex].payOption || [],
-  //   );
-  // }, []);
+  useEffect(() => {
+    setPreferredSkills(
+      Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
+        ? business?.activeJobs[latestArrayIndex].preferredSkills
+        : [],
+    );
+    setExperienceLevel(
+      Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
+        ? business?.activeJobs[latestArrayIndex].experienceLevel
+        : [],
+    );
+    setValue(
+      "preferredSkills",
+      business?.activeJobs[latestArrayIndex].preferredSkills || [],
+    );
+    setValue(
+      "experienceLevel",
+      business?.activeJobs[latestArrayIndex].experienceLevel || [],
+    );
+  }, []);
 
   const capitalizeFirstLetter = (str: string) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -137,82 +140,45 @@ export default function PostAJobStep2() {
         </p>
 
         <form
-          className="PostAJobStep2Form xs:pt-8 flex flex-col gap-8"
+          className="PostAJobStep3Form xs:pt-8 flex flex-col gap-8"
           onSubmit={handleSubmit(onSubmit)}
         >
-          {/* Payscale Details */}
-          <div className="PayscaleDetails flex items-center justify-center gap-6">
-            <p className="PayscaleTitle">Payscale:</p>
-            {/* payscale input */}
-            <InputComponent
-              type="text"
-              placeholderText="Payscale"
-              errors={errors.payscale}
-              register={register}
-              registerValue="payscale"
-              defaultValue={"$"}
-              addClasses="-mt-2 min-w-[30vw]"
-              required
-            />
-
-            {/* hourly/annually option */}
-            <ButtonOptionsComponent
-              type="payOption"
-              buttons={["hourly", "annually"]}
-              selectedArray={payOption}
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-              errors={errors.payscale}
-              classesForButtons="px-[3rem] py-3"
-              addClasses="mt-4 -mb-2"
-            />
-          </div>
-
-          {/* location options details */}
+          {/* experience level details */}
           <ButtonOptionsComponent
-            type="locationOption"
-            title="Location Type:"
-            buttons={["remote", "on-site", "hybrid"]}
-            selectedArray={locationOption}
+            type="experienceLevel"
+            title="Experience Level:"
+            buttons={["entry", "junior", "senior"]}
+            selectedArray={experienceLevel}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
-            errors={errors.locationOption}
+            errors={errors.experienceLevel}
             required
             classesForButtons="px-[3rem] py-3"
             addClasses="mt-4 -mb-2"
           />
 
-          {locationOption.includes("hybrid") && (
-            <div className="HybridDetails mb-6 flex justify-center gap-6">
-              <p className="HybridTitle">Hybrid Details:*</p>
-              {/* days in office */}
-              <InputComponent
-                type="text"
-                placeholderText="Days In Office"
-                errors={errors.daysInOffice}
-                register={register}
-                registerValue="daysInOffice"
-                addClasses="-mt-2"
-              />
-              {/* days remote */}
-              <InputComponent
-                type="text"
-                placeholderText="Days Remote"
-                errors={errors.daysRemote}
-                register={register}
-                registerValue="daysRemote"
-                addClasses="-mt-2"
-              />
-            </div>
-          )}
+          {/* preferred skills input & generator */}
+          <LabelGeneratorAndDisplayComp
+            handleAdd={handleAdd}
+            errors={errors.preferredSkills}
+            selectedArray={preferredSkills}
+            handleDelete={handleDelete}
+            placeholder="Preferred Skills"
+            name="preferredSkills"
+            variant="functional"
+            options
+            searchData={skillsList}
+            title="preferred skills:"
+            width="full"
+          />
 
-          {/*  ideal candidate input */}
+          {/*  more about the position input */}
           <InputComponent
             type="text"
-            placeholderText="What does your ideal candidate look like?"
-            errors={errors.idealCandidate}
+            placeholderText="More About This Position..."
+            errors={errors.moreAboutPosition}
             register={register}
-            registerValue="idealCandidate"
+            registerValue="moreAboutPosition"
             size="medium"
             width="full"
           />

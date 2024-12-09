@@ -3,16 +3,30 @@ export default function DeleteHandler({
   type,
   setFunctions,
   hasId,
+  clearErrors,
+  setValue,
 }: any) {
+  const value = `"${type}"`;
+
   // Check if the type exists in setFunctions
   if (type in setFunctions) {
-    const setFunction = setFunctions[type]; // Get the corresponding function
+    const setFunction = setFunctions[type];
+    console.log(value, setFunction);
+
     setFunction((prevList: any) => {
-      // check if the thing to be deleted needs to be sorted by an id or not
+      // Ensure prevList is an array before filtering
+      if (!Array.isArray(prevList)) {
+        return [];
+      }
       if (hasId === true) {
         return prevList.filter((prev: any) => prev.id !== item);
       } else {
-        return prevList.filter((prev: any) => prev !== item);
+        const updatedList = prevList.filter((prev: any) => prev !== item);
+        if (clearErrors) {
+          setValue(value, updatedList);
+          clearErrors(value);
+        }
+        return updatedList;
       }
     });
   } else {

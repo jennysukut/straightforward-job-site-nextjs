@@ -38,6 +38,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
 
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
+      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
