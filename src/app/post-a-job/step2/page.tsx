@@ -141,10 +141,7 @@ export default function PostAJobStep2() {
           {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
-          Position Type:{" "}
-          {capitalizeFirstLetter(
-            business?.activeJobs[latestArrayIndex].positionType,
-          )}
+          Payscale, Location, and Ideal Candidate Details:
         </p>
 
         <form
