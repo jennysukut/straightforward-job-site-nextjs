@@ -47,7 +47,7 @@ export default function ApplicationLimitModal(isBeingUpdated: any) {
       </p>
       <input
         type="range"
-        min="25"
+        min="10"
         max="50"
         step="5"
         value={applicationLimit}
@@ -57,6 +57,7 @@ export default function ApplicationLimitModal(isBeingUpdated: any) {
       <p className="Details text-md">
         max applications per round: {applicationLimit}
       </p>
+      <p className="Details -mt-4 text-sm italic text-olive">we recommend 25</p>
       <div className="ButtonContainer m-0 -my-4 self-end">
         <SiteButton
           addClasses="w-32"

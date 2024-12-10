@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { skillsList } from "@/lib/skillsList";
 import { ParamsList } from "@/lib/paramsList";
+import { useJobs } from "@/contexts/JobsContext";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -32,6 +33,7 @@ type FormData = z.infer<typeof jobSchema>;
 export default function PostAJobStep1() {
   const router = useRouter();
   const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [nonNegParams, setNonNegParams] = useState<string[]>([]);
@@ -49,19 +51,24 @@ export default function PostAJobStep1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              positionSummary: data.positionSummary,
-              nonNegParams: nonNegParams,
-            };
-          }
-          return job;
-        }) || [],
+    // setBusiness({
+    //   ...business,
+    //   activeJobs:
+    //     business?.activeJobs.map((job: any, index: number) => {
+    //       if (index === business.activeJobs.length - 1) {
+    //         return {
+    //           ...job,
+    //           positionSummary: data.positionSummary,
+    //           nonNegParams: nonNegParams,
+    //         };
+    //       }
+    //       return job;
+    //     }) || [],
+    // });
+    setJob({
+      ...job,
+      positionSummary: data.positionSummary,
+      nonNegParams: nonNegParams,
     });
     router.push("/post-a-job/step2");
   };

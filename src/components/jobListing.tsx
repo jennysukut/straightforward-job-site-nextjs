@@ -5,6 +5,7 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
+import { useJobs } from "@/contexts/JobsContext";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -13,29 +14,37 @@ import SiteButton from "./siteButton";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
+// ADD DETAILS FOR HYBRID SCHEDULE AS WELL
+// Make Buttons for current isOwn show up if the job isn't posted yet. If it is, use secondary Business Buttons
+// Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
+// If the listing is active, add Business Button to : view applications or go to application management system
+
 export default function JobListing(isOwn: any) {
-  const { business, setBusiness } = useBusiness();
+  // const { business, setBusiness } = useBusiness();
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
+  const { job, setJob } = useJobs();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
 
   const handleEditClick = (url: any) => {
-    setBusiness({ ...business, profileIsBeingEdited: true });
+    // setBusiness({ ...business, profileIsBeingEdited: true });
+    setJob({ ...job, jobIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
 
-  const latestArrayIndex = business?.activeJobs.length
-    ? business.activeJobs.length - 1
-    : -1;
+  // const latestArrayIndex = business?.activeJobs.length
+  //   ? business.activeJobs.length - 1
+  //   : -1;
 
-  const currentJob = business?.activeJobs[latestArrayIndex];
+  // const currentJob = business?.activeJobs[latestArrayIndex];
+  const currentJob = job;
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -125,7 +134,7 @@ export default function JobListing(isOwn: any) {
           >
             <h2 className="InterviewProcessTitle mb-4 pl-2">{`Our Interview Process:`}</h2>
             <ul className="InterviewProcessList ml-8 flex list-disc flex-col gap-4 text-emerald">
-              {currentJob.interviewProcess.map((int: any, index: number) => {
+              {currentJob?.interviewProcess?.map((int: any, index: number) => {
                 return (
                   <li className="InterviewProcessItem" key={index}>
                     <p className="Stage">
@@ -151,7 +160,7 @@ export default function JobListing(isOwn: any) {
                 addClasses="self-end"
                 colorScheme="b1"
               >
-                application limit: {currentJob.applicationLimit}
+                application limit: {currentJob?.applicationLimit}
               </SiteLabel>
 
               <SiteButton
@@ -189,12 +198,12 @@ export default function JobListing(isOwn: any) {
             editClick={() => handleEditClick("/post-a-job/step1")}
           >
             <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
-              <h1 className="JobTitle">{currentJob.jobTitle}</h1>
+              <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
               <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
-                {business?.businessName}
+                {currentJob?.businessName}
               </p>
               <p className="PositionSummary pl-2 pt-4 leading-7 text-olive">
-                {currentJob.positionSummary}
+                {currentJob?.positionSummary}
               </p>
             </div>
           </InfoBox>
@@ -209,20 +218,41 @@ export default function JobListing(isOwn: any) {
           >
             <div className="LocationPayDetailsInfo flex flex-col gap-4">
               <h2 className="LocationPayDetailsTitle mb-4 pl-2">
-                {`Location:`} {business?.location}, {business?.country}
+                {`Location:`} {currentJob?.location}, {currentJob?.country}
               </h2>
-              <h2 className="LocationTypeTitle mb-4 pl-2">
-                {`Location Type:`}{" "}
-                {capitalizeFirstLetter(currentJob.locationType)}
-              </h2>
+              {currentJob?.locationType && (
+                <h2 className="LocationTypeTitle mb-4 pl-2">
+                  {`Location Type:`}{" "}
+                  {capitalizeFirstLetter(currentJob?.locationType)}
+                </h2>
+              )}
+
+              {currentJob?.locationType === "hybrid" && (
+                <div className="HybridDetailsContainer flex gap-4">
+                  <h2 className="LocationTypeTitle mb-4 pl-2">
+                    {`Hybrid Details:`}
+                  </h2>
+                  <div className="Details">
+                    <p className="HybridDetails">
+                      {currentJob.hybridDetails.daysInOffice}{" "}
+                      {`days in office, `}
+                    </p>
+                    <p className="HybridDetails">
+                      {currentJob.hybridDetails.daysRemote} {`days remote.`}
+                    </p>
+                  </div>
+                </div>
+              )}
               <h2 className="PayDetailsTitle mb-4 pl-2">
                 {`Pay:`} {currentJob?.payDetails.payscale},{" "}
                 {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
               </h2>
-              <h2 className="PositionTypeTitle mb-0 pl-2">
-                {`Position Type:`}
-                {capitalizeFirstLetter(currentJob?.positionType)}
-              </h2>
+              {currentJob?.positionType && (
+                <h2 className="PositionTypeTitle mb-0 pl-2">
+                  {`Position Type:`}
+                  {capitalizeFirstLetter(currentJob?.positionType)}
+                </h2>
+              )}
             </div>
           </InfoBox>
 
@@ -238,42 +268,49 @@ export default function JobListing(isOwn: any) {
             {/* More About The Job */}
             <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
             <p className="AboutJob pl-8 pt-4 leading-8 text-jade">
-              {currentJob.moreAboutPosition}
+              {currentJob?.moreAboutPosition}
             </p>
             {/* Responsibilities */}
-            <div className="Responsibilities mt-8">
-              <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
-              <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-emerald">
-                {currentJob.responsibilities.map((resp: any, index: number) => {
-                  return (
-                    <li className="ResponsibilitiesItem" key={index}>
-                      <p className="Responsibility">{resp}</p>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+            {currentJob?.responsibilities && (
+              <div className="Responsibilities mt-8">
+                <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
+                <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-emerald">
+                  {currentJob?.responsibilities.map(
+                    (resp: any, index: number) => {
+                      return (
+                        <li className="ResponsibilitiesItem" key={index}>
+                          <p className="Responsibility">{resp}</p>
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </div>
+            )}
+
             {/* Perks */}
-            <div className="Perks mt-8">
-              <h2 className="PerksTitle mb-4 pl-2">{`Perks:`}</h2>
-              <ul className="PerksList flex flex-wrap justify-center gap-2 text-jade">
-                {currentJob.perks.map((perk: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      key={index}
-                      aria={perk}
-                      variant="display"
-                      addClasses="px-8 py-3"
-                      colorScheme={
-                        thirdColorArray[index % thirdColorArray.length]
-                      }
-                    >
-                      {perk}
-                    </SiteLabel>
-                  );
-                })}
-              </ul>
-            </div>
+            {currentJob?.perks && (
+              <div className="Perks mt-8">
+                <h2 className="PerksTitle mb-4 pl-2">{`Perks:`}</h2>
+                <ul className="PerksList flex flex-wrap justify-center gap-2 text-jade">
+                  {currentJob.perks.map((perk: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        key={index}
+                        aria={perk}
+                        variant="display"
+                        addClasses="px-8 py-3"
+                        colorScheme={
+                          thirdColorArray[index % thirdColorArray.length]
+                        }
+                      >
+                        {perk}
+                      </SiteLabel>
+                    );
+                  })}
+                </ul>
+              </div>
+            )}
           </InfoBox>
           {/* Ideal Candidate Details */}
           <InfoBox
@@ -286,7 +323,7 @@ export default function JobListing(isOwn: any) {
           >
             <h2 className="PetDetailsTitle mb-4 pl-2">{`Our Ideal Candidate:`}</h2>
             <p className="PetDetails ml-8 font-medium text-olive">
-              {currentJob.idealCandidate}
+              {currentJob?.idealCandidate}
             </p>
           </InfoBox>
         </div>
