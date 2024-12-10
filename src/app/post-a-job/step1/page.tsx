@@ -3,12 +3,12 @@
 import * as z from "zod";
 
 import { useRouter } from "next/navigation";
-import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { skillsList } from "@/lib/skillsList";
+import { ParamsList } from "@/lib/paramsList";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -16,8 +16,7 @@ import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-type CurrentSchemeType = ButtonColorOption;
+import { capitalizeFirstLetter } from "@/utils/textUtils";
 
 const jobSchema = z.object({
   positionSummary: z
@@ -96,10 +95,6 @@ export default function PostAJobStep1() {
     ? business.activeJobs.length - 1
     : -1;
 
-  const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
   useEffect(() => {
     setNonNegParams(
       Array.isArray(business?.activeJobs[latestArrayIndex].nonNegParams)
@@ -148,9 +143,11 @@ export default function PostAJobStep1() {
             name="nonNegParams"
             variant="functional"
             options
-            searchData={skillsList}
-            title="non-negotiable parameters:"
+            searchData={ParamsList}
+            title="non-negotiable parameters: used to filter applicants"
+            subTitle="you can choose from skills, country-of-location, or languages"
             width="full"
+            addClassesToResults="pl-8"
           />
         </form>
 

@@ -11,6 +11,8 @@ import SiteLabel from "@/components/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import SiteButton from "./siteButton";
 
+import { capitalizeFirstLetter } from "@/utils/textUtils";
+
 export default function JobListing(isOwn: any) {
   const { business, setBusiness } = useBusiness();
   const router = useRouter();
@@ -35,10 +37,6 @@ export default function JobListing(isOwn: any) {
 
   const currentJob = business?.activeJobs[latestArrayIndex];
 
-  const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
@@ -48,7 +46,7 @@ export default function JobListing(isOwn: any) {
   return (
     <div className="JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
       <div className="ProfileDetails flex gap-8">
-        <div className="ProfileLeftColumn mt-40 flex flex-col gap-8">
+        <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
           {/* Non-Negotiable Parameters */}
           <InfoBox
             variant="hollow"
@@ -162,6 +160,7 @@ export default function JobListing(isOwn: any) {
                 aria="edit"
                 addClasses="px-8"
                 onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
               >
                 edit
               </SiteButton>

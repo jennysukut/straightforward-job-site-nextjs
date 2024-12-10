@@ -7,13 +7,10 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { skillsList } from "@/lib/skillsList";
 
 import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
@@ -93,7 +90,6 @@ export default function PostAJobStep4() {
         }) || [],
     });
     router.push("/post-a-job/step5");
-    // router.push("/profile");
   };
 
   useEffect(() => {
@@ -117,10 +113,6 @@ export default function PostAJobStep4() {
   useEffect(() => {
     const latestJob = business?.activeJobs[latestArrayIndex];
   }, []);
-
-  const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">

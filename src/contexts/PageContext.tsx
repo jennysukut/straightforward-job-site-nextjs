@@ -17,7 +17,7 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentPage, setCurrentPage] = useState<string>("");
-  const [pageType, setPageType] = useState<string>("");
+  const [pageType, setPageType] = useState<string>("Business");
   const [accountType, setAccountType] = useState<string>("Business");
 
   return (

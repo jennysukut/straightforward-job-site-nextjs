@@ -19,6 +19,8 @@ interface LabelGeneratorAndDisplayComp {
   required?: boolean;
   title?: string;
   width?: "full";
+  subTitle?: string;
+  addClassesToResults?: string;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -34,7 +36,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   note,
   required,
   title,
+  subTitle,
   width,
+  addClassesToResults,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -82,6 +86,11 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       {title && <p className="Title -mb-4 pl-4">{title}</p>}
+      {subTitle && (
+        <p className="SubTitle -mb-4 -mt-4 pl-4 text-sm font-medium italic text-olive">
+          {subTitle}
+        </p>
+      )}
       {required && (
         <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
           *
@@ -137,7 +146,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       )}
 
       {selectedArray.length >= 1 ? (
-        <div className="LabelContainer -mb-2 -mt-2 flex flex-wrap gap-2">
+        <div
+          className={`LabelContainer -mb-2 -mt-2 flex flex-wrap gap-2 ${addClassesToResults}`}
+        >
           {selectedArray.map((item, index) => {
             return (
               <SiteLabel

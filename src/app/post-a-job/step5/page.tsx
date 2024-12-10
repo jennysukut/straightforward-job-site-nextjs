@@ -142,10 +142,6 @@ export default function PostAJobStep5() {
           What does your interview process look like?
         </p>
 
-        {/* <form
-          className="PostAJobStep3Form xs:pt-8 flex flex-col gap-8"
-          onSubmit={handleSubmit(onSubmit)}
-        > */}
         {/* Add + Display Interview Process */}
         <PopulateDisplayField
           handleAdd={handleAdd}
@@ -178,7 +174,6 @@ export default function PostAJobStep5() {
                   : "continue"}
           </SiteButton>
         </div>
-        {/* </form> */}
       </div>
     </div>
   );

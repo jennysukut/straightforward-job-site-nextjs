@@ -17,7 +17,7 @@ import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
-  experienceLevel: z.array(z.string()).min(2, {
+  experienceLevel: z.array(z.string()).min(1, {
     message: "Experience Level Required",
   }),
   preferredSkills: z
@@ -131,10 +131,6 @@ export default function PostAJobStep3() {
     const latestJob = business?.activeJobs[latestArrayIndex];
     console.log(latestJob);
   }, []);
-
-  const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">

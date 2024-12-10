@@ -13,6 +13,7 @@ import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import PostAJobModal from "./modals/postAJobModal";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -121,14 +122,12 @@ export default function NavBar() {
                 title="mailbox"
                 clickedButton={clickedButton}
               />
-              {/* <Link href={"/post-a-job/step1"}> */}
               <NavButton
-                onClick={handleNavButtonClick}
+                onClick={() => showModal(<PostAJobModal />)}
                 colorScheme="e5"
                 title="post a job"
                 clickedButton={clickedButton}
               />
-              {/* </Link> */}
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="f3"
