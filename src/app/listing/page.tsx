@@ -49,7 +49,7 @@ export default function JobListing() {
     <div className="Profile flex flex-grow flex-col items-center gap-8 pt-14 md:pb-12 md:pt-6">
       <div className="JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
         <div className="ProfileDetails flex gap-8">
-          <div className="ProfileLeftColumn mt-24 flex flex-col gap-8">
+          <div className="ProfileLeftColumn mt-40 flex flex-col gap-8">
             {/* Non-Negotiable Parameters */}
             <InfoBox
               variant="hollow"
@@ -179,6 +179,7 @@ export default function JobListing() {
               variant="hollow"
               addClasses="gap-8 justify-evenly"
               size="profile"
+              width="medium"
               canEdit={canEdit}
               editClick={() => handleEditClick("/business-signup/step1")}
             >
@@ -187,7 +188,7 @@ export default function JobListing() {
                 <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
                   {business?.businessName}
                 </p>
-                <p className="PositionSummary pl-4 pt-4 leading-7 text-olive">
+                <p className="PositionSummary pl-2 pt-4 leading-7 text-olive">
                   {currentJob.positionSummary}
                 </p>
               </div>
@@ -229,15 +230,15 @@ export default function JobListing() {
               canEdit={canEdit}
               editClick={() => handleEditClick("/business-signup/step2")}
             >
-              {/* more about the job */}
+              {/* More About The Job */}
               <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
-              <p className="AboutJob pl-8 pt-4 font-medium leading-8 text-midnight">
+              <p className="AboutJob pl-8 pt-4 leading-8 text-jade">
                 {currentJob.moreAboutPosition}
               </p>
-              {/* responsibilities */}
+              {/* Responsibilities */}
               <div className="Responsibilities mt-8">
                 <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
-                <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-jade">
+                <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-emerald">
                   {currentJob.responsibilities.map(
                     (resp: any, index: number) => {
                       return (
@@ -249,7 +250,7 @@ export default function JobListing() {
                   )}
                 </ul>
               </div>
-              {/* perks */}
+              {/* Perks */}
               <div className="Perks mt-8">
                 <h2 className="PerksTitle mb-4 pl-2">{`Perks:`}</h2>
                 <ul className="PerksList flex flex-wrap justify-center gap-2 text-jade">
@@ -271,7 +272,7 @@ export default function JobListing() {
                 </ul>
               </div>
             </InfoBox>
-            {/* ideal candidate details */}
+            {/* Ideal Candidate Details */}
             <InfoBox
               variant="hollow"
               aria="idealCandidate"
