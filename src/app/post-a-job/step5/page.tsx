@@ -5,8 +5,9 @@ import * as z from "zod";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "@/components/siteButton";
 import DeleteHandler from "@/components/deleteHandler";
@@ -14,6 +15,7 @@ import AddHandler from "@/components/addHandler";
 import UpdateHandler from "@/components/updateHandler";
 import PopulateDisplayField from "@/components/populateDisplayField";
 import AddInterviewProcessModal from "@/components/modals/postAJobModals/addInterviewProcessModal";
+import ApplicationLimitModal from "@/components/modals/postAJobModals/applicationLimitModal";
 
 const jobSchema = z.object({
   interviewProcess: z.array(z.string()).min(1, {
@@ -25,6 +27,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep5() {
   const { business, setBusiness } = useBusiness();
+  const { showModal } = useModal();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -46,7 +49,7 @@ export default function PostAJobStep5() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "interviewProcess", data: any, stage: any) => {
+  const handleAdd = (type: "interviewProcess", data: any) => {
     console.log(data);
     AddHandler({
       item: data,
@@ -109,27 +112,8 @@ export default function PostAJobStep5() {
           return job;
         }) || [],
     });
-    router.push("/profile");
-  };
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("button clicked");
-    setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              interviewProcess: interviewProcess,
-            };
-          }
-          return job;
-        }) || [],
-    });
-    // router.push("/post-a-job/step5");
-    router.push("/profile");
+    router.push("/listing");
+    showModal(<ApplicationLimitModal />);
   };
 
   useEffect(() => {
@@ -138,10 +122,10 @@ export default function PostAJobStep5() {
         ? business?.activeJobs[latestArrayIndex].interviewProcess
         : [],
     );
-    // setValue(
-    //   "interviewProcess",
-    //   business?.activeJobs[latestArrayIndex].interviewProcess || [],
-    // );
+    setValue(
+      "interviewProcess",
+      business?.activeJobs[latestArrayIndex].interviewProcess || [],
+    );
   }, []);
 
   const capitalizeFirstLetter = (str: string) => {

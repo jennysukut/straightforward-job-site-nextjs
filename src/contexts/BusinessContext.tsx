@@ -47,6 +47,7 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
     // buttonImg: "bg-[url('/avatars/magenta.svg')]",
     activeJobs: [
       {
+        applicationLimit: 30,
         jobNumber: 1,
         jobTitle: "Front-End Engineer & Graphic Designer",
         positionType: "full-time",
