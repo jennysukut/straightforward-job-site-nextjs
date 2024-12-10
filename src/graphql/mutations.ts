@@ -11,12 +11,12 @@ export const SIGNUP_MUTATION = gql`
 `;
 
 export const LOGIN = gql`
-mutation Login ($email: String!, $password: String!) {
-  login(email: $email, password: $password) {
-    success
-    message
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      success
+      message
+    }
   }
-}
 `;
 
 export const FELLOW_SIGNUP_MUTATION = gql`

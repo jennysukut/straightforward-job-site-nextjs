@@ -3,7 +3,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import SiteButton from "../siteButton";
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
 import FormInputComponent from "../formInputComponent";
 import FormSubmissionButton from "../formSubmissionButton";
@@ -12,6 +11,10 @@ import { useState } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@apollo/client";
+
+import { LOGIN } from "@/graphql/mutations";
+import ErrorModal from "./errorModal";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email Title Required" }),
@@ -32,9 +35,25 @@ export default function LoginModal() {
     resolver: zodResolver(LoginSchema),
   });
 
+  const [login, { loading, error }] = useMutation(LOGIN);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
+
     //Login Details Here!
+    try {
+      const result = await login({ variables: data })
+        .then((result) => {
+          console.log(result);
+          // sendFellowSignupEmail(data.email, data.name, betaTester);
+          // showModal(<SignupModalIndividual2 />);
+        })
+        .catch((error) => {
+          showModal(<ErrorModal />);
+        });
+    } catch (err) {
+      showModal(<ErrorModal />);
+    }
   };
 
   return (
@@ -66,10 +85,10 @@ export default function LoginModal() {
           errors={errors.password}
         />
 
-        {/* form submission buttons */}
+        {/* form buttons */}
         <div className="LoginButtonsContainer flex justify-between">
           <button
-            className="SignupOption text-xs text-jade hover:text-darkJade"
+            className="SignupOption text-xs opacity-80 hover:opacity-100"
             onClick={() => replaceModalStack(<SignupOptionsModal />)}
           >
             or signup

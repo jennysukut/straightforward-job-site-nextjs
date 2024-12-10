@@ -51,7 +51,7 @@ export default function SignupOptionsModal() {
       </div>
       <div className="LoginButtonContainer -mb-6 -mr-6 mt-8 flex w-full justify-end">
         <button
-          className="LoginButton text-sm opacity-80 hover:opacity-100"
+          className="LoginButton text-xs opacity-80 hover:opacity-100"
           aria-label="Login"
           onClick={() => replaceModalStack(<LoginModal />)}
           type="button"

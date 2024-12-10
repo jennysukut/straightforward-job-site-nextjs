@@ -23,8 +23,8 @@ const jobSchema = z.object({
   positionSummary: z
     .string()
     .min(5, { message: "Your Position Summary Must Be More Than 5 Letters" }),
-  nonNegParams: z.array(z.string()).max(3, {
-    message: "You Must Choose No More Than 3 Non-Negotiable Parameters",
+  nonNegParams: z.array(z.string()).max(5, {
+    message: "You Must Choose No More Than 5 Non-Negotiable Parameters",
   }),
 });
 
@@ -146,7 +146,7 @@ export default function PostAJobStep1() {
             errors={errors.nonNegParams}
             selectedArray={nonNegParams}
             handleDelete={handleDelete}
-            placeholder="Non-Negotiable Parameters: pick 0-3"
+            placeholder="Non-Negotiable Parameters: pick 0-5"
             name="nonNegParams"
             variant="functional"
             options
