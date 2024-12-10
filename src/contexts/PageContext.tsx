@@ -7,6 +7,8 @@ type PageContextType = {
   setCurrentPage: (page: string) => void;
   pageType: string;
   setPageType: (type: string) => void;
+  accountType: string;
+  setAccountType: (type: string) => void;
 };
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -15,11 +17,19 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentPage, setCurrentPage] = useState<string>("");
-  const [pageType, setPageType] = useState<string>("");
+  const [pageType, setPageType] = useState<string>("Business");
+  const [accountType, setAccountType] = useState<string>("Business");
 
   return (
     <PageContext.Provider
-      value={{ currentPage, setCurrentPage, pageType, setPageType }}
+      value={{
+        currentPage,
+        setCurrentPage,
+        pageType,
+        setPageType,
+        accountType,
+        setAccountType,
+      }}
     >
       {children}
     </PageContext.Provider>

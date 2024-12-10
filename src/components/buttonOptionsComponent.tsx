@@ -6,15 +6,17 @@ import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 interface ButtonOptionsComponent {
   type: string;
-  title: string;
-  errors: any;
+  title?: string;
+  errors?: any;
   buttons: any;
-  selectedArray: any;
+  selectedArray?: any;
   handleAdd: Function;
   required?: boolean;
   handleDelete: Function;
   classesForButtons?: string;
   addClasses?: string;
+  flexOpt?: string;
+  buttonSize?: any;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -28,12 +30,15 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   handleDelete,
   classesForButtons,
   addClasses,
+  flexOpt,
+  buttonSize = "default",
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
+      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
@@ -46,30 +51,38 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
 
   return (
     <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
-      <div className="ButtonsContainer mb-4 flex justify-center gap-6">
-        <h2 className="ButtonOptionsTitle text-jade">
+      <div
+        className={`ButtonsContainer mb-4 flex justify-center gap-6 ${flexOpt}`}
+      >
+        <label
+          htmlFor={title}
+          className="ButtonOptionsTitle self-center text-jade"
+        >
           {title}
           {required && (
-            <span className="required flex-end m-0 pl-1 text-start align-baseline text-2xl text-jade">
+            <span className="required flex-end text-md m-0 pl-1 text-start align-baseline text-jade">
               *
             </span>
           )}
-        </h2>
-        {buttons.map((button: string, index: any) => {
-          return (
-            <SiteButton
-              variant="hollow"
-              key={button}
-              aria={button}
-              colorScheme={betterColorArray[index % betterColorArray.length]}
-              onClick={() => buttonClick(button)}
-              addClasses={`text-nowrap ${classesForButtons || ""}`}
-              isSelected={selectedArray.includes(button)}
-            >
-              {button}
-            </SiteButton>
-          );
-        })}
+        </label>
+        <div className="Buttons flex justify-center gap-6">
+          {buttons.map((button: string, index: any) => {
+            return (
+              <SiteButton
+                variant="hollow"
+                key={button}
+                aria={button}
+                size={buttonSize || null}
+                colorScheme={betterColorArray[index % betterColorArray.length]}
+                onClick={() => buttonClick(button)}
+                addClasses={`text-nowrap ${classesForButtons || ""}`}
+                isSelected={selectedArray.includes(button)}
+              >
+                {button}
+              </SiteButton>
+            );
+          })}
+        </div>
       </div>
       {errors?.message && (
         <p className="m-0 p-0 text-xs font-medium text-orange">

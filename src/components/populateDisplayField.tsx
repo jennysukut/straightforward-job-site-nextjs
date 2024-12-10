@@ -11,6 +11,7 @@ interface AddModalProps {
   handleDelete?: Function;
   itemInfo?: any;
   handleUpdate?: Function;
+  id?: number;
 }
 
 interface PopulateDisplayField {
@@ -26,6 +27,7 @@ interface PopulateDisplayField {
   addClasses?: string;
   displayPunct?: string;
   required?: boolean;
+  id?: number;
 }
 
 // Define the interface for the items in selectedArray
@@ -46,6 +48,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   addClasses,
   displayPunct,
   required,
+  id,
   ...props
 }) => {
   const { showModal } = useModal();
@@ -70,7 +73,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
             showModal(
               React.cloneElement(
                 addModal as React.ReactElement<AddModalProps>,
-                { handleAdd },
+                { handleAdd, id: id },
               ),
             );
           }

@@ -17,6 +17,10 @@ interface LabelGeneratorAndDisplayComp {
   searchData?: Array<any>;
   note?: string;
   required?: boolean;
+  title?: string;
+  width?: "full";
+  subTitle?: string;
+  addClassesToResults?: string;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -31,6 +35,10 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   searchData,
   note,
   required,
+  title,
+  subTitle,
+  width,
+  addClassesToResults,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -77,6 +85,12 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
+      {title && <p className="Title -mb-4 pl-4">{title}</p>}
+      {subTitle && (
+        <p className="SubTitle -mb-4 -mt-4 pl-4 text-sm font-medium italic text-olive">
+          {subTitle}
+        </p>
+      )}
       {required && (
         <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
           *
@@ -91,6 +105,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         addClasses="flex"
         type={name}
         addClick={() => addItem(name)}
+        width={width}
       >
         <input
           type={name}
@@ -131,25 +146,24 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       )}
 
       {selectedArray.length >= 1 ? (
-        <div className="SkillsContainer -mb-2 -mt-2 flex flex-wrap gap-2">
-          {selectedArray
-            // .slice()
-            // .reverse()
-            .map((item, index) => {
-              return (
-                <SiteLabel
-                  aria={item}
-                  variant={variant}
-                  key={index}
-                  colorScheme={
-                    secondaryColorArray[index % secondaryColorArray.length]
-                  }
-                  handleDelete={() => handleDelete(name, item)}
-                >
-                  {item}
-                </SiteLabel>
-              );
-            })}
+        <div
+          className={`LabelContainer -mb-2 -mt-2 flex flex-wrap gap-2 ${addClassesToResults}`}
+        >
+          {selectedArray.map((item, index) => {
+            return (
+              <SiteLabel
+                aria={item}
+                variant={variant}
+                key={index}
+                colorScheme={
+                  secondaryColorArray[index % secondaryColorArray.length]
+                }
+                handleDelete={() => handleDelete(name, item)}
+              >
+                {item}
+              </SiteLabel>
+            );
+          })}
         </div>
       ) : (
         ""

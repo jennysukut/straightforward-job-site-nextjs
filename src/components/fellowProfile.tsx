@@ -36,8 +36,6 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
     ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
 
-  // WE NEED TO ADD LINKS IN A SEPARATE BOX AND ADD LOCATION OPTIONS TO THE LOCATION BOX
-
   return (
     <div className="ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
       {/* NAME AND SMALL BIO */}
@@ -261,6 +259,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 aria="edit"
                 addClasses="px-8"
                 onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
               >
                 edit details
               </SiteButton>
