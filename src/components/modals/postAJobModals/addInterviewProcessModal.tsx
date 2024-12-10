@@ -4,7 +4,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
 import { useModal } from "@/contexts/ModalContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -13,6 +13,7 @@ import FormSubmissionButton from "@/components/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const InterviewProcessSchema = z.object({
+  stage: z.string(),
   step: z.string().min(2, { message: "Step Required" }),
   details: z.string().optional(),
 });
@@ -31,9 +32,11 @@ export default function AddInterviewProcessModal({
   const [disabledButton, setDisabledButton] = useState(false);
   const type = "interviewProcess";
   const stageNumber = id;
+  const stage = "Stage " + stageNumber;
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(InterviewProcessSchema),
@@ -73,6 +76,10 @@ export default function AddInterviewProcessModal({
       />,
     );
   };
+
+  useEffect(() => {
+    setValue("stage", stage);
+  }, []);
 
   return (
     <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">

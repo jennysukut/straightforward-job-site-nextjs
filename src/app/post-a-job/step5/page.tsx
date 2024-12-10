@@ -48,7 +48,8 @@ export default function PostAJobStep5() {
     : -1;
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "interviewProcess", data: any) => {
+  const handleAdd = (type: "interviewProcess", data: any, stage: any) => {
+    console.log(data);
     AddHandler({
       item: data,
       type,
@@ -156,7 +157,7 @@ export default function PostAJobStep5() {
             aria="interviewProcess"
             title={`Interview Process`}
             addModal={<AddInterviewProcessModal />}
-            displayOption1="step"
+            displayOption1="stage"
             displayOption2="step"
             displayPunct=":"
             id={processCounter}
