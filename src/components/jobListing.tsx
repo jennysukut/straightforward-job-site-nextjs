@@ -54,7 +54,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="small"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/individual-signup/step1")}
+            editClick={() => handleEditClick("/post-a-job/step1")}
           >
             <h2 className="NonNegotiableParametersTitle text-center">{`Non-Negotiable Parameters:`}</h2>
             <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
@@ -88,7 +88,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="small"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/individual-signup/step1")}
+            editClick={() => handleEditClick("/post-a-job/step3")}
           >
             <h2 className="NonNegotiableParametersTitle text-center">{`Preferred Skills:`}</h2>
             <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
@@ -121,7 +121,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="small"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/individual-signup/step2")}
+            editClick={() => handleEditClick("/post-a-job/step5")}
           >
             <h2 className="InterviewProcessTitle mb-4 pl-2">{`Our Interview Process:`}</h2>
             <ul className="InterviewProcessList ml-8 flex list-disc flex-col gap-4 text-emerald">
@@ -186,7 +186,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="medium"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/business-signup/step1")}
+            editClick={() => handleEditClick("/post-a-job/step1")}
           >
             <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
               <h1 className="JobTitle">{currentJob.jobTitle}</h1>
@@ -205,22 +205,22 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="medium"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/business-signup/step1")}
+            editClick={() => handleEditClick("/post-a-job/step2")}
           >
-            <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
-              <h2 className="InterviewProcessTitle mb-4 pl-2">
+            <div className="LocationPayDetailsInfo flex flex-col gap-4">
+              <h2 className="LocationPayDetailsTitle mb-4 pl-2">
                 {`Location:`} {business?.location}, {business?.country}
               </h2>
-              <h2 className="InterviewProcessTitle mb-4 pl-2">
+              <h2 className="LocationTypeTitle mb-4 pl-2">
                 {`Location Type:`}{" "}
                 {capitalizeFirstLetter(currentJob.locationType)}
               </h2>
-              <h2 className="InterviewProcessTitle mb-4 pl-2">
+              <h2 className="PayDetailsTitle mb-4 pl-2">
                 {`Pay:`} {currentJob?.payDetails.payscale},{" "}
                 {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
               </h2>
-              <h2 className="InterviewProcessTitle mb-0 pl-2">
-                {`Position Type:`}{" "}
+              <h2 className="PositionTypeTitle mb-0 pl-2">
+                {`Position Type:`}
                 {capitalizeFirstLetter(currentJob?.positionType)}
               </h2>
             </div>
@@ -233,7 +233,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="medium"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/business-signup/step2")}
+            editClick={() => handleEditClick("/post-a-job/step3")}
           >
             {/* More About The Job */}
             <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
@@ -282,7 +282,7 @@ export default function JobListing(isOwn: any) {
             size="profile"
             width="medium"
             canEdit={canEdit}
-            editClick={() => handleEditClick("/individual-signup/step5")}
+            editClick={() => handleEditClick("/post-a-job/step2")}
           >
             <h2 className="PetDetailsTitle mb-4 pl-2">{`Our Ideal Candidate:`}</h2>
             <p className="PetDetails ml-8 font-medium text-olive">

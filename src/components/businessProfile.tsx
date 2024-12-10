@@ -96,6 +96,7 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
                 aria="edit"
                 addClasses="px-8"
                 onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
               >
                 edit
               </SiteButton>

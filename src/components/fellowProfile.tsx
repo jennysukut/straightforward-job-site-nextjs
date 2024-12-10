@@ -259,6 +259,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 aria="edit"
                 addClasses="px-8"
                 onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
               >
                 edit details
               </SiteButton>

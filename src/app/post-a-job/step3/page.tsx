@@ -184,7 +184,7 @@ export default function PostAJobStep3() {
             defaultValue={
               business?.activeJobs[latestArrayIndex].moreAboutPosition
             }
-            size="medium"
+            size="tall"
             width="full"
           />
 

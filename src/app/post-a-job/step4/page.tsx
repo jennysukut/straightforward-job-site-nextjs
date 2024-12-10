@@ -24,6 +24,8 @@ const jobSchema = z.object({
 
 type FormData = z.infer<typeof jobSchema>;
 
+// Responsibilities of the position might need to be shown differently - the labels just don't look right - perhaps something that shows as a bullet point or perhaps ads via a modal?
+
 export default function PostAJobStep4() {
   const { business, setBusiness } = useBusiness();
   const router = useRouter();

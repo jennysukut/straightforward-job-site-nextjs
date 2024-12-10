@@ -5,14 +5,15 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/siteButton";
 import SiteLabel from "@/components/siteLabel";
 
 export default function ApplicationLimitModal(isBeingUpdated: any) {
   const { business, setBusiness } = useBusiness();
-  const { showModal, hideModal } = useModal();
-  const router = useRouter();
+  const { setPageType } = usePageContext();
+  const { hideModal } = useModal();
   const [applicationLimit, setApplicationLimit] = useState("25");
 
   const handleSubmit = () => {
@@ -31,6 +32,10 @@ export default function ApplicationLimitModal(isBeingUpdated: any) {
     });
     hideModal();
   };
+
+  useEffect(() => {
+    setPageType("Business");
+  }, []);
 
   return (
     <div className="SubscriptionModal flex flex-col items-center gap-10">
