@@ -35,10 +35,11 @@ const config: Config = {
 
         // HIGH CONTRAST SFJS COLOR PALETTE
         cobalt: "#1B16A6",
-        juniper: "#0D4036",
+        juniper: "#0D5B4C",
         denim: "#230B5C",
         azure: "#1E16ED",
         violet: "#A204B6",
+        pine: "#007166",
       },
       letterSpacing: {
         superwide: "0.15em",
@@ -62,10 +63,11 @@ const config: Config = {
 
       // Other Drop Shadow Colors
       cobalt: "10px 10px 0px #1B16A6",
-      juniper: "10px 10px 0px #0D4036",
+      juniper: "10px 10px 0px #0D5B4C",
       denim: "10px 10px 0px #230B5C",
       azure: "10px 10px 0px #1E16ED",
       violet: "10px 10px 0px #A204B6",
+      pine: "10px 10px 0px #007166",
 
       // small drop shadows
       smLilac: "3px 3px 0px #D6A6DC",
@@ -81,6 +83,14 @@ const config: Config = {
       smOrange: "3px 3px 0px #F38143",
       smWatermelon: "3px 3px 0px #FFABDA",
       smMagenta: "3px 3px 0px #E673A9",
+
+      //Other Small Drop Shadow Colors
+      smCobalt: "3px 3px 0px #1B16A6",
+      smJuniper: "3px 3px 0px #0D5B4C",
+      smDenim: "3px 3px 0px #230B5C",
+      smAzure: "3px 3px 0px #1E16ED",
+      smViolet: "3px 3px 0px #A204B6",
+      smPine: "3px 3px 0px #007166",
     },
   },
   plugins: [],
