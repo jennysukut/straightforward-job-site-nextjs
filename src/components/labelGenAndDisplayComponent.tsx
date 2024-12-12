@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
@@ -45,6 +46,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   const [inputValue, setInputValue] = useState<string>("");
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
+  const { inputColors, textColor, secondaryTextColor, errorColor } =
+    useColorOptions();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -85,9 +88,11 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
-      {title && <p className="Title -mb-4 pl-4">{title}</p>}
+      {title && <p className={`Title -mb-4 pl-4 ${textColor}`}>{title}</p>}
       {subTitle && (
-        <p className="SubTitle -mb-4 -mt-4 pl-4 text-sm font-medium italic text-olive">
+        <p
+          className={`SubTitle -mb-4 -mt-4 pl-4 text-sm font-medium italic ${secondaryTextColor}`}
+        >
           {subTitle}
         </p>
       )}
@@ -112,7 +117,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
           placeholder={placeholder}
           name={name}
           value={inputValue}
-          className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+          className={`text-md w-[98%] self-start bg-transparent ${inputColors} focus:outline-none`}
           onChange={handleInput}
         />
       </InfoBox>
@@ -122,7 +127,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         </span>
       )}
       {errors?.message && (
-        <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+        <p className={`m-0 -mt-4 p-0 text-xs font-medium ${errorColor}`}>
           {errors.message.toString()}
         </p>
       )}

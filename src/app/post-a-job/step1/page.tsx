@@ -10,6 +10,8 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { skillsList } from "@/lib/skillsList";
 import { ParamsList } from "@/lib/paramsList";
 import { useJobs } from "@/contexts/JobsContext";
+import { useColors } from "@/contexts/ColorContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -34,6 +36,8 @@ export default function PostAJobStep1() {
   const router = useRouter();
   const { business, setBusiness } = useBusiness();
   const { job, setJob } = useJobs();
+  const { colorOption, setColorOption } = useColors();
+  const { textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [nonNegParams, setNonNegParams] = useState<string[]>([]);
@@ -103,25 +107,27 @@ export default function PostAJobStep1() {
     : -1;
 
   useEffect(() => {
-    setNonNegParams(
-      Array.isArray(business?.activeJobs[latestArrayIndex].nonNegParams)
-        ? business?.activeJobs[latestArrayIndex].nonNegParams
-        : [],
-    );
+    // setNonNegParams(
+    //   Array.isArray(business?.activeJobs[latestArrayIndex].nonNegParams)
+    //     ? business?.activeJobs[latestArrayIndex].nonNegParams
+    //     : [],
+    // );
+    setNonNegParams(Array.isArray(job?.nonNegParams) ? job?.nonNegParams : []);
+    setColorOption("highContrast");
   }, []);
 
   return (
     <div className="PostAJobPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <h1 className="JobName pl-8 tracking-superwide text-midnight">
-          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+        <h1 className={`JobName pl-8 tracking-superwide ${textColor}`}>
+          {job?.jobTitle || "Test Job Title"}
         </h1>
-        <p className="PositionTypeDetails -mt-8 pl-8 italic">
-          Position Type:{" "}
-          {capitalizeFirstLetter(
-            business?.activeJobs[latestArrayIndex].positionType,
-          )}
-        </p>
+        {job?.positionType && (
+          <p className="PositionTypeDetails -mt-8 pl-8 italic">
+            Position Type: {capitalizeFirstLetter(job?.positionType)}
+          </p>
+        )}
+
         <form
           className="PostAJobStep1Form xs:pt-8 flex flex-col gap-8"
           onSubmit={handleSubmit(onSubmit)}
@@ -133,9 +139,7 @@ export default function PostAJobStep1() {
             errors={errors.positionSummary}
             register={register}
             registerValue="positionSummary"
-            defaultValue={
-              business?.activeJobs[latestArrayIndex].positionSummary
-            }
+            defaultValue={job?.positionSummary}
             size="tall"
             width="full"
           />
@@ -166,11 +170,11 @@ export default function PostAJobStep1() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && business?.profileIsBeingEdited === true
-              ? "Returning To Profile..."
-              : !disabledButton && business?.profileIsBeingEdited === true
+            {disabledButton && job?.jobIsBeingEdited === true
+              ? "Returning To Listing..."
+              : !disabledButton && job?.jobIsBeingEdited === true
                 ? "update"
-                : disabledButton && business?.profileIsBeingEdited === false
+                : disabledButton && job?.jobIsBeingEdited === false
                   ? "Saving Information.."
                   : "continue"}{" "}
           </SiteButton>

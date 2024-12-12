@@ -7,10 +7,12 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useJobs } from "@/contexts/JobsContext";
 
-import SiteButton from "../siteButton";
-import ButtonOptionsComponent from "../buttonOptionsComponent";
-import FormInputComponent from "../formInputComponent";
+import SiteButton from "@/components/siteButton";
+import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import FormInputComponent from "@/components/formInputComponent";
+
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
 
@@ -25,6 +27,7 @@ export default function PostAJobModal() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
 
   const [positionType, setPositionType] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -64,17 +67,22 @@ export default function PostAJobModal() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs: [
-        ...(business?.activeJobs || ""),
-        {
-          jobNumber: 1,
-          jobTitle: data.jobTitle,
-          positionType: data.positionType,
-        },
-      ],
+    setJob({
+      jobNumber: 1,
+      jobTitle: data.jobTitle,
+      positionType: data.positionType,
     });
+    // setBusiness({
+    //   ...business,
+    //   activeJobs: [
+    //     ...(business?.activeJobs || ""),
+    //     {
+    //       jobNumber: 1,
+    //       jobTitle: data.jobTitle,
+    //       positionType: data.positionType,
+    //     },
+    //   ],
+    // });
     router.push("/post-a-job/step1");
     setTimeout(() => {
       hideModal();

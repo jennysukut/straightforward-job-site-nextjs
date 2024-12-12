@@ -1,34 +1,34 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
+
+export interface Colors {
+  colorOption: "highContrast" | "standard" | "seasonal";
+}
 
 interface ColorContextType {
-  isGrayscale: boolean;
-  toggleGrayscale: () => void;
+  colorOption: Colors | string;
+  setColorOption: (colors: Colors | string) => void;
 }
 
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
 
-export const ColorProvider: React.FC<{ children: React.ReactNode }> = ({
+export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isGrayscale, setIsGrayscale] = useState(false);
-
-  const toggleGrayscale = () => {
-    setIsGrayscale((prev) => !prev);
-  };
+  const [colorOption, setColorOption] = useState<Colors | string>("");
 
   return (
-    <ColorContext.Provider value={{ isGrayscale, toggleGrayscale }}>
+    <ColorContext.Provider value={{ colorOption, setColorOption }}>
       {children}
     </ColorContext.Provider>
   );
 };
 
-export const useColor = () => {
+export const useColors = () => {
   const context = useContext(ColorContext);
   if (!context) {
-    throw new Error("useColor must be used within a ColorProvider");
+    throw new Error("useColors must be used within a ColorProvider");
   }
   return context;
 };

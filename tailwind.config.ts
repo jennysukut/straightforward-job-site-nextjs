@@ -9,6 +9,7 @@ const config: Config = {
     },
     extend: {
       colors: {
+        // STANDARD SFJS COLOR PALETTE
         //If you need a reference, there are color names outlined on the Figma design with the Color Palette
         // cream + purple
         eggshell: "#FFF9F3",
@@ -31,6 +32,13 @@ const config: Config = {
         orange: "#F38143",
         watermelon: "#FFABDA",
         magenta: "#E673A9",
+
+        // HIGH CONTRAST SFJS COLOR PALETTE
+        cobalt: "#1B16A6",
+        juniper: "#0D4036",
+        denim: "#230B5C",
+        azure: "#1E16ED",
+        violet: "#A204B6",
       },
       letterSpacing: {
         superwide: "0.15em",
@@ -51,6 +59,14 @@ const config: Config = {
       orange: "10px 10px 0px #F38143",
       watermelon: "10px 10px 0px #FFABDA",
       magenta: "10px 10px 0px #E673A9",
+
+      // Other Drop Shadow Colors
+      cobalt: "10px 10px 0px #1B16A6",
+      juniper: "10px 10px 0px #0D4036",
+      denim: "10px 10px 0px #230B5C",
+      azure: "10px 10px 0px #1E16ED",
+      violet: "10px 10px 0px #A204B6",
+
       // small drop shadows
       smLilac: "3px 3px 0px #D6A6DC",
       smSky: "3px 3px 0px #C1D8D3",

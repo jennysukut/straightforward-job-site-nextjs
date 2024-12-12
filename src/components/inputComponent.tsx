@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import InfoBox from "./infoBox";
+import { useColors } from "@/contexts/ColorContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface InputComponent {
   type: string;
@@ -36,6 +38,14 @@ const InputComponent: React.FC<InputComponent> = ({
   required,
   ...props
 }) => {
+  const { colorOption } = useColors();
+  const inputColors = useColorOptions();
+
+  // const inputColors =
+  //   colorOption === "highContrast"
+  //     ? "text-juniper placeholder:text-juniper/50"
+  //     : "text-midnight placeholder:text-jade/50";
+
   return (
     <div className="InputComponentContainer flex flex-col gap-8">
       {required && (
@@ -54,14 +64,14 @@ const InputComponent: React.FC<InputComponent> = ({
           <input
             type={type}
             placeholder={placeholderText}
-            className="text-md w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+            className={`text-md w-full bg-transparent ${inputColors} focus:outline-none`}
             defaultValue={defaultValue}
             {...(typeof register === "function" ? register(registerValue) : {})}
           />
         )}
         {size !== "extraSmall" && (
           <textarea
-            className="text-md h-full w-full bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+            className={`text-md h-full w-full bg-transparent ${inputColors} focus:outline-none`}
             type={type}
             placeholder={placeholderText}
             defaultValue={defaultValue}

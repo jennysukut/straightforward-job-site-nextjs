@@ -24,6 +24,7 @@
 
 h1,
 h2 {
+  /* We should set some definitions for primary and secondary colors that are defined based off the colorContext and remove this. */
   color: #308b7b;
 }
 
@@ -43,6 +44,7 @@ p {
 }
 
 body {
+  /* We should set some definitions for primary and secondary colors that are defined based off the colorContext and remove this. */
   color: #50b09f;
   font-family: "satoshi", sans-serif;
   font-weight: 700;

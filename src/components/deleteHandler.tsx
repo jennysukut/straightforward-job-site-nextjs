@@ -11,7 +11,6 @@ export default function DeleteHandler({
   // Check if the type exists in setFunctions
   if (type in setFunctions) {
     const setFunction = setFunctions[type];
-    console.log(value, setFunction);
 
     setFunction((prevList: any) => {
       // Ensure prevList is an array before filtering

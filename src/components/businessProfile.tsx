@@ -7,7 +7,7 @@ import { useModal } from "@/contexts/ModalContext";
 import InfoBox from "./infoBox";
 import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
-import PostAJobModal from "./modals/postAJobModal";
+import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 
 export default function BusinessProfile({ business }: any, isOwn: boolean) {
   const { setBusiness } = useBusiness();

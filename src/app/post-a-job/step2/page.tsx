@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useBusiness } from "@/contexts/BusinessContext";
+import { useJobs } from "@/contexts/JobsContext";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -32,7 +32,7 @@ const jobSchema = z.object({
 type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep2() {
-  const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -48,10 +48,6 @@ export default function PostAJobStep2() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
-
-  const latestArrayIndex = business?.activeJobs.length
-    ? business.activeJobs.length - 1
-    : -1;
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "locationType" | "payOption", data: any) => {
@@ -81,60 +77,41 @@ export default function PostAJobStep2() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              payDetails: {
-                payscale: data.payscale,
-                payOption: payOption,
-              },
-              locationType: data.locationOption,
-              idealCandidate: data.idealCandidate,
-              hybridDetails: {
-                daysInOffice: data.daysInOffice,
-                daysRemote: data.daysRemote,
-              },
-            };
-          }
-          return job;
-        }) || [],
+    setJob({
+      ...job,
+      payDetails: {
+        payscale: data.payscale,
+        payOption: payOption,
+      },
+      locationType: data.locationOption,
+      idealCandidate: data.idealCandidate,
+      hybridDetails: {
+        daysInOffice: data.daysInOffice,
+        daysRemote: data.daysRemote,
+      },
     });
     router.push("/post-a-job/step3");
     // router.push("/profile");
   };
 
   useEffect(() => {
-    const latestJob = business?.activeJobs[latestArrayIndex];
-    // Check if latestJob and its payDetails exist
-    if (latestJob?.payDetails) {
-      if (latestJob.payDetails.payOption) {
-        setPayOption(latestJob.payDetails.payOption);
-        setValue("payOption", latestJob.payDetails.payOption || []);
-      }
+    if (job?.payDetails) {
+      setPayOption(job?.payDetails.payOption);
+      setValue("payOption", job?.payDetails.payOption);
+      setValue("payscale", job?.payDetails.payscale);
     }
 
-    if (latestJob?.payDetails) {
-      if (latestJob.payDetails.payscale) {
-        setValue("payscale", latestJob.payDetails.payscale);
-      }
+    if (job?.locationType) {
+      setLocationOption([job.locationType]);
+      setValue("locationOption", job.locationType);
     }
-
-    if (latestJob?.locationType) {
-      setLocationOption(latestJob?.locationType);
-      setValue("locationOption", latestJob?.locationType);
-    }
-    console.log(latestJob);
-  }, [business]);
+  }, [job]);
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className="JobName pl-8 tracking-superwide text-midnight">
-          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+          {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           Payscale, Location, and Ideal Candidate Details:
@@ -215,7 +192,7 @@ export default function PostAJobStep2() {
             type="text"
             placeholderText="What does your ideal candidate look like?"
             errors={errors.idealCandidate}
-            defaultValue={business?.activeJobs[latestArrayIndex].idealCandidate}
+            defaultValue={job?.idealCandidate}
             register={register}
             registerValue="idealCandidate"
             size="medium"
@@ -230,11 +207,11 @@ export default function PostAJobStep2() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && business?.profileIsBeingEdited === true
-                ? "Returning To Profile..."
-                : !disabledButton && business?.profileIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
+                ? "Returning To Listing..."
+                : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
-                  : disabledButton && business?.profileIsBeingEdited === false
+                  : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
                     : "continue"}
             </SiteButton>

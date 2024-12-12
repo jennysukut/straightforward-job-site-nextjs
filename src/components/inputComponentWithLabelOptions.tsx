@@ -4,6 +4,7 @@ import React from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import { useState, useEffect } from "react";
+import { useColors } from "@/contexts/ColorContext";
 
 interface InputComponentWithLabelOptions {
   handleAdd: Function;
@@ -39,6 +40,12 @@ const InputComponentWithLabelOptions: React.FC<
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>(defaultValue);
+  const { colorOption } = useColors();
+
+  const inputColors =
+    colorOption === "highContrast"
+      ? "text-juniper placeholder:text-juniper/50"
+      : "text-midnight placeholder:text-jade/50";
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -81,7 +88,7 @@ const InputComponentWithLabelOptions: React.FC<
           placeholder={placeholder}
           name={name}
           value={inputValue}
-          className="text-md w-[98%] self-start bg-transparent text-midnight placeholder:text-jade/50 focus:outline-none"
+          className={`text-md w-[98%] self-start bg-transparent ${inputColors} focus:outline-none`}
           onChange={handleInput}
         />
       </InfoBox>

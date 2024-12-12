@@ -13,7 +13,7 @@ import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import PostAJobModal from "./modals/postAJobModal";
+import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 
 export default function NavBar() {
   const { showModal } = useModal();

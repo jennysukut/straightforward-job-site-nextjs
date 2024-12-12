@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import InfoBox from "./infoBox";
 import { useModal } from "@/contexts/ModalContext";
+import { useColors } from "@/contexts/ColorContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 // Define the props type for addModal
 interface AddModalProps {
@@ -52,6 +54,14 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   ...props
 }) => {
   const { showModal } = useModal();
+  const { colorOption } = useColors();
+
+  const inputColors = useColorOptions();
+
+  // const inputColors =
+  //   colorOption === "highContrast"
+  //     ? "text-juniper placeholder:text-juniper/50"
+  //     : "text-midnight placeholder:text-jade/50";
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">

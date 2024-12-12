@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useBusiness } from "@/contexts/BusinessContext";
 import { skillsList } from "@/lib/skillsList";
+import { useJobs } from "@/contexts/JobsContext";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -31,7 +31,7 @@ const jobSchema = z.object({
 type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep3() {
-  const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -47,10 +47,6 @@ export default function PostAJobStep3() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
-
-  const latestArrayIndex = business?.activeJobs.length
-    ? business.activeJobs.length - 1
-    : -1;
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -87,56 +83,32 @@ export default function PostAJobStep3() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              experienceLevel: data.experienceLevel,
-              preferredSkills: preferredSkills,
-              moreAboutPosition: data.moreAboutPosition,
-            };
-          }
-          return job;
-        }) || [],
+
+    setJob({
+      ...job,
+      experienceLevel: data.experienceLevel,
+      preferredSkills: preferredSkills,
+      moreAboutPosition: data.moreAboutPosition,
     });
     router.push("/post-a-job/step4");
-    // router.push("/profile");
   };
 
   useEffect(() => {
     setPreferredSkills(
-      Array.isArray(business?.activeJobs[latestArrayIndex].preferredSkills)
-        ? business?.activeJobs[latestArrayIndex].preferredSkills
-        : [],
+      Array.isArray(job?.preferredSkills) ? job?.preferredSkills : [],
     );
     setExperienceLevel(
-      Array.isArray(business?.activeJobs[latestArrayIndex].experienceLevel)
-        ? business?.activeJobs[latestArrayIndex].experienceLevel
-        : [],
+      Array.isArray(job?.experienceLevel) ? job?.experienceLevel : [],
     );
-    setValue(
-      "preferredSkills",
-      business?.activeJobs[latestArrayIndex].preferredSkills || [],
-    );
-    setValue(
-      "experienceLevel",
-      business?.activeJobs[latestArrayIndex].experienceLevel || [],
-    );
-  }, []);
-
-  useEffect(() => {
-    const latestJob = business?.activeJobs[latestArrayIndex];
-    console.log(latestJob);
+    setValue("preferredSkills", job?.preferredSkills || []);
+    setValue("experienceLevel", job?.experienceLevel || []);
   }, []);
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className="JobName pl-8 tracking-superwide text-midnight">
-          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+          {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           Experience Level, Skills, and Other Details:
@@ -181,9 +153,7 @@ export default function PostAJobStep3() {
             errors={errors.moreAboutPosition}
             register={register}
             registerValue="moreAboutPosition"
-            defaultValue={
-              business?.activeJobs[latestArrayIndex].moreAboutPosition
-            }
+            defaultValue={job?.moreAboutPosition}
             size="tall"
             width="full"
           />
@@ -196,11 +166,11 @@ export default function PostAJobStep3() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && business?.profileIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Profile..."
-                : !disabledButton && business?.profileIsBeingEdited === true
+                : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
-                  : disabledButton && business?.profileIsBeingEdited === false
+                  : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
                     : "continue"}
             </SiteButton>

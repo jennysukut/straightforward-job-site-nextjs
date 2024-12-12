@@ -7,6 +7,7 @@ import {
 } from "@/lib/stylingData/largeShadowColors";
 import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
 import Image from "next/image";
+import { useColors } from "@/contexts/ColorContext";
 
 interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   variant: "hollow" | "filled";
@@ -58,11 +59,17 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   canSearch,
   ...props
 }) => {
+  const { colorOption } = useColors();
+
+  const boxOptions =
+    colorOption === "highContrast"
+      ? "border-cobalt drop-shadow-cobalt text-cobalt"
+      : "border-jade drop-shadow-jade text-jade";
+
   const boxClasses = clsx(
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
-      // variant + shadowSize
-      "bg-cream border-jade drop-shadow-jade text-jade font-semibold border-[3px]":
+      [`bg-cream ${boxOptions} font-semibold border-[3px]`]:
         variant === "hollow",
       [`text-eggshell ${largeShadowColors[colorScheme]}`]:
         variant === "filled" && shadowSize === "standard",
