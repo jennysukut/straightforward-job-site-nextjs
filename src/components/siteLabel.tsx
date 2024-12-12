@@ -3,10 +3,12 @@
 import clsx from "clsx";
 import {
   smallShadowColors,
+  highContrastSmallShadowColors,
   SmallShadowColorOption,
 } from "@/lib/stylingData/smallShadowColors";
 import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import Image from "next/image";
+import { useColors } from "@/contexts/ColorContext";
 
 interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   variant: "display" | "functional";
@@ -33,8 +35,15 @@ const SiteLabel: React.FC<LabelProps> = ({
   handleDelete,
   ...props
 }) => {
+  const { colorOption } = useColors();
+
+  const labelColors =
+    colorOption === "highContrast"
+      ? `${highContrastSmallShadowColors[colorScheme]}`
+      : `${smallShadowColors[colorScheme]}`;
+
   const labelClasses = clsx(
-    `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${smallShadowColors[colorScheme]} text-eggshell py-1 tracking-widest m-1`,
+    `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell py-1 tracking-widest m-1`,
     {
       // variant
       "px-4": variant === "display",
