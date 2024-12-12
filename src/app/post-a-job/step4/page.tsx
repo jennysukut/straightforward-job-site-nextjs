@@ -13,6 +13,9 @@ import SiteButton from "@/components/siteButton";
 import DeleteHandler from "@/components/deleteHandler";
 import AddHandler from "@/components/addHandler";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import PopulateDisplayField from "@/components/populateDisplayField";
+import UpdateHandler from "@/components/updateHandler";
+import AddResponsibilityModal from "@/components/modals/postAJobModals/addResponsibilitiesModal";
 
 const jobSchema = z.object({
   responsibilities: z
@@ -34,6 +37,7 @@ export default function PostAJobStep4() {
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [responsibilities, setResponsibilities] = useState<string[]>([]);
+  const [responsibilityCounter, setResponsibilityCounter] = useState(1);
   const [perks, setPerks] = useState<string[]>([]);
   const {
     handleSubmit,
@@ -61,6 +65,31 @@ export default function PostAJobStep4() {
       },
       setValue,
       clearErrors,
+      hasId: {
+        responsibilities: true,
+        perks: false,
+      },
+      counterFunctions: {
+        responsibilities: setResponsibilityCounter,
+      },
+      counterDetails: {
+        responsibilities: responsibilityCounter,
+      },
+    });
+  };
+
+  const handleUpdate = (
+    type: "responsibilities",
+    updatedData: any,
+    id: any,
+  ) => {
+    UpdateHandler({
+      item: id,
+      updatedData,
+      type,
+      setFunctions: {
+        responsibilities: setResponsibilities,
+      },
     });
   };
 
@@ -74,6 +103,10 @@ export default function PostAJobStep4() {
       },
       setValue,
       clearErrors,
+      hasId: {
+        responsibilities: true,
+        perks: false,
+      },
     });
   };
 
@@ -123,18 +156,18 @@ export default function PostAJobStep4() {
           Responsibilities and Perks of the Job:
         </p>
 
-        {/* responsibilities generator */}
-        <LabelGeneratorAndDisplayComp
+        {/* Add + Display Responsibilities */}
+        <PopulateDisplayField
           handleAdd={handleAdd}
-          errors={errors.responsibilities}
-          selectedArray={responsibilities}
           handleDelete={handleDelete}
-          placeholder="Responsibilities Of The Position"
-          name="responsibilities"
-          variant="functional"
+          handleUpdate={handleUpdate}
+          selectedArray={responsibilities}
+          aria="responsibilities"
+          title={`Responsibilities Of The Position`}
+          addModal={<AddResponsibilityModal />}
+          displayOption1="responsibility"
           required
-          width="full"
-          resultDisplay="list"
+          height="tall"
         />
 
         {/* perks generator */}

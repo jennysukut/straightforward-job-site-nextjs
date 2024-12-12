@@ -10,6 +10,11 @@ export const useColorOptions = () => {
       ? "text-cobalt placeholder:text-cobalt/50 border-azure/50"
       : "text-midnight placeholder:text-jade/50 border-jade/50";
 
+  const inputClasses =
+    colorOption === "highContrast"
+      ? "text-cobalt placeholder:text-cobalt/50 border-azure/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none"
+      : "text-midnight placeholder:text-jade/50 border-jade/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
+
   const textColor =
     colorOption === "highContrast" ? "text-cobalt" : "text-jade";
 
@@ -29,6 +34,7 @@ export const useColorOptions = () => {
 
   return {
     inputColors,
+    inputClasses,
     textColor,
     secondaryTextColor,
     errorColor,

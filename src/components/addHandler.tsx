@@ -15,7 +15,7 @@ export default function AddHandler({
   if (setFunctions) {
     if (type in setFunctions) {
       const setFunction = setFunctions[type]; // Get the corresponding function
-      if (hasId === true) {
+      if (hasId && hasId[type] === true) {
         const counterFunction = counterFunctions[type]; // Get the corresponding function
         const counterData = counterDetails[type];
         const newData = {

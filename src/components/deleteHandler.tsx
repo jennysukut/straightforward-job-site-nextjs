@@ -17,7 +17,7 @@ export default function DeleteHandler({
       if (!Array.isArray(prevList)) {
         return [];
       }
-      if (hasId === true) {
+      if (hasId && hasId[type] === true) {
         return prevList.filter((prev: any) => prev.id !== item);
       } else {
         const updatedList = prevList.filter((prev: any) => prev !== item);

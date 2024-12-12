@@ -24,7 +24,6 @@ interface LabelGeneratorAndDisplayComp {
   width?: "full";
   subTitle?: string;
   addClassesToResults?: string;
-  resultDisplay?: string;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -43,7 +42,6 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   subTitle,
   width,
   addClassesToResults,
-  resultDisplay,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -161,61 +159,21 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         <div
           className={`LabelContainer -mb-2 -mt-2 flex flex-wrap gap-2 ${addClassesToResults}`}
         >
-          {resultDisplay === "list" && (
-            <ul className="ListItems mt-4 flex list-disc flex-col gap-3 pl-12">
-              {selectedArray.map((item, index) => {
-                return (
-                  <li key={index}>
-                    <div className="ListItem flex flex-wrap">
-                      {item}
-                      {colorOption === "highContrast" && (
-                        <button
-                          className="CloseButton opacity-100 hover:opacity-50"
-                          onClick={() => handleDelete(name, item)}
-                        >
-                          <Image
-                            src="/modal-close-button.svg"
-                            alt="closebutton"
-                            width={20}
-                            height={20}
-                          ></Image>
-                        </button>
-                      )}
-                      {colorOption === "standard" && (
-                        <button
-                          className="CloseButton opacity-100 hover:opacity-50"
-                          onClick={() => handleDelete(name, item)}
-                        >
-                          <Image
-                            src="/modal-close-button.svg"
-                            alt="closebutton"
-                            width={20}
-                            height={20}
-                          ></Image>
-                        </button>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-          {resultDisplay !== "list" &&
-            selectedArray.map((item, index) => {
-              return (
-                <SiteLabel
-                  aria={item}
-                  variant={variant}
-                  key={index}
-                  colorScheme={
-                    secondaryColorArray[index % secondaryColorArray.length]
-                  }
-                  handleDelete={() => handleDelete(name, item)}
-                >
-                  {item}
-                </SiteLabel>
-              );
-            })}
+          {selectedArray.map((item, index) => {
+            return (
+              <SiteLabel
+                aria={item}
+                variant={variant}
+                key={index}
+                colorScheme={
+                  secondaryColorArray[index % secondaryColorArray.length]
+                }
+                handleDelete={() => handleDelete(name, item)}
+              >
+                {item}
+              </SiteLabel>
+            );
+          })}
         </div>
       ) : (
         ""

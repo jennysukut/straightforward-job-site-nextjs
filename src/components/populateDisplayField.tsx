@@ -30,6 +30,7 @@ interface PopulateDisplayField {
   displayPunct?: string;
   required?: boolean;
   id?: number;
+  height?: any;
 }
 
 // Define the interface for the items in selectedArray
@@ -51,22 +52,19 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
   displayPunct,
   required,
   id,
+  height,
   ...props
 }) => {
   const { showModal } = useModal();
   const { colorOption } = useColors();
-
-  const inputColors = useColorOptions();
-
-  // const inputColors =
-  //   colorOption === "highContrast"
-  //     ? "text-juniper placeholder:text-juniper/50"
-  //     : "text-midnight placeholder:text-jade/50";
+  const { textColor } = useColorOptions();
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       {required && (
-        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+        <p
+          className={`required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl ${textColor}`}
+        >
           *
         </p>
       )}
