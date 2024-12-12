@@ -45,6 +45,9 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [fellow, setFellow] = useState<Fellow | null>({
+    avatar: "/avatars/peach.svg",
+    shadow: "drop-shadow-lime",
+    colorScheme: "b6",
     // subscriptionAmount: "10",
     // addMoreInfo: false,
     // name: "Jenny Sukut",

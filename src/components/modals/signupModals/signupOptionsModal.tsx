@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "../../siteButton";
 import SignupModalIndividual1 from "./signupIndividual1";
@@ -10,6 +11,7 @@ import LoginModal from "../loginModal";
 export default function SignupOptionsModal() {
   const { showModal, replaceModalStack } = useModal();
   const { setAccountType } = usePageContext();
+  const { titleColor } = useColorOptions();
 
   const selectCategory = (type: any) => {
     if (type === "Fellow") {
@@ -23,7 +25,9 @@ export default function SignupOptionsModal() {
 
   return (
     <div className="SignupOptionsModal flex w-[250px] flex-col items-center gap-4">
-      <Dialog.Title className="Title w-full text-center text-xl font-bold">
+      <Dialog.Title
+        className={`Title w-full text-center text-xl font-bold ${titleColor}`}
+      >
         signup
       </Dialog.Title>
       <p className="Subtitle w-full text-center">who are you?</p>

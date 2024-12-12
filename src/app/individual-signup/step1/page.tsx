@@ -9,6 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -49,6 +50,7 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { showModal } = useModal();
+  const { titleColor, textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
@@ -163,7 +165,9 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h1 className="FellowName -mb-4 ml-8 tracking-superwide">
+            <h1
+              className={`FellowName -mb-4 ml-8 tracking-superwide ${titleColor}`}
+            >
               {fellow?.name || "Test Name"}
             </h1>
 
@@ -232,7 +236,7 @@ export default function IndividualSignupPage1() {
             />
           </div>
           <button
-            className="max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
+            className={`max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100 ${textColor}`}
             onClick={() =>
               showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
             }
