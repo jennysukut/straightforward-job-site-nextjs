@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import SiteButton from "./siteButton";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface ButtonOptionsComponent {
   type: string;
@@ -35,7 +36,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
 }) => {
   const [colorArray, setColorArray] = useState(Array<any>);
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
-
+  const { textColor, errorColor } = useColorOptions();
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
       console.log("already got that one - we need to delete it");
@@ -56,11 +57,13 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
       >
         <label
           htmlFor={title}
-          className="ButtonOptionsTitle self-center text-jade"
+          className={`ButtonOptionsTitle self-center ${textColor}`}
         >
           {title}
           {required && (
-            <span className="required flex-end text-md m-0 pl-1 text-start align-baseline text-jade">
+            <span
+              className={`required flex-end text-md m-0 pl-1 text-start align-baseline ${textColor}`}
+            >
               *
             </span>
           )}
@@ -85,7 +88,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
         </div>
       </div>
       {errors?.message && (
-        <p className="m-0 p-0 text-xs font-medium text-orange">
+        <p className={`m-0 p-0 text-xs font-medium ${errorColor}`}>
           {errors.message.toString()}
         </p>
       )}

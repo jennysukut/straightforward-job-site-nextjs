@@ -15,6 +15,7 @@ import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -23,12 +24,15 @@ export default function NavBar() {
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
   const { colorOption } = useColors();
+  const { textColor } = useColorOptions();
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
   return (
-    <div className="NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16">
+    <div
+      className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}
+    >
       <Link href={"/"}>
         {colorOption === "highContrast" && (
           <Image

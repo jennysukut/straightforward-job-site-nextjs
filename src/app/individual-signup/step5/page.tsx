@@ -129,7 +129,9 @@ export default function IndividualSignupPage5() {
           <h2 className="OptionalTitle text-lg text-jade">
             optional: human details
           </h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <div className="AvatarContainer self-end pr-6">
+            <Avatar addClasses="self-end -mt-14" />
+          </div>
         </div>
 
         {/* Add + Display Hobbies */}

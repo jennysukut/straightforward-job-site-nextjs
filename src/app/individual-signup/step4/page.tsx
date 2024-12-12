@@ -7,6 +7,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -28,6 +29,7 @@ type FormData = z.infer<typeof fellowSchema>;
 export default function IndividualSignupPage4() {
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
+  const { textColor, titleColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [locationOptions, setLocationOptions] = useState<string[]>([]);
@@ -93,13 +95,17 @@ export default function IndividualSignupPage4() {
   }, []);
 
   return (
-    <div className="IndividualSignupPage4 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`IndividualSignupPage4 ${textColor} flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
-          <h2 className="OptionalTitle text-lg text-jade">
+          <h2 className={`OptionalTitle text-lg ${titleColor}`}>
             optional: work-related details
           </h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <div className="AvatarContainer self-end pr-6">
+            <Avatar addClasses="self-end -mt-14" />
+          </div>
         </div>
 
         {/*  looking for input */}
