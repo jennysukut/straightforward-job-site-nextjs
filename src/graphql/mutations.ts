@@ -67,3 +67,49 @@ export const GET_CURRENT_AMOUNT = gql`
     currentDonations
   }
 `;
+
+export const SAVE_PROFILE_MUTATION = gql`
+  mutation SaveProfile ($requestBody: ProfileInput!) {
+    saveProfile(requestBody: $requestBody) {
+      smallBio
+      location
+      skills
+      jobTitles
+      experiences {
+        title
+        company
+        yearOrYears
+        details
+      }
+      education {
+        degreeOrCertificate
+        schoolName
+        fieldOfStudy
+      }
+      awards {
+        award
+        givenBy
+        criteria
+      }
+      experienceLevels {
+        experienceLevel
+        skill
+        numberOfYears
+      }
+      accomplishments {
+        accomplishment
+        details
+      }
+      personalWebsite
+      portfolioWebsite
+      socialMediaLinks
+      otherLink
+      passionateAbout
+      lookingFor
+      quirksAndHobbies
+      documents
+      favoriteBookOrQuote
+      moreAboutYou
+    }
+  }
+`

@@ -9,6 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
+import { SAVE_PROFILE_MUTATION } from "@/graphql/mutations";
+import { useMutation } from "@apollo/client";
 
 import SiteButton from "@/components/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -49,6 +51,7 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { showModal } = useModal();
+  const [saveProfile, { loading, error }] = useMutation(SAVE_PROFILE_MUTATION);
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
@@ -97,6 +100,8 @@ export default function IndividualSignupPage1() {
       languages: languages,
       profileIsBeingEdited: false,
     });
+    console.log(`This is the current fellow: ${JSON.stringify(data)}`);
+    saveProfile({variables: {requestBody: data}});
     if (fellow?.profileIsBeingEdited) {
       router.push("/profile");
     } else {

@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
+import { SAVE_PROFILE_MUTATION } from "@/graphql/mutations";
+import { useMutation } from "@apollo/client";
 
 import SiteButton from "@/components/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
@@ -16,6 +18,7 @@ import UpdateHandler from "@/components/updateHandler";
 export default function IndividualSignupPage2() {
   const { fellow, setFellow } = useFellow();
   const router = useRouter();
+  const [saveProfile, { loading, error }] = useMutation(SAVE_PROFILE_MUTATION);
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [experienceDetails, setExperienceDetails] = useState<any[]>([]);
@@ -85,6 +88,8 @@ export default function IndividualSignupPage2() {
       education: educationDetails,
       profileIsBeingEdited: false,
     });
+    const payload = {variables: {requestBody: {experience: experienceDetails, education: educationDetails}}}
+    saveProfile(payload);
     if (fellow?.profileIsBeingEdited) {
       router.push("/profile");
     } else {
