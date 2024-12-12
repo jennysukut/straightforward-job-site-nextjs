@@ -5,6 +5,8 @@ import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
+import Image from "next/image";
 
 interface LabelGeneratorAndDisplayComp {
   handleAdd: Function;
@@ -22,6 +24,7 @@ interface LabelGeneratorAndDisplayComp {
   width?: "full";
   subTitle?: string;
   addClassesToResults?: string;
+  resultDisplay?: string;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -40,6 +43,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   subTitle,
   width,
   addClassesToResults,
+  resultDisplay,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -48,6 +52,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const { inputColors, textColor, secondaryTextColor, errorColor } =
     useColorOptions();
+  const { colorOption } = useColors();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -156,21 +161,61 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         <div
           className={`LabelContainer -mb-2 -mt-2 flex flex-wrap gap-2 ${addClassesToResults}`}
         >
-          {selectedArray.map((item, index) => {
-            return (
-              <SiteLabel
-                aria={item}
-                variant={variant}
-                key={index}
-                colorScheme={
-                  secondaryColorArray[index % secondaryColorArray.length]
-                }
-                handleDelete={() => handleDelete(name, item)}
-              >
-                {item}
-              </SiteLabel>
-            );
-          })}
+          {resultDisplay === "list" && (
+            <ul className="ListItems mt-4 flex list-disc flex-col gap-3 pl-12">
+              {selectedArray.map((item, index) => {
+                return (
+                  <li key={index}>
+                    <div className="ListItem flex flex-wrap">
+                      {item}
+                      {colorOption === "highContrast" && (
+                        <button
+                          className="CloseButton opacity-100 hover:opacity-50"
+                          onClick={() => handleDelete(name, item)}
+                        >
+                          <Image
+                            src="/modal-close-button.svg"
+                            alt="closebutton"
+                            width={20}
+                            height={20}
+                          ></Image>
+                        </button>
+                      )}
+                      {colorOption === "standard" && (
+                        <button
+                          className="CloseButton opacity-100 hover:opacity-50"
+                          onClick={() => handleDelete(name, item)}
+                        >
+                          <Image
+                            src="/modal-close-button.svg"
+                            alt="closebutton"
+                            width={20}
+                            height={20}
+                          ></Image>
+                        </button>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+          {resultDisplay !== "list" &&
+            selectedArray.map((item, index) => {
+              return (
+                <SiteLabel
+                  aria={item}
+                  variant={variant}
+                  key={index}
+                  colorScheme={
+                    secondaryColorArray[index % secondaryColorArray.length]
+                  }
+                  handleDelete={() => handleDelete(name, item)}
+                >
+                  {item}
+                </SiteLabel>
+              );
+            })}
         </div>
       ) : (
         ""

@@ -19,7 +19,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 export default function NavBar() {
   const { showModal } = useModal();
-  const { pageType, accountType } = usePageContext();
+  const { pageType, accountType, isLoggedIn } = usePageContext();
   const { fellow } = useFellow();
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
@@ -80,7 +80,7 @@ export default function NavBar() {
               </p>
             </div>
           );
-        } else if (pageType === "Individual") {
+        } else if (pageType === "Individual" && isLoggedIn === true) {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
@@ -129,7 +129,7 @@ export default function NavBar() {
               </Link>
             </div>
           );
-        } else if (pageType === "Business") {
+        } else if (pageType === "Business" && isLoggedIn) {
           // BUSINESS NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">

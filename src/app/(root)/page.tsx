@@ -7,12 +7,11 @@ import { usePageContext } from "@/contexts/PageContext";
 import HeaderSection from "./headerSection";
 
 export default function Home() {
-  const { setCurrentPage, setPageType } = usePageContext();
+  const { setCurrentPage } = usePageContext();
 
   useEffect(() => {
     setCurrentPage("Home");
-    setPageType("Main");
-  }, [setCurrentPage, setPageType]);
+  }, [setCurrentPage]);
 
   return (
     <div className="HomePage flex flex-grow flex-col items-center gap-8 pt-14 md:pb-12 md:pt-20">

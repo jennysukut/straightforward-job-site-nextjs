@@ -9,6 +9,8 @@ type PageContextType = {
   setPageType: (type: string) => void;
   accountType: string;
   setAccountType: (type: string) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (type: boolean) => void;
 };
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -17,9 +19,9 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentPage, setCurrentPage] = useState<string>("");
-  const [pageType, setPageType] = useState<string>("Business");
-  const [accountType, setAccountType] = useState<string>("Business");
-
+  const [pageType, setPageType] = useState<string>("");
+  const [accountType, setAccountType] = useState<string>("");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   return (
     <PageContext.Provider
       value={{
@@ -29,6 +31,8 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
         setPageType,
         accountType,
         setAccountType,
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {children}

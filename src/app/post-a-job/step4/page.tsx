@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useJobs } from "@/contexts/JobsContext";
 
 import SiteButton from "@/components/siteButton";
 import DeleteHandler from "@/components/deleteHandler";
@@ -28,6 +29,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep4() {
   const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -77,34 +79,33 @@ export default function PostAJobStep4() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              responsibilities: responsibilities,
-              perks: perks,
-            };
-          }
-          return job;
-        }) || [],
+    setJob({
+      ...job,
+      responsibilities: responsibilities,
+      perks: perks,
     });
+    // setBusiness({
+    //   ...business,
+    //   activeJobs:
+    //     business?.activeJobs.map((job: any, index: number) => {
+    //       if (index === business.activeJobs.length - 1) {
+    //         return {
+    //           ...job,
+    //           responsibilities: responsibilities,
+    //           perks: perks,
+    //         };
+    //       }
+    //       return job;
+    //     }) || [],
+    // });
     router.push("/post-a-job/step5");
   };
 
   useEffect(() => {
     setResponsibilities(
-      Array.isArray(business?.activeJobs[latestArrayIndex].responsibilities)
-        ? business?.activeJobs[latestArrayIndex].responsibilities
-        : [],
+      Array.isArray(job?.responsibilities) ? job?.responsibilities : [],
     );
-    setPerks(
-      Array.isArray(business?.activeJobs[latestArrayIndex].perks)
-        ? business?.activeJobs[latestArrayIndex].perks
-        : [],
-    );
+    setPerks(Array.isArray(job?.perks) ? job?.perks : []);
     setValue(
       "responsibilities",
       business?.activeJobs[latestArrayIndex].responsibilities || [],
@@ -112,15 +113,11 @@ export default function PostAJobStep4() {
     setValue("perks", business?.activeJobs[latestArrayIndex].perks || []);
   }, []);
 
-  useEffect(() => {
-    const latestJob = business?.activeJobs[latestArrayIndex];
-  }, []);
-
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className="JobName pl-8 tracking-superwide text-midnight">
-          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+          {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           Responsibilities and Perks of the Job:
@@ -137,6 +134,7 @@ export default function PostAJobStep4() {
           variant="functional"
           required
           width="full"
+          resultDisplay="list"
         />
 
         {/* perks generator */}
@@ -150,6 +148,7 @@ export default function PostAJobStep4() {
           variant="functional"
           required
           width="full"
+          addClassesToResults="pl-8"
         />
 
         <form
@@ -164,11 +163,11 @@ export default function PostAJobStep4() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && business?.profileIsBeingEdited === true
-                ? "Returning To Profile..."
-                : !disabledButton && business?.profileIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
+                ? "Returning To Listing..."
+                : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
-                  : disabledButton && business?.profileIsBeingEdited === false
+                  : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
                     : "continue"}
             </SiteButton>

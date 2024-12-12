@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
+import { usePageContext } from "@/contexts/PageContext";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
@@ -10,6 +11,7 @@ import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
 export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   const { setFellow } = useFellow();
+  const { setPageType, setAccountType } = usePageContext();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -31,6 +33,8 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   };
 
   useEffect(() => {
+    setAccountType("Individual");
+    setPageType("Individual");
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);

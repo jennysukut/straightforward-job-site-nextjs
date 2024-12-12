@@ -90,7 +90,6 @@ export default function IndividualSignupPage6() {
     });
   };
 
-  console.log(fellow?.profileIsBeingEdited, fellow?.addMoreInfo);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     if (
