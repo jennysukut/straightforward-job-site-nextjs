@@ -97,7 +97,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         </p>
       )}
       {required && (
-        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+        <p
+          className={`required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl ${textColor}`}
+        >
           *
         </p>
       )}

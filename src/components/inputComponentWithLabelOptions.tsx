@@ -4,7 +4,7 @@ import React from "react";
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import { useState, useEffect } from "react";
-import { useColors } from "@/contexts/ColorContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface InputComponentWithLabelOptions {
   handleAdd: Function;
@@ -40,12 +40,7 @@ const InputComponentWithLabelOptions: React.FC<
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>(defaultValue || "");
-  const { colorOption } = useColors();
-
-  const inputColors =
-    colorOption === "highContrast"
-      ? "text-juniper placeholder:text-juniper/50"
-      : "text-midnight placeholder:text-jade/50";
+  const { inputColors, textColor, errorColor } = useColorOptions();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -70,7 +65,9 @@ const InputComponentWithLabelOptions: React.FC<
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
       {required && (
-        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+        <p
+          className={`required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl ${textColor}`}
+        >
           *
         </p>
       )}
@@ -112,7 +109,7 @@ const InputComponentWithLabelOptions: React.FC<
       )}
 
       {errors?.message && (
-        <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+        <p className={`m-0 -mt-4 p-0 text-xs font-medium ${errorColor}`}>
           {errors.message.toString()}
         </p>
       )}

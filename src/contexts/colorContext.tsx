@@ -16,7 +16,9 @@ const ColorContext = createContext<ColorContextType | undefined>(undefined);
 export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [colorOption, setColorOption] = useState<Colors | string>("");
+  const [colorOption, setColorOption] = useState<Colors | string>(
+    "highContrast",
+  );
 
   return (
     <ColorContext.Provider value={{ colorOption, setColorOption }}>

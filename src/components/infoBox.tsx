@@ -150,12 +150,22 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           className="AddButton right-0 opacity-75 hover:opacity-100"
           onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
         >
-          <Image
-            src="/add-icon.svg"
-            alt="addButton"
-            width={16}
-            height={16}
-          ></Image>
+          {colorOption === "highContrast" && (
+            <Image
+              src="/cobalt-add.svg"
+              alt="addButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
+          {colorOption === "standard" && (
+            <Image
+              src="/add-icon.svg"
+              alt="addButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
         </button>
       )}
 
@@ -165,12 +175,22 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           className="AddButton right-0 opacity-75 hover:opacity-100"
           // onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
         >
-          <Image
-            src="/search.svg"
-            alt="searchButton"
-            width={18}
-            height={18}
-          ></Image>
+          {colorOption === "highContrast" && (
+            <Image
+              src="/cobalt-search.svg"
+              alt="searchButton"
+              width={18}
+              height={18}
+            ></Image>
+          )}
+          {colorOption === "standard" && (
+            <Image
+              src="/search.svg"
+              alt="searchButton"
+              width={18}
+              height={18}
+            ></Image>
+          )}
         </button>
       )}
 
@@ -180,12 +200,22 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           className="EditButton self-end opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
-          <Image
-            src="/edit-icon.svg"
-            alt="editButton"
-            width={16}
-            height={16}
-          ></Image>
+          {colorOption === "highContrast" && (
+            <Image
+              src="/cobalt-edit.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
+          {colorOption === "standard" && (
+            <Image
+              src="/edit-icon.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
         </button>
       )}
     </div>

@@ -39,7 +39,7 @@ const InputComponent: React.FC<InputComponent> = ({
   ...props
 }) => {
   const { colorOption } = useColors();
-  const inputColors = useColorOptions();
+  const { inputColors, errorColor, textColor } = useColorOptions();
 
   // const inputColors =
   //   colorOption === "highContrast"
@@ -49,7 +49,9 @@ const InputComponent: React.FC<InputComponent> = ({
   return (
     <div className="InputComponentContainer flex flex-col gap-8">
       {required && (
-        <p className="required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl">
+        <p
+          className={`required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl ${textColor}`}
+        >
           *
         </p>
       )}
@@ -81,7 +83,7 @@ const InputComponent: React.FC<InputComponent> = ({
       </InfoBox>
 
       {errors?.message && (
-        <p className="m-0 -mt-4 p-0 text-xs font-medium text-orange">
+        <p className={`m-0 -mt-4 p-0 text-xs font-medium ${errorColor} `}>
           {errors.message.toString()}
         </p>
       )}
