@@ -33,13 +33,13 @@ const InputComponentWithLabelOptions: React.FC<
   colorArray,
   searchData,
   options,
-  defaultValue,
+  defaultValue = "",
   required,
   width,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState<string>(defaultValue);
+  const [inputValue, setInputValue] = useState<string>(defaultValue || "");
   const { colorOption } = useColors();
 
   const inputColors =
@@ -87,7 +87,7 @@ const InputComponentWithLabelOptions: React.FC<
           type={name}
           placeholder={placeholder}
           name={name}
-          value={inputValue}
+          value={inputValue || ""}
           className={`text-md w-[98%] self-start bg-transparent ${inputColors} focus:outline-none`}
           onChange={handleInput}
         />
