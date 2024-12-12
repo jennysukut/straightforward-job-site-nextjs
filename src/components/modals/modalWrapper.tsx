@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useModal } from "@/contexts/ModalContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { LargeShadowColorOption } from "@/lib/stylingData/largeShadowColors";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
 interface ModalWrapperProps {
   children: React.ReactNode;
@@ -15,7 +17,8 @@ interface ModalWrapperProps {
 
 const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
   const { hideModal, goBack, isBackButtonVisible } = useModal();
-
+  const { modalColors, textColor } = useColorOptions();
+  const { colorOption } = useColors();
   const handleModalContentClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
@@ -42,7 +45,7 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
         >
           <AnimatePresence>
             <motion.div
-              className="ModalInnerContents absolute -mr-2 -mt-10 flex max-h-[90%] max-w-[90%] flex-col items-center rounded-[50px] border-[3px] border-solid border-jade bg-cream px-10 pb-12 pt-14 text-jade drop-shadow-jade sm:-mr-0 sm:px-14"
+              className={`ModalInnerContents absolute -mr-2 -mt-10 flex max-h-[90%] max-w-[90%] flex-col items-center rounded-[50px] border-[3px] border-solid bg-cream px-10 pb-12 pt-14 ${modalColors} sm:-mr-0 sm:px-14 ${textColor}`}
               onClick={handleModalContentClick}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -53,13 +56,23 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
               }}
               key={modalKey}
             >
-              {isBackButtonVisible && (
+              {isBackButtonVisible && colorOption === "standard" && (
                 <Image
                   src="/back-arrow.svg"
                   alt="back"
-                  width={28}
-                  height={28}
-                  className="absolute left-6 top-6 opacity-80 hover:cursor-pointer hover:opacity-100 sm:left-8 sm:top-8"
+                  width={20}
+                  height={20}
+                  className="absolute left-8 top-8 opacity-80 hover:cursor-pointer hover:opacity-100 sm:left-8 sm:top-8"
+                  onClick={goBack}
+                />
+              )}
+              {isBackButtonVisible && colorOption === "highContrast" && (
+                <Image
+                  src="/cobalt-back-arrow.svg"
+                  alt="back"
+                  width={20}
+                  height={20}
+                  className="absolute left-8 top-8 opacity-75 hover:cursor-pointer hover:opacity-100 sm:left-8 sm:top-8"
                   onClick={goBack}
                 />
               )}
@@ -69,12 +82,22 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
                   aria-label="Close"
                   onClick={hideModal}
                 >
-                  <Image
-                    src="/modal-close-button.svg"
-                    alt="close"
-                    width={24}
-                    height={24}
-                  />
+                  {colorOption === "highContrast" && (
+                    <Image
+                      src="/cobalt-close-button.svg"
+                      alt="close"
+                      width={24}
+                      height={24}
+                    />
+                  )}
+                  {colorOption === "standard" && (
+                    <Image
+                      src="/modal-close-button.svg"
+                      alt="close"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </button>
               </Dialog.Close>
               {children}

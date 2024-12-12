@@ -2,6 +2,7 @@
 
 import React from "react";
 import { inputClasses } from "@/lib/stylingData/stylingClasses";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface InputComponent {
   type: string;
@@ -23,18 +24,21 @@ const FormInputComponent: React.FC<InputComponent> = ({
   errors,
   ...props
 }) => {
+  const { inputColors, titleColor, errorColor } = useColorOptions();
   return (
     <div className="FormInputComponentContainer flex flex-col gap-2">
-      <label htmlFor={registerValue}>{title}</label>
+      <label htmlFor={registerValue} className={`Title ${titleColor}`}>
+        {title}
+      </label>
       <input
         type={type}
         defaultValue={defaultValue}
         {...register(registerValue)}
         placeholder={placeholderText}
-        className={inputClasses}
+        className={inputClasses + inputColors}
       />
       {errors?.message && (
-        <p className="m-0 p-0 text-xs font-medium text-orange">
+        <p className={`m-0 p-0 text-xs font-medium ${errorColor}`}>
           {errors.message.toString()}
         </p>
       )}

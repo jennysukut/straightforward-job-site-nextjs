@@ -1,4 +1,5 @@
 import { useModal } from "@/contexts/ModalContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import ButtonContainer from "@/components/buttonContainer";
@@ -6,9 +7,12 @@ import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsMo
 
 function HeaderSection() {
   const { showModal } = useModal();
+  const { titleColor } = useColorOptions();
   return (
     <section className="HeaderSection items-left flex w-full flex-grow flex-col gap-4">
-      <h1 className="LandingPageText max-w-[800px] pl-4 text-[1.5rem] font-bold leading-10 text-midnight sm:text-[1.7rem]">
+      <h1
+        className={`LandingPageText max-w-[800px] pl-4 text-[1.5rem] font-bold leading-10 ${titleColor} sm:text-[1.7rem]`}
+      >
         our mission: to make hiring human with simplicity, honesty, and
         transparency.
       </h1>

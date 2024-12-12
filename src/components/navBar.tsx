@@ -33,7 +33,7 @@ export default function NavBar() {
         {colorOption === "highContrast" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-            src="/high-contrast-logo.svg"
+            src="/all-blue-logo.svg"
             width={229}
             height={75}
             alt="Straightforward Job Site logo"
