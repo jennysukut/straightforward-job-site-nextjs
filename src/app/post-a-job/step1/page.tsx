@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ParamsList } from "@/lib/paramsList";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useBusiness } from "@/contexts/BusinessContext";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -32,6 +33,7 @@ type FormData = z.infer<typeof jobSchema>;
 export default function PostAJobStep1() {
   const router = useRouter();
   const { job, setJob } = useJob();
+  const { business } = useBusiness();
   const { textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -54,8 +56,15 @@ export default function PostAJobStep1() {
       ...job,
       positionSummary: data.positionSummary,
       nonNegParams: nonNegParams,
+      location: business?.location,
+      businessName: business?.businessName,
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step2");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step2");
+    }
   };
 
   // handlers for adding, updating, and deleting information tied to States
@@ -141,14 +150,14 @@ export default function PostAJobStep1() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {/* {disabledButton && job?.jobIsBeingEdited === true
+            {disabledButton && job?.jobIsBeingEdited === true
               ? "Returning To Listing..."
               : !disabledButton && job?.jobIsBeingEdited === true
                 ? "update"
                 : disabledButton && job?.jobIsBeingEdited === false
                   ? "Saving Information..."
-                  : "continue"}{" "} */}
-            {disabledButton ? "Saving Information..." : "continue"}
+                  : "continue"}{" "}
+            {/* {disabledButton ? "Saving Information..." : "continue"} */}
           </SiteButton>
         </div>
       </div>

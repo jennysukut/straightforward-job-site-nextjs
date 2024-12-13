@@ -125,8 +125,13 @@ export default function PostAJobStep4() {
       ...job,
       responsibilities: responsibilities,
       perks: perks,
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step5");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step5");
+    }
   };
 
   useEffect(() => {
@@ -197,14 +202,14 @@ export default function PostAJobStep4() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {/* {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"} */}
-              {disabledButton ? "Saving Information..." : "continue"}
+                    : "continue"}
+              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

@@ -26,7 +26,7 @@ const PaymentSchema = z.object({
 
 type FormData = z.infer<typeof PaymentSchema>;
 
-export default function PaymentModal({ subscriptionAmount }: any) {
+export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const [disabledButton, setDisabledButton] = useState(false);
@@ -55,16 +55,26 @@ export default function PaymentModal({ subscriptionAmount }: any) {
       setDisabledButton(true);
       console.log(data, agree);
       setFellow({ ...fellow, subscriptionAmount: subscriptionAmount });
-      showModal(<PaymentSuccessfulModal />);
+      {
+        isJobPost && showModal(<PaymentSuccessfulModal isJobPost />);
+      }
+      {
+        !isJobPost && showModal(<PaymentSuccessfulModal />);
+      }
     }
   };
 
   return (
     <div className="PaymentModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
-        your payment info
+        {isJobPost ? "publish your job listing" : "your payment info"}
       </Dialog.Title>
-      <p className="CurrentPayment -mt-2 text-center font-medium italic">{`your current payment: $${subscriptionAmount}`}</p>
+      {!isJobPost && (
+        <p className="CurrentPayment -mt-2 text-center font-medium italic">{`your current payment: $${subscriptionAmount}`}</p>
+      )}
+      {isJobPost && (
+        <p className="JobPostPayment -mt-2 text-center font-medium italic">{`your amount due: $${subscriptionAmount}`}</p>
+      )}
       <form
         className="AddExperienceForm mt-4 flex flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
@@ -108,7 +118,7 @@ export default function PaymentModal({ subscriptionAmount }: any) {
         </div>
 
         {/* agree to purchase button */}
-        <div className="AgreeContainer mt-2 flex gap-4">
+        <div className="AgreeContainer -mb-2 mt-2 flex gap-4">
           <SiteButton
             variant="hollow"
             colorScheme="f1"
@@ -117,9 +127,16 @@ export default function PaymentModal({ subscriptionAmount }: any) {
             isSelected={agree}
             onClick={clickAgree}
           />
-          <label htmlFor="agree" className="cursor-pointer pl-2 text-sm">
-            {`I agree to this purchase and the recurring monthly rate of $${subscriptionAmount}.`}
-          </label>
+          {!isJobPost && (
+            <label htmlFor="agree" className="cursor-pointer pl-2 text-sm">
+              {`I agree to this purchase and the recurring monthly rate of $${subscriptionAmount}.`}
+            </label>
+          )}
+          {isJobPost && (
+            <label htmlFor="agree" className="cursor-pointer pl-2 text-sm">
+              {`I agree to this purchase and the recurring monthly rate of $${subscriptionAmount} for the duration of this job listing.`}
+            </label>
+          )}
         </div>
         {errors?.agreeToTerms && errors.agreeToTerms.message && (
           <p className="-mb-6 -mt-4 p-0 text-xs font-medium text-orange">

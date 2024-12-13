@@ -117,9 +117,14 @@ export default function PostAJobStep5() {
     setJob({
       ...job,
       interviewProcess: interviewProcess,
+      // jobIsBeingEdited: false,
     });
-    router.push("/listing");
-    showModal(<ApplicationLimitModal />);
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/listing");
+      showModal(<ApplicationLimitModal />);
+    }
   };
 
   useEffect(() => {
@@ -173,14 +178,14 @@ export default function PostAJobStep5() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {/* {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"} */}
-              {disabledButton ? "Saving Information..." : "continue"}
+                    : "continue"}
+              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

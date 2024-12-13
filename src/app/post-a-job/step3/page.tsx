@@ -91,8 +91,13 @@ export default function PostAJobStep3() {
       experienceLevel: data.experienceLevel,
       preferredSkills: preferredSkills,
       moreAboutPosition: data.moreAboutPosition,
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step4");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step4");
+    }
   };
 
   useEffect(() => {
@@ -168,14 +173,14 @@ export default function PostAJobStep3() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {/* {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Profile..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"} */}
-              {disabledButton ? "Saving Information..." : "continue"}
+                    : "continue"}
+              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

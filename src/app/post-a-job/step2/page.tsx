@@ -109,8 +109,8 @@ export default function PostAJobStep2() {
     setJob({
       ...job,
       payDetails: {
-        payscaleMin: data.payscaleMin,
-        payscaleMax: data.payscaleMax,
+        payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
+        payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
         payOption: payOption,
       },
       locationOption: data.locationOption,
@@ -119,17 +119,21 @@ export default function PostAJobStep2() {
         daysInOffice: data.daysInOffice,
         daysRemote: data.daysRemote,
       },
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step3");
-    // router.push("/profile");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step3");
+    }
   };
 
   useEffect(() => {
     if (job?.payDetails) {
       setPayOption(job?.payDetails.payOption);
       setValue("payOption", job?.payDetails.payOption);
-      setValue("payscaleMin", job?.payDetails.payscaleMin);
-      setValue("payscaleMax", job?.payDetails.payscaleMax);
+      setValue("payscaleMin", "$" + job?.payDetails.payscaleMin);
+      setValue("payscaleMax", "$" + job?.payDetails.payscaleMax);
     }
 
     if (job?.locationOption) {
@@ -159,7 +163,6 @@ export default function PostAJobStep2() {
             <InputComponent
               type="text"
               placeholderText="Payscale"
-              // errors={errors.payscaleMin}
               register={register}
               registerValue="payscaleMin"
               defaultValue={"$"}
@@ -169,7 +172,6 @@ export default function PostAJobStep2() {
             <InputComponent
               type="text"
               placeholderText="Payscale"
-              // errors={errors.payscaleMax}
               register={register}
               registerValue="payscaleMax"
               defaultValue={"$"}
@@ -252,14 +254,14 @@ export default function PostAJobStep2() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {/* {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"} */}
-              {disabledButton ? "Saving Information..." : "continue"}
+                    : "continue"}
+              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

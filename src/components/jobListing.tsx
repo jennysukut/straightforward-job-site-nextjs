@@ -12,9 +12,9 @@ import SiteLabel from "@/components/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import SiteButton from "./siteButton";
 import ApplicationLimitModal from "./modals/postAJobModals/applicationLimitModal";
+import PaymentModal from "./modals/paymentModal";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
-import { div } from "framer-motion/client";
 
 // ADD DETAILS FOR HYBRID SCHEDULE AS WELL
 // Make Buttons for current isOwn show up if the job isn't posted yet. If it is, use secondary Business Buttons
@@ -41,15 +41,13 @@ export default function JobListing(isOwn: any) {
     router.push(url);
   };
 
-  // const latestArrayIndex = business?.activeJobs.length
-  //   ? business.activeJobs.length - 1
-  //   : -1;
-
-  // const currentJob = business?.activeJobs[latestArrayIndex];
   const currentJob = job;
 
   useEffect(() => {
     console.log(job);
+    if (job?.jobIsBeingEdited) {
+      setCanEdit(true);
+    }
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
@@ -177,14 +175,16 @@ export default function JobListing(isOwn: any) {
                 onClick={() => setCanEdit(!canEdit)}
                 isSelected={canEdit}
               >
-                edit
+                {canEdit ? "finish editing" : "edit"}
               </SiteButton>
               <SiteButton
                 aria="publish"
                 variant="filled"
                 colorScheme="f1"
                 addClasses="px-8"
-                // onClick={() => showModal(<PostAJobModal />)}
+                onClick={() =>
+                  showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+                }
               >
                 publish
               </SiteButton>
@@ -251,7 +251,7 @@ export default function JobListing(isOwn: any) {
               )}
               {currentJob?.payDetails && (
                 <h2 className="PayDetailsTitle mb-4 pl-2">
-                  {`Pay:`} {currentJob?.payDetails.payscaleMin} -{" "}
+                  {`Pay:`} ${currentJob?.payDetails.payscaleMin} - $
                   {currentJob?.payDetails.payscaleMax}{" "}
                   {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
                 </h2>
@@ -259,7 +259,7 @@ export default function JobListing(isOwn: any) {
 
               {currentJob?.positionType && (
                 <h2 className="PositionTypeTitle mb-0 pl-2">
-                  {`Position Type:`}
+                  {`Position Type: `}
                   {capitalizeFirstLetter(currentJob?.positionType)}
                 </h2>
               )}

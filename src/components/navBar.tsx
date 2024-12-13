@@ -129,7 +129,7 @@ export default function NavBar() {
               </Link>
             </div>
           );
-        } else if (pageType === "Business" && isLoggedIn) {
+        } else if (accountType === "Business" && isLoggedIn === true) {
           // BUSINESS NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
