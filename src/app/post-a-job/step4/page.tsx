@@ -26,7 +26,7 @@ const jobSchema = z.object({
         id: z.number(),
       }),
     )
-    .min(0, { message: "You Must Have At Least 1 Responsibility Listed" }),
+    .min(1, { message: "You Must Have At Least 1 Responsibility Listed" }),
   perks: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Perk Listed" }),
@@ -62,7 +62,6 @@ export default function PostAJobStep4() {
     },
   });
 
-  console.log(responsibilities, perks);
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "responsibilities" | "perks", data: any) => {
     AddHandler({
@@ -120,7 +119,6 @@ export default function PostAJobStep4() {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    // put a stipulation that the responsibilities and perks section has to have more value, else you can't submit
     setDisabledButton(true);
     console.log("submitting form:", data);
     setJob({
