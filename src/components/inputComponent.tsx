@@ -8,7 +8,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 interface InputComponent {
   type: string;
   placeholderText: string;
-  errors: any;
+  errors?: any;
   register: any;
   registerValue: string;
   defaultValue?: any;

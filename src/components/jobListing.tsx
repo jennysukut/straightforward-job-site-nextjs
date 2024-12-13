@@ -11,8 +11,10 @@ import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import SiteButton from "./siteButton";
+import ApplicationLimitModal from "./modals/postAJobModals/applicationLimitModal";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
+import { div } from "framer-motion/client";
 
 // ADD DETAILS FOR HYBRID SCHEDULE AS WELL
 // Make Buttons for current isOwn show up if the job isn't posted yet. If it is, use secondary Business Buttons
@@ -58,6 +60,18 @@ export default function JobListing(isOwn: any) {
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
           {/* Non-Negotiable Parameters */}
+          {isOwn && (
+            <div className="appLimitButton -mb-2 self-end">
+              <SiteButton
+                variant="filled"
+                aria="appLimit"
+                colorScheme="b1"
+                onClick={() => showModal(<ApplicationLimitModal />)}
+              >
+                application limit: {currentJob?.applicationLimit}
+              </SiteButton>
+            </div>
+          )}
           <InfoBox
             variant="hollow"
             aria="nonNegotiableParameters"
@@ -155,15 +169,6 @@ export default function JobListing(isOwn: any) {
           {/* Edit Buttons */}
           {isOwn && (
             <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-              <SiteLabel
-                variant="display"
-                aria="appLimit"
-                addClasses="self-end"
-                colorScheme="b1"
-              >
-                application limit: {currentJob?.applicationLimit}
-              </SiteLabel>
-
               <SiteButton
                 variant="filled"
                 colorScheme="b6"
@@ -246,7 +251,8 @@ export default function JobListing(isOwn: any) {
               )}
               {currentJob?.payDetails && (
                 <h2 className="PayDetailsTitle mb-4 pl-2">
-                  {`Pay:`} {currentJob?.payDetails.payscale},{" "}
+                  {`Pay:`} {currentJob?.payDetails.payscaleMin} -{" "}
+                  {currentJob?.payDetails.payscaleMax}{" "}
                   {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
                 </h2>
               )}
@@ -280,10 +286,12 @@ export default function JobListing(isOwn: any) {
                 <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
                 <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-emerald">
                   {currentJob?.responsibilities.map(
-                    (resp: any, index: number) => {
+                    (resp: { responsibility: string; id: number }) => {
                       return (
-                        <li className="ResponsibilitiesItem" key={index}>
-                          <p className="Responsibility">{resp}</p>
+                        <li className="ResponsibilitiesItem" key={resp.id}>
+                          <p className="Responsibility">
+                            {resp.responsibility}
+                          </p>
                         </li>
                       );
                     },

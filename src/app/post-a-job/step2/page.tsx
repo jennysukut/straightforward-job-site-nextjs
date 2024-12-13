@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -15,7 +16,10 @@ import AddHandler from "@/components/addHandler";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 
 const jobSchema = z.object({
-  payscale: z.string().min(2, {
+  payscaleMin: z.string().min(2, {
+    message: "Payscale Information Required",
+  }),
+  payscaleMax: z.string().min(2, {
     message: "Payscale Information Required",
   }),
   payOption: z.string(),
@@ -33,6 +37,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep2() {
   const { job, setJob } = useJob();
+  const { errorColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -43,6 +48,7 @@ export default function PostAJobStep2() {
     setValue,
     register,
     clearErrors,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(jobSchema),
@@ -76,11 +82,35 @@ export default function PostAJobStep2() {
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    const payDifference =
+      Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")) -
+      Number(data.payscaleMin.replace(/[^0-9.-]+/g, ""));
+
+    console.log(payDifference);
+    if (data.payOption === "hourly") {
+      if (payDifference >= 20) {
+        setError("payscaleMin", {
+          type: "manual",
+          message: "This difference is too much",
+        });
+        return;
+      }
+    } else if (data.payOption === "annually") {
+      if (payDifference >= 50000) {
+        setError("payscaleMin", {
+          type: "manual",
+          message: "This difference is too much",
+        });
+        return;
+      }
+    }
+
     setDisabledButton(true);
     setJob({
       ...job,
       payDetails: {
-        payscale: data.payscale,
+        payscaleMin: data.payscaleMin,
+        payscaleMax: data.payscaleMax,
         payOption: payOption,
       },
       locationOption: data.locationOption,
@@ -98,7 +128,8 @@ export default function PostAJobStep2() {
     if (job?.payDetails) {
       setPayOption(job?.payDetails.payOption);
       setValue("payOption", job?.payDetails.payOption);
-      setValue("payscale", job?.payDetails.payscale);
+      setValue("payscaleMin", job?.payDetails.payscaleMin);
+      setValue("payscaleMax", job?.payDetails.payscaleMax);
     }
 
     if (job?.locationOption) {
@@ -124,15 +155,25 @@ export default function PostAJobStep2() {
           {/* Payscale Details */}
           <div className="PayscaleDetails flex items-center justify-center gap-6">
             <p className="PayscaleTitle">Payscale:</p>
-            {/* payscale input */}
+            {/* payscale input - min and max */}
             <InputComponent
               type="text"
               placeholderText="Payscale"
-              errors={errors.payscale}
+              // errors={errors.payscaleMin}
               register={register}
-              registerValue="payscale"
+              registerValue="payscaleMin"
               defaultValue={"$"}
-              addClasses="-mt-2 min-w-[30vw]"
+              addClasses="-mt-2 min-w-[15vw]"
+            />
+            <h2 className="Dash -ml-2 -mr-4 text-2xl">{`-`}</h2>
+            <InputComponent
+              type="text"
+              placeholderText="Payscale"
+              // errors={errors.payscaleMax}
+              register={register}
+              registerValue="payscaleMax"
+              defaultValue={"$"}
+              addClasses="-mt-2 min-w-[15vw]"
               required
             />
 
@@ -143,11 +184,15 @@ export default function PostAJobStep2() {
               selectedArray={payOption}
               handleAdd={handleAdd}
               handleDelete={handleDelete}
-              errors={errors.payscale}
               classesForButtons="px-[3rem] py-3"
               addClasses="mt-4 -mb-2"
             />
           </div>
+          {errors?.payscaleMin?.message && (
+            <p className={`m-0 -mt-6 p-0 text-xs font-medium ${errorColor} `}>
+              {errors.payscaleMin.message.toString()}
+            </p>
+          )}
 
           {/* location options details */}
           <ButtonOptionsComponent

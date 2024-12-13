@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { usePageContext } from "@/contexts/PageContext";
@@ -6,11 +7,16 @@ import Link from "next/link";
 import SiteButton from "@/components/siteButton";
 import ButtonContainer from "@/components/buttonContainer";
 import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsModal";
+import PostAJobModal from "@/components/modals/postAJobModals/postAJobModal";
 
 function HeaderSection() {
   const { showModal } = useModal();
   const { titleColor } = useColorOptions();
-  const { accountType, isLoggedIn } = usePageContext();
+  const { setPageType, accountType, isLoggedIn } = usePageContext();
+
+  useEffect(() => {
+    setPageType("main");
+  }, []);
   return (
     <section className="HeaderSection items-left flex w-full flex-grow flex-col gap-4">
       <h1
@@ -20,7 +26,7 @@ function HeaderSection() {
         transparency.
       </h1>
       {/* LoggedIn Fellow Buttons */}
-      {accountType === "Fellow" && (
+      {accountType === "Fellow" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <Link href={"/profile"}>
             <SiteButton
@@ -42,8 +48,41 @@ function HeaderSection() {
           </SiteButton>
         </ButtonContainer>
       )}
-      {/* Main Buttons */}
 
+      {/* LoggedIn Business Buttons */}
+      {accountType === "Business" && isLoggedIn === true && (
+        <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
+          <Link href={"/profile"}>
+            <SiteButton
+              aria="sign up"
+              size="large"
+              variant="filled"
+              colorScheme="b1"
+            >
+              manage your listings
+            </SiteButton>
+          </Link>
+          <SiteButton
+            aria="support us"
+            size="large"
+            variant="filled"
+            colorScheme="e5"
+          >
+            check your mail
+          </SiteButton>
+          <SiteButton
+            aria="support us"
+            size="large"
+            variant="filled"
+            colorScheme="f1"
+            onClick={() => showModal(<PostAJobModal />)}
+          >
+            post a job
+          </SiteButton>
+        </ButtonContainer>
+      )}
+
+      {/* Main Buttons */}
       {isLoggedIn === false && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <SiteButton

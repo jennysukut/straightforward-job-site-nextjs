@@ -35,7 +35,7 @@ const config: Config = {
 
         // HIGH CONTRAST // ALL BLUE SFJS COLOR PALETTE
         cobalt: "#1B16A6",
-        denim: "#230B5C",
+        denim: "#0A04C6",
         azure: "#1E16ED",
         lapis: "#1869FF",
         ocean: "#4B89FC",
@@ -63,7 +63,7 @@ const config: Config = {
 
       // Other Drop Shadow Colors
       cobalt: "10px 10px 0px #1B16A6",
-      denim: "10px 10px 0px #230B5C",
+      denim: "10px 10px 0px #0A04C6",
       azure: "10px 10px 0px #1E16ED",
       lapis: "10px 10px 0px #1869FF",
       ocean: "10px 10px 0px #4B89FC",
@@ -86,7 +86,7 @@ const config: Config = {
 
       //Other Small Drop Shadow Colors
       smCobalt: "3px 3px 0px #1B16A6",
-      smDenim: "3px 3px 0px #230B5C",
+      smDenim: "3px 3px 0px #0A04C6",
       smAzure: "3px 3px 0px #1E16ED",
       smLapis: "3px 3px 0px #1869FF",
       smOcean: "3px 3px 0px #4B89FC",
