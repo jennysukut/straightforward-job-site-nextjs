@@ -4,32 +4,24 @@ import * as z from "zod";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { useBusiness } from "@/contexts/BusinessContext";
 import { usePageContext } from "@/contexts/PageContext";
+import { useJob } from "@/contexts/JobContext";
 
 import SiteButton from "@/components/siteButton";
 import SiteLabel from "@/components/siteLabel";
 
 export default function ApplicationLimitModal(isBeingUpdated: any) {
-  const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJob();
   const { setPageType } = usePageContext();
   const { hideModal } = useModal();
   const [applicationLimit, setApplicationLimit] = useState("25");
 
   const handleSubmit = () => {
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              applicationLimit: applicationLimit,
-            };
-          }
-          return job;
-        }) || [],
+    setJob({
+      ...job,
+      applicationLimit: applicationLimit,
     });
+
     hideModal();
   };
 

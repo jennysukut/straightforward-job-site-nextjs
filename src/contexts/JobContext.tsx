@@ -6,7 +6,7 @@ export interface Job {
   activeJobs?: any;
   jobTitle?: string;
   businessName?: string;
-  applicationLimit?: number;
+  applicationLimit?: string;
   jobNumber?: number;
   positionType?: string;
   positionSummary?: string;
