@@ -24,7 +24,7 @@ export default function AddHandler({
         };
         counterFunction((prev: any) => prev + 1);
         setFunction((prev: any) => [...prev, newData]);
-      } else if (oneChoice === true) {
+      } else if (oneChoice && oneChoice[type] === true) {
         setFunction(item);
         setValue(value, item);
         clearErrors(value);
@@ -45,6 +45,8 @@ export default function AddHandler({
       clearErrors(type);
     }
   } else {
-    console.log("error");
+    setValue(value, item);
+    clearErrors(type);
+    console.log("adding an item with no setFunctions");
   }
 }

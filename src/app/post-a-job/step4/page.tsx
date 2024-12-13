@@ -180,7 +180,7 @@ export default function PostAJobStep4() {
             errors={errors.perks}
             selectedArray={perks}
             handleDelete={handleDelete}
-            placeholder="Perks Of The Position"
+            placeholder="Perks / Benefits Of This Position"
             name="perks"
             variant="functional"
             required
@@ -197,13 +197,14 @@ export default function PostAJobStep4() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {/* {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"}
+                    : "continue"} */}
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </form>

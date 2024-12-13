@@ -141,13 +141,14 @@ export default function PostAJobStep1() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && job?.jobIsBeingEdited === true
+            {/* {disabledButton && job?.jobIsBeingEdited === true
               ? "Returning To Listing..."
               : !disabledButton && job?.jobIsBeingEdited === true
                 ? "update"
                 : disabledButton && job?.jobIsBeingEdited === false
-                  ? "Saving Information.."
-                  : "continue"}{" "}
+                  ? "Saving Information..."
+                  : "continue"}{" "} */}
+            {disabledButton ? "Saving Information..." : "continue"}
           </SiteButton>
         </div>
       </div>

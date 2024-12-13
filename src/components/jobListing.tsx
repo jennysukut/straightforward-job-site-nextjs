@@ -208,7 +208,7 @@ export default function JobListing(isOwn: any) {
               </p>
             </div>
           </InfoBox>
-          {/* Location, LocationType, and Email */}
+          {/* Location, locationOption, and Email */}
           <InfoBox
             variant="hollow"
             aria="location"
@@ -221,14 +221,14 @@ export default function JobListing(isOwn: any) {
               <h2 className="LocationPayDetailsTitle mb-4 pl-2">
                 {`Location:`} {currentJob?.location}, {currentJob?.country}
               </h2>
-              {currentJob?.locationType && (
-                <h2 className="LocationTypeTitle mb-4 pl-2">
+              {currentJob?.locationOption && (
+                <h2 className="LocationOptionTitle mb-4 pl-2">
                   {`Location Type:`}{" "}
-                  {capitalizeFirstLetter(currentJob?.locationType)}
+                  {capitalizeFirstLetter(currentJob?.locationOption)}
                 </h2>
               )}
 
-              {currentJob?.locationType === "hybrid" && (
+              {currentJob?.locationOption === "hybrid" && (
                 <div className="HybridDetailsContainer flex gap-4">
                   <h2 className="LocationTypeTitle mb-4 pl-2">
                     {`Hybrid Details:`}

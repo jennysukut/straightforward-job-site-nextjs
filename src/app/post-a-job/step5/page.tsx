@@ -131,9 +131,8 @@ export default function PostAJobStep5() {
 
   useEffect(() => {
     setValue("interviewProcess", interviewProcess);
+    clearErrors("interviewProcess");
   }, [interviewProcess]);
-
-  console.log(interviewProcess);
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -174,13 +173,14 @@ export default function PostAJobStep5() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {/* {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"}
+                    : "continue"} */}
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </form>

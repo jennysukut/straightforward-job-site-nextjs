@@ -127,12 +127,12 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
               />
             );
           })}
-          {errors?.message && (
-            <p className={`m-0 -mt-4 p-0 text-xs font-medium ${errorColor}`}>
-              {errors.message.toString()}
-            </p>
-          )}
         </div>
+      )}
+      {errors?.message && (
+        <p className={`m-0 -mt-4 p-0 text-xs font-medium ${errorColor}`}>
+          {errors.message.toString()}
+        </p>
       )}
     </div>
   );

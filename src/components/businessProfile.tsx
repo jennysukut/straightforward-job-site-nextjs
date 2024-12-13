@@ -31,32 +31,9 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
 
   return (
     <div className="BusinessProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
-      {/* NAME AND SMALL BIO */}
-      <div className="BusinessName self-end">
-        <InfoBox
-          aria="business"
-          variant="hollow"
-          addClasses="gap-8 justify-evenly mr-14"
-          size="profile"
-          canEdit={canEdit}
-          editClick={() => handleEditClick("/business-signup/step1")}
-        >
-          <div className="NameBioAvatarContainer flex gap-8 pr-10">
-            <Avatar addClasses="self-center" />
-            <div className="NameBioContainer">
-              <h1 className="BusinessName">{business?.businessName}</h1>
-              <p className="SmallBio pt-4 leading-6">
-                {business?.smallBio ||
-                  "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
-              </p>
-            </div>
-          </div>
-        </InfoBox>
-      </div>
-
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
-        <div className="ProfileLeftColumn flex flex-col gap-8">
+        <div className="ProfileLeftColumn mt-32 flex flex-col gap-8">
           {/* Mission & Vision */}
           <InfoBox
             variant="hollow"
@@ -113,6 +90,28 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
           )}
         </div>
         <div className="ProfileRightColumn flex flex-col gap-8">
+          {/* NAME AND SMALL BIO */}
+          <div className="BusinessName self-end">
+            <InfoBox
+              aria="business"
+              variant="hollow"
+              addClasses="gap-8 justify-evenly mr-14"
+              size="profile"
+              canEdit={canEdit}
+              editClick={() => handleEditClick("/business-signup/step1")}
+            >
+              <div className="NameBioAvatarContainer flex gap-8 pr-10">
+                <Avatar addClasses="self-center" />
+                <div className="NameBioContainer">
+                  <h1 className="BusinessName">{business?.businessName}</h1>
+                  <p className="SmallBio pt-4 leading-6">
+                    {business?.smallBio ||
+                      "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
+                  </p>
+                </div>
+              </div>
+            </InfoBox>
+          </div>
           {/* Location, Website, and Email */}
           <InfoBox
             variant="hollow"
@@ -126,7 +125,7 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
               <p className="Location ml-2 text-emerald">
                 Location: {business?.location}, {business?.country}
               </p>
-              <p className="Website ml-2 text-emerald">
+              <p className="Website -mb-2 ml-2 flex gap-2 text-emerald">
                 Website:
                 <a
                   href={business?.website}

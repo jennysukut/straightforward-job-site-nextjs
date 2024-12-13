@@ -41,6 +41,7 @@ export default function SignupModalBusiness1() {
       email: data.email,
       password: data.password,
     });
+
     router.push("/business-signup/step1");
     setTimeout(() => {
       hideModal();

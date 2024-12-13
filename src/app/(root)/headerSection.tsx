@@ -10,7 +10,7 @@ import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsMo
 function HeaderSection() {
   const { showModal } = useModal();
   const { titleColor } = useColorOptions();
-  const { accountType } = usePageContext();
+  const { accountType, isLoggedIn } = usePageContext();
   return (
     <section className="HeaderSection items-left flex w-full flex-grow flex-col gap-4">
       <h1
@@ -44,7 +44,7 @@ function HeaderSection() {
       )}
       {/* Main Buttons */}
 
-      {accountType !== "Fellow" && accountType !== "Business" && (
+      {isLoggedIn === false && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <SiteButton
             aria="sign up"

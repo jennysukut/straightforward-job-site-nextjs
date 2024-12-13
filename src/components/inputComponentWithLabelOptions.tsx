@@ -19,6 +19,8 @@ interface InputComponentWithLabelOptions {
   defaultValue?: any;
   required?: boolean;
   width?: any;
+  register?: any;
+  registerValue?: string;
 }
 
 const InputComponentWithLabelOptions: React.FC<
@@ -36,6 +38,8 @@ const InputComponentWithLabelOptions: React.FC<
   defaultValue = "",
   required,
   width,
+  register,
+  registerValue,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -87,6 +91,7 @@ const InputComponentWithLabelOptions: React.FC<
           value={inputValue || ""}
           className={`text-md w-[98%] self-start bg-transparent ${inputColors} focus:outline-none`}
           onChange={handleInput}
+          {...(typeof register === "function" ? register(registerValue) : "")}
         />
       </InfoBox>
 

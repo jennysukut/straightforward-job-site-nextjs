@@ -23,9 +23,9 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   // this is for setting categories of pages, like "Individual Signup"
   const [pageType, setPageType] = useState<string>("");
   // this is for setting account type - options are "Fellow" and "Business"
-  const [accountType, setAccountType] = useState<string>("Fellow");
+  const [accountType, setAccountType] = useState<string>("Business");
   // this is obvious - see if someone/a business is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   return (
     <PageContext.Provider
       value={{

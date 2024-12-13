@@ -51,7 +51,7 @@ export default function PostAJobModal() {
       },
       setValue,
       clearErrors,
-      oneChoice: true,
+      oneChoice: { positionType: true },
     });
   };
 

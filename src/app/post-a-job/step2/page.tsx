@@ -50,7 +50,7 @@ export default function PostAJobStep2() {
   });
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "locationType" | "payOption", data: any) => {
+  const handleAdd = (type: "locationOption" | "payOption", data: any) => {
     AddHandler({
       item: data,
       type,
@@ -60,11 +60,11 @@ export default function PostAJobStep2() {
       },
       setValue,
       clearErrors,
-      oneChoice: true,
+      oneChoice: { locationOption: true, payOption: true },
     });
   };
 
-  const handleDelete = (type: "locationType" | "payOption", id: any) => {
+  const handleDelete = (type: "locationOption" | "payOption", id: any) => {
     DeleteHandler({
       item: id,
       type,
@@ -83,7 +83,7 @@ export default function PostAJobStep2() {
         payscale: data.payscale,
         payOption: payOption,
       },
-      locationType: data.locationOption,
+      locationOption: data.locationOption,
       idealCandidate: data.idealCandidate,
       hybridDetails: {
         daysInOffice: data.daysInOffice,
@@ -101,9 +101,9 @@ export default function PostAJobStep2() {
       setValue("payscale", job?.payDetails.payscale);
     }
 
-    if (job?.locationType) {
-      setLocationOption([job.locationType]);
-      setValue("locationOption", job.locationType);
+    if (job?.locationOption) {
+      setLocationOption([job.locationOption]);
+      setValue("locationOption", job.locationOption);
     }
   }, [job]);
 
@@ -207,13 +207,14 @@ export default function PostAJobStep2() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {/* {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Listing..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"}
+                    : "continue"} */}
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </form>

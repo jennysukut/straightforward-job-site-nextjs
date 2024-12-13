@@ -12,7 +12,7 @@ export interface Job {
   positionSummary?: string;
   nonNegParams?: Array<string>;
   payDetails?: any;
-  locationType?: string;
+  locationOption?: string;
   idealCandidate?: string;
   hybridDetails?: any;
   experienceLevel?: any;
@@ -54,7 +54,7 @@ export const JobProvider: React.FC<{ children: ReactNode }> = ({
     //   payscale: "$60,000",
     //   payOption: "annually",
     // },
-    // locationType: "remote",
+    // locationOption: "remote",
     // idealCandidate:
     //   "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
     // hybridDetails: {},

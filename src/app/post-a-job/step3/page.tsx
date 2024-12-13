@@ -17,9 +17,7 @@ import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
-  experienceLevel: z.array(z.string()).min(1, {
-    message: "Experience Level Required",
-  }),
+  experienceLevel: z.string(),
   preferredSkills: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
@@ -62,6 +60,10 @@ export default function PostAJobStep3() {
       },
       setValue,
       clearErrors,
+      oneChoice: {
+        experienceLevel: true,
+        preferredSkills: false,
+      },
     });
   };
 
@@ -166,13 +168,14 @@ export default function PostAJobStep3() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {/* {disabledButton && job?.jobIsBeingEdited === true
                 ? "Returning To Profile..."
                 : !disabledButton && job?.jobIsBeingEdited === true
                   ? "update"
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
-                    : "continue"}
+                    : "continue"} */}
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </form>

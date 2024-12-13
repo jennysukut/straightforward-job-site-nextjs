@@ -24,7 +24,7 @@ const businessSchema = z.object({
   smallBio: z
     .string()
     .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" }),
-  country: z.string().min(3, { message: "Your Country is Required" }),
+  country: z.string(),
   location: z
     .string()
     .min(3, { message: "Your Specific Location is Required" }),
@@ -63,7 +63,7 @@ export default function BusinessSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-
+    console.log(data);
     setBusiness({
       ...business,
       country: data.country,
@@ -106,8 +106,16 @@ export default function BusinessSignupPage1() {
           <h1 className="BusinessName ml-8 self-end pb-4 tracking-superwide">
             {business?.businessName || "Test BusinessName"}
           </h1>
-          <div className="AvatarButtonContainer -mt-14 flex flex-col items-end self-end">
-            <div className="AvatarContainer self-end">
+          <div className="AvatarButtonContainer -mr-14 -mt-14 mb-2 flex flex-col items-end self-end">
+            <div className="AvatarContainer flex items-baseline gap-4 self-end">
+              <button
+                className="max-w-[45%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
+                onClick={() =>
+                  showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
+                }
+              >
+                {`choose your avatar & colors`}
+              </button>
               <SiteButton
                 variant="avatar"
                 colorScheme={avatarOptions.colorScheme as ButtonColorOption}
@@ -120,14 +128,6 @@ export default function BusinessSignupPage1() {
                 }
               />
             </div>
-            <button
-              className="max-w-[60%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
-              onClick={() =>
-                showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-              }
-            >
-              {`choose your avatar & colors`}
-            </button>
           </div>
         </div>
         <form
@@ -145,6 +145,8 @@ export default function BusinessSignupPage1() {
             options
             defaultValue={business?.country}
             width="full"
+            register
+            registerValue="country"
             required
           />
 
