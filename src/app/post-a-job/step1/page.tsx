@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ParamsList } from "@/lib/paramsList";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
@@ -31,7 +31,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep1() {
   const router = useRouter();
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
   const { textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);

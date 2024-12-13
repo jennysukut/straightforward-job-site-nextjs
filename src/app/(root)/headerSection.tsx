@@ -20,7 +20,7 @@ function HeaderSection() {
         transparency.
       </h1>
       {/* LoggedIn Fellow Buttons */}
-      {accountType === "Individual" && (
+      {accountType === "Fellow" && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <Link href={"/profile"}>
             <SiteButton
@@ -44,7 +44,7 @@ function HeaderSection() {
       )}
       {/* Main Buttons */}
 
-      {accountType !== "Individual" && accountType !== "Business" && (
+      {accountType !== "Fellow" && accountType !== "Business" && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <SiteButton
             aria="sign up"

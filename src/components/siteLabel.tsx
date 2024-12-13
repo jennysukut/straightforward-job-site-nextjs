@@ -20,6 +20,7 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
   canAdd?: boolean;
   handleAdd?: any;
+  size?: "medium";
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -30,6 +31,7 @@ const SiteLabel: React.FC<LabelProps> = ({
   children,
   addClasses,
   textSize,
+  size = "standard",
   canAdd,
   handleAdd,
   handleDelete,
@@ -43,11 +45,15 @@ const SiteLabel: React.FC<LabelProps> = ({
       : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
-    `Label w-fit py-2 flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell py-1 tracking-widest m-1`,
+    `Label w-fit  flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
     {
+      // size
+      "py-2 px-6": size === "standard",
+      "py-3 px-8": size === "medium",
+
       // variant
-      "px-4": variant === "display",
-      "pr-3 pl-4": variant === "functional",
+      "py-2 px-4": variant === "display",
+      "py-2 pr-3 pl-4": variant === "functional",
 
       //textSize
       "text-xs": !textSize,

@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
 
 import SiteButton from "@/components/siteButton";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
@@ -27,7 +27,7 @@ export default function PostAJobModal() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { business, setBusiness } = useBusiness();
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
 
   const [positionType, setPositionType] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);

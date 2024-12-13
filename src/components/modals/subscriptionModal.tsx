@@ -18,7 +18,8 @@ export default function SubscriptionModal(isBeingUpdated: any) {
   console.log(isBeingUpdated);
 
   const handleSubmit = () => {
-    setFellow({ ...fellow, subscriptionAmount: selectedAmount });
+    // We should setFellow with the subscription amount only after a successful payment
+    // setFellow({ ...fellow, subscriptionAmount: selectedAmount });
 
     if (selectedAmount !== "0") {
       showModal(<PaymentModal subscriptionAmount={selectedAmount} />);

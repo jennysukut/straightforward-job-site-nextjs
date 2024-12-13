@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
 
 import SiteButton from "@/components/siteButton";
 import DeleteHandler from "@/components/deleteHandler";
@@ -37,7 +37,7 @@ type FormData = z.infer<typeof jobSchema>;
 // Responsibilities of the position might need to be shown differently - the labels just don't look right - perhaps something that shows as a bullet point or perhaps ads via a modal?
 
 export default function PostAJobStep4() {
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);

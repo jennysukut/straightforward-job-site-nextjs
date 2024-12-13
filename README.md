@@ -39,7 +39,7 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
 ## Our Current Pages
 
 - Main Page: with all navigation options
-- Individual Signup Pages: 5 steps, each with their own page, to grab fellow's data to display on their profile
+- Fellow Signup Pages: 5 steps, each with their own page, to grab fellow's data to display on their profile
 - Pricing Page: a copy of our pricing page from our landing page
 
 ## Current Contexts

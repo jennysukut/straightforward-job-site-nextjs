@@ -33,40 +33,40 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   };
 
   useEffect(() => {
-    setAccountType("Individual");
-    setPageType("Individual");
+    setAccountType("Fellow");
+    setPageType("Fellow");
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
 
+  console.log(fellow);
   return (
     <div className="ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
       {/* NAME AND SMALL BIO */}
-      <div className="FellowName self-end">
+      {/* <div className="FellowName ml-44 min-w-[30vw] self-center">
         <InfoBox
           aria="fellow"
           variant="hollow"
-          addClasses="gap-8 justify-between"
           size="profile"
           canEdit={canEdit}
           editClick={() => handleEditClick("/individual-signup/step1")}
         >
-          <div className="NameBioAvatarContainer flex justify-between gap-8">
+          <div className="NameBioAvatarContainer flex items-center justify-items-start gap-8">
             <Avatar addClasses="self-center" />
             <div className="NameBioContainer">
               <h1 className="Name">{fellow?.name}</h1>
-              <p className="SmallBio pt-4 leading-6">
+              <p className="SmallBio min-w-[20vw] pt-4 leading-6">
                 {fellow?.smallBio ||
                   "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
               </p>
             </div>
           </div>
         </InfoBox>
-      </div>
+      </div> */}
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
-        <div className="ProfileLeftColumn flex flex-col gap-8">
+        <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
           <InfoBox
             variant="hollow"
             aria="skills"
@@ -163,7 +163,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.awards && (
+          {fellow?.awards.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="awards"
@@ -280,6 +280,28 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           )}
         </div>
         <div className="ProfileRightColumn flex flex-col gap-8">
+          {/* NAME AND SMALL BIO */}
+          <div className="FellowName mr-8">
+            <InfoBox
+              aria="fellow"
+              variant="hollow"
+              size="profile"
+              canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step1")}
+            >
+              <div className="NameBioAvatarContainer flex items-center gap-8">
+                <Avatar addClasses="self-start min-w-[60px]" />
+                <div className="NameBioContainer">
+                  <h1 className="Name">{fellow?.name}</h1>
+                  <p className="SmallBio min-w-[20vw] pt-4 leading-6">
+                    {fellow?.smallBio ||
+                      "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
+                  </p>
+                </div>
+              </div>
+            </InfoBox>
+          </div>
+
           <InfoBox
             variant="hollow"
             aria="location"
@@ -304,7 +326,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/individual-signup/step4")}
           >
             <div className="LocationTypesInfo flex flex-col gap-2">
-              <h2 className="JobTitlesTitle text-center">{`My Work Location Types:`}</h2>
+              <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
               <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
                 {fellow?.locationOptions.map((opt: any, index: number) => {
                   return (
@@ -312,7 +334,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                       variant="display"
                       aria="locationOption"
                       key={index}
-                      addClasses="px-8"
+                      size="medium"
                       colorScheme={
                         thirdColorArray[index % thirdColorArray.length]
                       }
@@ -378,7 +400,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                       aria={title}
                       variant="display"
                       key={index}
-                      addClasses="px-8"
+                      size="medium"
                       colorScheme={
                         secondaryColorArray[index % secondaryColorArray.length]
                       }
@@ -452,7 +474,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.accomplishments && (
+          {fellow?.accomplishments.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="accomplishments"

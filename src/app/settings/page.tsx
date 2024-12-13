@@ -20,7 +20,7 @@ export default function Settings() {
   useEffect(() => {
     setCurrentPage("Profile");
     if (accountType === "Fellow") {
-      setPageType("Individual");
+      setPageType("Fellow");
     } else if (accountType === "Business") {
       setPageType("Business");
     }

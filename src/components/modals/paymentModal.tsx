@@ -7,6 +7,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useFellow } from "@/contexts/FellowContext";
 
 import SiteButton from "../siteButton";
 import FormSubmissionButton from "@/components/formSubmissionButton";
@@ -27,6 +28,7 @@ type FormData = z.infer<typeof PaymentSchema>;
 
 export default function PaymentModal({ subscriptionAmount }: any) {
   const { showModal, hideModal } = useModal();
+  const { fellow, setFellow } = useFellow();
   const [disabledButton, setDisabledButton] = useState(false);
   const [agree, setAgree] = useState(false);
   const {
@@ -52,6 +54,7 @@ export default function PaymentModal({ subscriptionAmount }: any) {
     if (agree) {
       setDisabledButton(true);
       console.log(data, agree);
+      setFellow({ ...fellow, subscriptionAmount: subscriptionAmount });
       showModal(<PaymentSuccessfulModal />);
     }
   };

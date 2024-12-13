@@ -26,18 +26,19 @@ export interface Job {
   jobIsBeingEdited?: boolean;
 }
 
-interface JobsContextType {
+interface JobContextType {
   job: Job | null;
   setJob: (job: Job) => void;
 }
 
-const JobsContext = createContext<JobsContextType | undefined>(undefined);
+const JobContext = createContext<JobContextType | undefined>(undefined);
 
-export const JobsProvider: React.FC<{ children: ReactNode }> = ({
+export const JobProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [job, setJob] = useState<Job | null>({
     jobIsBeingEdited: false,
+
     // jobIsBeingEdited: false,
     // applicationLimit: 30,
     // businessName: "Straightforward Job Site",
@@ -105,16 +106,16 @@ export const JobsProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   return (
-    <JobsContext.Provider value={{ job, setJob }}>
+    <JobContext.Provider value={{ job, setJob }}>
       {children}
-    </JobsContext.Provider>
+    </JobContext.Provider>
   );
 };
 
-export const useJobs = () => {
-  const context = useContext(JobsContext);
+export const useJob = () => {
+  const context = useContext(JobContext);
   if (!context) {
-    throw new Error("useJobs must be used within JobsProvider");
+    throw new Error("useJob must be used within JobProvider");
   }
   return context;
 };

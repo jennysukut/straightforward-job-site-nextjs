@@ -8,7 +8,7 @@ import InfoBox from "@/components/infoBox";
 
 import { pricingDetails } from "@/lib/siteCopy/pricingDetails";
 
-type Category = "individual" | "business";
+type Category = "fellow" | "business";
 
 export default function PricingPage() {
   const [category, setCategory] = useState("");
@@ -157,13 +157,13 @@ export default function PricingPage() {
           variant="filled"
           colorScheme="c4"
           addClasses={`sm:w-[20rem] ${category === "" ? "mb-20 sm:mb-0" : ""}`}
-          onClick={() => handleClick("individual")}
+          onClick={() => handleClick("fellow")}
         >
           for job-seekers
         </SiteButton>
 
         {/* individual pricing details - MOBILE*/}
-        {category === "individual" && (
+        {category === "fellow" && (
           <div className="IndividualPricing md:hidden">
             <InfoBox
               aria="individual pricing"
@@ -196,7 +196,7 @@ export default function PricingPage() {
 
       <div className="PricingDetails hidden gap-12 self-center pt-12 md:flex">
         {/* individual pricing details */}
-        {category === "individual" && (
+        {category === "fellow" && (
           <InfoBox
             aria="individual pricing"
             variant="filled"

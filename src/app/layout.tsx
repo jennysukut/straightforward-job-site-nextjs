@@ -7,7 +7,7 @@ import { ModalProvider } from "@/contexts/ModalContext";
 import { Analytics } from "@vercel/analytics/react";
 import { FellowProvider } from "@/contexts/FellowContext";
 import { BusinessProvider } from "@/contexts/BusinessContext";
-import { JobsProvider } from "@/contexts/JobsContext";
+import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
 
 import NavBar from "@/components/navBar";
@@ -45,7 +45,7 @@ export default function RootLayout({
         <PageProvider>
           <ColorProvider>
             <ApolloWrapper>
-              <JobsProvider>
+              <JobProvider>
                 <BusinessProvider>
                   <FellowProvider>
                     <ModalProvider>
@@ -58,7 +58,7 @@ export default function RootLayout({
                     </ModalProvider>
                   </FellowProvider>
                 </BusinessProvider>
-              </JobsProvider>
+              </JobProvider>
             </ApolloWrapper>
           </ColorProvider>
         </PageProvider>

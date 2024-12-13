@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useModal } from "@/contexts/ModalContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/siteButton";
 import PopulateDisplayField from "@/components/populateDisplayField";
@@ -28,6 +29,7 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage6() {
   const { fellow, setFellow } = useFellow();
+  const { setAccountType, setIsLoggedIn } = usePageContext();
   const { showModal } = useModal();
   const router = useRouter();
 
@@ -102,6 +104,8 @@ export default function IndividualSignupPage6() {
     ) {
       showModal(<SubscriptionModal />);
     }
+    setAccountType("Fellow");
+    setIsLoggedIn(true);
     setFellow({
       ...fellow,
       links: links,

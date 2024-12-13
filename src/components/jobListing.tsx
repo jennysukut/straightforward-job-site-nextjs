@@ -5,7 +5,7 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -25,7 +25,7 @@ export default function JobListing(isOwn: any) {
   const [canEdit, setCanEdit] = useState(false);
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
