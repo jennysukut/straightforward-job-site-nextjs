@@ -41,7 +41,7 @@ export default function IndividualSignupPage3() {
         experienceLevel: setExperienceLevels,
         accomplishment: setAccomplishments,
       },
-      hasId: true,
+      hasId: { award: true, experienceLevel: true, accomplishment: true },
       counterFunctions: {
         award: setAwardCounter,
         experienceLevel: setExperienceLevelCounter,
@@ -85,7 +85,7 @@ export default function IndividualSignupPage3() {
         award: setAwards,
         accomplishment: setAccomplishments,
       },
-      hasId: true,
+      hasId: { award: true, experienceLevel: true, accomplishment: true },
     });
   };
 

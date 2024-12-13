@@ -31,8 +31,10 @@ export default function AddHandler({
       } else {
         setFunction((prevList: any) => {
           const updatedList = [...prevList, item];
-          setValue(value, updatedList);
-          clearErrors(value);
+          if (setValue) {
+            setValue(value, updatedList);
+            clearErrors(value);
+          }
           return updatedList;
         });
       }

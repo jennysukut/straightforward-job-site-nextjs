@@ -36,7 +36,7 @@ export default function IndividualSignupPage2() {
         experience: setExperienceDetails,
         education: setEducationDetails,
       },
-      hasId: true,
+      hasId: { experience: true, education: true },
       counterFunctions: {
         experience: setExperienceCounter,
         education: setEducationCounter,
@@ -72,7 +72,7 @@ export default function IndividualSignupPage2() {
         experience: setExperienceDetails,
         education: setEducationDetails,
       },
-      hasId: true,
+      hasId: { experience: true, education: true },
     });
   };
 

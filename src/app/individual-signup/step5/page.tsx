@@ -43,6 +43,7 @@ export default function IndividualSignupPage5() {
     handleSubmit,
     setValue,
     register,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -58,7 +59,7 @@ export default function IndividualSignupPage5() {
         hobby: setHobbies,
         bookOrQuote: setBookOrQuote,
       },
-      hasId: true,
+      hasId: { hobby: true, bookOrQuote: true },
       counterFunctions: {
         hobby: setHobbyCounter,
         bookOrQuote: setBookOrQuoteCounter,
@@ -67,6 +68,8 @@ export default function IndividualSignupPage5() {
         hobby: hobbyCounter,
         bookOrQuote: bookOrQuoteCounter,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -94,7 +97,7 @@ export default function IndividualSignupPage5() {
         hobby: setHobbies,
         bookOrQuote: setBookOrQuote,
       },
-      hasId: true,
+      hasId: { hobby: true, bookOrQuote: true },
     });
   };
 

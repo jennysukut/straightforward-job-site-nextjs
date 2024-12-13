@@ -39,6 +39,8 @@ export default function IndividualSignupPage6() {
   const {
     handleSubmit,
     register,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -52,13 +54,15 @@ export default function IndividualSignupPage6() {
       setFunctions: {
         link: setLinks,
       },
-      hasId: true,
+      hasId: { link: true },
       counterFunctions: {
         link: setLinkCounter,
       },
       counterDetails: {
         link: linkCounter,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -86,7 +90,7 @@ export default function IndividualSignupPage6() {
       setFunctions: {
         link: setLinks,
       },
-      hasId: true,
+      hasId: { link: true },
     });
   };
 
