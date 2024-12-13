@@ -20,8 +20,8 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState<string>("");
   const [pageType, setPageType] = useState<string>("");
-  const [accountType, setAccountType] = useState<string>("");
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [accountType, setAccountType] = useState<string>("Business");
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
   return (
     <PageContext.Provider
       value={{

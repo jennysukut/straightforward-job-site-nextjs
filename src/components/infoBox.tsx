@@ -110,6 +110,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* profile edit button */}
       {canEdit && size === "profile" && (
         <button
+          type="button"
           className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
@@ -132,6 +133,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* collapse button */}
       {canCollapse && (
         <button
+          type="button"
           className="CollapseButton opacity-100 hover:opacity-50"
           onClick={collapseClick as React.MouseEventHandler<HTMLButtonElement>}
         >
@@ -147,6 +149,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* add button */}
       {canAdd && (
         <button
+          type="button"
           className="AddButton right-0 opacity-75 hover:opacity-100"
           onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
         >
@@ -172,8 +175,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* add button */}
       {canSearch && (
         <button
+          type="button"
           className="AddButton right-0 opacity-75 hover:opacity-100"
-          // onClick={addClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           {colorOption === "highContrast" && (
             <Image
@@ -197,6 +200,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {/* edit button */}
       {canEdit && size !== "profile" && (
         <button
+          type="button"
           className="EditButton self-end opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >

@@ -50,7 +50,6 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const { inputColors, textColor, secondaryTextColor, errorColor } =
     useColorOptions();
-  const { colorOption } = useColors();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

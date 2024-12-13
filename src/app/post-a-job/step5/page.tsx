@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useBusiness } from "@/contexts/BusinessContext";
 import { useModal } from "@/contexts/ModalContext";
+import { useJobs } from "@/contexts/JobsContext";
 
 import SiteButton from "@/components/siteButton";
 import DeleteHandler from "@/components/deleteHandler";
@@ -26,7 +26,7 @@ const jobSchema = z.object({
 type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep5() {
-  const { business, setBusiness } = useBusiness();
+  const { job, setJob } = useJobs();
   const { showModal } = useModal();
   const router = useRouter();
 
@@ -43,10 +43,6 @@ export default function PostAJobStep5() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
-
-  const latestArrayIndex = business?.activeJobs.length
-    ? business.activeJobs.length - 1
-    : -1;
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "interviewProcess", data: any) => {
@@ -99,44 +95,26 @@ export default function PostAJobStep5() {
 
   const handleSubmit = () => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      activeJobs:
-        business?.activeJobs.map((job: any, index: number) => {
-          if (index === business.activeJobs.length - 1) {
-            return {
-              ...job,
-              interviewProcess: interviewProcess,
-            };
-          }
-          return job;
-        }) || [],
+    setJob({
+      ...job,
+      interviewProcess: interviewProcess,
     });
     router.push("/listing");
-    showModal(<ApplicationLimitModal />);
+    // showModal(<ApplicationLimitModal />);
   };
 
   useEffect(() => {
     setInterviewProcess(
-      Array.isArray(business?.activeJobs[latestArrayIndex].interviewProcess)
-        ? business?.activeJobs[latestArrayIndex].interviewProcess
-        : [],
+      Array.isArray(job?.interviewProcess) ? job?.interviewProcess : [],
     );
-    setValue(
-      "interviewProcess",
-      business?.activeJobs[latestArrayIndex].interviewProcess || [],
-    );
+    setValue("interviewProcess", job?.interviewProcess || []);
   }, []);
-
-  const capitalizeFirstLetter = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
 
   return (
     <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className="JobName pl-8 tracking-superwide text-midnight">
-          {business?.activeJobs[latestArrayIndex].jobTitle || "Test Job Title"}
+          {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           What does your interview process look like?
@@ -165,11 +143,11 @@ export default function PostAJobStep5() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton && business?.profileIsBeingEdited === true
-              ? "Returning To Profile..."
-              : !disabledButton && business?.profileIsBeingEdited === true
+            {disabledButton && job?.jobIsBeingEdited === true
+              ? "Returning To Listing..."
+              : !disabledButton && job?.jobIsBeingEdited === true
                 ? "update"
-                : disabledButton && business?.profileIsBeingEdited === false
+                : disabledButton && job?.jobIsBeingEdited === false
                   ? "Saving Information.."
                   : "continue"}
           </SiteButton>

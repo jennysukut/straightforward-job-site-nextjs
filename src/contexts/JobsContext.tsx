@@ -18,7 +18,7 @@ export interface Job {
   experienceLevel?: any;
   preferredSkills?: Array<string>;
   moreAboutPosition?: string;
-  responsibilities?: Array<string>;
+  responsibilities?: any;
   perks?: Array<string>;
   interviewProcess?: Array<any>;
   location?: string;
@@ -37,6 +37,7 @@ export const JobsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [job, setJob] = useState<Job | null>({
+    jobIsBeingEdited: false,
     // jobIsBeingEdited: false,
     // applicationLimit: 30,
     // businessName: "Straightforward Job Site",

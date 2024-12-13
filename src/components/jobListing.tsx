@@ -47,6 +47,7 @@ export default function JobListing(isOwn: any) {
   const currentJob = job;
 
   useEffect(() => {
+    console.log(job);
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
@@ -243,10 +244,13 @@ export default function JobListing(isOwn: any) {
                   </div>
                 </div>
               )}
-              <h2 className="PayDetailsTitle mb-4 pl-2">
-                {`Pay:`} {currentJob?.payDetails.payscale},{" "}
-                {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
-              </h2>
+              {currentJob?.payDetails && (
+                <h2 className="PayDetailsTitle mb-4 pl-2">
+                  {`Pay:`} {currentJob?.payDetails.payscale},{" "}
+                  {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
+                </h2>
+              )}
+
               {currentJob?.positionType && (
                 <h2 className="PositionTypeTitle mb-0 pl-2">
                   {`Position Type:`}
