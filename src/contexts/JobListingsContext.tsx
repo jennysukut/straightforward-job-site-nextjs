@@ -8,6 +8,7 @@ export interface JobListing {
   job?: {
     jobTitle?: string;
     businessName?: string;
+    experienceLevel?: string;
     appLimit?: string;
     numberOfApps?: string;
     locationOption?: string;
@@ -37,6 +38,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "25",
         numberOfApps: "12",
         locationOption: "remote",
+        experienceLevel: "senior",
         payDetails: {
           payscaleMin: "$60,000",
           payscaleMax: "$80,000",
@@ -53,6 +55,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "50",
         numberOfApps: "20",
         locationOption: "on-site",
+        experienceLevel: "junior",
+
         payDetails: {
           payscaleMin: "$20",
           payscaleMax: "$30",
