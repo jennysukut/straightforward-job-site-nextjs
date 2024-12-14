@@ -62,7 +62,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         size === "extraLarge",
 
       // variant
-      [`bg-cream ${hollowOptions} border-[2px]`]:
+      [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
         variant === "hollow" && !isSelected,
       // [`${textColor}`]: variant === "hollow" && !isSelected,
       [`text-eggshell ${buttonColors[colorScheme].color1}`]:
@@ -70,6 +70,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       [`text-eggshell ${highContrastButtonColors[colorScheme].color1}`]:
         variant === "filled" && colorOption === "highContrast",
       [`${addImage} bg-cover`]: variant === "avatar",
+
       // hover colors for hollow buttons
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} group-hover:text-eggshell`]:
         variant === "hollow" && colorOption === "standard",
@@ -85,10 +86,12 @@ const SiteButton: React.FC<ButtonProps> = ({
         !isPressed && !isSelected,
 
       //selected state
+      [`translate-x-1 translate-y-1 text-eggshell`]:
+        isSelected && variant === "avatar",
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
-        isSelected && colorOption === "standard",
+        isSelected && colorOption === "standard" && variant !== "avatar",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
-        isSelected && colorOption === "highContrast",
+        isSelected && colorOption === "highContrast" && variant !== "avatar",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected && size === "smallCircle" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color5} ${highContrastButtonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:

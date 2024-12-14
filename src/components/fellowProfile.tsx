@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
@@ -12,6 +13,7 @@ import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   const { setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
+  const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -42,7 +44,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
 
   console.log(fellow);
   return (
-    <div className="ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
+    <div
+      className={`ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
+    >
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
@@ -86,7 +90,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step2")}
             >
               <h2 className="EducationTitle mb-4 pl-2">{`My Education:`}</h2>
-              <ul className="EducationList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`EducationList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.education.map((edu: any, index: number) => {
                   return (
                     <li className="EducationItem" key={index}>
@@ -97,7 +103,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                           {edu.fieldOfStudy}
                         </span>
                       </p>
-                      <p className="School italic text-jade">{edu.school}</p>
+                      <p className={`School italic ${textColor}`}>
+                        {edu.school}
+                      </p>
                     </li>
                   );
                 })}
@@ -114,7 +122,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step2")}
             >
               <h2 className="ExperienceTitle mb-4 pl-2">{`My Experience:`}</h2>
-              <ul className="ExperienceList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.experience.map((exp: any, index: number) => {
                   return (
                     <li className="ExperienceItem" key={index}>
@@ -125,14 +135,16 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                           {exp.companyName}
                         </span>
                         {exp.yearDetails && (
-                          <span className="Years italic text-jade">
+                          <span className={`Years italic ${textColor}`}>
                             {` - `}
                             {exp.yearDetails}
                           </span>
                         )}
                       </p>
                       {exp.details && (
-                        <p className="Details mt-2 text-sm font-medium text-olive">
+                        <p
+                          className={`Details mt-2 text-sm font-medium ${secondaryTextColor}`}
+                        >
                           {exp.details}
                         </p>
                       )}
@@ -152,14 +164,18 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="AwardsTitle mb-4 pl-2">{`Awards / Honors:`}</h2>
-              <ul className="AwardsList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`AwardsList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.awards.map((award: any, index: number) => {
                   return (
                     <li className="AwardItem" key={index}>
                       <p className="AwardTitle pr-4">{award.awardTitle},</p>
                       <p className="GivenBy italic">{award.givenBy}</p>
                       {award.awardDetails && (
-                        <p className="Details mt-2 text-sm font-medium text-jade">
+                        <p
+                          className={`Details mt-2 text-sm font-medium ${textColor}`}
+                        >
                           {award.awardDetails}
                         </p>
                       )}
@@ -179,7 +195,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="ExperienceLevelTitle mb-4 pl-2">{`Experience Levels:`}</h2>
-              <ul className="ExperienceLevelList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.experienceLevels.map((exp: any, index: number) => {
                   return (
                     <li className="ExperienceLevelItem" key={index}>
@@ -187,7 +205,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                         {exp.experienceLevel}: {exp.expLevelSkill}
                       </p>
                       {exp.skillYears && (
-                        <p className="Details mt-2 font-medium italic text-olive">
+                        <p
+                          className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
+                        >
                           {exp.skillYears}
                         </p>
                       )}
@@ -207,12 +227,16 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="BookOrQuoteTitle mb-4 pl-2">{`Books / Quotes I Enjoy:`}</h2>
-              <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.bookOrQuote.map((bq: any, index: number) => {
                   return (
                     <li className="BookOrQuoteItem" key={index}>
                       <p className="BookOrQuote">{bq.bookOrQuote}</p>
-                      <p className="Author italic text-jade">- {bq.author}</p>
+                      <p className={`Author italic ${textColor}`}>
+                        - {bq.author}
+                      </p>
                     </li>
                   );
                 })}
@@ -229,7 +253,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="PetDetailsTitle mb-4 pl-2">{`Pertaining To Pets:`}</h2>
-              <p className="PetDetails ml-8 font-medium text-olive">
+              <p
+                className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}
+              >
                 {fellow.petDetails}
               </p>
             </InfoBox>
@@ -290,7 +316,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/individual-signup/step1")}
           >
             <div className="LocationInfo flex flex-col gap-2">
-              <p className="Location ml-2 text-emerald">
+              <p className={`Location ml-2 ${titleColor}`}>
                 Location: {fellow?.location}, {fellow?.country}
               </p>
             </div>
@@ -342,14 +368,14 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                     {fellow.links.map((link: any, index: number) => {
                       return (
                         <div className="Link" key={index}>
-                          <p className="Link text-emerald">
+                          <p className={`Link ${titleColor}`}>
                             {link.linkType} {`: `}
                           </p>
                           <a
                             href={link.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm font-medium italic text-olive"
+                            className={`text-sm font-medium italic ${secondaryTextColor}`}
                           >
                             {link.link}
                           </a>
@@ -402,7 +428,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               canEdit={canEdit}
               editClick={() => handleEditClick("/individual-signup/step4")}
             >
-              <h2 className="PassionateAboutTitle mb-4 pl-2 text-emerald">{`What I'm Passionate About:`}</h2>
+              <h2
+                className={`PassionateAboutTitle mb-4 pl-2 ${titleColor}`}
+              >{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
                 {fellow.passions}
               </p>
@@ -417,9 +445,13 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               canEdit={canEdit}
               editClick={() => handleEditClick("/individual-signup/step4")}
             >
-              <h2 className="LookingForTitle mb-4 pl-2 text-emerald">{`What I'm Looking For:`}</h2>
+              <h2
+                className={`LookingForTitle mb-4 pl-2 ${titleColor}`}
+              >{`What I'm Looking For:`}</h2>
               <p className="LookingForSubtitle -mt-4 px-3 italic">{`in a job/company`}</p>
-              <p className="LookingFor text-md mt-4 px-6 font-medium text-olive">
+              <p
+                className={`LookingFor text-md mt-4 px-6 font-medium ${secondaryTextColor}`}
+              >
                 {fellow.lookingFor}
               </p>
             </InfoBox>
@@ -434,10 +466,12 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step5")}
             >
               <h2 className="HobbiesTitle mb-4 pl-2">{`My Hobbies / Pastimes:`}</h2>
-              <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.hobbies.map((hobby: any, index: number) => {
                   return (
-                    <li className="HobbyItem text-jade" key={index}>
+                    <li className={`HobbyItem ${textColor}`} key={index}>
                       <p className="Hobby">
                         {hobby.hobbyTitle}
                         {hobby.howLong && (
@@ -463,13 +497,20 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step3")}
             >
               <h2 className="AccomplishmentsTitle mb-4 pl-2">{`Other Accomplishments:`}</h2>
-              <ul className="BookOrQuoteList ml-8 flex list-disc flex-col gap-4 text-emerald">
+              <ul
+                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
                 {fellow.accomplishments.map((acc: any, index: number) => {
                   return (
-                    <li className="AccomplishmentItem text-jade" key={index}>
+                    <li
+                      className={`AccomplishmentItem ${textColor}`}
+                      key={index}
+                    >
                       <p className="Accomplishment">{acc.accTitle}</p>
                       {acc.accDetails && (
-                        <p className="AccomplishmentDetails mt-2 font-medium italic text-olive">
+                        <p
+                          className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
+                        >
                           {acc.accDetails}
                         </p>
                       )}
@@ -488,7 +529,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               canEdit={canEdit}
               editClick={() => handleEditClick("/individual-signup/step6")}
             >
-              <h2 className="AboutMeTitle mb-4 pl-2 text-emerald">{`More About Me:`}</h2>
+              <h2
+                className={`AboutMeTitle mb-4 pl-2 ${titleColor}`}
+              >{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">
                 {fellow.aboutMe}
               </p>
