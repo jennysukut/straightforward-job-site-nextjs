@@ -23,11 +23,11 @@ export interface Fellow {
   links?: Array<any>;
   aboutMe?: string;
   avatar?: any;
-  shadow?: string;
+  shadow?: any;
   locationOptions?: Array<string>;
   colorScheme?: string;
   languages?: Array<string>;
-  buttonShadow?: string;
+  buttonShadow?: any;
   buttonImg?: any;
   profileIsBeingEdited?: boolean;
   addMoreInfo?: boolean;
@@ -170,11 +170,23 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     // ],
 
     ///MY OWN CONTEXT
-    avatar: "/avatars/checks.svg",
-    shadow: "drop-shadow-magenta",
+    avatar: {
+      standard: "/avatars/checks.svg",
+      highContrast: "/avatars/blue-checks.svg",
+    },
+    shadow: {
+      standard: "drop-shadow-magenta",
+      highContrast: "drop-shadow-ocean",
+    },
     colorScheme: "a5",
-    buttonShadow: "drop-shadow-magenta",
-    buttonImg: "bg-[url('/avatars/checks.svg')]",
+    buttonShadow: {
+      standard: "drop-shadow-magenta",
+      highContrast: "drop-shadow-ocean",
+    },
+    buttonImg: {
+      standard: "bg-[url('/avatars/checks.svg')]",
+      highContrast: "bg-[url('/avatars/blue-checks.svg')]",
+    },
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",
     smallBio:

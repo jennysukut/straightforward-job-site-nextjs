@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
 import SiteButton from "@/components/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -51,6 +52,7 @@ export default function IndividualSignupPage1() {
   const { fellow, setFellow } = useFellow();
   const { showModal } = useModal();
   const { titleColor, textColor } = useColorOptions();
+  const { colorOption } = useColors();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
@@ -229,7 +231,7 @@ export default function IndividualSignupPage1() {
               colorScheme={avatarOptions.colorScheme as ButtonColorOption}
               size="largeCircle"
               aria="avatar"
-              addImage={`${avatarOptions.buttonImg}`}
+              addImage={`${colorOption === "standard" ? avatarOptions.buttonImg.standard : avatarOptions.buttonImg.highContrast}`}
               onClick={() =>
                 showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
               }

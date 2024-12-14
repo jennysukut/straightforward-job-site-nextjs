@@ -114,14 +114,25 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
-          <Image
-            src="/edit-icon.svg"
-            alt="editButton"
-            width={16}
-            height={16}
-          ></Image>
+          {colorOption === "highContrast" && (
+            <Image
+              src="/cobalt-edit.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
+          {colorOption === "standard" && (
+            <Image
+              src="/edit-icon.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
         </button>
       )}
+
       {title && (
         <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
           {title}
