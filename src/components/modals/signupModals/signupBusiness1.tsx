@@ -8,8 +8,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "../../siteButton";
+import FormInputComponent from "@/components/formInputComponent";
 
 const businessSchema = z.object({
   businessName: z.string().min(2, { message: "Required" }),
@@ -23,6 +25,7 @@ export default function SignupModalBusiness1() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { business, setBusiness } = useBusiness();
+  const { textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const {
@@ -48,58 +51,46 @@ export default function SignupModalBusiness1() {
   };
 
   return (
-    <div className="SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
         sign up
       </Dialog.Title>
       <form
-        className="IndividualSignupForm xs:pt-8 flex flex-col gap-2"
+        className="IndividualSignupForm xs:pt-8 flex flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
         {/* business name input */}
-        <label htmlFor="name">business name*</label>
-        <input
+        <FormInputComponent
           type="text"
-          placeholder="the best business"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("businessName")}
+          title="business name*"
+          placeholderText="the best business"
+          register={register}
+          registerValue="businessName"
+          errors={errors.businessName}
         />
-        {errors.businessName?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.businessName.message.toString()}
-          </p>
-        )}
 
         {/* email input */}
-        <label htmlFor="email" className="mt-4">
-          business email*
-        </label>
-        <input
+        <FormInputComponent
           type="email"
-          placeholder="fantasticbusinessemail@emailexample.com"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("email", { required: "Email Address is required" })}
+          title="business email*"
+          placeholderText="fantasticbusinessemail@emailexample.com"
+          register={register}
+          registerValue="email"
+          errors={errors.email}
         />
-        {errors.email?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.email.message.toString()}
-          </p>
-        )}
+
         {/* password input */}
-        <label htmlFor="password" className="mt-4">
-          your password*
-        </label>
-        <input
+        <FormInputComponent
           type="password"
-          placeholder="secret password here"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("password", { required: "Password is required" })}
+          title="your password*"
+          placeholderText="***********"
+          register={register}
+          registerValue="password"
+          errors={errors.password}
         />
-        {errors.password?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.password.message.toString()}
-          </p>
-        )}
+
         {/* form submission button */}
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
           <SiteButton

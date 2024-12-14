@@ -7,6 +7,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 import FormSubmissionButton from "@/components/formSubmissionButton";
@@ -29,6 +30,7 @@ export default function AddExperienceModal({
   itemInfo,
 }: any) {
   const { showModal, hideModal } = useModal();
+  const { textColor } = useColorOptions();
   const [disabledButton, setDisabledButton] = useState(false);
   const type = "experience";
   const {
@@ -75,7 +77,9 @@ export default function AddExperienceModal({
   };
 
   return (
-    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
         experience
       </Dialog.Title>

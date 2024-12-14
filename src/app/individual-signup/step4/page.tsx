@@ -123,7 +123,7 @@ export default function IndividualSignupPage4() {
         {/* location options details */}
         <ButtonOptionsComponent
           type="locationOptions"
-          title="Which location type do you prefer?"
+          title="Which location type/s do you prefer?"
           buttons={["remote", "on-site", "hybrid"]}
           selectedArray={locationOptions}
           handleAdd={handleAdd}

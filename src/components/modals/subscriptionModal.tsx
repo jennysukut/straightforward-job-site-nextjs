@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
+import { useColors } from "@/contexts/ColorContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "../siteButton";
 import PaymentModal from "./paymentModal";
@@ -12,6 +14,8 @@ import PaymentModal from "./paymentModal";
 export default function SubscriptionModal(isBeingUpdated: any) {
   const { fellow, setFellow } = useFellow();
   const { showModal, hideModal } = useModal();
+  const { textColor, secondaryTextColor } = useColorOptions();
+  const { colorOption } = useColors();
   const router = useRouter();
   const [selectedAmount, setSelectedAmount] = useState("0");
 
@@ -52,11 +56,13 @@ export default function SubscriptionModal(isBeingUpdated: any) {
         max="50"
         step="5"
         value={selectedAmount}
-        className="ScaleInput custom-range w-[85%]"
+        className={`ScaleInput custom-range w-[85%] ${colorOption === "highContrast" ? "highContrast" : ""}`}
         onChange={(e) => setSelectedAmount(e.target.value)}
       />
       <p className="Details text-md">monthly amount: ${selectedAmount}</p>
-      <p className="Details -mt-8 text-sm font-medium italic text-olive">
+      <p
+        className={`Details -mt-8 text-sm font-medium italic ${secondaryTextColor}`}
+      >
         you can change or update at any time
       </p>
       <div className="ButtonContainer m-0 -my-4 self-end">
