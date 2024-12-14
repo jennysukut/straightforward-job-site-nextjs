@@ -40,11 +40,14 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [business, setBusiness] = useState<Business | null>({
     businessName: "Test Business Name",
+    email: "testbusinessemail@gmail.com",
     avatar: "/avatars/magenta.svg",
     shadow: "drop-shadow-lime",
     colorScheme: "b4",
     buttonShadow: "bg-lime",
     buttonImg: "bg-[url('/avatars/magenta.svg')]",
+    billingDetails: true,
+    hasActiveJobs: true,
 
     // amountDue: "400",
     // billingDetails: true,

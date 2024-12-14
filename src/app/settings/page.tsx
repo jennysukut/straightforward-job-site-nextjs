@@ -38,6 +38,33 @@ export default function Settings() {
         {accountType === "Business" && (
           <h1 className="SettingsTitle self-end pr-14">{`Business Profile: Details & Payments`}</h1>
         )}
+
+        {accountType === "Business" && !business?.hasActiveJobs && (
+          <div className="NameEmailDetails flex flex-col items-end gap-6 self-end pr-14">
+            <InfoBox
+              aria="aboutInfo"
+              variant="hollow"
+              size="profile"
+              width="medium"
+              addClasses="-mt-20"
+            >
+              <div className="NameAndEmail ml-2 flex flex-col gap-8">
+                <h2 className="Name">Business: {business?.businessName}</h2>
+
+                <h2 className="Name leading-6">Email: {business?.email}</h2>
+              </div>
+            </InfoBox>
+            <SiteButton
+              aria="editNameEmail"
+              variant="hollow"
+              colorScheme="b1"
+              addClasses="px-8"
+            >
+              edit
+            </SiteButton>
+          </div>
+        )}
+
         <div className="NameAndSubscriptionContainer flex items-start justify-between align-top">
           {accountType === "Fellow" && (
             <div className="NameEmailDetails flex flex-col items-end gap-6">
@@ -64,7 +91,7 @@ export default function Settings() {
             </div>
           )}
 
-          {accountType === "Business" && (
+          {accountType === "Business" && business?.hasActiveJobs && (
             <div className="NameEmailDetails flex flex-col items-end gap-6">
               <InfoBox
                 aria="aboutInfo"
