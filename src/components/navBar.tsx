@@ -91,19 +91,21 @@ export default function NavBar() {
                 clickedButton={clickedButton}
               />
               <Link href={"/job-board"}>
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="e5"
-                title="jobs"
-                clickedButton={clickedButton}
-              />
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="e5"
+                  title="jobs"
+                  clickedButton={clickedButton}
+                />
               </Link>
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="d4"
-                title="saved"
-                clickedButton={clickedButton}
-              />
+              <Link href={"/saved-jobs"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="d4"
+                  title="saved"
+                  clickedButton={clickedButton}
+                />
+              </Link>
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="f3"

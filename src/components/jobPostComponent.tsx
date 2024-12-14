@@ -18,9 +18,15 @@ interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   job: any;
   colorArray: Array<string>;
   index: any;
+  saveJob?: any;
 }
 
-const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
+const JobPost: React.FC<JobPostProps> = ({
+  job,
+  colorArray,
+  index,
+  saveJob,
+}) => {
   const { colorOption } = useColors();
 
   const boxOptions =
@@ -45,6 +51,7 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
               aria="addJobsButton"
               size="extraSmallCircle"
               variant="filled"
+              onClick={saveJob}
               colorScheme={
                 colorArray[index % colorArray.length] as ButtonColorOption
               }
