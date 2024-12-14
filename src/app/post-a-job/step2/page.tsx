@@ -37,7 +37,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep2() {
   const { job, setJob } = useJob();
-  const { errorColor } = useColorOptions();
+  const { errorColor, textColor, titleColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -88,7 +88,7 @@ export default function PostAJobStep2() {
 
     console.log(payDifference);
     if (data.payOption === "hourly") {
-      if (payDifference >= 20) {
+      if (payDifference > 20) {
         setError("payscaleMin", {
           type: "manual",
           message: "This difference is too much",
@@ -96,7 +96,7 @@ export default function PostAJobStep2() {
         return;
       }
     } else if (data.payOption === "annually") {
-      if (payDifference >= 50000) {
+      if (payDifference > 50000) {
         setError("payscaleMin", {
           type: "manual",
           message: "This difference is too much",
@@ -143,9 +143,11 @@ export default function PostAJobStep2() {
   }, [job]);
 
   return (
-    <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`PostAJobPage2 flex w-[95vw] max-w-[1600px] ${textColor} flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <h1 className="JobName pl-8 tracking-superwide text-midnight">
+        <h1 className={`JobName pl-8 tracking-superwide ${titleColor}`}>
           {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">

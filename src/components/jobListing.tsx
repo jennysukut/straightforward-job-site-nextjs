@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -28,6 +29,7 @@ export default function JobListing(isOwn: any) {
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
   const { job, setJob } = useJob();
+  const { textColor, secondaryTextColor, titleColor } = useColorOptions();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
@@ -54,7 +56,9 @@ export default function JobListing(isOwn: any) {
   }, []);
 
   return (
-    <div className="JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
+    <div
+      className={`JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
+    >
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
           {/* Non-Negotiable Parameters */}
@@ -146,7 +150,9 @@ export default function JobListing(isOwn: any) {
             editClick={() => handleEditClick("/post-a-job/step5")}
           >
             <h2 className="InterviewProcessTitle mb-4 pl-2">{`Our Interview Process:`}</h2>
-            <ul className="InterviewProcessList ml-8 flex list-disc flex-col gap-4 text-emerald">
+            <ul
+              className={`InterviewProcessList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+            >
               {currentJob?.interviewProcess?.map((int: any, index: number) => {
                 return (
                   <li className="InterviewProcessItem" key={index}>
@@ -157,7 +163,7 @@ export default function JobListing(isOwn: any) {
                         {int.step}
                       </span>
                     </p>
-                    <p className="Details pt-4 text-jade">{int.details}</p>
+                    <p className={`Details pt-4 ${textColor}`}>{int.details}</p>
                   </li>
                 );
               })}
@@ -208,7 +214,9 @@ export default function JobListing(isOwn: any) {
               <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
                 {currentJob?.businessName}
               </p>
-              <p className="PositionSummary pl-2 pt-4 leading-7 text-olive">
+              <p
+                className={`PositionSummary pl-2 pt-4 leading-7 ${secondaryTextColor}`}
+              >
                 {currentJob?.positionSummary}
               </p>
             </div>
@@ -277,14 +285,16 @@ export default function JobListing(isOwn: any) {
           >
             {/* More About The Job */}
             <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
-            <p className="AboutJob pl-8 pt-4 leading-8 text-jade">
+            <p className={`AboutJob pl-8 pt-4 leading-8 ${textColor}`}>
               {currentJob?.moreAboutPosition}
             </p>
             {/* Responsibilities */}
             {currentJob?.responsibilities && (
               <div className="Responsibilities mt-8">
                 <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
-                <ul className="ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 text-emerald">
+                <ul
+                  className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
                   {currentJob?.responsibilities.map(
                     (resp: { responsibility: string; id: number }) => {
                       return (
@@ -334,7 +344,7 @@ export default function JobListing(isOwn: any) {
             editClick={() => handleEditClick("/post-a-job/step2")}
           >
             <h2 className="PetDetailsTitle mb-4 pl-2">{`Our Ideal Candidate:`}</h2>
-            <p className="PetDetails ml-8 font-medium text-olive">
+            <p className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}>
               {currentJob?.idealCandidate}
             </p>
           </InfoBox>

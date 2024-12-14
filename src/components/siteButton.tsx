@@ -62,8 +62,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         size === "extraLarge",
 
       // variant
-      [`bg-cream ${hollowOptions} border-[2px]`]: variant === "hollow",
-      [`${textColor}`]: variant === "hollow" && !isSelected,
+      [`bg-cream ${hollowOptions} border-[2px]`]:
+        variant === "hollow" && !isSelected,
+      // [`${textColor}`]: variant === "hollow" && !isSelected,
       [`text-eggshell ${buttonColors[colorScheme].color1}`]:
         variant === "filled" && colorOption === "standard",
       [`text-eggshell ${highContrastButtonColors[colorScheme].color1}`]:
@@ -78,13 +79,15 @@ const SiteButton: React.FC<ButtonProps> = ({
       // pressed state
       "translate-x-2 translate-y-2 sm:translate-x-1.5 sm:translate-y-1.5":
         isPressed,
+
+      // hover state
       "hover:-translate-x-0.5 hover:-translate-y-0.5":
         !isPressed && !isSelected,
 
       //selected state
-      [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
+      [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "standard",
-      [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
+      [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "highContrast",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected && size === "smallCircle" && colorOption === "standard",
@@ -93,7 +96,9 @@ const SiteButton: React.FC<ButtonProps> = ({
 
       // diabled
       "disabled:translate-x-1 disabled:translate-y-1 disabled:border-midnight disabled:bg-midnight disabled:text-jade disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
-        disabled,
+        disabled && colorOption === "standard",
+      "disabled:translate-x-1 disabled:translate-y-1 disabled:border-lapis disabled:bg-lapis disabled:text-eggshell disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
+        disabled && colorOption === "highContrast",
     },
     addClasses,
     addImage,

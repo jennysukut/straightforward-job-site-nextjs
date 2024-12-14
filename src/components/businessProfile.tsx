@@ -3,6 +3,7 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import InfoBox from "./infoBox";
 import SiteButton from "./siteButton";
@@ -11,10 +12,12 @@ import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 
 export default function BusinessProfile({ business }: any, isOwn: boolean) {
   const { setBusiness } = useBusiness();
-  const router = useRouter();
-  const [canEdit, setCanEdit] = useState(false);
+
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
+  const { textColor, titleColor, secondaryTextColor } = useColorOptions();
+  const router = useRouter();
+  const [canEdit, setCanEdit] = useState(false);
 
   const handleEditClick = (url: any) => {
     setBusiness({ ...business, profileIsBeingEdited: true });
@@ -59,7 +62,9 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/business-signup/step2")}
           >
             <h2 className="BusinessFieldTitle mb-4 pl-2">{`Industry:`}</h2>
-            <p className="BusinessField ml-8 font-medium text-olive">
+            <p
+              className={`BusinessField ml-8 font-medium ${secondaryTextColor}`}
+            >
               {business.businessField}
             </p>
           </InfoBox>
@@ -91,17 +96,16 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
         </div>
         <div className="ProfileRightColumn flex flex-col gap-8">
           {/* NAME AND SMALL BIO */}
-          <div className="BusinessName self-end">
+          <div className="BusinessName mr-8">
             <InfoBox
               aria="business"
               variant="hollow"
-              addClasses="gap-8 justify-evenly mr-14"
               size="profile"
               canEdit={canEdit}
               editClick={() => handleEditClick("/business-signup/step1")}
             >
-              <div className="NameBioAvatarContainer flex gap-8 pr-10">
-                <Avatar addClasses="self-center" />
+              <div className="NameBioAvatarContainer flex items-center gap-8">
+                <Avatar addClasses="self-start min-w-[60px]" />
                 <div className="NameBioContainer">
                   <h1 className="BusinessName">{business?.businessName}</h1>
                   <p className="SmallBio pt-4 leading-6">
@@ -112,6 +116,7 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
               </div>
             </InfoBox>
           </div>
+
           {/* Location, Website, and Email */}
           <InfoBox
             variant="hollow"
@@ -122,21 +127,21 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/business-signup/step1")}
           >
             <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
-              <p className="Location ml-2 text-emerald">
+              <p className={`Location ml-2 ${titleColor}`}>
                 Location: {business?.location}, {business?.country}
               </p>
-              <p className="Website -mb-2 ml-2 flex gap-2 text-emerald">
+              <p className={`Website -mb-2 ml-2 flex gap-2 ${titleColor}`}>
                 Website:
                 <a
                   href={business?.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm font-medium italic text-olive"
+                  className={`${secondaryTextColor} text-sm font-medium italic`}
                 >
                   {` `} {business?.website}
                 </a>
               </p>
-              <p className="Email ml-2 text-emerald">
+              <p className={`Email ml-2 ${titleColor}`}>
                 Email: {business?.email}
               </p>
             </div>
@@ -152,7 +157,9 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
             editClick={() => handleEditClick("/business-signup/step2")}
           >
             <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${business.businessName}:`}</h2>
-            <p className="MoreAboutBusiness pl-8 pt-4 font-medium leading-8 text-midnight">
+            <p
+              className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
+            >
               {business.moreAboutBusiness}
             </p>
           </InfoBox>

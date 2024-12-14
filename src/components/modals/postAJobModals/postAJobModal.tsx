@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
@@ -28,6 +29,7 @@ export default function PostAJobModal() {
   const { showModal, hideModal } = useModal();
   const { business, setBusiness } = useBusiness();
   const { job, setJob } = useJob();
+  const { textColor } = useColorOptions();
 
   const [positionType, setPositionType] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -72,17 +74,7 @@ export default function PostAJobModal() {
       jobTitle: data.jobTitle,
       positionType: data.positionType,
     });
-    // setBusiness({
-    //   ...business,
-    //   activeJobs: [
-    //     ...(business?.activeJobs || ""),
-    //     {
-    //       jobNumber: 1,
-    //       jobTitle: data.jobTitle,
-    //       positionType: data.positionType,
-    //     },
-    //   ],
-    // });
+
     router.push("/post-a-job/step1");
     setTimeout(() => {
       hideModal();
@@ -90,7 +82,9 @@ export default function PostAJobModal() {
   };
 
   return (
-    <div className="SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
         post a job
       </Dialog.Title>

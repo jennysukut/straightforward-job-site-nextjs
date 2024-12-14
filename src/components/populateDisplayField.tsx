@@ -59,7 +59,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
 }) => {
   const { showModal } = useModal();
   const { colorOption } = useColors();
-  const { textColor, errorColor } = useColorOptions();
+  const { textColor, errorColor, titleColor } = useColorOptions();
 
   return (
     <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
@@ -107,7 +107,7 @@ const PopulateDisplayField: React.FC<PopulateDisplayField> = ({
                       : `${item[displayOption1]}, ${item[displayOption2]}`
                     : item[displayOption1]
                 }
-                addClasses="flex w-[90%] self-end justify-between text-midnight"
+                addClasses={`flex w-[90%] self-end justify-between ${titleColor}`}
                 editClick={() => {
                   if (React.isValidElement(addModal)) {
                     showModal(

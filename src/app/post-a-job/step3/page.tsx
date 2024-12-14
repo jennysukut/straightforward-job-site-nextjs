@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { skillsList } from "@/lib/skillsList";
 import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -30,6 +31,7 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep3() {
   const { job, setJob } = useJob();
+  const { textColor, titleColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -112,9 +114,11 @@ export default function PostAJobStep3() {
   }, []);
 
   return (
-    <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`PostAJobPage2 flex w-[95vw] max-w-[1600px] ${textColor} flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <h1 className="JobName pl-8 tracking-superwide text-midnight">
+        <h1 className={`JobName pl-8 tracking-superwide ${titleColor}`}>
           {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">

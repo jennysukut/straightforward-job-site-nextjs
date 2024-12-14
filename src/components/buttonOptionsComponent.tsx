@@ -34,7 +34,6 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   flexOpt,
   buttonSize = "default",
 }) => {
-  const [colorArray, setColorArray] = useState(Array<any>);
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
   const buttonClick = (button: string) => {
@@ -80,6 +79,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
                 onClick={() => buttonClick(button)}
                 addClasses={`text-nowrap ${classesForButtons || ""}`}
                 isSelected={selectedArray.includes(button)}
+                // isSelected={true}
               >
                 {button}
               </SiteButton>

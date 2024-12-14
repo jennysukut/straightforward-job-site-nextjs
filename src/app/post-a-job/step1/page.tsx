@@ -97,7 +97,9 @@ export default function PostAJobStep1() {
   }, []);
 
   return (
-    <div className="PostAJobPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`PostAJobPage flex w-[95vw] ${textColor} max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${textColor}`}>
           {job?.jobTitle || "Test Job Title"}

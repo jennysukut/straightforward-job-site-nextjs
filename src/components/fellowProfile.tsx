@@ -43,27 +43,6 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   console.log(fellow);
   return (
     <div className="ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
-      {/* NAME AND SMALL BIO */}
-      {/* <div className="FellowName ml-44 min-w-[30vw] self-center">
-        <InfoBox
-          aria="fellow"
-          variant="hollow"
-          size="profile"
-          canEdit={canEdit}
-          editClick={() => handleEditClick("/individual-signup/step1")}
-        >
-          <div className="NameBioAvatarContainer flex items-center justify-items-start gap-8">
-            <Avatar addClasses="self-center" />
-            <div className="NameBioContainer">
-              <h1 className="Name">{fellow?.name}</h1>
-              <p className="SmallBio min-w-[20vw] pt-4 leading-6">
-                {fellow?.smallBio ||
-                  "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
-              </p>
-            </div>
-          </div>
-        </InfoBox>
-      </div> */}
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">

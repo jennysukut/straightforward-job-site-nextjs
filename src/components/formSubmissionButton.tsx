@@ -9,7 +9,6 @@ interface FormSubmissionComponent {
   clickDelete?: any;
   disabledButton: boolean;
   handleSubmit: any;
-
   addText: string;
   addingText: string;
 }
@@ -55,6 +54,7 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
             aria="submit"
             onClick={handleSubmit}
             disabled={disabledButton}
+            addClasses="px-8"
           >
             {disabledButton ? addingText : addText}
           </SiteButton>

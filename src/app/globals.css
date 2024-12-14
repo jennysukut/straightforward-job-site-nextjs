@@ -22,12 +22,6 @@
   --quote-font-family: "satoshi", sans-serif;
 }
 
-h1,
-h2 {
-  /* We should set some definitions for primary and secondary colors that are defined based off the colorContext and remove this. */
-  color: #308b7b;
-}
-
 h1 {
   font-size: 1.35em;
   line-height: 2rem;
@@ -45,7 +39,6 @@ p {
 
 body {
   /* We should set some definitions for primary and secondary colors that are defined based off the colorContext and remove this. */
-  color: #50b09f;
   font-family: "satoshi", sans-serif;
   font-weight: 700;
 }
@@ -100,14 +93,54 @@ textarea {
 .custom-range::-moz-range-thumb {
   width: 20px; /* Thumb width */
   height: 20px; /* Thumb height */
-  background: #4caf50; /* Thumb color */
+  background: #50b09f; /* Thumb color */
+  box-shadow: 3px 3px 0 rgba(210, 199, 32, 1);
   border-radius: 50%; /* Rounded thumb */
   cursor: pointer; /* Pointer cursor on hover */
 }
 
 /* Style the track for Firefox */
 .custom-range::-moz-range-track {
-  background: #ddd; /* Track color */
+  background: #efe5db; /* Track color */
+  height: 8px; /* Height of the track */
+  border-radius: 5px; /* Rounded track */
+}
+
+/* HIGH CONTRAST SLIDER */
+
+.custom-range.highContrast {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Add standard property for compatibility */
+  width: 100%; /* Full width */
+  height: 8px; /* Height of the track */
+  background: #efe5db; /* Track color */
+  border-radius: 5px; /* Rounded track */
+}
+
+/* Style the thumb */
+.custom-range.highContrast::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Remove default styling */
+  appearance: none; /* Add standard property for compatibility */
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #0a04c6; /* Thumb color */
+  box-shadow: 3px 3px 0 #4b89fc;
+  border-radius: 50%; /* Rounded thumb */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.custom-range.highContrast::-moz-range-thumb {
+  width: 20px; /* Thumb width */
+  height: 20px; /* Thumb height */
+  background: #0a04c6; /* Thumb color */
+  box-shadow: 3px 3px 0 #4b89fc;
+  border-radius: 50%; /* Rounded thumb */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Style the track for Firefox */
+.custom-range.highContrast::-moz-range-track {
+  background: #efe5db; /* Track color */
   height: 8px; /* Height of the track */
   border-radius: 5px; /* Rounded track */
 }
