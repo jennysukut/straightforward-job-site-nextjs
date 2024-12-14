@@ -90,12 +90,14 @@ export default function NavBar() {
                 title="mailbox"
                 clickedButton={clickedButton}
               />
+              <Link href={"/job-board"}>
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="e5"
                 title="jobs"
                 clickedButton={clickedButton}
               />
+              </Link>
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="d4"
@@ -124,7 +126,11 @@ export default function NavBar() {
                   clickedButton={clickedButton}
                   variant="avatar"
                   size="mediumCircle"
-                  addImage={fellow?.buttonImg}
+                  addImage={
+                    colorOption === "highContrast"
+                      ? fellow?.buttonImg.highContrast
+                      : fellow?.buttonImg.standard
+                  }
                 />
               </Link>
             </div>

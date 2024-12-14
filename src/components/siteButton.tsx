@@ -88,10 +88,12 @@ const SiteButton: React.FC<ButtonProps> = ({
       //selected state
       [`translate-x-1 translate-y-1 text-eggshell`]:
         isSelected && variant === "avatar",
-      [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
-        isSelected && colorOption === "standard" && variant !== "avatar",
+      [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
+        isSelected && colorOption === "standard" && variant !== "hollow",
+      [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
+        isSelected && colorOption === "highContrast" && variant !== "hollow",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
-        isSelected && colorOption === "highContrast" && variant !== "avatar",
+        isSelected && colorOption === "highContrast" && variant === "hollow",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected && size === "smallCircle" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color5} ${highContrastButtonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
@@ -132,9 +134,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "avatar" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color3}`]:
         variant === "avatar" && colorOption === "highContrast",
-      [`${buttonColors[colorScheme].color2}`]:
+      [` ${buttonColors[colorScheme].color2}`]:
         variant === "filled" && colorOption === "standard",
-      [`${highContrastButtonColors[colorScheme].color2}`]:
+      [` ${highContrastButtonColors[colorScheme].color2}`]:
         variant === "filled" && colorOption === "highContrast",
 
       //selected state
@@ -142,6 +144,10 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected && variant === "hollow" && colorOption === "standard",
       [` ${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         isSelected && variant === "hollow" && colorOption === "highContrast",
+      [` ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
+        isSelected && variant === "filled" && colorOption === "standard",
+      [`${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
+        isSelected && variant === "filled" && colorOption === "highContrast",
     },
     addClasses,
   );

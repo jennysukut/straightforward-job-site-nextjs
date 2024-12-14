@@ -9,6 +9,7 @@ import { FellowProvider } from "@/contexts/FellowContext";
 import { BusinessProvider } from "@/contexts/BusinessContext";
 import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
+import { JobListingsProvider } from "@/contexts/JobListingsContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
@@ -45,20 +46,22 @@ export default function RootLayout({
         <PageProvider>
           <ColorProvider>
             <ApolloWrapper>
-              <JobProvider>
-                <BusinessProvider>
-                  <FellowProvider>
-                    <ModalProvider>
-                      {/* find how to make this navBar change depending on the login status or current page - maybe set some kind of signal that we can update depending on the page to show different types of headers? */}
-                      <NavBar />
-                      <main className="Main flex flex-1 flex-col">
-                        {children}
-                      </main>
-                      <Footer />
-                    </ModalProvider>
-                  </FellowProvider>
-                </BusinessProvider>
-              </JobProvider>
+              <JobListingsProvider>
+                <JobProvider>
+                  <BusinessProvider>
+                    <FellowProvider>
+                      <ModalProvider>
+                        {/* find how to make this navBar change depending on the login status or current page - maybe set some kind of signal that we can update depending on the page to show different types of headers? */}
+                        <NavBar />
+                        <main className="Main flex flex-1 flex-col">
+                          {children}
+                        </main>
+                        <Footer />
+                      </ModalProvider>
+                    </FellowProvider>
+                  </BusinessProvider>
+                </JobProvider>
+              </JobListingsProvider>
             </ApolloWrapper>
           </ColorProvider>
         </PageProvider>
