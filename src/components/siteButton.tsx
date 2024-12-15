@@ -95,6 +95,8 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected && colorOption === "standard" && variant !== "hollow",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
         isSelected && colorOption === "highContrast" && variant !== "hollow",
+      [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
+        isSelected && colorOption === "standard" && variant === "hollow",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "highContrast" && variant === "hollow",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:

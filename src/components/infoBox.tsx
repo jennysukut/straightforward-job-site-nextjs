@@ -26,7 +26,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "medium"
     | "profile"
     | "jobPost";
-  width?: "small" | "medium" | "extraWide" | "full" | null;
+  width?: "small" | "medium" | "large" | "extraWide" | "full" | null;
   shadowSize?: "small";
   canCollapse?: boolean;
   collapseClick?: Function;
@@ -36,6 +36,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   editClick?: Function;
   height?: "tall" | null;
   canSearch?: boolean;
+  searchClick?: Function;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
@@ -58,6 +59,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   editClick,
   height = "standard",
   canSearch,
+  searchClick,
   ...props
 }) => {
   const { colorOption } = useColors();
@@ -104,6 +106,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "w-[84%] max-w-[1600px] ": width === "extraWide",
       "w-[30vw]": width === "small",
       "w-[40vw]": width === "medium",
+      "w-[70vw]": width === "large",
     },
     addClasses,
   );
@@ -186,11 +189,16 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         </button>
       )}
 
-      {/* add button */}
+      {/* search button */}
       {canSearch && (
         <button
           type="button"
           className="AddButton right-0 opacity-75 hover:opacity-100"
+          onClick={
+            searchClick
+              ? (searchClick as React.MouseEventHandler<HTMLButtonElement>)
+              : () => {}
+          }
         >
           {colorOption === "highContrast" && (
             <Image

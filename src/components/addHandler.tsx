@@ -26,8 +26,10 @@ export default function AddHandler({
         setFunction((prev: any) => [...prev, newData]);
       } else if (oneChoice && oneChoice[type] === true) {
         setFunction(item);
-        setValue(value, item);
-        clearErrors(value);
+        if (setValue) {
+          setValue(value, item);
+          clearErrors(value);
+        }
       } else {
         setFunction((prevList: any) => {
           const updatedList = [...prevList, item];

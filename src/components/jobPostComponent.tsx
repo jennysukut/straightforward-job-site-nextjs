@@ -60,7 +60,7 @@ const JobPost: React.FC<JobPostProps> = ({
           <div className="AppLimit -ml-4 text-xs font-medium italic">
             {job.job?.numberOfApps}/{job.job?.appLimit} apps
           </div>
-          <button className="SaveButton -mr-4 hover:saturate-150">
+          <div className="SaveButton -mr-4 hover:saturate-150">
             {fellow?.savedJobs?.includes(job.jobId) ? (
               <SiteButton
                 aria="addJobsButton"
@@ -87,7 +87,7 @@ const JobPost: React.FC<JobPostProps> = ({
                 addImage="bg-[url('/save-job-icon.svg')]"
               ></SiteButton>
             )}
-          </button>
+          </div>
         </div>
         <div className="JobDetails flex flex-col gap-1 text-center">
           <h2 className="JobTitle mb-1">{job.job?.jobTitle}</h2>

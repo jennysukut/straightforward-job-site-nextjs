@@ -14,6 +14,7 @@ export interface JobListing {
     locationOption?: string;
     positionType?: string;
     payDetails?: any;
+    appLimitReached?: boolean;
   };
 }
 
@@ -88,7 +89,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Super Extra Most Long Amazing Job Title",
         businessName: "Super Duper Most Awesome Business",
         appLimit: "10",
-        numberOfApps: "9",
+        numberOfApps: "10",
         locationOption: "on-site",
         experienceLevel: "senior",
 
@@ -98,6 +99,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
           payOption: "hourly",
         },
         positionType: "full-time",
+        appLimitReached: true,
       },
     },
     {
