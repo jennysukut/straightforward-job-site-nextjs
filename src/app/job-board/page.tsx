@@ -27,19 +27,6 @@ export default function JobBoard() {
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [filters, setFilters] = useState<string[]>([]);
-  // const [filterOptions, setFilterOptions] = useState<{
-  //   level?: string;
-  //   pay?: string;
-  //   locationType?: string;
-  //   positionType?: string;
-  //   location?: string;
-  // }>({
-  //   level: "",
-  //   pay: "",
-  //   locationType: "",
-  //   positionType: "",
-  //   location: "",
-  // });
   const [level, setLevel] = useState<string[]>([]);
   const [pay, setPay] = useState<string[]>([]);
   const [locationType, setLocationType] = useState<string[]>([]);
@@ -170,7 +157,7 @@ export default function JobBoard() {
           />
         </InfoBox>
         {/* make a multiple-options / tiered button options component */}
-        <div className="FilterButtons -mb-6 flex">
+        <div className="FilterButtons -mb-6 flex self-start">
           <TieredButtonOptionsComponent
             type="filters"
             title="filters:"
@@ -180,12 +167,6 @@ export default function JobBoard() {
                 type: "level",
                 array: level,
                 options: ["entry-level", "junior", "senior"],
-              },
-              {
-                title: pay.length > 1 ? pay : "pay",
-                type: "pay",
-                array: pay,
-                options: ["hourly", "annually"],
               },
               {
                 title: locationType.length > 1 ? locationType : "location type",
@@ -199,18 +180,11 @@ export default function JobBoard() {
                 array: positionType,
                 options: ["full-time", "part-time", "contract"],
               },
-              {
-                title: location.length > 1 ? location : "location",
-                type: "location",
-                array: location,
-                options: ["United States", "State"],
-              },
             ]}
             selectedArray={filters}
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             classesForButtons="px-6"
-            test={test}
           />{" "}
         </div>
         {/* filter options here */}

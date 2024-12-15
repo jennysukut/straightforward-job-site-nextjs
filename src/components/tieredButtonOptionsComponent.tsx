@@ -69,7 +69,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
       >
         <label
           htmlFor={title}
-          className={`ButtonOptionsTitle self-center ${textColor}`}
+          className={`ButtonOptionsTitle self-start pt-2 ${textColor}`}
         >
           {title}
           {required && (
@@ -83,7 +83,10 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
         <div className="Buttons flex justify-center gap-6">
           {buttons.map((button: Button, index: number) => {
             return (
-              <div className="ButtonAndOptions flex flex-col" key={index}>
+              <div
+                className="ButtonAndOptions flex flex-col items-center"
+                key={index}
+              >
                 <SiteButton
                   variant="hollow"
                   aria={button.title}
@@ -112,6 +115,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                     classesForButtons="px-6"
                     flexOpt="flex-col gap-2"
                     buttonContainerClasses="flex-col items-center gap-4 self-center"
+                    addClasses="-mb-10"
                   />
                 )}
               </div>
