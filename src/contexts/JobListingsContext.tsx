@@ -65,6 +65,41 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         positionType: "full-time",
       },
     },
+    {
+      jobId: 3,
+      job: {
+        jobTitle: "Extra Fantastic Job",
+        businessName: "Most Best Business",
+        appLimit: "40",
+        numberOfApps: "2",
+        locationOption: "remote",
+        experienceLevel: "junior",
+        payDetails: {
+          payscaleMin: "$80,000",
+          payscaleMax: "$100,000",
+          payOption: "annually",
+        },
+        positionType: "part-time",
+      },
+    },
+    {
+      jobId: 4,
+      job: {
+        jobTitle: "Super Amazing Job",
+        businessName: "Wickedly Wonderful Business",
+        appLimit: "10",
+        numberOfApps: "9",
+        locationOption: "on-site",
+        experienceLevel: "senior",
+
+        payDetails: {
+          payscaleMin: "$50",
+          payscaleMax: "$65",
+          payOption: "hourly",
+        },
+        positionType: "full-time",
+      },
+    },
   ]);
 
   return (
