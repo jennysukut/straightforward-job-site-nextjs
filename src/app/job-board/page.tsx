@@ -35,6 +35,18 @@ export default function JobBoard() {
     hideModal();
   };
 
+  const renderJobListings = () => {
+    return jobListings?.map((job) => (
+      <JobPost
+        job={job}
+        index={job.jobId}
+        colorArray={colorArray}
+        key={job.jobId}
+        saveClick={() => saveClick(job.jobId)}
+      />
+    ));
+  };
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
@@ -45,15 +57,7 @@ export default function JobBoard() {
     >
       <div className="Searchbar">SearchBar Here</div>
       <div className="JobListings flex flex-wrap justify-center gap-8">
-        {jobListings?.map((job) => (
-          <JobPost
-            job={job}
-            index={job.jobId}
-            colorArray={colorArray}
-            key={job.jobId}
-            saveClick={() => saveClick(job.jobId)}
-          />
-        ))}
+        {renderJobListings()}
       </div>
     </div>
   );
