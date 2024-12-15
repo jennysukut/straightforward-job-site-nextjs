@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useRef, ReactNode } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_FELLOW_PROFILE, SAVE_PROFILE_MUTATION } from "@/graphql/mutations";
 
 export interface Fellow {
   name?: string;
@@ -36,6 +38,8 @@ export interface Fellow {
 
 interface FellowContextType {
   fellow: Fellow | null;
+  loading: boolean;
+  error: any;
   setFellow: (fellow: Fellow) => void;
 }
 
@@ -44,7 +48,40 @@ const FellowContext = createContext<FellowContextType | undefined>(undefined);
 export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [fellow, setFellow] = useState<Fellow | null>({
+  const localFellowRef = useRef<Fellow | null>(null);
+
+  // Fetch fellow data using Apollo's useQuery hook
+  const { data: queryData, loading: queryLoading, error: queryError } = useQuery(GET_FELLOW_PROFILE, {
+    onCompleted: (data) => {
+      localFellowRef.current = data.fellowProfile;
+      console.log(JSON.stringify(localFellowRef.current));
+    },
+  });
+
+  // Mutation for updating fellow data
+  const [updateFellow, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(SAVE_PROFILE_MUTATION, {
+    onCompleted: (data) => {
+      localFellowRef.current = data.saveProfile;
+      console.log(JSON.stringify(localFellowRef.current));
+    },
+    ignoreResults: false
+  });
+
+  // Set fellow function to trigger mutation
+  const setFellow = (fellow: Fellow) => {
+    localFellowRef.current = fellow;
+    updateFellow({
+      variables: { requestBody: fellow },
+      update: (cache) => {
+        cache.writeQuery({
+          query: GET_FELLOW_PROFILE,
+          data: { fellow },
+        });
+      },
+    });
+  };
+
+  // const [fellow, setFellow] = useState<Fellow | null>({
     // subscriptionAmount: "10",
     // addMoreInfo: false,
     // name: "Jenny Sukut",
@@ -162,14 +199,22 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     //     id: 1,
     //   },
     // ],
-  });
 
-  return (
-    <FellowContext.Provider value={{ fellow, setFellow }}>
-      {children}
-    </FellowContext.Provider>
-  );
-};
+    const getFellow = () => localFellowRef.current || mutationData?.saveProfile || queryData?.fellowProfile || null;
+
+    return (
+      <FellowContext.Provider
+        value={{
+          fellow: getFellow(),
+          loading: mutationLoading || queryLoading,
+          error: mutationError || queryError,
+          setFellow
+        }}
+      >
+        {children}
+      </FellowContext.Provider>
+    );
+    };
 
 export const useFellow = () => {
   const context = useContext(FellowContext);

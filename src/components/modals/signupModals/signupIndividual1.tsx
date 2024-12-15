@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 
 import SiteButton from "../../siteButton";
+import { FELLOW_SIGNUP_MUTATION } from "@/graphql/mutations";
+import { useMutation } from "@apollo/client";
 
 const fellowSchema = z.object({
   name: z.string().min(2, { message: "Required" }),
@@ -22,6 +24,7 @@ export default function SignupModalIndividual1() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
+  const [signupFellow, { loading, error }] = useMutation(FELLOW_SIGNUP_MUTATION);
 
   const [disabledButton, setDisabledButton] = useState(false);
   const {
@@ -42,6 +45,7 @@ export default function SignupModalIndividual1() {
       shadow: "drop-shadow-lime",
       colorScheme: "b6",
     });
+    signupFellow({variables: {requestBody: data}});
     router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();
