@@ -176,31 +176,31 @@ export default function JobBoard() {
             title="filters:"
             buttons={[
               {
-                title: "level",
+                title: level.length > 1 ? level : "level",
                 type: "level",
                 array: level,
                 options: ["entry-level", "junior", "senior"],
               },
               {
-                title: "pay",
+                title: pay.length > 1 ? pay : "pay",
                 type: "pay",
                 array: pay,
                 options: ["hourly", "annually"],
               },
               {
-                title: "location type",
+                title: locationType.length > 1 ? locationType : "location type",
                 type: "locationType",
                 array: locationType,
                 options: ["remote", "on-site", "hybrid"],
               },
               {
-                title: "position type",
+                title: positionType.length > 1 ? positionType : "position type",
                 type: "positionType",
                 array: positionType,
                 options: ["full-time", "part-time", "contract"],
               },
               {
-                title: "location",
+                title: location.length > 1 ? location : "location",
                 type: "location",
                 array: location,
                 options: ["United States", "State"],

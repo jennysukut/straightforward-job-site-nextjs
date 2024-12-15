@@ -8,7 +8,7 @@ import ButtonOptionsComponent from "./buttonOptionsComponent";
 
 // Define the interface for button objects
 interface Button {
-  title: string;
+  title: any;
   type: string;
   array?: Array<any>;
   options: any[]; // You can specify a more specific type if known
@@ -93,7 +93,12 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                   }
                   onClick={() => buttonClick(button.title)}
                   addClasses={`text-nowrap ${classesForButtons || ""}`}
-                  isSelected={selectedArray.includes(button.title)}
+                  isSelected={
+                    selectedArray.includes(button.title) ||
+                    button.options.some((option) =>
+                      button.title.includes(option),
+                    )
+                  }
                 >
                   {button.title}
                 </SiteButton>
@@ -105,7 +110,8 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                     handleAdd={handleAdd}
                     handleDelete={handleDelete}
                     classesForButtons="px-6"
-                    addClasses="flex-col items-center justify-center"
+                    flexOpt="flex-col gap-2"
+                    buttonContainerClasses="flex-col items-center gap-4 self-center"
                   />
                 )}
               </div>
