@@ -85,8 +85,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: 4,
       job: {
-        jobTitle: "Super Amazing Job",
-        businessName: "Wickedly Wonderful Business",
+        jobTitle: "Super Extra Most Long Amazing Job Title",
+        businessName: "Super Duper Most Awesome Business",
         appLimit: "10",
         numberOfApps: "9",
         locationOption: "on-site",

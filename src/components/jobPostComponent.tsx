@@ -54,7 +54,7 @@ const JobPost: React.FC<JobPostProps> = ({
         variant="filled"
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
         aria="jobListing"
-        size="profile"
+        size="jobPost"
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
@@ -91,7 +91,7 @@ const JobPost: React.FC<JobPostProps> = ({
         </div>
         <div className="JobDetails flex flex-col gap-1 text-center">
           <h2 className="JobTitle mb-1">{job.job?.jobTitle}</h2>
-          <p className="BusinessName font-medium italic leading-8">
+          <p className="BusinessName font-medium italic">
             with {job.job?.businessName}
           </p>
           <p className="ExperienceLevel text-sm font-normal">
