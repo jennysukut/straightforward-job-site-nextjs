@@ -7,6 +7,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
+import { countries } from "@/lib/countriesList";
 
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobPostComponent";
@@ -16,6 +17,7 @@ import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
 
 export default function JobBoard() {
   const { accountType } = usePageContext();
@@ -47,8 +49,7 @@ export default function JobBoard() {
       | "pay"
       | "locationType"
       | "positionType"
-      | "location"
-      | "test",
+      | "country",
     data: any,
   ) => {
     AddHandler({
@@ -60,8 +61,7 @@ export default function JobBoard() {
         pay: setPay,
         locationType: setLocationType,
         positionType: setPositionType,
-        location: setLocation,
-        test: setTest,
+        country: setLocation,
       },
       oneChoice: {
         filters: false,
@@ -81,7 +81,7 @@ export default function JobBoard() {
       | "pay"
       | "locationType"
       | "positionType"
-      | "location",
+      | "country",
     id: any,
   ) => {
     DeleteHandler({
@@ -93,7 +93,7 @@ export default function JobBoard() {
         pay: setPay,
         locationType: setLocationType,
         positionType: setPositionType,
-        location: setLocation,
+        country: setLocation,
       },
     });
   };
@@ -157,7 +157,7 @@ export default function JobBoard() {
           />
         </InfoBox>
         {/* make a multiple-options / tiered button options component */}
-        <div className="FilterButtons -mb-6 flex self-start">
+        <div className="FilterButtons -mb-6 flex items-start gap-6 self-start">
           <TieredButtonOptionsComponent
             type="filters"
             title="filters:"
@@ -185,31 +185,25 @@ export default function JobBoard() {
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             classesForButtons="px-6"
-          />{" "}
+          />
+          {/* add pay filters here */}
+          {/* add location filters here */}
+          {/* country input */}
+          <div className="PayAndCountryFilters mt-2 flex gap-4">
+            <InputComponentWithLabelOptions
+              handleAdd={handleAdd}
+              placeholder="Location Country"
+              name="country"
+              searchData={countries}
+              colorArray={colorArray}
+              options
+              size="tiny"
+              textSize="small"
+              width="extraSmall"
+              optionsContainerClasses="max-w-[20vw]"
+            />
+          </div>
         </div>
-        {/* filter options here */}
-        {/* {filters.includes("level") && (
-          <ButtonOptionsComponent
-            type="level"
-            buttons={["entry-level", "junior", "senior"]}
-            selectedArray={level}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            classesForButtons="px-6"
-            addClasses="self-start ml-14"
-          ></ButtonOptionsComponent>
-        )}
-        {filters.includes("pay") && (
-          <ButtonOptionsComponent
-            type="pay"
-            buttons={["entry-level", "junior", "senior"]}
-            selectedArray={pay}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            classesForButtons="px-6"
-            addClasses="self-start ml-14"
-          ></ButtonOptionsComponent>
-        )} */}
       </div>
       <div className="JobListings flex flex-wrap justify-center gap-8">
         {renderJobListings()}

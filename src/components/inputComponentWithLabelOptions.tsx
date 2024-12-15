@@ -8,7 +8,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 interface InputComponentWithLabelOptions {
   handleAdd: Function;
-  errors: any;
+  errors?: any;
   handleDelete?: Function;
   placeholder: string;
   name: string;
@@ -21,6 +21,9 @@ interface InputComponentWithLabelOptions {
   width?: any;
   register?: any;
   registerValue?: string;
+  size?: any;
+  textSize?: any;
+  optionsContainerClasses?: string;
 }
 
 const InputComponentWithLabelOptions: React.FC<
@@ -39,7 +42,10 @@ const InputComponentWithLabelOptions: React.FC<
   required,
   width,
   register,
+  size = "extraSmall",
   registerValue,
+  textSize,
+  optionsContainerClasses,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -67,7 +73,7 @@ const InputComponentWithLabelOptions: React.FC<
   };
 
   return (
-    <div className="PopulateDisplayFieldContainer flex flex-col gap-8">
+    <div className="InputComponentWithLabelOptionsContainer flex flex-col gap-8">
       {required && (
         <p
           className={`required flex-end -mb-[3rem] -mr-3 -mt-2 text-end text-2xl ${textColor}`}
@@ -77,12 +83,13 @@ const InputComponentWithLabelOptions: React.FC<
       )}
       <InfoBox
         variant="hollow"
-        size="extraSmall"
+        size={size}
         aria={name}
         canSearch
         addClasses="flex"
         type={name}
         width={width}
+        textSize={textSize}
       >
         <input
           type={name}
@@ -97,7 +104,9 @@ const InputComponentWithLabelOptions: React.FC<
 
       {/* place options/search info here? */}
       {options && (
-        <div className="OptionsContainer -mb-2 -mt-4 flex flex-wrap gap-2">
+        <div
+          className={`OptionsContainer -mb-2 -mt-4 flex flex-wrap gap-2 ${optionsContainerClasses}`}
+        >
           {filteredItems.map((item, index) => (
             <SiteLabel
               aria={item}

@@ -65,7 +65,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   return (
     <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
       <div
-        className={`ButtonsContainer mb-4 flex justify-center gap-6 ${flexOpt}`}
+        className={`ButtonsContainer mb-4 flex justify-center gap-4 ${flexOpt}`}
       >
         <label
           htmlFor={title}
@@ -80,7 +80,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
             </span>
           )}
         </label>
-        <div className="Buttons flex justify-center gap-6">
+        <div className="Buttons flex justify-center gap-4">
           {buttons.map((button: Button, index: number) => {
             return (
               <div

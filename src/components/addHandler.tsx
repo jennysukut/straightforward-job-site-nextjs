@@ -43,8 +43,10 @@ export default function AddHandler({
     } else {
       // if there isn't a type of that in setFunctions, we can simply setValue and clearErrors based on type
       console.log("adding something without a setFunction: ", value, item);
-      setValue(value, item);
-      clearErrors(type);
+      if (setValue) {
+        setValue(value, item);
+        clearErrors(type);
+      }
     }
   } else {
     setValue(value, item);

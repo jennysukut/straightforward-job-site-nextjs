@@ -18,6 +18,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   textSize?: "small" | "medium" | "large";
   addClasses?: string;
   size?:
+    | "tiny"
     | "extraSmall"
     | "small"
     | "standard"
@@ -26,7 +27,14 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "medium"
     | "profile"
     | "jobPost";
-  width?: "small" | "medium" | "large" | "extraWide" | "full" | null;
+  width?:
+    | "extraSmall"
+    | "small"
+    | "medium"
+    | "large"
+    | "extraWide"
+    | "full"
+    | null;
   shadowSize?: "small";
   canCollapse?: boolean;
   collapseClick?: Function;
@@ -73,7 +81,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
       [`bg-cream ${boxOptions} font-semibold border-[3px]`]:
-        variant === "hollow",
+        variant === "hollow" && size !== "tiny",
+      [`bg-cream ${boxOptions} font-semibold border-[2px]`]:
+        variant === "hollow" && size === "tiny",
       [`text-eggshell ${largeShadowColors[colorScheme]}`]:
         variant === "filled" && shadowSize === "standard",
       [`text-eggshell ${smallShadowColors[colorScheme]}`]:
@@ -85,6 +95,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "text-md sm:text-md": textSize === "large",
 
       // size
+      "py-2 px-4 sm:py-2 sm:px-4 rounded-full sm:rounded-full": size === "tiny",
       "py-2 px-4 sm:py-3 sm:px-6 rounded-full sm:rounded-full":
         size === "extraSmall",
       "py-4 px-8 sm:py-6 sm:px-10 md:py-14 md:px-16 rounded-2xl sm:rounded-3xl":
@@ -104,6 +115,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "max-w-screen-sm": width === "standard",
       "w-full": width === "full",
       "w-[84%] max-w-[1600px] ": width === "extraWide",
+      "w-[15vw]": width === "extraSmall",
       "w-[30vw]": width === "small",
       "w-[40vw]": width === "medium",
       "w-[70vw]": width === "large",
