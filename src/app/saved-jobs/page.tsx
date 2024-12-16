@@ -43,10 +43,10 @@ export default function SavedJobs() {
 
   return (
     <div
-      className={`SavedJobsPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}
+      className={`SavedJobsPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor} w-[84%] max-w-[1600px] gap-8 self-center`}
     >
-      <div className="Searchbar">Saved Jobs</div>
-      <div className="JobListings flex gap-8">
+      <h1 className="SavedJobsTitle -mb-2 mr-20 self-end">Your Saved Jobs:</h1>
+      <div className="JobListings flex flex-wrap items-center justify-center gap-8 self-center">
         {fellow?.savedJobs?.map((savedJobId: any) => {
           const job = jobListings?.find((job) => job.jobId === savedJobId);
           return job ? (
