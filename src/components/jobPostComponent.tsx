@@ -109,7 +109,7 @@ const JobPost: React.FC<JobPostProps> = ({
             <p className="LocationOption">100% Remote</p>
           )}
           {job.job?.locationOption === "on-site" && (
-            <p className="LocationOption">On-Site</p>
+            <p className="LocationOption">On-Site: {job.job?.country}</p>
           )}
           {/* {job.job?.locationOption === "hybrid" && (
           <p className="LocationOption">{job.job?.hybridDetails}</p>

@@ -37,6 +37,7 @@ export default function JobBoard() {
   const [locationType, setLocationType] = useState<string[]>([]);
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
+  const [country, setCountry] = useState<string[]>([]);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -57,12 +58,23 @@ export default function JobBoard() {
         positionType.length > 0
           ? positionType.includes(job.job?.positionType || "")
           : true;
+      const matchesCountry =
+        country.length > 0 ? country.includes(job.job?.country || "") : true;
 
-      return matchesExperience && matchesLocationType && matchesPositionType;
+      console.log(matchesCountry);
+
+      return (
+        matchesExperience &&
+        matchesLocationType &&
+        matchesPositionType &&
+        matchesCountry
+      );
     });
 
     setFilteredJobs(filteredJobs);
   };
+
+  console.log(country);
 
   useEffect(() => {
     if (inputValue.length >= 3) {
@@ -79,7 +91,6 @@ export default function JobBoard() {
             ...job,
             jobId: parseInt(job.jobId, 10), // Convert jobId back to number
           })) || [];
-      console.log("search matches:", matches);
 
       if (filters.length > 0) {
         filterSearch(matches);
@@ -92,7 +103,16 @@ export default function JobBoard() {
     } else {
       setFilteredJobs([]);
     }
-  }, [inputValue, filters, positionType, level, pay, location, locationType]);
+  }, [
+    inputValue,
+    filters,
+    positionType,
+    level,
+    pay,
+    location,
+    locationType,
+    country,
+  ]);
 
   console.log(filteredJobs);
 
@@ -116,7 +136,7 @@ export default function JobBoard() {
         pay: setPay,
         locationType: setLocationType,
         positionType: setPositionType,
-        country: setLocation,
+        country: setCountry,
       },
       oneChoice: {
         filters: false,
@@ -148,7 +168,7 @@ export default function JobBoard() {
         pay: setPay,
         locationType: setLocationType,
         positionType: setPositionType,
-        country: setLocation,
+        country: setCountry,
       },
     });
   };
@@ -207,9 +227,10 @@ export default function JobBoard() {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
-  useEffect(() => {
-    renderJobListings();
-  }, [filters]);
+  // useEffect(() => {
+  //   setFilters((prevFilters) => ({ ...prevFilters, country }));
+  // }, [country]);
+
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}

@@ -15,6 +15,8 @@ export interface JobListing {
     positionType?: string;
     payDetails?: any;
     appLimitReached?: boolean;
+    country?: string;
+    location?: string;
   };
 }
 
@@ -259,6 +261,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "full-time",
         appLimitReached: false,
+        country: "United States",
+        location: "Montana",
       },
     },
     {
@@ -277,6 +281,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "part-time",
         appLimitReached: true,
+        country: "Canada",
+        location: "Toronto",
       },
     },
     {
@@ -295,6 +301,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "full-time",
         appLimitReached: false,
+        country: "United States",
+        location: "California",
       },
     },
     {
@@ -313,6 +321,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "contract",
         appLimitReached: false,
+        country: "United Kingdom",
+        location: "London",
       },
     },
     {
@@ -331,6 +341,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "full-time",
         appLimitReached: true,
+        country: "Canada",
+        location: "Vancouver",
       },
     },
     {
@@ -349,6 +361,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "part-time",
         appLimitReached: false,
+        country: "United States",
+        location: "Texas",
       },
     },
     {
@@ -367,6 +381,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "full-time",
         appLimitReached: false,
+        country: "United Kingdom",
+        location: "Manchester",
       },
     },
     {
@@ -385,6 +401,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "full-time",
         appLimitReached: false,
+        country: "United States",
+        location: "New York",
       },
     },
     {
@@ -403,6 +421,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "contract",
         appLimitReached: false,
+        country: "Canada",
+        location: "Ottawa",
       },
     },
     {
@@ -421,6 +441,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         },
         positionType: "freelance",
         appLimitReached: true,
+        country: "United Kingdom",
+        location: "Birmingham",
       },
     },
   ]);

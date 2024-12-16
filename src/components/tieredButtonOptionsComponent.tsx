@@ -114,7 +114,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                     handleDelete={handleDelete}
                     classesForButtons="px-6"
                     flexOpt="flex-col gap-2"
-                    buttonContainerClasses="flex-col items-center gap-4 self-center"
+                    buttonContainerClasses="flex-col items-center gap-3 self-center"
                     addClasses="-mb-10"
                   />
                 )}
