@@ -61,8 +61,6 @@ export default function JobBoard() {
       const matchesCountry =
         country.length > 0 ? country.includes(job.job?.country || "") : true;
 
-      console.log(matchesCountry);
-
       return (
         matchesExperience &&
         matchesLocationType &&
@@ -73,8 +71,6 @@ export default function JobBoard() {
 
     setFilteredJobs(filteredJobs);
   };
-
-  console.log(country);
 
   useEffect(() => {
     if (inputValue.length >= 3) {
@@ -97,9 +93,8 @@ export default function JobBoard() {
       } else {
         setFilteredJobs(matches);
       }
-    } else if (filters.length > 0) {
+    } else if (filters.length > 0 || country.length > 0) {
       filterSearch(jobListings);
-      console.log("filtering general jobs");
     } else {
       setFilteredJobs([]);
     }
@@ -113,8 +108,6 @@ export default function JobBoard() {
     locationType,
     country,
   ]);
-
-  console.log(filteredJobs);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -144,7 +137,7 @@ export default function JobBoard() {
         pay: true,
         locationType: true,
         positionType: true,
-        location: true,
+        country: true,
       },
     });
   };
@@ -185,7 +178,6 @@ export default function JobBoard() {
         />
       ));
     } else if (filters.length > 0) {
-      console.log("there's a filter at play!");
       return filteredJobs?.map((job: any) => (
         <JobPost
           job={job}
@@ -227,10 +219,6 @@ export default function JobBoard() {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
-  // useEffect(() => {
-  //   setFilters((prevFilters) => ({ ...prevFilters, country }));
-  // }, [country]);
-
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}
@@ -251,7 +239,8 @@ export default function JobBoard() {
             onChange={handleInput}
           />
         </InfoBox>
-        {/* make a multiple-options / tiered button options component */}
+
+        {/* filter options  */}
         <div className="FilterButtons -mb-6 flex items-start gap-6 self-start">
           <TieredButtonOptionsComponent
             type="filters"
@@ -280,6 +269,7 @@ export default function JobBoard() {
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             classesForButtons="px-6"
+            setArray={setFilters}
           />
           {/* add pay filters here */}
           {/* add location filters here */}

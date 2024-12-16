@@ -55,6 +55,9 @@ const InputComponentWithLabelOptions: React.FC<
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
+    if (value.length == 0) {
+      handleAdd(name, value);
+    }
     if (value.length >= 3) {
       const matches =
         searchData?.filter((item) =>
