@@ -251,7 +251,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "50",
         numberOfApps: "35",
         locationOption: "remote",
-        experienceLevel: "mid-level",
+        experienceLevel: "senior",
         payDetails: {
           payscaleMin: "$85",
           payscaleMax: "$110",
@@ -305,7 +305,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "30",
         numberOfApps: "28",
         locationOption: "remote",
-        experienceLevel: "entry",
+        experienceLevel: "entry-level",
         payDetails: {
           payscaleMin: "$25",
           payscaleMax: "$35",
@@ -341,7 +341,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "100",
         numberOfApps: "85",
         locationOption: "remote",
-        experienceLevel: "entry",
+        experienceLevel: "entry-level",
         payDetails: {
           payscaleMin: "$15",
           payscaleMax: "$18",
@@ -359,7 +359,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "15",
         numberOfApps: "10",
         locationOption: "on-site",
-        experienceLevel: "mid-level",
+        experienceLevel: "senior",
         payDetails: {
           payscaleMin: "$75,000",
           payscaleMax: "$95,000",
@@ -395,7 +395,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "25",
         numberOfApps: "24",
         locationOption: "on-site",
-        experienceLevel: "entry",
+        experienceLevel: "entry-level",
         payDetails: {
           payscaleMin: "$20",
           payscaleMax: "$25",
@@ -413,7 +413,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimit: "50",
         numberOfApps: "50",
         locationOption: "remote",
-        experienceLevel: "mid-level",
+        experienceLevel: "junior",
         payDetails: {
           payscaleMin: "$30",
           payscaleMax: "$45",

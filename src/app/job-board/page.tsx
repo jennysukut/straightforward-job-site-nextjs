@@ -38,20 +38,38 @@ export default function JobBoard() {
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
 
-  // const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const value = event.target.value;
-  //   setInputValue(value);
-  // };
-
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
-    // searching functionality
-    if (value.length >= 3) {
+  };
+
+  const filterSearch = (jobs: any) => {
+    const filteredJobs = jobs.filter((job: any) => {
+      const matchesExperience =
+        level.length > 0
+          ? level.includes(job.job?.experienceLevel || "")
+          : true;
+      const matchesLocationType =
+        locationType.length > 0
+          ? locationType.includes(job.job?.locationOption || "")
+          : true;
+      const matchesPositionType =
+        positionType.length > 0
+          ? positionType.includes(job.job?.positionType || "")
+          : true;
+
+      return matchesExperience && matchesLocationType && matchesPositionType;
+    });
+
+    setFilteredJobs(filteredJobs);
+  };
+
+  useEffect(() => {
+    if (inputValue.length >= 3) {
       const matches =
         jobListings
           ?.filter((job) =>
-            job.job?.jobTitle?.toLowerCase().includes(value.toLowerCase()),
+            job.job?.jobTitle?.toLowerCase().includes(inputValue.toLowerCase()),
           )
           ?.map((job) => ({
             jobId: String(job.jobId), // Convert jobId to string
@@ -62,11 +80,21 @@ export default function JobBoard() {
             jobId: parseInt(job.jobId, 10), // Convert jobId back to number
           })) || [];
       console.log("search matches:", matches);
-      setFilteredJobs(matches);
+
+      if (filters.length > 0) {
+        filterSearch(matches);
+      } else {
+        setFilteredJobs(matches);
+      }
+    } else if (filters.length > 0) {
+      filterSearch(jobListings);
+      console.log("filtering general jobs");
     } else {
       setFilteredJobs([]);
     }
-  };
+  }, [inputValue, filters, positionType, level, pay, location, locationType]);
+
+  console.log(filteredJobs);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -126,8 +154,19 @@ export default function JobBoard() {
   };
 
   const renderJobListings = () => {
-    if (inputValue.length < 3) {
+    if (inputValue.length < 3 && filters.length === 0) {
       return jobListings?.map((job: any) => (
+        <JobPost
+          job={job}
+          index={job.jobId}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    } else if (filters.length > 0) {
+      console.log("there's a filter at play!");
+      return filteredJobs?.map((job: any) => (
         <JobPost
           job={job}
           index={job.jobId}
@@ -168,6 +207,9 @@ export default function JobBoard() {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
+  useEffect(() => {
+    renderJobListings();
+  }, [filters]);
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}
