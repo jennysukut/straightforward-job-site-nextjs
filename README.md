@@ -59,6 +59,7 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
   - ButtonContainer // adds a framer motion effect to any buttons within it
 
   - ButtonOptionsComponent // takes input and displays separate buttons to be used in within forms + data handling
+
     <img src="public/screenshots/buttonOptionsComponent.png" alt="buttonOptionsComponent" width="250" />
 
   - DropDownButtons // these buttons are ones that have the ability to open and display longer-form information. We use them in our landing page, but I don't think we'll keep them in the MVP.
@@ -66,26 +67,33 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
   - RandomColorButton // I believe this generates a button with a random color. We've mostly replaced this with a specifically calculated pattern of button colors so there are good differences in the colors when you have a lot of items generated side-by-side
 
   - FormSubmissionButton // this button component is used on our modals used to gather and handle information. It has options to display deletion abilities depending on the "canDelete" prop.
+
     <img src="public/screenshots/formSubmissionButton.png" alt="formSubmissionButton" width="250" />
 
   - SiteButton // Our fantastic + fun interactive drop-shadow buttons. You can drop lots of different options into this component to make all our site's buttons.
+
     ![SiteButtons in Nav Bar](public/screenshots/siteButtons.png)
 
   - TieredButtonOptions // This is a verys specific set of buttons used for filtering in our search bar. It's where you have a top-tier set of ButtonOptions and then within them, a secondary set of ButtonOptions is connected to and displayed to one of the top-tier buttons. When you click a second-tier button, it sends it's value to the top-tier button.
+
     <img src="public/screenshots/tieredButtonOptions.png" alt="tieredButtonOptions" width="250" />
 
 - Input Components:
 
   - InputComponent // creates an input inside our hollow-design InfoBox - can register the input and displays the associated error when passed the correct props - it takes plain text and passes it into a form, we use this on step1 of profile population
+
     <img src="public/screenshots/inputComponent.png" alt="inputComponent" width="250" />
 
   - InputComponentWithLabelOptions // this input component comes with a magnifying glass/search type ability, where it looks through an array that gets passed to the component and displays labels that match 2+ letters - The input can only be chosen through the labels. We can use this for necessary items that we need to have within certain parameters, like our Location Options, etc... This is generally used for setting a string input.
+
     <img src="public/screenshots/inputComponentWithLabelOptions.png" alt="inputComponentWithLabelOptions" width="250" />
 
   - Label Generator And Display Component // this component is similiar to the inputComponentWithLabelOptions, but it displays the the array where the values are added as labels below the generator. This is generally used for creating and setting arrays within certain parameters, like our Skills List, etc...
+
     <img src="public/screenshots/labelGenAndDisplay.png" alt="labelGenAndDisplay" width="250" />
 
   - Form Input Component // this is the inputComponent to be used on modals that are used to gather and populate information.
+
     <img src="public/screenshots/formInputComponent.png" alt="FormInputComponent" width="250" />
 
 - Data Display Components:
@@ -94,9 +102,11 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
     ![InfoBoxes in a Fellow Profile](public/screenshots/infoBox.png)
 
   - SiteLabel // this component is a simple non-button display element that has options to display, add, or delete data, depending on props passed to it.
+
     <img src="public/screenshots/screenshots.png" alt="SiteLabels" width="250" />
 
   - JobPost // this component is the one we use for displaying jobs on our Job Board and on the saved-jobs page.
+
     <img src="public/screenshots/jobPostComponent.png" alt="JobPost" width="250" />
 
 - Functional Components:
