@@ -97,7 +97,8 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
     ![SiteLabels displaying SkillsList](public/screenshots/siteLabel.png)
 
   - JobPost // this component is the one we use for displaying jobs on our Job Board and on the saved-jobs page.
-    ![JobPost](public/screenshots/jobPostComponent.png)
+     <!-- ![JobPost](public/screenshots/jobPostComponent.png) -->
+    <img src="public/screenshots/jobPostComponent.png" alt="JobPost" width="500" />
 
 - Functional Components:
 
