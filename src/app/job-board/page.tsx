@@ -18,6 +18,7 @@ import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
+import { JobListing } from "@/contexts/JobListingsContext";
 
 export default function JobBoard() {
   const { accountType } = usePageContext();
@@ -28,13 +29,14 @@ export default function JobBoard() {
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
+  const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
+
   const [filters, setFilters] = useState<string[]>([]);
   const [level, setLevel] = useState<string[]>([]);
   const [pay, setPay] = useState<string[]>([]);
   const [locationType, setLocationType] = useState<string[]>([]);
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
-  const [test, setTest] = useState<string[]>([]);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -100,10 +102,25 @@ export default function JobBoard() {
 
   const search = () => {
     console.log("searching", inputValue);
+
+    const matches =
+      jobListings
+        ?.filter((job) =>
+          job.job?.jobTitle?.toLowerCase().includes(inputValue.toLowerCase()),
+        )
+        ?.map((job) => ({
+          jobId: String(job.jobId), // Convert jobId to string
+          job: job.job,
+        }))
+        .map((job) => ({
+          ...job,
+          jobId: parseInt(job.jobId, 10), // Convert jobId back to number
+        })) || [];
+    setFilteredJobs(matches);
   };
 
   const renderJobListings = () => {
-    return jobListings?.map((job) => (
+    return filteredJobs?.map((job: any) => (
       <JobPost
         job={job}
         index={job.jobId}
@@ -112,6 +129,15 @@ export default function JobBoard() {
         saveClick={() => saveClick(job.jobId)}
       />
     ));
+    // return jobListings?.map((job) => (
+    //   <JobPost
+    //     job={job}
+    //     index={job.jobId}
+    //     colorArray={colorArray}
+    //     key={job.jobId}
+    //     saveClick={() => saveClick(job.jobId)}
+    //   />
+    // ));
   };
 
   const saveClick = (jobId: any) => {
@@ -132,8 +158,6 @@ export default function JobBoard() {
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
-
-  console.log(test);
 
   return (
     <div
