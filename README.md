@@ -18,17 +18,11 @@ Run the development server:
 
 ```
 npm run dev
-
 # or
-
 yarn dev
-
 # or
-
 pnpm dev
-
 # or
-
 bun dev
 ```
 
@@ -64,17 +58,23 @@ Our current rendition of the MVP has some placeholder Data in the Fellow Context
 
   - ButtonContainer // adds a framer motion effect to any buttons within it
   - ButtonOptionsComponent // takes input and displays separate buttons to be used in within forms + data handling
+    ![ButtonOptionsComponent](public/screenshots/buttonOptionsComponent.png)
   - DropDownButtons // these buttons are ones that have the ability to open and display longer-form information. We use them in our landing page, but I don't think we'll keep them in the MVP.
   - RandomColorButton // I believe this generates a button with a random color?
   - Form Submission Button // this button component is used on our modals used to gather and handle information. It has options to display deletion abilities depending on the "canDelete" prop.
+    ![FormSubmissionButton](public/screenshots/formSubmissionButton.png)
   - SiteButton // Our fantastic + fun interactive drop-shadow buttons. You can drop lots of different options into this component to make all our site's buttons.
+    ![SiteButton](public/screenshots/siteButtons.png)
 
 - Input Components:
 
   - InputComponent // creates an input inside our hollow-design InfoBox - can register the input and displays the associated error when passed the correct props - it takes plain text and passes it into a form, we use this on step1 of profile population
+    ![InputComponent](public/screenshots/inputComponent.png)
   - InputComponentWithLabelOptions // this input component comes with a magnifying glass/search type ability, where it looks through an array that gets passed to the component and displays labels that match 2+ letters - The input can only be chosen through the labels. We can use this for necessary items that we need to have within certain parameters, like our Location Options, etc... This is generally used for setting a string input.
+    ![InputComponentWithLabelOptions](public/screenshots/inputComponentWithLabelOptions.png)
   - Label Generator And Display Component // this component is similiar to the inputComponentWithLabelOptions, but it displays the the array where the values are added as labels below the generator. This is generally used for creating and setting arrays within certain parameters, like our Skills List, etc...
   - Form Input Component // this is the inputComponent to be used on modals that are used to gather and populate information.
+    ![LabelGeneratorAndDisplayComponent](public/screenshots/labelGenAndDisplay.png)
 
 - Data Display + Functional Components:
 

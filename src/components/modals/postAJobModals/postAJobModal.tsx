@@ -110,7 +110,7 @@ export default function PostAJobModal() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           buttons={["full-time", "part-time", "contract"]}
-          classesForButtons="px-8 py-3"
+          classesForButtons="px-8 py-3 mt-4"
           errors={errors.positionType}
           flexOpt="flex-col"
         />
