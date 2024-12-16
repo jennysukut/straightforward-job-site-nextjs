@@ -38,9 +38,34 @@ export default function JobBoard() {
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
 
+  // const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = event.target.value;
+  //   setInputValue(value);
+  // };
+
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
+    // searching functionality
+    if (value.length >= 3) {
+      const matches =
+        jobListings
+          ?.filter((job) =>
+            job.job?.jobTitle?.toLowerCase().includes(value.toLowerCase()),
+          )
+          ?.map((job) => ({
+            jobId: String(job.jobId), // Convert jobId to string
+            job: job.job,
+          }))
+          .map((job) => ({
+            ...job,
+            jobId: parseInt(job.jobId, 10), // Convert jobId back to number
+          })) || [];
+      console.log("search matches:", matches);
+      setFilteredJobs(matches);
+    } else {
+      setFilteredJobs([]);
+    }
   };
 
   // handlers for adding, updating, and deleting details
@@ -100,44 +125,28 @@ export default function JobBoard() {
     });
   };
 
-  const search = () => {
-    console.log("searching", inputValue);
-
-    const matches =
-      jobListings
-        ?.filter((job) =>
-          job.job?.jobTitle?.toLowerCase().includes(inputValue.toLowerCase()),
-        )
-        ?.map((job) => ({
-          jobId: String(job.jobId), // Convert jobId to string
-          job: job.job,
-        }))
-        .map((job) => ({
-          ...job,
-          jobId: parseInt(job.jobId, 10), // Convert jobId back to number
-        })) || [];
-    setFilteredJobs(matches);
-  };
-
   const renderJobListings = () => {
-    return filteredJobs?.map((job: any) => (
-      <JobPost
-        job={job}
-        index={job.jobId}
-        colorArray={colorArray}
-        key={job.jobId}
-        saveClick={() => saveClick(job.jobId)}
-      />
-    ));
-    // return jobListings?.map((job) => (
-    //   <JobPost
-    //     job={job}
-    //     index={job.jobId}
-    //     colorArray={colorArray}
-    //     key={job.jobId}
-    //     saveClick={() => saveClick(job.jobId)}
-    //   />
-    // ));
+    if (inputValue.length < 3) {
+      return jobListings?.map((job: any) => (
+        <JobPost
+          job={job}
+          index={job.jobId}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    } else {
+      return filteredJobs?.map((job: any) => (
+        <JobPost
+          job={job}
+          index={job.jobId}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    }
   };
 
   const saveClick = (jobId: any) => {
@@ -171,7 +180,6 @@ export default function JobBoard() {
           width="large"
           addClasses="flex"
           canSearch
-          searchClick={search}
         >
           <input
             type="text"
