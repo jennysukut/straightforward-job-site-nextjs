@@ -52,6 +52,15 @@ export default function NavBar() {
             alt="Straightforward Job Site logo"
           />
         )}
+        {colorOption === "seasonal" && (
+          <Image
+            className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
+            src="/seasonal-logo.svg"
+            width={229}
+            height={75}
+            alt="Straightforward Job Site logo"
+          />
+        )}
       </Link>
       {/* NavBar Button Options */}
       {(() => {

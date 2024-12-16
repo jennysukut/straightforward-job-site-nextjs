@@ -6,6 +6,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import {
   buttonColors,
   highContrastButtonColors,
+  seasonalButtonColors,
   ButtonColorOption,
 } from "@/lib/stylingData/buttonColors";
 import clsx from "clsx";
@@ -46,8 +47,18 @@ const SiteButton: React.FC<ButtonProps> = ({
   const { textColor } = useColorOptions();
 
   const hollowOptions =
-    colorOption === "highContrast" ? "border-cobalt " : "border-jade";
-  const bgOptions = colorOption === "highContrast" ? "bg-cobalt" : "bg-jade";
+    colorOption === "highContrast"
+      ? "border-cobalt "
+      : colorOption === "seasonal"
+        ? "border-forest "
+        : "border-jade";
+
+  const bgOptions =
+    colorOption === "highContrast"
+      ? "bg-cobalt"
+      : colorOption === "seasonal"
+        ? "bg-forest"
+        : "bg-jade";
 
   const buttonClasses = clsx(
     "SiteButton relative z-[1] cursor-pointer rounded-full font-semibold transition-all duration-200 tracking-superwide hover:saturate-[120%]",
@@ -70,6 +81,8 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "filled" && colorOption === "standard",
       [`text-eggshell ${highContrastButtonColors[colorScheme].color1}`]:
         variant === "filled" && colorOption === "highContrast",
+      [`text-eggshell ${seasonalButtonColors[colorScheme].color1}`]:
+        variant === "filled" && colorOption === "seasonal",
       [`${addImage} bg-cover`]: variant === "avatar",
 
       // hover colors for hollow buttons
@@ -77,6 +90,8 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "hollow" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color5} ${highContrastButtonColors[colorScheme].color6} group-hover:text-eggshell`]:
         variant === "hollow" && colorOption === "highContrast",
+      [`${seasonalButtonColors[colorScheme].color5} ${seasonalButtonColors[colorScheme].color6} group-hover:text-eggshell`]:
+        variant === "hollow" && colorOption === "seasonal",
 
       // pressed state
       "translate-x-2 translate-y-2 sm:translate-x-1.5 sm:translate-y-1.5":
@@ -95,10 +110,14 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected && colorOption === "standard" && variant !== "hollow",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
         isSelected && colorOption === "highContrast" && variant !== "hollow",
+      [`${seasonalButtonColors[colorScheme].color1} ${seasonalButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
+        isSelected && colorOption === "seasonal" && variant !== "hollow",
       [`${highContrastButtonColors[colorScheme].color1} ${highContrastButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "highContrast" && variant === "hollow",
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "standard" && variant === "hollow",
+      [`${seasonalButtonColors[colorScheme].color1} ${seasonalButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
+        isSelected && colorOption === "seasonal" && variant === "hollow",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected &&
         colorOption === "standard" &&
@@ -107,12 +126,18 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected &&
         colorOption === "highContrast" &&
         (size === "smallCircle" || size === "extraSmallCircle"),
+      [`${seasonalButtonColors[colorScheme].color5} ${seasonalButtonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
+        isSelected &&
+        colorOption === "seasonal" &&
+        (size === "smallCircle" || size === "extraSmallCircle"),
 
       // diabled
       "disabled:translate-x-1 disabled:translate-y-1 disabled:border-midnight disabled:bg-midnight disabled:text-jade disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
         disabled && colorOption === "standard",
       "disabled:translate-x-1 disabled:translate-y-1 disabled:border-lapis disabled:bg-lapis disabled:text-eggshell disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
         disabled && colorOption === "highContrast",
+      "disabled:translate-x-1 disabled:translate-y-1 disabled:border-berry disabled:bg-berry disabled:text-eggshell disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
+        disabled && colorOption === "seasonal",
     },
     addClasses,
     addImage,
@@ -141,24 +166,34 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "hollow" && colorOption === "standard",
       [`border-[2px] ${hollowOptions} ${bgOptions} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         variant === "hollow" && colorOption === "highContrast",
+      [`border-[2px] ${hollowOptions} ${bgOptions} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+        variant === "hollow" && colorOption === "seasonal",
       [`${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color3}`]:
         variant === "avatar" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color3}`]:
         variant === "avatar" && colorOption === "highContrast",
+      [`${seasonalButtonColors[colorScheme].color2} ${seasonalButtonColors[colorScheme].color3}`]:
+        variant === "avatar" && colorOption === "seasonal",
       [` ${buttonColors[colorScheme].color2}`]:
         colorOption === "standard" && variant === "filled",
       [` ${highContrastButtonColors[colorScheme].color2}`]:
         colorOption === "highContrast" && variant === "filled",
+      [` ${seasonalButtonColors[colorScheme].color2}`]:
+        colorOption === "seasonal" && variant === "filled",
 
       //selected state
       [` ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         isSelected && variant === "hollow" && colorOption === "standard",
       [` ${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         isSelected && variant === "hollow" && colorOption === "highContrast",
+      [` ${seasonalButtonColors[colorScheme].color2} ${seasonalButtonColors[colorScheme].color4} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+        isSelected && variant === "hollow" && colorOption === "seasonal",
       [` ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         isSelected && variant === "filled" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         isSelected && variant === "filled" && colorOption === "highContrast",
+      [`${seasonalButtonColors[colorScheme].color4} ${seasonalButtonColors[colorScheme].color2} ${seasonalButtonColors[colorScheme].color4} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+        isSelected && variant === "filled" && colorOption === "seasonal",
     },
     addClasses,
   );

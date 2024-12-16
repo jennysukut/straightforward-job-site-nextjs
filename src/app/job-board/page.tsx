@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
@@ -12,8 +11,6 @@ import { countries } from "@/lib/countriesList";
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobPostComponent";
 import InfoBox from "@/components/infoBox";
-import SiteButton from "@/components/siteButton";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
 import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
@@ -88,12 +85,14 @@ export default function JobBoard() {
             jobId: parseInt(job.jobId, 10), // Convert jobId back to number
           })) || [];
 
-      if (filters.length > 0) {
+      if (filters.length > 0 || country.length > 0) {
         filterSearch(matches);
       } else {
         setFilteredJobs(matches);
       }
-    } else if (filters.length > 0 || country.length > 0) {
+    } else if (filters.length > 0) {
+      filterSearch(jobListings);
+    } else if (country.length > 0) {
       filterSearch(jobListings);
     } else {
       setFilteredJobs([]);
