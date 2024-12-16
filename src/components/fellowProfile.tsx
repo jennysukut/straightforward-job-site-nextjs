@@ -50,6 +50,29 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
+          {isOwn && (
+            <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant="filled"
+                colorScheme="b6"
+                aria="edit"
+                addClasses="px-8"
+                onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
+              >
+                edit details
+              </SiteButton>
+              <SiteButton
+                variant="filled"
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                onClick={addMoreInfo}
+              >
+                add more info
+              </SiteButton>
+            </div>
+          )}
           <InfoBox
             variant="hollow"
             aria="skills"

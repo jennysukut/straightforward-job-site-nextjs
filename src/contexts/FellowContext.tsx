@@ -32,6 +32,7 @@ export interface Fellow {
   profileIsBeingEdited?: boolean;
   addMoreInfo?: boolean;
   subscriptionAmount?: any;
+  savedJobs?: Array<any>;
 }
 
 interface FellowContextType {
@@ -174,6 +175,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
       standard: "/avatars/checks.svg",
       highContrast: "/avatars/blue-checks.svg",
     },
+    // savedJobs: [1, 2],
     shadow: {
       standard: "drop-shadow-magenta",
       highContrast: "drop-shadow-ocean",

@@ -18,6 +18,7 @@ interface ButtonOptionsComponent {
   addClasses?: string;
   flexOpt?: string;
   buttonSize?: any;
+  buttonContainerClasses?: string;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -33,6 +34,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   addClasses,
   flexOpt,
   buttonSize = "default",
+  buttonContainerClasses,
 }) => {
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
@@ -52,7 +54,7 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   return (
     <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
       <div
-        className={`ButtonsContainer mb-4 flex justify-center gap-6 ${flexOpt}`}
+        className={`ButtonsContainer mb-4 flex justify-center ${flexOpt ? flexOpt : "gap-6"}`}
       >
         <label
           htmlFor={title}
@@ -67,7 +69,9 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
             </span>
           )}
         </label>
-        <div className="Buttons flex justify-center gap-6">
+        <div
+          className={`Buttons flex ${buttonContainerClasses ? buttonContainerClasses : "gap-6"} justify-center`}
+        >
           {buttons.map((button: string, index: any) => {
             return (
               <SiteButton

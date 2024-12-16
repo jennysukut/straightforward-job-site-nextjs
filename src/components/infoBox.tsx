@@ -18,14 +18,23 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   textSize?: "small" | "medium" | "large";
   addClasses?: string;
   size?:
+    | "tiny"
     | "extraSmall"
     | "small"
     | "standard"
     | "large"
     | "tall"
     | "medium"
-    | "profile";
-  width?: "small" | "medium" | "extraWide" | "full" | null;
+    | "profile"
+    | "jobPost";
+  width?:
+    | "extraSmall"
+    | "small"
+    | "medium"
+    | "large"
+    | "extraWide"
+    | "full"
+    | null;
   shadowSize?: "small";
   canCollapse?: boolean;
   collapseClick?: Function;
@@ -35,6 +44,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
   editClick?: Function;
   height?: "tall" | null;
   canSearch?: boolean;
+  searchClick?: Function;
 }
 
 const InfoBox: React.FC<InfoBoxProps> = ({
@@ -57,6 +67,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   editClick,
   height = "standard",
   canSearch,
+  searchClick,
   ...props
 }) => {
   const { colorOption } = useColors();
@@ -70,7 +81,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
       [`bg-cream ${boxOptions} font-semibold border-[3px]`]:
-        variant === "hollow",
+        variant === "hollow" && size !== "tiny",
+      [`bg-cream ${boxOptions} font-semibold border-[2px]`]:
+        variant === "hollow" && size === "tiny",
       [`text-eggshell ${largeShadowColors[colorScheme]}`]:
         variant === "filled" && shadowSize === "standard",
       [`text-eggshell ${smallShadowColors[colorScheme]}`]:
@@ -82,6 +95,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "text-md sm:text-md": textSize === "large",
 
       // size
+      "py-2 px-4 sm:py-2 sm:px-4 rounded-full sm:rounded-full": size === "tiny",
       "py-2 px-4 sm:py-3 sm:px-6 rounded-full sm:rounded-full":
         size === "extraSmall",
       "py-4 px-8 sm:py-6 sm:px-10 md:py-14 md:px-16 rounded-2xl sm:rounded-3xl":
@@ -94,13 +108,17 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[100px]": size === "medium",
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl":
         size === "profile",
+      "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[300px] max-h-[450px]":
+        size === "jobPost",
 
       //width
       "max-w-screen-sm": width === "standard",
       "w-full": width === "full",
       "w-[84%] max-w-[1600px] ": width === "extraWide",
+      "w-[15vw]": width === "extraSmall",
       "w-[30vw]": width === "small",
       "w-[40vw]": width === "medium",
+      "w-[70vw]": width === "large",
     },
     addClasses,
   );
@@ -183,11 +201,16 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         </button>
       )}
 
-      {/* add button */}
+      {/* search button */}
       {canSearch && (
         <button
           type="button"
           className="AddButton right-0 opacity-75 hover:opacity-100"
+          onClick={
+            searchClick
+              ? (searchClick as React.MouseEventHandler<HTMLButtonElement>)
+              : () => {}
+          }
         >
           {colorOption === "highContrast" && (
             <Image

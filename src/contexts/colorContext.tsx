@@ -17,9 +17,7 @@ export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   // Options here: "standard" || "highContrast" || "seasonal" - coming soon
-  const [colorOption, setColorOption] = useState<Colors | string>(
-    "highContrast",
-  );
+  const [colorOption, setColorOption] = useState<Colors | string>("standard");
 
   return (
     <ColorContext.Provider value={{ colorOption, setColorOption }}>

@@ -35,17 +35,27 @@ function HeaderSection() {
               variant="filled"
               colorScheme="b1"
             >
-              view your applications
+              manage your applications
             </SiteButton>
           </Link>
           <SiteButton
             aria="support us"
             size="large"
             variant="filled"
-            colorScheme="f1"
+            colorScheme="e5"
           >
-            explore jobs
+            check your mail
           </SiteButton>
+          <Link href={"/job-board"}>
+            <SiteButton
+              aria="support us"
+              size="large"
+              variant="filled"
+              colorScheme="f1"
+            >
+              explore jobs
+            </SiteButton>
+          </Link>
         </ButtonContainer>
       )}
 
@@ -102,14 +112,16 @@ function HeaderSection() {
           >
             learn more
           </SiteButton>
-          <SiteButton
-            aria="support us"
-            size="large"
-            variant="filled"
-            colorScheme="f1"
-          >
-            explore jobs
-          </SiteButton>
+          <Link href={"/job-board"}>
+            <SiteButton
+              aria="support us"
+              size="large"
+              variant="filled"
+              colorScheme="f1"
+            >
+              explore jobs
+            </SiteButton>
+          </Link>
         </ButtonContainer>
       )}
     </section>
