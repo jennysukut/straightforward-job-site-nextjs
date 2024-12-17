@@ -71,11 +71,20 @@ export default function JobBoard() {
 
   useEffect(() => {
     if (inputValue.length >= 3) {
+      // filter and make matches out of any card where the jobTitle matches the inputValue
+      // or any of the preferredSkills listed contain any the inputValue
       const matches =
         jobListings
-          ?.filter((job) =>
-            job.job?.jobTitle?.toLowerCase().includes(inputValue.toLowerCase()),
+          ?.filter(
+            (job) =>
+              job.job?.jobTitle
+                ?.toLowerCase()
+                .includes(inputValue.toLowerCase()) ||
+              job.job?.preferredSkills?.some((skill: string) =>
+                skill.toLowerCase().includes(inputValue.toLowerCase()),
+              ),
           )
+          // we might be able to get rid of the string vs number thing here if we have ids created randomly in the backend
           ?.map((job) => ({
             jobId: String(job.jobId), // Convert jobId to string
             job: job.job,

@@ -3,10 +3,11 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Job {
-  activeJobs?: any;
   jobTitle?: string;
   businessName?: string;
   applicationLimit?: string;
+  // this job number will probably get replaced by an
+  // auto-generated id made by sending details to the server?
   jobNumber?: number;
   positionType?: string;
   positionSummary?: string;
@@ -38,7 +39,6 @@ export const JobProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [job, setJob] = useState<Job | null>({
     // jobIsBeingEdited: false,
-
     jobIsBeingEdited: false,
     applicationLimit: "25",
     businessName: "Straightforward Job Site",

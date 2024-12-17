@@ -9,7 +9,7 @@ export interface JobListing {
     jobTitle?: string;
     businessName?: string;
     experienceLevel?: string;
-    appLimit?: string;
+    applicationLimit?: string;
     numberOfApps?: string;
     locationOption?: string;
     positionType?: string;
@@ -17,6 +17,16 @@ export interface JobListing {
     appLimitReached?: boolean;
     country?: string;
     location?: string;
+    positionSummary?: string;
+    nonNegParams?: Array<string>;
+    idealCandidate?: string;
+    hybridDetails?: any;
+    preferredSkills?: Array<string>;
+    moreAboutPosition?: string;
+    responsibilities?: any;
+    perks?: Array<string>;
+    interviewProcess?: Array<any>;
+    jobIsBeingEdited?: boolean;
   };
 }
 
@@ -250,7 +260,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Software Engineer II",
         businessName: "TechNova Solutions",
-        appLimit: "50",
+        applicationLimit: "50",
         numberOfApps: "35",
         locationOption: "remote",
         experienceLevel: "senior",
@@ -270,7 +280,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
-        appLimit: "25",
+        applicationLimit: "25",
         numberOfApps: "25",
         locationOption: "on-site",
         experienceLevel: "junior",
@@ -290,7 +300,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Project Manager",
         businessName: "Pinnacle Enterprises",
-        appLimit: "40",
+        applicationLimit: "40",
         numberOfApps: "10",
         locationOption: "hybrid",
         experienceLevel: "senior",
@@ -310,7 +320,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Data Analyst",
         businessName: "Insight Analytics Co.",
-        appLimit: "30",
+        applicationLimit: "30",
         numberOfApps: "28",
         locationOption: "remote",
         experienceLevel: "entry-level",
@@ -330,7 +340,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Senior Accountant",
         businessName: "Finance Pros Ltd.",
-        appLimit: "20",
+        applicationLimit: "20",
         numberOfApps: "20",
         locationOption: "on-site",
         experienceLevel: "senior",
@@ -350,7 +360,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Customer Service Representative",
         businessName: "QuickAssist Corp",
-        appLimit: "100",
+        applicationLimit: "100",
         numberOfApps: "85",
         locationOption: "remote",
         experienceLevel: "entry-level",
@@ -370,7 +380,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Mechanical Engineer",
         businessName: "Innovatech Manufacturing",
-        appLimit: "15",
+        applicationLimit: "15",
         numberOfApps: "10",
         locationOption: "on-site",
         experienceLevel: "senior",
@@ -390,7 +400,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Marketing Specialist",
         businessName: "BrightPath Marketing",
-        appLimit: "30",
+        applicationLimit: "30",
         numberOfApps: "29",
         locationOption: "hybrid",
         experienceLevel: "junior",
@@ -410,7 +420,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "IT Support Technician",
         businessName: "NetSecure Systems",
-        appLimit: "25",
+        applicationLimit: "25",
         numberOfApps: "24",
         locationOption: "on-site",
         experienceLevel: "entry-level",
@@ -430,7 +440,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Content Writer",
         businessName: "WordFlow Media",
-        appLimit: "50",
+        applicationLimit: "50",
         numberOfApps: "50",
         locationOption: "remote",
         experienceLevel: "junior",

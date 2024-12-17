@@ -7,6 +7,7 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useJobListings } from "@/contexts/JobListingsContext";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -14,6 +15,7 @@ import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import SiteButton from "./siteButton";
 import ApplicationLimitModal from "./modals/postAJobModals/applicationLimitModal";
 import PaymentModal from "./modals/paymentModal";
+import Link from "next/link";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
@@ -29,6 +31,7 @@ export default function JobListing(isOwn: any) {
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
   const { job, setJob } = useJob();
+  const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -42,6 +45,7 @@ export default function JobListing(isOwn: any) {
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
+  console.log(jobListings);
 
   const currentJob = job;
 
@@ -64,6 +68,7 @@ export default function JobListing(isOwn: any) {
           {/* Non-Negotiable Parameters */}
           {isOwn && (
             <div className="appLimitButton -mb-2 self-end">
+              <Link href={"/job-board"}>go to job board</Link>
               <SiteButton
                 variant="filled"
                 aria="appLimit"

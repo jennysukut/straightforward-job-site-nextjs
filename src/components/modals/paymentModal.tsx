@@ -8,6 +8,8 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
+import { useJobListings } from "@/contexts/JobListingsContext";
+import { useJob } from "@/contexts/JobContext";
 
 import SiteButton from "../siteButton";
 import FormSubmissionButton from "@/components/formSubmissionButton";
@@ -29,6 +31,8 @@ type FormData = z.infer<typeof PaymentSchema>;
 export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
+  const { jobListings, setJobListings } = useJobListings();
+  const { job } = useJob();
   const [disabledButton, setDisabledButton] = useState(false);
   const [agree, setAgree] = useState(false);
   const {
@@ -55,8 +59,12 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
       setDisabledButton(true);
       console.log(data, agree);
       setFellow({ ...fellow, subscriptionAmount: subscriptionAmount });
-      {
-        isJobPost && showModal(<PaymentSuccessfulModal isJobPost />);
+      if (isJobPost && job) {
+        setJobListings([
+          ...(jobListings || []),
+          { jobId: 11, job: { ...job, numberOfApps: String(0) } },
+        ]);
+        showModal(<PaymentSuccessfulModal isJobPost />);
       }
       {
         !isJobPost && showModal(<PaymentSuccessfulModal />);

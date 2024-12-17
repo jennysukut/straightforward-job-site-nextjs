@@ -4,6 +4,7 @@ import Image from "next/image";
 import InfoBox from "./infoBox";
 import SiteButton from "./siteButton";
 import DeleteConfirmationModal from "./modals/deleteConfirmationModal";
+import { useRouter } from "next/navigation";
 
 import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
 import { useColors } from "@/contexts/ColorContext";
@@ -30,6 +31,7 @@ const JobPost: React.FC<JobPostProps> = ({
   index,
   saveClick,
 }) => {
+  const router = useRouter();
   const { colorOption } = useColors();
   const { fellow } = useFellow();
   const { showModal, hideModal } = useModal();
@@ -41,6 +43,11 @@ const JobPost: React.FC<JobPostProps> = ({
         continueDelete={saveClick}
       />,
     );
+  };
+
+  // here, we need to be able to access the listing via Id I believe?
+  const viewDetails = () => {
+    router.push(`/listing/${job.jobId}`);
   };
 
   const boxOptions =
@@ -58,7 +65,7 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {job.job?.numberOfApps}/{job.job?.appLimit} apps
+            {job.job?.numberOfApps}/{job.job?.applicationLimit} apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
             {fellow?.savedJobs?.includes(job.jobId) ? (
@@ -133,6 +140,7 @@ const JobPost: React.FC<JobPostProps> = ({
           colorScheme={
             colorArray[index % colorArray.length] as ButtonColorOption
           }
+          onClick={viewDetails}
         >
           view details
         </SiteButton>

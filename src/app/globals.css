@@ -69,6 +69,10 @@ textarea {
   background: #d2c720;
 }
 
+.next-error-h1 {
+  border-right: 1.5px solid rgba(166, 166, 70, 1) !important;
+}
+
 .custom-range {
   -webkit-appearance: none; /* Remove default styling */
   appearance: none; /* Add standard property for compatibility */
