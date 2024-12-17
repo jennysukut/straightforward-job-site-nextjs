@@ -74,25 +74,15 @@ export default function JobBoard() {
       // filter and make matches out of any card where the jobTitle matches the inputValue
       // or any of the preferredSkills listed contain any the inputValue
       const matches =
-        jobListings
-          ?.filter(
-            (job) =>
-              job.job?.jobTitle
-                ?.toLowerCase()
-                .includes(inputValue.toLowerCase()) ||
-              job.job?.preferredSkills?.some((skill: string) =>
-                skill.toLowerCase().includes(inputValue.toLowerCase()),
-              ),
-          )
-          // we might be able to get rid of the string vs number thing here if we have ids created randomly in the backend
-          ?.map((job) => ({
-            jobId: String(job.jobId), // Convert jobId to string
-            job: job.job,
-          }))
-          .map((job) => ({
-            ...job,
-            jobId: parseInt(job.jobId, 10), // Convert jobId back to number
-          })) || [];
+        jobListings?.filter(
+          (job) =>
+            job.job?.jobTitle
+              ?.toLowerCase()
+              .includes(inputValue.toLowerCase()) ||
+            job.job?.preferredSkills?.some((skill: string) =>
+              skill.toLowerCase().includes(inputValue.toLowerCase()),
+            ),
+        ) || [];
 
       if (filters.length > 0 || country.length > 0) {
         filterSearch(matches);
@@ -176,30 +166,30 @@ export default function JobBoard() {
 
   const renderJobListings = () => {
     if (inputValue.length < 3 && filters.length === 0) {
-      return jobListings?.map((job: any) => (
+      return jobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
-          index={job.jobId}
+          index={index}
           colorArray={colorArray}
           key={job.jobId}
           saveClick={() => saveClick(job.jobId)}
         />
       ));
     } else if (filters.length > 0) {
-      return filteredJobs?.map((job: any) => (
+      return filteredJobs?.map((job: any, index: number) => (
         <JobPost
           job={job}
-          index={job.jobId}
+          index={index}
           colorArray={colorArray}
           key={job.jobId}
           saveClick={() => saveClick(job.jobId)}
         />
       ));
     } else {
-      return filteredJobs?.map((job: any) => (
+      return filteredJobs?.map((job: any, index: number) => (
         <JobPost
           job={job}
-          index={job.jobId}
+          index={index}
           colorArray={colorArray}
           key={job.jobId}
           saveClick={() => saveClick(job.jobId)}
@@ -231,6 +221,7 @@ export default function JobBoard() {
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}
     >
+      {/* searchbar */}
       <div className="SearchBarAndFilterButtons mb-8 flex flex-col items-center gap-4">
         <InfoBox
           variant="hollow"
@@ -279,8 +270,7 @@ export default function JobBoard() {
             classesForButtons="px-6"
             setArray={setFilters}
           />
-          {/* add pay filters here */}
-          {/* add location filters here */}
+
           {/* country input */}
           <div className="PayAndCountryFilters mt-2 flex gap-4">
             <InputComponentWithLabelOptions
@@ -295,6 +285,8 @@ export default function JobBoard() {
               width="extraSmall"
               optionsContainerClasses="max-w-[20vw]"
             />
+            {/* add pay filters here */}
+            {/* add location filters here */}
           </div>
         </div>
       </div>

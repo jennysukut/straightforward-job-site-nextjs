@@ -62,7 +62,7 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
       if (isJobPost && job) {
         setJobListings([
           ...(jobListings || []),
-          { jobId: 11, job: { ...job, numberOfApps: String(0) } },
+          { jobId: "11", job: { ...job, numberOfApps: String(0) } },
         ]);
         showModal(<PaymentSuccessfulModal isJobPost />);
       }

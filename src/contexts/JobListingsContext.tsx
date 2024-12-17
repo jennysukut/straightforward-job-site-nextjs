@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { StringValidation } from "zod";
 
 export interface JobListing {
-  jobId?: number;
+  jobId?: string;
   job?: {
     jobTitle?: string;
     businessName?: string;
@@ -43,220 +43,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [jobListings, setJobListings] = useState<JobListing[] | null>([
-    // {
-    //   jobId: 1,
-    //   job: {
-    //     jobTitle: "Fantastic Job",
-    //     businessName: "Best Business",
-    //     appLimit: "25",
-    //     numberOfApps: "12",
-    //     locationOption: "remote",
-    //     experienceLevel: "senior",
-    //     payDetails: {
-    //       payscaleMin: "$60,000",
-    //       payscaleMax: "$80,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 2,
-    //   job: {
-    //     jobTitle: "Amazing Job",
-    //     businessName: "Wonderful Business",
-    //     appLimit: "50",
-    //     numberOfApps: "20",
-    //     locationOption: "on-site",
-    //     experienceLevel: "junior",
-
-    //     payDetails: {
-    //       payscaleMin: "$20",
-    //       payscaleMax: "$30",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 3,
-    //   job: {
-    //     jobTitle: "Extra Fantastic Job",
-    //     businessName: "Most Best Business",
-    //     appLimit: "40",
-    //     numberOfApps: "2",
-    //     locationOption: "remote",
-    //     experienceLevel: "junior",
-    //     payDetails: {
-    //       payscaleMin: "$80,000",
-    //       payscaleMax: "$100,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "part-time",
-    //   },
-    // },
-    // {
-    //   jobId: 4,
-    //   job: {
-    //     jobTitle: "Super Extra Most Long Amazing Job Title",
-    //     businessName: "Super Duper Most Awesome Business",
-    //     appLimit: "10",
-    //     numberOfApps: "10",
-    //     locationOption: "on-site",
-    //     experienceLevel: "senior",
-
-    //     payDetails: {
-    //       payscaleMin: "$50",
-    //       payscaleMax: "$65",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //     appLimitReached: true,
-    //   },
-    // },
-    // {
-    //   jobId: 5,
-    //   job: {
-    //     jobTitle: "Fantastic Job",
-    //     businessName: "Best Business",
-    //     appLimit: "25",
-    //     numberOfApps: "12",
-    //     locationOption: "remote",
-    //     experienceLevel: "senior",
-    //     payDetails: {
-    //       payscaleMin: "$60,000",
-    //       payscaleMax: "$80,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 6,
-    //   job: {
-    //     jobTitle: "Amazing Job",
-    //     businessName: "Wonderful Business",
-    //     appLimit: "50",
-    //     numberOfApps: "20",
-    //     locationOption: "on-site",
-    //     experienceLevel: "junior",
-
-    //     payDetails: {
-    //       payscaleMin: "$20",
-    //       payscaleMax: "$30",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 7,
-    //   job: {
-    //     jobTitle: "Extra Fantastic Job",
-    //     businessName: "Most Best Business",
-    //     appLimit: "40",
-    //     numberOfApps: "2",
-    //     locationOption: "remote",
-    //     experienceLevel: "junior",
-    //     payDetails: {
-    //       payscaleMin: "$80,000",
-    //       payscaleMax: "$100,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "part-time",
-    //   },
-    // },
-    // {
-    //   jobId: 8,
-    //   job: {
-    //     jobTitle: "Super Extra Most Long Amazing Job Title",
-    //     businessName: "Super Duper Most Awesome Business",
-    //     appLimit: "10",
-    //     numberOfApps: "9",
-    //     locationOption: "on-site",
-    //     experienceLevel: "senior",
-
-    //     payDetails: {
-    //       payscaleMin: "$50",
-    //       payscaleMax: "$65",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 9,
-    //   job: {
-    //     jobTitle: "Fantastic Job",
-    //     businessName: "Best Business",
-    //     appLimit: "25",
-    //     numberOfApps: "12",
-    //     locationOption: "remote",
-    //     experienceLevel: "senior",
-    //     payDetails: {
-    //       payscaleMin: "$60,000",
-    //       payscaleMax: "$80,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 10,
-    //   job: {
-    //     jobTitle: "Amazing Job",
-    //     businessName: "Wonderful Business",
-    //     appLimit: "50",
-    //     numberOfApps: "20",
-    //     locationOption: "on-site",
-    //     experienceLevel: "junior",
-
-    //     payDetails: {
-    //       payscaleMin: "$20",
-    //       payscaleMax: "$30",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-    // {
-    //   jobId: 11,
-    //   job: {
-    //     jobTitle: "Extra Fantastic Job",
-    //     businessName: "Most Best Business",
-    //     appLimit: "40",
-    //     numberOfApps: "2",
-    //     locationOption: "remote",
-    //     experienceLevel: "junior",
-    //     payDetails: {
-    //       payscaleMin: "$80,000",
-    //       payscaleMax: "$100,000",
-    //       payOption: "annually",
-    //     },
-    //     positionType: "part-time",
-    //   },
-    // },
-    // {
-    //   jobId: 12,
-    //   job: {
-    //     jobTitle: "Super Extra Most Long Amazing Job Title",
-    //     businessName: "Super Duper Most Awesome Business",
-    //     appLimit: "10",
-    //     numberOfApps: "9",
-    //     locationOption: "on-site",
-    //     experienceLevel: "senior",
-
-    //     payDetails: {
-    //       payscaleMin: "$50",
-    //       payscaleMax: "$65",
-    //       payOption: "hourly",
-    //     },
-    //     positionType: "full-time",
-    //   },
-    // },
-
     {
-      jobId: 1,
+      jobId: "derp",
       job: {
         jobTitle: "Software Engineer II",
         businessName: "TechNova Solutions",
@@ -273,10 +61,81 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "United States",
         location: "Montana",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Git",
+          "MySQL",
+          "PostgreSQL",
+          "Java",
+          "Python",
+          "JavaScript",
+          "Spring Boot",
+          "Docker",
+          "Kubernetes",
+          "Linux",
+          "HTML",
+          "CSS",
+          "AWS",
+          "React",
+          "Node.js",
+        ],
+
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 2,
+      jobId: "blerp",
       job: {
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
@@ -293,10 +152,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: true,
         country: "Canada",
         location: "Toronto",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 3,
+      jobId: "3",
       job: {
         jobTitle: "Project Manager",
         businessName: "Pinnacle Enterprises",
@@ -313,10 +231,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "United States",
         location: "California",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 4,
+      jobId: "4",
       job: {
         jobTitle: "Data Analyst",
         businessName: "Insight Analytics Co.",
@@ -333,10 +310,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "United Kingdom",
         location: "London",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 5,
+      jobId: "5",
       job: {
         jobTitle: "Senior Accountant",
         businessName: "Finance Pros Ltd.",
@@ -353,10 +389,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: true,
         country: "Canada",
         location: "Vancouver",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 6,
+      jobId: "6",
       job: {
         jobTitle: "Customer Service Representative",
         businessName: "QuickAssist Corp",
@@ -373,10 +468,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "United States",
         location: "Texas",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 7,
+      jobId: "7",
       job: {
         jobTitle: "Mechanical Engineer",
         businessName: "Innovatech Manufacturing",
@@ -393,10 +547,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "United Kingdom",
         location: "Manchester",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 8,
+      jobId: "8",
       job: {
         jobTitle: "Marketing Specialist",
         businessName: "BrightPath Marketing",
@@ -416,7 +629,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       },
     },
     {
-      jobId: 9,
+      jobId: "9",
       job: {
         jobTitle: "IT Support Technician",
         businessName: "NetSecure Systems",
@@ -433,10 +646,69 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: false,
         country: "Canada",
         location: "Ottawa",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
       },
     },
     {
-      jobId: 10,
+      jobId: "10",
       job: {
         jobTitle: "Content Writer",
         businessName: "WordFlow Media",
@@ -453,6 +725,143 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         appLimitReached: true,
         country: "United Kingdom",
         location: "Birmingham",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
+      },
+    },
+    {
+      jobId: "11",
+      job: {
+        applicationLimit: "25",
+        businessName: "Straightforward Job Site",
+        location: "Montana",
+        country: "United States",
+        jobTitle: "Front-End Engineer & Graphic Designer",
+        positionType: "full-time",
+        positionSummary:
+          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
+        nonNegParams: ["Graphic Design", "Web Development"],
+        payDetails: {
+          payscaleMin: "$60,000",
+          payscaleMax: "$80,000",
+          payOption: "annually",
+        },
+        locationOption: "remote",
+        idealCandidate:
+          "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
+        hybridDetails: {},
+        experienceLevel: "junior",
+        preferredSkills: [
+          "Content Writing",
+          "Graphic Design",
+          "Web Development",
+          "Graphic Illustration",
+        ],
+        moreAboutPosition:
+          "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
+        responsibilities: [
+          {
+            responsibility: "Collaborating with managers and content creators",
+            id: 1,
+          },
+          {
+            responsibility: "Design & Development",
+            id: 2,
+          },
+          {
+            responsibility: "Producing high-quality designs",
+            id: 3,
+          },
+        ],
+        perks: ["401K", "Medical Coverage", "Paid Maternity Leave"],
+        interviewProcess: [
+          {
+            stage: "Stage 1",
+            step: "Meet & Greet",
+            details:
+              "Our first step is hopping on a video chat where we'll get to know a little bit more about you, your experience, and how you would do as part of our team.",
+            id: 1,
+          },
+          {
+            stage: "Stage 2",
+            step: "Technical Assignment",
+            details:
+              "Our second step is to provide a paid assignment where you're responsible for either producing a design for us or turning a design into a small, functional front-end component.",
+            id: 2,
+          },
+          {
+            stage: "Stage 3",
+            step: "Manager Meeting",
+            details:
+              "If you've moved onto the next state, you'll meet our manager and go over responsibilities and details about the position. This is the time to ask questions. ",
+            id: 3,
+          },
+          {
+            stage: "Stage 4",
+            step: "Offer & Acceptance",
+            details:
+              "If you're a good fit, we'll extend an offer and get the paperwork signed to get you on board!",
+            id: 4,
+          },
+        ],
+        numberOfApps: "0",
       },
     },
   ]);

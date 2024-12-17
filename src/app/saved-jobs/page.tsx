@@ -47,12 +47,12 @@ export default function SavedJobs() {
     >
       <h1 className="SavedJobsTitle -mb-2 mr-20 self-end">Your Saved Jobs:</h1>
       <div className="JobListings flex flex-wrap items-center justify-center gap-8 self-center">
-        {fellow?.savedJobs?.map((savedJobId: any) => {
+        {fellow?.savedJobs?.map((savedJobId: any, index: number) => {
           const job = jobListings?.find((job) => job.jobId === savedJobId);
           return job ? (
             <JobPost
               job={job}
-              index={savedJobId}
+              index={index}
               colorArray={colorArray}
               key={savedJobId}
               saveClick={() => saveClick(job.jobId)}

@@ -24,7 +24,7 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
-export default function JobListing(isOwn: any) {
+export default function JobListing({ isOwn, hasId, id }: any) {
   // const { business, setBusiness } = useBusiness();
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
@@ -47,7 +47,15 @@ export default function JobListing(isOwn: any) {
   };
   console.log(jobListings);
 
-  const currentJob = job;
+  let currentJob;
+
+  if (hasId && jobListings) {
+    currentJob = jobListings.find((job: any) => job.jobId === id)?.job;
+  } else {
+    currentJob = job;
+  }
+
+  console.log(currentJob);
 
   useEffect(() => {
     console.log(job);
@@ -264,7 +272,7 @@ export default function JobListing(isOwn: any) {
               )}
               {currentJob?.payDetails && (
                 <h2 className="PayDetailsTitle mb-4 pl-2">
-                  {`Pay:`} ${currentJob?.payDetails.payscaleMin} - $
+                  {`Pay:`} {currentJob?.payDetails.payscaleMin} -
                   {currentJob?.payDetails.payscaleMax}{" "}
                   {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
                 </h2>
