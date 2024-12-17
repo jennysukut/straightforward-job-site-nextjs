@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {
   LargeShadowColorOption,
   largeShadowColors,
+  seasonalLargeShadowColors,
 } from "@/lib/stylingData/largeShadowColors";
 import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
 import Image from "next/image";
@@ -75,7 +76,9 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   const boxOptions =
     colorOption === "highContrast"
       ? "border-cobalt drop-shadow-cobalt text-cobalt"
-      : "border-jade drop-shadow-jade text-jade";
+      : colorOption === "seasonal"
+        ? "border-cocoa drop-shadow-cocoa text-cocoa"
+        : "border-jade drop-shadow-jade text-jade";
 
   const boxClasses = clsx(
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
@@ -85,9 +88,17 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       [`bg-cream ${boxOptions} font-semibold border-[2px]`]:
         variant === "hollow" && size === "tiny",
       [`text-eggshell ${largeShadowColors[colorScheme]}`]:
-        variant === "filled" && shadowSize === "standard",
+        variant === "filled" &&
+        shadowSize === "standard" &&
+        colorOption === "standard",
+      [`text-eggshell ${seasonalLargeShadowColors[colorScheme]}`]:
+        variant === "filled" &&
+        shadowSize === "standard" &&
+        colorOption === "seasonal",
       [`text-eggshell ${smallShadowColors[colorScheme]}`]:
-        variant === "filled" && shadowSize === "small",
+        variant === "filled" &&
+        shadowSize === "small" &&
+        colorOption === "standard",
 
       //textSize
       "text-[0.6rem] sm:text-xs": textSize === "small",
@@ -148,6 +159,14 @@ const InfoBox: React.FC<InfoBoxProps> = ({
               height={16}
             ></Image>
           )}
+          {colorOption === "seasonal" && (
+            <Image
+              src="/cocoa-edit-icon.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
         </button>
       )}
 
@@ -193,6 +212,14 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           {colorOption === "standard" && (
             <Image
               src="/add-icon.svg"
+              alt="addButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
+          {colorOption === "seasonal" && (
+            <Image
+              src="/cocoa-add-icon.svg"
               alt="addButton"
               width={16}
               height={16}
@@ -249,6 +276,14 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           {colorOption === "standard" && (
             <Image
               src="/edit-icon.svg"
+              alt="editButton"
+              width={16}
+              height={16}
+            ></Image>
+          )}
+          {colorOption === "seasonal" && (
+            <Image
+              src="/cocoa-edit-icon.svg"
               alt="editButton"
               width={16}
               height={16}

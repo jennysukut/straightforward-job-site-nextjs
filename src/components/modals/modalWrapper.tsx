@@ -98,6 +98,14 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
                       height={24}
                     />
                   )}
+                  {colorOption === "seasonal" && (
+                    <Image
+                      src="/cocoa-close-icon.svg"
+                      alt="close"
+                      width={24}
+                      height={24}
+                    />
+                  )}
                 </button>
               </Dialog.Close>
               {children}

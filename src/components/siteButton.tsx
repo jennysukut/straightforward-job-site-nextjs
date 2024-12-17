@@ -50,14 +50,14 @@ const SiteButton: React.FC<ButtonProps> = ({
     colorOption === "highContrast"
       ? "border-cobalt "
       : colorOption === "seasonal"
-        ? "border-forest "
+        ? "border-cocoa "
         : "border-jade";
 
   const bgOptions =
     colorOption === "highContrast"
       ? "bg-cobalt"
       : colorOption === "seasonal"
-        ? "bg-forest"
+        ? "bg-cocoa"
         : "bg-jade";
 
   const buttonClasses = clsx(

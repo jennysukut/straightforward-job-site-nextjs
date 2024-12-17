@@ -50,6 +50,17 @@ const FormSubmissionButton: React.FC<FormSubmissionComponent> = ({
               />
             </button>
           )}
+          {colorOption === "seasonal" && (
+            <button onClick={clickDelete}>
+              <Image
+                className="DeleteButton opacity-75 hover:opacity-100"
+                src="/cocoa-delete-icon.svg"
+                width={18}
+                height={18}
+                alt="delete"
+              />
+            </button>
+          )}
           <SiteButton
             variant="hollow"
             colorScheme="f1"

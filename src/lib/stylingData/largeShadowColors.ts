@@ -42,6 +42,50 @@ export const largeShadowColors = {
   f6: "bg-magenta drop-shadow-peach",
 };
 
+export const seasonalLargeShadowColors = {
+  a1: "bg-berry drop-shadow-almond",
+  a2: "bg-mauve drop-shadow-almond",
+  a3: "bg-spice drop-shadow-almond",
+  a4: "bg-toast drop-shadow-almond",
+  a5: "bg-pumpkin drop-shadow-almond",
+  a6: "bg-wine drop-shadow-almond",
+
+  b1: "bg-berry drop-shadow-almond",
+  b2: "bg-mauve drop-shadow-almond",
+  b3: "bg-spice drop-shadow-almond",
+  b4: "bg-toast drop-shadow-almond",
+  b5: "bg-pumpkin drop-shadow-almond",
+  b6: "bg-wine drop-shadow-almond",
+
+  c1: "bg-berry drop-shadow-almond",
+  c2: "bg-mauve drop-shadow-almond",
+  c3: "bg-spice drop-shadow-almond",
+  c4: "bg-toast drop-shadow-almond",
+  c5: "bg-pumpkin drop-shadow-almond",
+  c6: "bg-wine drop-shadow-almond",
+
+  d1: "bg-berry drop-shadow-almond",
+  d2: "bg-mauve drop-shadow-almond",
+  d3: "bg-spice drop-shadow-almond",
+  d4: "bg-toast drop-shadow-almond",
+  d5: "bg-pumpkin drop-shadow-almond",
+  d6: "bg-wine drop-shadow-almond",
+
+  e1: "bg-berry drop-shadow-almond",
+  e2: "bg-mauve drop-shadow-almond",
+  e3: "bg-spice drop-shadow-almond",
+  e4: "bg-toast drop-shadow-almond",
+  e5: "bg-pumpkin drop-shadow-almond",
+  e6: "bg-wine drop-shadow-almond",
+
+  f1: "bg-berry drop-shadow-almond",
+  f2: "bg-mauve drop-shadow-almond",
+  f3: "bg-spice drop-shadow-almond",
+  f4: "bg-toast drop-shadow-almond",
+  f5: "bg-pumpkin drop-shadow-almond",
+  f6: "bg-wine drop-shadow-almond",
+};
+
 export type LargeShadowColorScheme = typeof largeShadowColors;
 
 export type LargeShadowColorOption = keyof typeof largeShadowColors;
