@@ -14,7 +14,7 @@ export default function Avatar({ addClasses }: any) {
     <div className="Avatar">
       {accountType === "Fellow" && (
         <Image
-          className={`AvatarImage ${colorOption === "highContrast" ? fellow?.shadow.highContrast : fellow?.shadow.standard} ${addClasses}`}
+          className={`AvatarImage ${colorOption === "highContrast" ? fellow?.shadow.highContrast : ""} ${colorOption === "standard" ? fellow?.shadow.standard : ""} ${colorOption === "seasonal" ? "drop-shadow-pine" : ""} ${addClasses}`}
           src={
             colorOption === "highContrast"
               ? fellow?.avatar.highContrast

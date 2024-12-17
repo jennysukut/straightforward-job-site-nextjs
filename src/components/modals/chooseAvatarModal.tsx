@@ -32,7 +32,7 @@ export default function AvatarModal({ setAvatarOptions }: any) {
   };
 
   const renderAvatarOptions = () => {
-    if (colorOption === "standard") {
+    if (colorOption === "standard" || colorOption === "seasonal") {
       return avatarOptions.map((option) => (
         <SiteButton
           key={option.title}

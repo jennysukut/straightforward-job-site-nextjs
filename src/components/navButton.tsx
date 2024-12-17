@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import type { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import SiteButton from "./siteButton";
+import { useColors } from "@/contexts/ColorContext";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "large" | "mediumCircle";
@@ -21,9 +22,12 @@ const NavButton: React.FC<ButtonProps> = ({
   title,
   addImage,
 }) => {
+  const { colorOption } = useColors();
+
   return (
     <SiteButton
-      variant={variant}
+      // variant={variant}
+      variant={colorOption === "seasonal" ? "hollow" : variant}
       colorScheme={colorScheme}
       size={size}
       aria={title}

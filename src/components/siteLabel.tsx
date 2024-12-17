@@ -44,7 +44,9 @@ const SiteLabel: React.FC<LabelProps> = ({
     colorOption === "highContrast"
       ? `${highContrastSmallShadowColors[colorScheme]}`
       : colorOption === "seasonal"
-        ? `${seasonalSmallShadowColors[colorScheme]}`
+        ? // ? `${seasonalSmallShadowColors[colorScheme]}`
+          // `bg-eggshell border-2 border-forest drop-shadow-smForest text-forest`
+          "bg-pine drop-shadow-smForest text-eggshell"
         : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(

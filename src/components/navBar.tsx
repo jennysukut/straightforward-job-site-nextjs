@@ -46,7 +46,7 @@ export default function NavBar() {
         {colorOption === "standard" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-            src="/sfjs-logo.svg"
+            src="/sfjs-updated-logo.svg"
             width={229}
             height={75}
             alt="Straightforward Job Site logo"
@@ -55,7 +55,7 @@ export default function NavBar() {
         {colorOption === "seasonal" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-            src="/seasonal-logo.svg"
+            src="/hollow-sfjs-logo.svg"
             width={229}
             height={75}
             alt="Straightforward Job Site logo"

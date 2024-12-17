@@ -3,6 +3,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
@@ -14,6 +15,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   const { setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const { colorOption } = useColors();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -53,7 +55,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           {isOwn && (
             <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
               <SiteButton
-                variant="filled"
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
                 colorScheme="b6"
                 aria="edit"
                 addClasses="px-8"
@@ -63,7 +65,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 edit details
               </SiteButton>
               <SiteButton
-                variant="filled"
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"
@@ -286,7 +288,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           {isOwn && (
             <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
               <SiteButton
-                variant="filled"
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
                 colorScheme="b6"
                 aria="edit"
                 addClasses="px-8"
@@ -296,7 +298,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 edit details
               </SiteButton>
               <SiteButton
-                variant="filled"
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"

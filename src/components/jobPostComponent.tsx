@@ -58,7 +58,7 @@ const JobPost: React.FC<JobPostProps> = ({
   return (
     <div className="JobListing flex flex-col gap-6" key={job.jobId}>
       <InfoBox
-        variant="filled"
+        variant={colorOption === "seasonal" ? "hollow" : "filled"}
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
         aria="jobListing"
         size="jobPost"
@@ -136,7 +136,7 @@ const JobPost: React.FC<JobPostProps> = ({
       <div className="ViewDetailsButton self-end">
         <SiteButton
           aria="viewDetails"
-          variant="filled"
+          variant={colorOption === "seasonal" ? "hollow" : "filled"}
           colorScheme={
             colorArray[index % colorArray.length] as ButtonColorOption
           }

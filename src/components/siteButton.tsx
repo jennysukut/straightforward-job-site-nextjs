@@ -50,14 +50,14 @@ const SiteButton: React.FC<ButtonProps> = ({
     colorOption === "highContrast"
       ? "border-cobalt "
       : colorOption === "seasonal"
-        ? "border-cocoa "
+        ? "border-forest "
         : "border-jade";
 
   const bgOptions =
     colorOption === "highContrast"
       ? "bg-cobalt"
       : colorOption === "seasonal"
-        ? "bg-cocoa"
+        ? "bg-forest"
         : "bg-jade";
 
   const buttonClasses = clsx(
@@ -75,7 +75,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         size === "extraLarge",
 
       // variant
-      [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
+      [`bg-eggshell ${hollowOptions} border-[2px] ${textColor}`]:
         variant === "hollow" && !isSelected,
       [`text-eggshell ${buttonColors[colorScheme].color1}`]:
         variant === "filled" && colorOption === "standard",
@@ -90,7 +90,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "hollow" && colorOption === "standard",
       [`${highContrastButtonColors[colorScheme].color5} ${highContrastButtonColors[colorScheme].color6} group-hover:text-eggshell`]:
         variant === "hollow" && colorOption === "highContrast",
-      [`${seasonalButtonColors[colorScheme].color5} ${seasonalButtonColors[colorScheme].color6} group-hover:text-eggshell`]:
+      // [`${seasonalButtonColors[colorScheme].color5} ${seasonalButtonColors[colorScheme].color6} group-hover:text-eggshell`]:
+      //   variant === "hollow" && colorOption === "seasonal",
+      [`bg-eggshell border-[2px] border-pine group-hover:text-pine`]:
         variant === "hollow" && colorOption === "seasonal",
 
       // pressed state
@@ -116,7 +118,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected && colorOption === "highContrast" && variant === "hollow",
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "standard" && variant === "hollow",
-      [`${seasonalButtonColors[colorScheme].color1} ${seasonalButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
+      // [`${seasonalButtonColors[colorScheme].color1} ${seasonalButtonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
+      //   isSelected && colorOption === "seasonal" && variant === "hollow",
+      [`bg-eggshell translate-x-1 translate-y-1 text-pine border-pine border-[2px]`]:
         isSelected && colorOption === "seasonal" && variant === "hollow",
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected &&
@@ -166,7 +170,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         variant === "hollow" && colorOption === "standard",
       [`border-[2px] ${hollowOptions} ${bgOptions} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         variant === "hollow" && colorOption === "highContrast",
-      [`border-[2px] ${hollowOptions} ${bgOptions} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+      // [`border-[2px] ${hollowOptions} ${bgOptions} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+      //   variant === "hollow" && colorOption === "seasonal",
+      [`border-[2px] ${hollowOptions} ${bgOptions} bg-pine border-pine`]:
         variant === "hollow" && colorOption === "seasonal",
       [`${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color3}`]:
         variant === "avatar" && colorOption === "standard",
@@ -186,7 +192,9 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected && variant === "hollow" && colorOption === "standard",
       [` ${highContrastButtonColors[colorScheme].color2} ${highContrastButtonColors[colorScheme].color4} ${highContrastButtonColors[colorScheme].color7} ${highContrastButtonColors[colorScheme].color8}`]:
         isSelected && variant === "hollow" && colorOption === "highContrast",
-      [` ${seasonalButtonColors[colorScheme].color2} ${seasonalButtonColors[colorScheme].color4} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+      // [` ${seasonalButtonColors[colorScheme].color2} ${seasonalButtonColors[colorScheme].color4} ${seasonalButtonColors[colorScheme].color7} ${seasonalButtonColors[colorScheme].color8}`]:
+      //   isSelected && variant === "hollow" && colorOption === "seasonal",
+      [` bg-pine border-pine`]:
         isSelected && variant === "hollow" && colorOption === "seasonal",
       [` ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         isSelected && variant === "filled" && colorOption === "standard",

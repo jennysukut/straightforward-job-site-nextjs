@@ -78,7 +78,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
     colorOption === "highContrast"
       ? "border-cobalt drop-shadow-cobalt text-cobalt"
       : colorOption === "seasonal"
-        ? "border-cocoa drop-shadow-cocoa text-cocoa"
+        ? "border-pine drop-shadow-pine text-pine"
         : "border-jade drop-shadow-jade text-jade";
 
   const boxClasses = clsx(

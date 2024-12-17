@@ -42,15 +42,28 @@ const config: Config = {
 
         // SEASONAL COLOR SCHEME
 
-        berry: "#D9486A",
-        pumpkin: "#CF5129",
-        wine: "#B23451",
-        spice: "#EC5135",
-        toast: "#D17410",
-        mauve: "#F46E52",
-        almond: "#E1D4C8",
-        cocoa: "#854407",
-        cinnamon: "#B56032",
+        // berry: "#D9486A",
+        // pumpkin: "#CF5129",
+        // wine: "#B23451",
+        // spice: "#EC5135",
+        // toast: "#D17410",
+        // mauve: "#F46E52",
+        // almond: "#E1D4C8",
+        // cocoa: "#854407",
+        // cinnamon: "#B56032",
+
+        //seasonal alt standard scheme
+        berry: "#E469AE", //watermelon alt
+        wine: "#CB3D80", //magenta alt
+        pumpkin: "#E57132", // orange alt
+        apple: "#EF8B74", // peach alt
+        holly: "#208E7A", //jade alt
+        moss: "#AEA51A", // lime alt
+        sage: "#9D9412", // olive alt
+        forest: "#087661", // emerald alt
+        ice: "#4E938F", // sky alt
+        plum: "#AE75B6", //lilac alt
+        pine: "#0B5648", //midnight alt
       },
       letterSpacing: {
         superwide: "0.15em",
@@ -83,6 +96,18 @@ const config: Config = {
       almond: "10px 10px 0px #E1D4C8",
       cocoa: "10px 10px 0px #854407",
 
+      berry: "10px 10px 0px #E469AE", //watermelon alt
+      wine: "10px 10px 0px #CB3D80", //magenta alt
+      pumpkin: "10px 10px 0px #E57132", // orange alt
+      apple: "10px 10px 0px #EF8B74", // peach alt
+      holly: "10px 10px 0px #208E7A", //jade alt
+      moss: "10px 10px 0px #AEA51A", // lime alt
+      sage: "10px 10px 0px #9D9412", // olive alt
+      forest: "10px 10px 0px #087661", // emerald alt
+      ice: "10px 10px 0px #4E938F", // sky alt
+      plum: "10px 10px 0px #AE75B6", //lilac alt
+      pine: "10px 10px 0px #0B5648", //midnight alt
+
       // small drop shadows
       smLilac: "3px 3px 0px #D6A6DC",
       smSky: "3px 3px 0px #C1D8D3",
@@ -108,6 +133,18 @@ const config: Config = {
 
       // Small Seasonal Drop Shadow Colors
       smAlmond: "4px 4px 0px #D9C7B6",
+
+      smBerry: "3px 3px 0px #E469AE", //watermelon alt
+      smWine: "3px 3px 0px #CB3D80", //magenta alt
+      smPumpkin: "3px 3px 0px #E57132", // orange alt
+      smApple: "3px 3px 0px #EF8B74", // peach alt
+      smHolly: "3px 3px 0px #208E7A", //jade alt
+      smMoss: "3px 3px 0px #AEA51A", // lime alt
+      smSage: "3px 3px 0px #9D9412", // olive alt
+      smForest: "3px 3px 0px #087661", // emerald alt
+      smIce: "3px 3px 0px #4E938F", // sky alt
+      smPlum: "3px 3px 0px #AE75B6", //lilac alt
+      smPine: "3px 3px 0px #0B5648", //midnight alt
     },
   },
   plugins: [],
