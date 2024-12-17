@@ -13,7 +13,17 @@ Run the development server:
 2. Navigate to the project directory:<br/>
    `cd straightforward-job-site-nextjs`
 3. Install dependencies:<br/>
-   `npm install`
+
+```
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
 4. Run the development server:<br/>
 
 ```
