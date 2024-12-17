@@ -124,7 +124,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           <InfoBox
             variant="hollow"
             aria="preferredSkills"
-            size="profile"
+            size="thin"
             width="small"
             canEdit={canEdit}
             editClick={() => handleEditClick("/post-a-job/step3")}

@@ -27,7 +27,8 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "tall"
     | "medium"
     | "profile"
-    | "jobPost";
+    | "jobPost"
+    | "thin";
   width?:
     | "extraSmall"
     | "small"
@@ -83,6 +84,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   const boxClasses = clsx(
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
+      // colors and borders
       [`bg-cream ${boxOptions} font-semibold border-[3px]`]:
         variant === "hollow" && size !== "tiny",
       [`bg-cream ${boxOptions} font-semibold border-[2px]`]:
@@ -119,6 +121,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[100px]": size === "medium",
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl":
         size === "profile",
+      "py-6 px-2 sm:py-10 sm:px-6 md:py-10 md:px-6 rounded-2xl sm:rounded-3xl":
+        size === "thin",
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[300px] max-h-[450px]":
         size === "jobPost",
 
