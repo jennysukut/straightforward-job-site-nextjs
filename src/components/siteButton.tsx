@@ -80,7 +80,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       // hover colors for hollow buttons
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} group-hover:text-eggshell`]:
         varOpt === "hollow" && colorOption === "standard",
-      [`bg-cream border-[2px] border-pine group-hover:text-pine`]:
+      [`group-hover:bg-forest group-hover:border-forest border-[2px] group-hover:text-eggshell`]:
         varOpt === "hollow" && colorOption === "highContrast",
 
       // pressed state
@@ -101,7 +101,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       //selected -- hollow
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "standard" && varOpt === "hollow",
-      [`bg-cream translate-x-1 translate-y-1 text-pine border-pine border-[2px]`]:
+      [`bg-forest translate-x-1 translate-y-1 text-eggshell border-forest border-[2px]`]:
         isSelected && colorOption === "highContrast" && varOpt === "hollow",
 
       // is selected with colorOptions
@@ -109,7 +109,7 @@ const SiteButton: React.FC<ButtonProps> = ({
         isSelected &&
         colorOption === "standard" &&
         (size === "smallCircle" || size === "extraSmallCircle"),
-      [`bg-forest border-forest translate-x-[2px] translate-y-[2px] text-eggshell`]:
+      [`bg-forest translate-x-[2px] translate-y-[2px] text-eggshell`]:
         isSelected &&
         colorOption === "highContrast" &&
         (size === "smallCircle" || size === "extraSmallCircle"),
@@ -149,7 +149,15 @@ const SiteButton: React.FC<ButtonProps> = ({
       [`border-[2px] ${hollowOptions} ${bgOptions} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         varOpt === "hollow" && colorOption === "standard",
       [`border-[2px] ${hollowOptions} ${bgOptions} bg-pine border-pine`]:
-        varOpt === "hollow" && colorOption === "highContrast",
+        varOpt === "hollow" &&
+        colorOption === "highContrast" &&
+        size !== "extraSmallCircle",
+      [`border-[2px] ${hollowOptions} ${bgOptions} bg-almond border-almond`]:
+        varOpt === "hollow" &&
+        colorOption === "highContrast" &&
+        size === "extraSmallCircle" &&
+        !isSelected,
+
       // variant -- avatar
       [`${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color3}`]:
         variant === "avatar" && colorOption === "standard",
@@ -158,11 +166,10 @@ const SiteButton: React.FC<ButtonProps> = ({
         colorOption === "standard" && varOpt === "filled",
 
       //selected state
-      [` ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
-        isSelected && varOpt === "hollow" && colorOption === "standard",
-
       [` ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
         isSelected && varOpt === "filled" && colorOption === "standard",
+      [` ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color2} ${buttonColors[colorScheme].color4} ${buttonColors[colorScheme].color7} ${buttonColors[colorScheme].color8}`]:
+        isSelected && varOpt === "hollow" && colorOption === "standard",
     },
     addClasses,
   );

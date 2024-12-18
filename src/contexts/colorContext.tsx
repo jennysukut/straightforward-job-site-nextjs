@@ -18,7 +18,9 @@ export const ColorProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   // We'll need to set a colorOption to the account of each person & business on the site
   // Options here: "standard" || "highContrast"
-  const [colorOption, setColorOption] = useState<Colors | string>("standard");
+  const [colorOption, setColorOption] = useState<Colors | string>(
+    "highContrast",
+  );
 
   return (
     <ColorContext.Provider value={{ colorOption, setColorOption }}>

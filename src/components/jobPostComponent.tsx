@@ -55,6 +55,38 @@ const JobPost: React.FC<JobPostProps> = ({
       ? "border-cobalt drop-shadow-cobalt text-cobalt"
       : "border-jade drop-shadow-jade text-jade";
 
+  const saveButton = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return (
+          <SiteButton
+            aria="addJobsButton"
+            size="extraSmallCircle"
+            variant="filled"
+            onClick={saveClick}
+            colorScheme={
+              colorArray[index % colorArray.length] as ButtonColorOption
+            }
+            addClasses="bg-center"
+            addImage="bg-[url('/hc-save-job-icon.svg')]"
+          ></SiteButton>
+        );
+      default:
+        return (
+          <SiteButton
+            aria="addJobsButton"
+            size="extraSmallCircle"
+            variant="filled"
+            onClick={saveClick}
+            colorScheme={
+              colorArray[index % colorArray.length] as ButtonColorOption
+            }
+            addClasses="bg-center"
+            addImage="bg-[url('/save-job-icon.svg')]"
+          ></SiteButton>
+        );
+    }
+  })();
   return (
     <div className="JobListing flex flex-col gap-6" key={job.jobId}>
       <InfoBox
@@ -82,17 +114,18 @@ const JobPost: React.FC<JobPostProps> = ({
                 addImage="bg-[url('/saved-job-icon.svg')]"
               ></SiteButton>
             ) : (
-              <SiteButton
-                aria="addJobsButton"
-                size="extraSmallCircle"
-                variant="filled"
-                onClick={saveClick}
-                colorScheme={
-                  colorArray[index % colorArray.length] as ButtonColorOption
-                }
-                addClasses="bg-center"
-                addImage="bg-[url('/save-job-icon.svg')]"
-              ></SiteButton>
+              saveButton
+              // <SiteButton
+              //   aria="addJobsButton"
+              //   size="extraSmallCircle"
+              //   variant="filled"
+              //   onClick={saveClick}
+              //   colorScheme={
+              //     colorArray[index % colorArray.length] as ButtonColorOption
+              //   }
+              //   addClasses="bg-center"
+              //   addImage="bg-[url('/save-job-icon.svg')]"
+              // ></SiteButton>
             )}
           </div>
         </div>
