@@ -84,7 +84,7 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
                 >
                   {colorOption === "highContrast" && (
                     <Image
-                      src="/cobalt-close-button.svg"
+                      src="/hc-close-button.svg"
                       alt="close"
                       width={24}
                       height={24}
@@ -93,14 +93,6 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, modalKey }) => {
                   {colorOption === "standard" && (
                     <Image
                       src="/modal-close-button.svg"
-                      alt="close"
-                      width={24}
-                      height={24}
-                    />
-                  )}
-                  {colorOption === "seasonal" && (
-                    <Image
-                      src="/cocoa-close-icon.svg"
                       alt="close"
                       width={24}
                       height={24}

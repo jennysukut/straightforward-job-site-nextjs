@@ -21,10 +21,11 @@ const jobSchema = z.object({
   responsibilities: z
     .array(
       z.object({
+        id: z.number().optional(),
         responsibility: z
           .string()
-          .min(1, { message: "Description is required" }),
-        id: z.number(),
+          .min(1, { message: "Description is required" })
+          .optional(),
       }),
     )
     .min(1, { message: "You Must Have At Least 1 Responsibility Listed" }),
@@ -137,10 +138,12 @@ export default function PostAJobStep4() {
   };
 
   useEffect(() => {
-    {
-      job?.responsibilities &&
-        Array.isArray(job?.responsibilities) &&
-        setResponsibilities(job?.responsibilities);
+    if (Array.isArray(job?.responsibilities)) {
+      const validResponsibilities = job.responsibilities.map((item) => ({
+        id: item.id ?? 0,
+        responsibility: item.responsibility ?? "",
+      }));
+      setResponsibilities(validResponsibilities);
     }
     setValue("responsibilities", job?.responsibilities || []);
     setPerks(Array.isArray(job?.perks) ? job?.perks : []);

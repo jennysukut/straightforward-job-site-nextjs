@@ -62,7 +62,16 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
       if (isJobPost && job) {
         setJobListings([
           ...(jobListings || []),
-          { jobId: "11", job: { ...job, numberOfApps: String(0) } },
+          {
+            jobId: "11",
+            job: {
+              ...job,
+              numberOfApps: String(0),
+              experienceLevel: Array.isArray(job.experienceLevel)
+                ? job.experienceLevel.join(", ")
+                : job.experienceLevel,
+            },
+          },
         ]);
         showModal(<PaymentSuccessfulModal isJobPost />);
       }

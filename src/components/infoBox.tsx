@@ -148,7 +148,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         >
           {colorOption === "highContrast" && (
             <Image
-              src="/cobalt-edit.svg"
+              src="/hc-edit-icon.svg"
               alt="editButton"
               width={16}
               height={16}
@@ -157,14 +157,6 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           {colorOption === "standard" && (
             <Image
               src="/edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-          {colorOption === "seasonal" && (
-            <Image
-              src="/cocoa-edit-icon.svg"
               alt="editButton"
               width={16}
               height={16}
@@ -206,7 +198,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         >
           {colorOption === "highContrast" && (
             <Image
-              src="/cobalt-add.svg"
+              src="/hc-add-icon.svg"
               alt="addButton"
               width={16}
               height={16}
@@ -220,14 +212,6 @@ const InfoBox: React.FC<InfoBoxProps> = ({
               height={16}
             ></Image>
           )}
-          {colorOption === "seasonal" && (
-            <Image
-              src="/cocoa-add-icon.svg"
-              alt="addButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
         </button>
       )}
 
@@ -235,7 +219,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       {canSearch && (
         <button
           type="button"
-          className="AddButton right-0 opacity-75 hover:opacity-100"
+          className="SearchButton right-0 opacity-75 hover:opacity-100"
           onClick={
             searchClick
               ? (searchClick as React.MouseEventHandler<HTMLButtonElement>)
@@ -244,7 +228,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         >
           {colorOption === "highContrast" && (
             <Image
-              src="/cobalt-search.svg"
+              src="/hc-magnifying-glass.svg"
               alt="searchButton"
               width={18}
               height={18}
@@ -270,7 +254,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         >
           {colorOption === "highContrast" && (
             <Image
-              src="/cobalt-edit.svg"
+              src="/hc-edit-icon.svg"
               alt="editButton"
               width={16}
               height={16}
@@ -279,14 +263,6 @@ const InfoBox: React.FC<InfoBoxProps> = ({
           {colorOption === "standard" && (
             <Image
               src="/edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-          {colorOption === "seasonal" && (
-            <Image
-              src="/cocoa-edit-icon.svg"
               alt="editButton"
               width={16}
               height={16}

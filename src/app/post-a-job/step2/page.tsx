@@ -111,7 +111,7 @@ export default function PostAJobStep2() {
       payDetails: {
         payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
         payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
-        payOption: payOption,
+        payOption: payOption[0] || "",
       },
       locationOption: data.locationOption,
       idealCandidate: data.idealCandidate,
@@ -130,8 +130,8 @@ export default function PostAJobStep2() {
 
   useEffect(() => {
     if (job?.payDetails) {
-      setPayOption(job?.payDetails.payOption);
-      setValue("payOption", job?.payDetails.payOption);
+      setPayOption(job?.payDetails.payOption ? [job.payDetails.payOption] : []);
+      setValue("payOption", job?.payDetails.payOption || "");
       setValue("payscaleMin", "$" + job?.payDetails.payscaleMin);
       setValue("payscaleMax", "$" + job?.payDetails.payscaleMax);
     }

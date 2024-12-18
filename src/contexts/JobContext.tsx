@@ -3,26 +3,39 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Job {
+  // this job number will probably get replaced by an
+  // auto-generated id made by sending details to the server?
+  //probably best to name it jobId
+  jobId?: string;
   jobTitle?: string;
   businessName?: string;
   applicationLimit?: string;
   numberOfApps?: string;
-  // this job number will probably get replaced by an
-  // auto-generated id made by sending details to the server?
-  jobNumber?: number;
   positionType?: string;
   positionSummary?: string;
   nonNegParams?: Array<string>;
-  payDetails?: any;
   locationOption?: string;
   idealCandidate?: string;
-  hybridDetails?: any;
-  experienceLevel?: any;
+  payDetails?: {
+    payscaleMin?: number;
+    payscaleMax?: number;
+    payOption?: string;
+  };
+  hybridDetails?: {
+    daysInOffice?: string;
+    daysRemote?: string;
+  };
+  experienceLevel?: Array<string>;
   preferredSkills?: Array<string>;
   moreAboutPosition?: string;
-  responsibilities?: any;
+  responsibilities?: Array<{ id?: number; responsibility?: string }> | [];
   perks?: Array<string>;
-  interviewProcess?: Array<any>;
+  interviewProcess?: Array<{
+    stage: string;
+    step: string;
+    details: string;
+    id: number;
+  }>;
   location?: string;
   country?: string;
   jobIsBeingEdited?: boolean;

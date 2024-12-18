@@ -4,25 +4,26 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useColors } from "@/contexts/ColorContext";
 
-export default function AvatarModal({ setAvatarOptions }: any) {
+export default function AvatarModal({ setAvatar }: any) {
   const { hideModal } = useModal();
   const { colorOption } = useColors();
 
   const handleClick = (option: any) => {
-    setAvatarOptions({
+    setAvatar({
+      title: option.title,
       url: {
         standard: option.url.standard,
         highContrast: option.url.highContrast,
       },
-      shadow: {
+      dropShadow: {
         standard: option.dropShadow.standard,
         highContrast: option.dropShadow.highContrast,
       },
-      buttonShadow: {
+      shadow: {
         standard: option.shadow.standard,
         highContrast: option.shadow.highContrast,
       },
-      buttonImg: {
+      img: {
         standard: option.img.standard,
         highContrast: option.img.highContrast,
       },

@@ -24,6 +24,7 @@ import { countries } from "@/lib/countriesList";
 import { languageOptions } from "@/lib/languageOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
@@ -53,19 +54,15 @@ export default function IndividualSignupPage1() {
   const { showModal } = useModal();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
-
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === fellow?.avatar,
+  );
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [avatarOptions, setAvatarOptions] = useState({
-    url: fellow?.avatar,
-    shadow: fellow?.shadow,
-    colorScheme: fellow?.colorScheme,
-    buttonShadow: fellow?.shadow,
-    buttonImg: fellow?.buttonImg,
-  });
+  const [avatar, setAvatar] = useState(avatarDetails);
 
   const {
     handleSubmit,
@@ -93,11 +90,7 @@ export default function IndividualSignupPage1() {
       location: data.location,
       skills: skills,
       jobTitles: jobTitles,
-      avatar: avatarOptions.url,
-      shadow: avatarOptions.shadow,
-      colorScheme: avatarOptions.colorScheme,
-      buttonShadow: avatarOptions.shadow,
-      buttonImg: avatarOptions.buttonImg,
+      avatar: avatar?.title,
       languages: languages,
       profileIsBeingEdited: false,
     });
@@ -228,20 +221,16 @@ export default function IndividualSignupPage1() {
           <div className="AvatarButtonContainer -mt-14 items-end self-end">
             <SiteButton
               variant="avatar"
-              colorScheme={avatarOptions.colorScheme as ButtonColorOption}
+              colorScheme={avatar?.colorScheme as ButtonColorOption}
               size="largeCircle"
               aria="avatar"
-              addImage={`${colorOption === "standard" ? avatarOptions.buttonImg.standard : avatarOptions.buttonImg.highContrast}`}
-              onClick={() =>
-                showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-              }
+              addImage={`${colorOption === "standard" ? avatar?.img.standard : avatar?.img.highContrast}`}
+              onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
             />
           </div>
           <button
             className={`max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100 ${textColor}`}
-            onClick={() =>
-              showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-            }
+            onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
           >
             {`choose your avatar & colors`}
           </button>

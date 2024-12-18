@@ -70,7 +70,6 @@ export default function PostAJobModal() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     setJob({
-      jobNumber: 1,
       jobTitle: data.jobTitle,
       positionType: data.positionType,
     });

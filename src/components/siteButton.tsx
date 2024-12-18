@@ -49,7 +49,9 @@ const SiteButton: React.FC<ButtonProps> = ({
       ? "hollow"
       : variant === "hollow"
         ? "hollow"
-        : "filled";
+        : variant === "avatar"
+          ? "avatar"
+          : "filled";
 
   const hollowOptions =
     colorOption === "highContrast" ? "border-pine" : "border-jade";
@@ -74,8 +76,11 @@ const SiteButton: React.FC<ButtonProps> = ({
       [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
         varOpt === "hollow" && !isSelected,
       [`text-eggshell ${buttonColors[colorScheme].color1}`]:
-        varOpt === "filled" && colorOption === "standard",
-      [`${addImage} bg-cover`]: variant === "avatar",
+        varOpt === "filled" &&
+        colorOption === "standard" &&
+        size !== "mediumCircle",
+      [`${addImage} bg-cover border-none`]:
+        variant === "avatar" || size === "mediumCircle",
 
       // hover colors for hollow buttons
       [`${buttonColors[colorScheme].color5} ${buttonColors[colorScheme].color6} group-hover:text-eggshell`]:
@@ -97,7 +102,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       [`translate-x-1 translate-y-1 text-eggshell`]:
         isSelected && variant === "avatar",
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell`]:
-        isSelected && colorOption === "standard" && varOpt !== "hollow",
+        isSelected && colorOption === "standard" && varOpt === "filled",
       //selected -- hollow
       [`${buttonColors[colorScheme].color1} ${buttonColors[colorScheme].color3} translate-x-1 translate-y-1 text-eggshell border-[2px]`]:
         isSelected && colorOption === "standard" && varOpt === "hollow",

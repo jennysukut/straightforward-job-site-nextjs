@@ -36,6 +36,8 @@ export default function NavBar() {
     (option) => option.title === fellow?.avatar,
   );
 
+  console.log(avatarDetails);
+
   return (
     <div
       className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}
@@ -53,11 +55,18 @@ export default function NavBar() {
         {colorOption === "highContrast" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-            src="/hollow-sfjs-logo.svg"
+            src="/hc-sfjs-logo.svg"
             width={229}
             height={75}
             alt="Straightforward Job Site logo"
           />
+          // <Image
+          //   className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
+          //   src="/hollow-sfjs-logo.svg"
+          //   width={229}
+          //   height={75}
+          //   alt="Straightforward Job Site logo"
+          // />
         )}
       </Link>
       {/* NavBar Button Options */}
@@ -130,16 +139,12 @@ export default function NavBar() {
               <Link href={"/profile"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme={fellow?.colorScheme as ButtonColorOption}
+                  colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
                   title="account"
                   clickedButton={clickedButton}
                   variant="avatar"
                   size="mediumCircle"
-                  addImage={
-                    colorOption === "highContrast"
-                      ? fellow?.buttonImg.highContrast
-                      : fellow?.buttonImg.standard
-                  }
+                  addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
                 />
               </Link>
             </div>

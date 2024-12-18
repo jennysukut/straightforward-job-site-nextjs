@@ -136,7 +136,7 @@ export const avatarOptions = [
     },
     dropShadow: {
       standard: "drop-shadow-magenta",
-      highContrast: "drop-shadow-forest",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "a5",
   },

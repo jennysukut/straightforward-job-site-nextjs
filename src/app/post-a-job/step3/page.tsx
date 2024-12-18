@@ -90,7 +90,7 @@ export default function PostAJobStep3() {
 
     setJob({
       ...job,
-      experienceLevel: data.experienceLevel,
+      experienceLevel: experienceLevel,
       preferredSkills: preferredSkills,
       moreAboutPosition: data.moreAboutPosition,
       // jobIsBeingEdited: false,
@@ -110,7 +110,7 @@ export default function PostAJobStep3() {
       Array.isArray(job?.experienceLevel) ? job?.experienceLevel : [],
     );
     setValue("preferredSkills", job?.preferredSkills || []);
-    setValue("experienceLevel", job?.experienceLevel || []);
+    setValue("experienceLevel", job?.experienceLevel?.[0] || "");
   }, []);
 
   return (
