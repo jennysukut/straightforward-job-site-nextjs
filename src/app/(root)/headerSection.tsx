@@ -16,8 +16,6 @@ function HeaderSection() {
   const { colorOption } = useColors();
   const { setPageType, accountType, isLoggedIn } = usePageContext();
 
-  const variant = colorOption === "highContrast" ? "hollow" : "filled";
-
   useEffect(() => {
     setPageType("main");
   }, []);
@@ -33,30 +31,15 @@ function HeaderSection() {
       {accountType === "Fellow" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <Link href={"/profile"}>
-            <SiteButton
-              aria="sign up"
-              size="large"
-              variant={variant}
-              colorScheme="b1"
-            >
+            <SiteButton aria="sign up" size="large" colorScheme="b1">
               manage your applications
             </SiteButton>
           </Link>
-          <SiteButton
-            aria="support us"
-            size="large"
-            variant={variant}
-            colorScheme="e5"
-          >
+          <SiteButton aria="support us" size="large" colorScheme="e5">
             check your mail
           </SiteButton>
           <Link href={"/job-board"}>
-            <SiteButton
-              aria="support us"
-              size="large"
-              variant={variant}
-              colorScheme="f1"
-            >
+            <SiteButton aria="support us" size="large" colorScheme="f1">
               explore jobs
             </SiteButton>
           </Link>
@@ -67,27 +50,16 @@ function HeaderSection() {
       {accountType === "Business" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <Link href={"/profile"}>
-            <SiteButton
-              aria="sign up"
-              size="large"
-              variant={variant}
-              colorScheme="b1"
-            >
+            <SiteButton aria="sign up" size="large" colorScheme="b1">
               manage your listings
             </SiteButton>
           </Link>
-          <SiteButton
-            aria="support us"
-            size="large"
-            variant={variant}
-            colorScheme="e5"
-          >
+          <SiteButton aria="support us" size="large" colorScheme="e5">
             check your mail
           </SiteButton>
           <SiteButton
             aria="support us"
             size="large"
-            variant={variant}
             colorScheme="f1"
             onClick={() => showModal(<PostAJobModal />)}
           >
@@ -102,27 +74,16 @@ function HeaderSection() {
           <SiteButton
             aria="sign up"
             size="large"
-            variant={variant}
             colorScheme="b1"
             onClick={() => showModal(<SignupOptionsModal />)}
           >
             sign up
           </SiteButton>
-          <SiteButton
-            aria="support us"
-            size="large"
-            variant={variant}
-            colorScheme="e5"
-          >
+          <SiteButton aria="support us" size="large" colorScheme="e5">
             learn more
           </SiteButton>
           <Link href={"/job-board"}>
-            <SiteButton
-              aria="support us"
-              size="large"
-              variant={variant}
-              colorScheme="f1"
-            >
+            <SiteButton aria="support us" size="large" colorScheme="f1">
               explore jobs
             </SiteButton>
           </Link>

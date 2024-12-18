@@ -44,7 +44,12 @@ const SiteButton: React.FC<ButtonProps> = ({
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
 
-  const varOpt = colorOption === "highContrast" ? "hollow" : "filled";
+  const varOpt =
+    colorOption === "highContrast"
+      ? "hollow"
+      : variant === "hollow"
+        ? "hollow"
+        : "filled";
 
   const hollowOptions =
     colorOption === "highContrast" ? "border-pine" : "border-jade";
