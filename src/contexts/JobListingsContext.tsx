@@ -6,26 +6,38 @@ import { StringValidation } from "zod";
 export interface JobListing {
   jobId?: string;
   job?: {
+    jobId?: string;
     jobTitle?: string;
     businessName?: string;
-    experienceLevel?: string;
     applicationLimit?: string;
     numberOfApps?: string;
-    locationOption?: string;
     positionType?: string;
-    payDetails?: any;
-    appLimitReached?: boolean;
-    country?: string;
-    location?: string;
     positionSummary?: string;
     nonNegParams?: Array<string>;
+    locationOption?: string;
     idealCandidate?: string;
-    hybridDetails?: any;
+    payDetails?: {
+      payscaleMin?: number;
+      payscaleMax?: number;
+      payOption?: string;
+    };
+    hybridDetails?: {
+      daysInOffice?: string;
+      daysRemote?: string;
+    };
+    experienceLevel?: Array<string>;
     preferredSkills?: Array<string>;
     moreAboutPosition?: string;
-    responsibilities?: any;
+    responsibilities?: Array<{ id?: number; responsibility?: string }> | [];
     perks?: Array<string>;
-    interviewProcess?: Array<any>;
+    interviewProcess?: Array<{
+      stage: string;
+      step: string;
+      details: string;
+      id: number;
+    }>;
+    location?: string;
+    country?: string;
     jobIsBeingEdited?: boolean;
     roundNumber?: string;
   };
@@ -53,14 +65,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "50",
         numberOfApps: "35",
         locationOption: "remote",
-        experienceLevel: "senior",
+        experienceLevel: ["senior"],
         payDetails: {
-          payscaleMin: "$85",
-          payscaleMax: "$110",
+          payscaleMin: 85,
+          payscaleMax: 110,
           payOption: "hourly",
         },
         positionType: "full-time",
-        appLimitReached: false,
         country: "United States",
         location: "Montana",
         positionSummary:
@@ -145,14 +156,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "25",
         numberOfApps: "25",
         locationOption: "on-site",
-        experienceLevel: "junior",
+        experienceLevel: ["junior"],
         payDetails: {
-          payscaleMin: "$20",
-          payscaleMax: "$30",
+          payscaleMin: 20,
+          payscaleMax: 30,
           payOption: "hourly",
         },
         positionType: "part-time",
-        appLimitReached: true,
         country: "Canada",
         location: "Toronto",
         positionSummary:
@@ -240,14 +250,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
           daysInOffice: "3",
           daysRemote: "2",
         },
-        experienceLevel: "senior",
+        experienceLevel: ["senior"],
         payDetails: {
-          payscaleMin: "$95,000",
-          payscaleMax: "$120,000",
+          payscaleMin: 85000,
+          payscaleMax: 110000,
           payOption: "yearly",
         },
         positionType: "full-time",
-        appLimitReached: false,
         country: "United States",
         location: "California",
         positionSummary:
@@ -318,14 +327,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "30",
         numberOfApps: "28",
         locationOption: "remote",
-        experienceLevel: "entry-level",
+        experienceLevel: ["entry-level"],
         payDetails: {
-          payscaleMin: "$25",
-          payscaleMax: "$35",
+          payscaleMin: 25,
+          payscaleMax: 35,
           payOption: "hourly",
         },
         positionType: "contract",
-        appLimitReached: false,
         country: "United Kingdom",
         location: "London",
         positionSummary:
@@ -397,14 +405,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "20",
         numberOfApps: "20",
         locationOption: "on-site",
-        experienceLevel: "senior",
+        experienceLevel: ["senior"],
         payDetails: {
-          payscaleMin: "$70,000",
-          payscaleMax: "$90,000",
+          payscaleMin: 70000,
+          payscaleMax: 90000,
           payOption: "yearly",
         },
         positionType: "full-time",
-        appLimitReached: true,
         country: "Canada",
         location: "Vancouver",
         positionSummary:
@@ -476,14 +483,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "100",
         numberOfApps: "85",
         locationOption: "remote",
-        experienceLevel: "entry-level",
+        experienceLevel: ["entry-level"],
         payDetails: {
-          payscaleMin: "$15",
-          payscaleMax: "$18",
+          payscaleMin: 15,
+          payscaleMax: 18,
           payOption: "hourly",
         },
         positionType: "part-time",
-        appLimitReached: false,
         country: "United States",
         location: "Texas",
         positionSummary:
@@ -555,14 +561,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "15",
         numberOfApps: "10",
         locationOption: "on-site",
-        experienceLevel: "senior",
+        experienceLevel: ["senior"],
         payDetails: {
-          payscaleMin: "$75,000",
-          payscaleMax: "$95,000",
+          payscaleMin: 75000,
+          payscaleMax: 95000,
           payOption: "yearly",
         },
         positionType: "full-time",
-        appLimitReached: false,
         country: "United Kingdom",
         location: "Manchester",
         positionSummary:
@@ -638,14 +643,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
           daysInOffice: "3",
           daysRemote: "2",
         },
-        experienceLevel: "junior",
+        experienceLevel: ["junior"],
         payDetails: {
-          payscaleMin: "$40,000",
-          payscaleMax: "$50,000",
+          payscaleMin: 40000,
+          payscaleMax: 50000,
           payOption: "yearly",
         },
         positionType: "full-time",
-        appLimitReached: false,
         country: "United States",
         location: "New York",
       },
@@ -658,14 +662,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "25",
         numberOfApps: "24",
         locationOption: "on-site",
-        experienceLevel: "entry-level",
+        experienceLevel: ["entry-level"],
         payDetails: {
-          payscaleMin: "$20",
-          payscaleMax: "$25",
+          payscaleMin: 20,
+          payscaleMax: 25,
           payOption: "hourly",
         },
         positionType: "contract",
-        appLimitReached: false,
         country: "Canada",
         location: "Ottawa",
         positionSummary:
@@ -737,14 +740,13 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "50",
         numberOfApps: "50",
         locationOption: "remote",
-        experienceLevel: "junior",
+        experienceLevel: ["junior"],
         payDetails: {
-          payscaleMin: "$30",
-          payscaleMax: "$45",
+          payscaleMin: 30,
+          payscaleMax: 45,
           payOption: "hourly",
         },
         positionType: "freelance",
-        appLimitReached: true,
         country: "United Kingdom",
         location: "Birmingham",
         positionSummary:
@@ -821,15 +823,15 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
           "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
         nonNegParams: ["Graphic Design", "Web Development"],
         payDetails: {
-          payscaleMin: "$60,000",
-          payscaleMax: "$80,000",
+          payscaleMin: 60000,
+          payscaleMax: 80000,
           payOption: "annually",
         },
         locationOption: "remote",
         idealCandidate:
           "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
         hybridDetails: {},
-        experienceLevel: "junior",
+        experienceLevel: ["junior"],
         preferredSkills: [
           "Content Writing",
           "Graphic Design",

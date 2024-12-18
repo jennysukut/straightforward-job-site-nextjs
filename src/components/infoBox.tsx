@@ -140,7 +140,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   return (
     <div className={`${boxClasses}`}>
       {/* profile edit button */}
-      {canEdit && size === "profile" && (
+      {canEdit && (size === "profile" || size === "thin") && (
         <button
           type="button"
           className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
@@ -246,7 +246,7 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       )}
 
       {/* edit button */}
-      {canEdit && size !== "profile" && (
+      {canEdit && size !== "profile" && size !== "thin" && (
         <button
           type="button"
           className="EditButton self-end opacity-100 hover:opacity-50"

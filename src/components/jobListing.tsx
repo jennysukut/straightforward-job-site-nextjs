@@ -100,8 +100,12 @@ export default function JobListing({ isOwn, hasId, id }: any) {
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
           {/* business buttons */}
           {isOwn && (
-            <div className="BusinessTopButtons -mb-2 self-end">
-              <Link href={"/job-board"}>go to job board</Link>
+            <div className="BusinessTopButtons -mb-2 -mt-10 flex flex-col items-end gap-2 self-end">
+              <Link href={"/job-board"}>
+                <SiteButton aria="job board" colorScheme="d5">
+                  go to job board
+                </SiteButton>
+              </Link>
               <SiteButton
                 variant="filled"
                 aria="apps"
@@ -338,11 +342,11 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                   </h2>
                   <div className="Details">
                     <p className="HybridDetails">
-                      {currentJob.hybridDetails.daysInOffice}{" "}
+                      {currentJob?.hybridDetails?.daysInOffice}{" "}
                       {`days in office, `}
                     </p>
                     <p className="HybridDetails">
-                      {currentJob.hybridDetails.daysRemote} {`days remote.`}
+                      {currentJob?.hybridDetails?.daysRemote} {`days remote.`}
                     </p>
                   </div>
                 </div>
@@ -351,7 +355,9 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 <h2 className="PayDetailsTitle mb-4 pl-2">
                   {`Pay:`} {currentJob?.payDetails.payscaleMin} -
                   {currentJob?.payDetails.payscaleMax}{" "}
-                  {capitalizeFirstLetter(currentJob?.payDetails.payOption)}
+                  {capitalizeFirstLetter(
+                    currentJob?.payDetails?.payOption || "",
+                  )}
                 </h2>
               )}
 
@@ -385,8 +391,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 <ul
                   className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
                 >
-                  {currentJob?.responsibilities.map(
-                    (resp: { responsibility: string; id: number }) => {
+                  {currentJob?.responsibilities?.map(
+                    (resp: { responsibility?: string; id?: number }) => {
                       return (
                         <li className="ResponsibilitiesItem" key={resp.id}>
                           <p className="Responsibility">

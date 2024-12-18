@@ -54,6 +54,8 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
     clearErrors("agreeToTerms");
   };
 
+  const randomId = `${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (agree) {
       setDisabledButton(true);
@@ -63,13 +65,10 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
         setJobListings([
           ...(jobListings || []),
           {
-            jobId: "11",
+            jobId: randomId,
             job: {
               ...job,
               numberOfApps: String(0),
-              experienceLevel: Array.isArray(job.experienceLevel)
-                ? job.experienceLevel.join(", ")
-                : job.experienceLevel,
             },
           },
         ]);
