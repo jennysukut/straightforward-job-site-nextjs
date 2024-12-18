@@ -3,6 +3,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
 export default function Avatar({ addClasses }: any) {
   const { fellow } = useFellow();
@@ -10,15 +11,19 @@ export default function Avatar({ addClasses }: any) {
   const { accountType } = usePageContext();
   const { colorOption } = useColors();
 
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === fellow?.avatar,
+  );
+
   return (
     <div className="Avatar">
       {accountType === "Fellow" && (
         <Image
-          className={`AvatarImage ${colorOption === "highContrast" ? fellow?.shadow.highContrast : ""} ${colorOption === "standard" ? fellow?.shadow.standard : ""} ${colorOption === "seasonal" ? "drop-shadow-pine" : ""} ${addClasses}`}
+          className={`AvatarImage ${colorOption === "highContrast" ? avatarDetails?.dropShadow.highContrast : ""} ${colorOption === "standard" ? avatarDetails?.dropShadow.standard : ""} ${addClasses}`}
           src={
             colorOption === "highContrast"
-              ? fellow?.avatar.highContrast
-              : fellow?.avatar.standard
+              ? avatarDetails?.url.highContrast || "/default-avatar.png"
+              : avatarDetails?.url.standard || "/default-avatar.png"
           }
           width={60}
           height={60}

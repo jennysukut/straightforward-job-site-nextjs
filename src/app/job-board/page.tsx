@@ -7,6 +7,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
+import { JobListing } from "@/contexts/JobListingsContext";
 
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobPostComponent";
@@ -15,7 +16,8 @@ import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import { JobListing } from "@/contexts/JobListingsContext";
+import SiteButton from "@/components/siteButton";
+import { filter } from "framer-motion/client";
 
 export default function JobBoard() {
   const { accountType } = usePageContext();
@@ -35,6 +37,7 @@ export default function JobBoard() {
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
+  const [viewInactiveJobs, setViewInactiveJobs] = useState<boolean>(false);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -165,8 +168,39 @@ export default function JobBoard() {
   };
 
   const renderJobListings = () => {
-    if (inputValue.length < 3 && filters.length === 0) {
-      return jobListings?.map((job: any, index: number) => (
+    const activeJobListings = jobListings?.filter((job: any) => {
+      return job.job?.numberOfApps !== job.job?.applicationLimit;
+    });
+
+    const inactiveJobListings = jobListings?.filter((job: any) => {
+      return job.job?.numberOfApps === job.job?.applicationLimit;
+    });
+
+    if (inputValue.length < 3 && filters.length === 0 && !viewInactiveJobs) {
+      // return jobListings?.map((job: any, index: number) => (
+      //   <JobPost
+      //     job={job}
+      //     index={index}
+      //     colorArray={colorArray}
+      //     key={job.jobId}
+      //     saveClick={() => saveClick(job.jobId)}
+      //   />
+      // ));
+      return activeJobListings?.map((job: any, index: number) => (
+        <JobPost
+          job={job}
+          index={index}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    } else if (
+      inputValue.length < 3 &&
+      filters.length === 0 &&
+      viewInactiveJobs
+    ) {
+      return inactiveJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
           index={index}
@@ -219,10 +253,10 @@ export default function JobBoard() {
 
   return (
     <div
-      className={`JobBoardPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor}`}
+      className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center md:pb-12 ${textColor} w-[84%] max-w-[1600px]`}
     >
       {/* searchbar */}
-      <div className="SearchBarAndFilterButtons mb-8 flex flex-col items-center gap-4">
+      <div className="SearchBarAndFilterButtons mb-8 flex flex-col items-center gap-4 self-center">
         <InfoBox
           variant="hollow"
           size="extraSmall"
@@ -289,6 +323,16 @@ export default function JobBoard() {
             {/* add location filters here */}
           </div>
         </div>
+      </div>
+      <div className="ActiveInactiveButtons -mt-8 mr-14 self-end">
+        <SiteButton
+          colorScheme="b1"
+          variant="hollow"
+          aria="viewInactiveJobs"
+          onClick={() => setViewInactiveJobs(!viewInactiveJobs)}
+        >
+          view inactive jobs
+        </SiteButton>
       </div>
       <div className="JobListings flex flex-wrap justify-center gap-8">
         {renderJobListings()}

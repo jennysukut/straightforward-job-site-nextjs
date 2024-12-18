@@ -11,11 +11,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-orange",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-orange",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "a1",
   },
@@ -31,34 +31,15 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lilac",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-lilac",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "d5",
   },
-  // {
-  //   title: "orange",
-  //   img: {
-  //     standard: "bg-[url('/avatars/orange.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-orange.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/orange.svg",
-  //     highContrast: "/avatars/hc-orange.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-sky",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-sky",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "f1",
-  // },
+
   {
     title: "backpack",
     img: {
@@ -71,11 +52,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-apricot",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-apricot",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "f5",
   },
@@ -91,11 +72,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-orange",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-orange",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "a2",
   },
@@ -111,34 +92,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-sky",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-sky",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "f1",
   },
-  // {
-  //   title: "peach",
-  //   img: {
-  //     standard: "bg-[url('/avatars/peach.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-peach.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/peach.svg",
-  //     highContrast: "/avatars/hc-peach.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-lime",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-lime",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "b6",
-  // },
   {
     title: "chess",
     img: {
@@ -151,11 +112,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-watermelon",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-watermelon",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "c1",
   },
@@ -171,11 +132,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-magenta",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-magenta",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "a5",
   },
@@ -191,34 +152,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "b1",
   },
-  // {
-  //   title: "purple",
-  //   img: {
-  //     standard: "bg-[url('/avatars/purple.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-purple.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/purple.svg",
-  //     highContrast: "/avatars/hc-purple.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-lime",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-lime",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "b3",
-  // },
   {
     title: "code",
     img: {
@@ -231,11 +172,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lilac",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-lilac",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "d1",
   },
@@ -251,11 +192,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "b6",
   },
@@ -271,34 +212,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "b4",
   },
-  // {
-  //   title: "watermelon",
-  //   img: {
-  //     standard: "bg-[url('/avatars/watermelon.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-watermelon.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/watermelon.svg",
-  //     highContrast: "/avatars/hc-watermelon.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-jade",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-jade",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "e5",
-  // },
   {
     title: "dino",
     img: {
@@ -311,34 +232,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-sky",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-sky",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "f1",
   },
-  // {
-  //   title: "emerald",
-  //   img: {
-  //     standard: "bg-[url('/avatars/emerald.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-emerald.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/emerald.svg",
-  //     highContrast: "/avatars/hc-emerald.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-lilac",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-lilac",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "d1",
-  // },
   {
     title: "fish",
     img: {
@@ -351,11 +252,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-peach",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-peach",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "c6",
   },
@@ -371,11 +272,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-sky",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-sky",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "f3",
   },
@@ -391,11 +292,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-watermelon",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-watermelon",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "c4",
   },
@@ -411,11 +312,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-olive",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-olive",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "f5",
   },
@@ -431,11 +332,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-orange",
-      highContrast: "bg-azure",
+      highContrast: "bg-almond",
     },
     dropShadow: {
       standard: "drop-shadow-orange",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-almond",
     },
     colorScheme: "a4",
   },
@@ -451,34 +352,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-jade",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-jade",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "e5",
   },
-  // {
-  //   title: "jade",
-  //   img: {
-  //     standard: "bg-[url('/avatars/jade.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-jade.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/jade.svg",
-  //     highContrast: "/avatars/hc-jade.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-lime",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-lime",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "b1",
-  // },
   {
     title: "growth",
     img: {
@@ -491,11 +372,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "b5",
   },
@@ -511,34 +392,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "b3",
   },
-  // {
-  //   title: "magenta",
-  //   img: {
-  //     standard: "bg-[url('/avatars/magenta.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-magenta.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/magenta.svg",
-  //     highContrast: "/avatars/hc-magenta.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-lime",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-lime",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "b4",
-  // },
   {
     title: "orange-floral",
     img: {
@@ -551,11 +412,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "b5",
   },
@@ -571,11 +432,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-jade",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-jade",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "e6",
   },
@@ -591,34 +452,14 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-magenta",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-magenta",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "a6",
   },
-  // {
-  //   title: "olive",
-  //   img: {
-  //     standard: "bg-[url('/avatars/olive.svg')]",
-  //     highContrast: "bg-[url('/avatars/hc-olive.svg')]",
-  //   },
-  //   url: {
-  //     standard: "/avatars/olive.svg",
-  //     highContrast: "/avatars/hc-olive.svg",
-  //   },
-  //   shadow: {
-  //     standard: "bg-sky",
-  //     highContrast: "bg-azure",
-  //   },
-  //   dropShadow: {
-  //     standard: "drop-shadow-sky",
-  //     highContrast: "drop-shadow-ocean",
-  //   },
-  //   colorScheme: "f3",
-  // },
   {
     title: "plant",
     img: {
@@ -631,11 +472,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-lime",
-      highContrast: "bg-azure",
+      highContrast: "bg-forest",
     },
     dropShadow: {
       standard: "drop-shadow-lime",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-forest",
     },
     colorScheme: "b6",
   },
@@ -651,11 +492,11 @@ export const avatarOptions = [
     },
     shadow: {
       standard: "bg-apricot",
-      highContrast: "bg-azure",
+      highContrast: "bg-pine",
     },
     dropShadow: {
       standard: "drop-shadow-apricot",
-      highContrast: "drop-shadow-ocean",
+      highContrast: "drop-shadow-pine",
     },
     colorScheme: "c6",
   },

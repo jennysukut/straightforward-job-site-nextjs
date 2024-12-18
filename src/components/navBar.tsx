@@ -13,9 +13,11 @@ import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
+
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -29,6 +31,10 @@ export default function NavBar() {
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
+
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === fellow?.avatar,
+  );
 
   return (
     <div
