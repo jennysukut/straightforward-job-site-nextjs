@@ -61,18 +61,11 @@ export default function JobBoard() {
       const matchesCountry =
         country.length > 0 ? country.includes(job.job?.country || "") : true;
 
-      // this isn't working?
-      const matchesActive =
-        viewPendingJobs === true
-          ? job.numberOfApps == job.applicationLimit
-          : job.numberOfApps != job.applicationLimit;
-
       return (
         matchesExperience &&
         matchesLocationType &&
         matchesPositionType &&
-        matchesCountry &&
-        matchesActive
+        matchesCountry
       );
     });
 
@@ -216,6 +209,7 @@ export default function JobBoard() {
         />
       ));
     } else if (filters.length > 0 && !viewPendingJobs) {
+      console.log("trying to show filtered jobs", filteredActiveJobListings);
       return filteredActiveJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
