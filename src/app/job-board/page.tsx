@@ -37,7 +37,7 @@ export default function JobBoard() {
   const [positionType, setPositionType] = useState<string[]>([]);
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
-  const [viewInactiveJobs, setViewInactiveJobs] = useState<boolean>(false);
+  const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -61,11 +61,18 @@ export default function JobBoard() {
       const matchesCountry =
         country.length > 0 ? country.includes(job.job?.country || "") : true;
 
+      // this isn't working?
+      const matchesActive =
+        viewPendingJobs === true
+          ? job.numberOfApps == job.applicationLimit
+          : job.numberOfApps != job.applicationLimit;
+
       return (
         matchesExperience &&
         matchesLocationType &&
         matchesPositionType &&
-        matchesCountry
+        matchesCountry &&
+        matchesActive
       );
     });
 
@@ -172,20 +179,19 @@ export default function JobBoard() {
       return job.job?.numberOfApps !== job.job?.applicationLimit;
     });
 
-    const inactiveJobListings = jobListings?.filter((job: any) => {
+    const pendingJobListings = jobListings?.filter((job: any) => {
       return job.job?.numberOfApps === job.job?.applicationLimit;
     });
 
-    if (inputValue.length < 3 && filters.length === 0 && !viewInactiveJobs) {
-      // return jobListings?.map((job: any, index: number) => (
-      //   <JobPost
-      //     job={job}
-      //     index={index}
-      //     colorArray={colorArray}
-      //     key={job.jobId}
-      //     saveClick={() => saveClick(job.jobId)}
-      //   />
-      // ));
+    const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
+      return job.job?.numberOfApps !== job.job?.applicationLimit;
+    });
+
+    const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
+      return job.job?.numberOfApps === job.job?.applicationLimit;
+    });
+
+    if (inputValue.length < 3 && filters.length === 0 && !viewPendingJobs) {
       return activeJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
@@ -198,9 +204,9 @@ export default function JobBoard() {
     } else if (
       inputValue.length < 3 &&
       filters.length === 0 &&
-      viewInactiveJobs
+      viewPendingJobs
     ) {
-      return inactiveJobListings?.map((job: any, index: number) => (
+      return pendingJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
           index={index}
@@ -209,8 +215,28 @@ export default function JobBoard() {
           saveClick={() => saveClick(job.jobId)}
         />
       ));
-    } else if (filters.length > 0) {
-      return filteredJobs?.map((job: any, index: number) => (
+    } else if (filters.length > 0 && !viewPendingJobs) {
+      return filteredActiveJobListings?.map((job: any, index: number) => (
+        <JobPost
+          job={job}
+          index={index}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    } else if (filters.length > 0 && viewPendingJobs) {
+      return filteredPendingJobListings?.map((job: any, index: number) => (
+        <JobPost
+          job={job}
+          index={index}
+          colorArray={colorArray}
+          key={job.jobId}
+          saveClick={() => saveClick(job.jobId)}
+        />
+      ));
+    } else if (viewPendingJobs) {
+      return filteredPendingJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
           index={index}
@@ -220,7 +246,7 @@ export default function JobBoard() {
         />
       ));
     } else {
-      return filteredJobs?.map((job: any, index: number) => (
+      return filteredActiveJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
           index={index}
@@ -324,14 +350,15 @@ export default function JobBoard() {
           </div>
         </div>
       </div>
-      <div className="ActiveInactiveButtons -mt-8 mr-14 self-end">
+      <div className="ActivePendingButtons -mt-8 mr-14 self-end">
         <SiteButton
           colorScheme="b1"
           variant="hollow"
-          aria="viewInactiveJobs"
-          onClick={() => setViewInactiveJobs(!viewInactiveJobs)}
+          aria="viewPendingJobs"
+          onClick={() => setViewPendingJobs(!viewPendingJobs)}
+          isSelected={viewPendingJobs}
         >
-          view inactive jobs
+          {viewPendingJobs === true ? "view open jobs" : "view pending jobs"}
         </SiteButton>
       </div>
       <div className="JobListings flex flex-wrap justify-center gap-8">
