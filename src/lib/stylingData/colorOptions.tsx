@@ -8,8 +8,6 @@ export const useColorOptions = () => {
   const inputColors = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-cobalt placeholder:text-cobalt/50 border-azure/50";
-      case "seasonal":
         return "text-pine placeholder:text-pine/50 border-pine/50";
       default:
         return "text-midnight placeholder:text-jade/50 border-jade/50";
@@ -19,8 +17,6 @@ export const useColorOptions = () => {
   const inputClasses = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-cobalt placeholder:text-cobalt/50 border-azure/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
-      case "seasonal":
         return "text-pine placeholder:text-pine/50 border-pine/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
       default:
         return "text-midnight placeholder:text-jade/50 border-jade/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
@@ -30,8 +26,6 @@ export const useColorOptions = () => {
   const textColor = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-cobalt";
-      case "seasonal":
         return "text-pine";
       default:
         return "text-jade";
@@ -41,8 +35,6 @@ export const useColorOptions = () => {
   const titleColor = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-cobalt";
-      case "seasonal":
         return "text-pine";
       default:
         return "text-midnight";
@@ -52,9 +44,9 @@ export const useColorOptions = () => {
   const secondaryTextColor = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-azure";
-      case "seasonal":
         return "text-forest";
+      // case "seasonal":
+      //   return "text-forest";
       default:
         return "text-olive";
     }
@@ -63,9 +55,9 @@ export const useColorOptions = () => {
   const errorColor = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-denim";
-      case "seasonal":
         return "text-pine";
+      // case "seasonal":
+      //   return "text-pine";
       default:
         return "text-orange";
     }
@@ -74,11 +66,7 @@ export const useColorOptions = () => {
   const modalColors = (() => {
     switch (colorOption) {
       case "highContrast":
-        return "text-cobalt drop-shadow-cobalt border-cobalt";
-      case "seasonal":
-        return "text-cocoa drop-shadow-cocoa border-cocoa";
-      case "anotherOption":
-        return "text-someColor drop-shadow-someColor border-someColor";
+        return "text-pine drop-shadow-pine border-pine";
       default:
         return "text-jade drop-shadow-jade border-jade";
     }

@@ -4,14 +4,13 @@ import clsx from "clsx";
 import {
   LargeShadowColorOption,
   largeShadowColors,
-  seasonalLargeShadowColors,
 } from "@/lib/stylingData/largeShadowColors";
 import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
 import Image from "next/image";
 import { useColors } from "@/contexts/ColorContext";
 
 interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant: "hollow" | "filled";
+  variant?: "hollow" | "filled";
   colorScheme?: LargeShadowColorOption;
   aria: string;
   type?: string;
@@ -73,32 +72,27 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   ...props
 }) => {
   const { colorOption } = useColors();
+  const varOpt = colorOption === "highContrast" ? "hollow" : "filled";
 
   const boxOptions =
     colorOption === "highContrast"
-      ? "border-cobalt drop-shadow-cobalt text-cobalt"
-      : colorOption === "seasonal"
-        ? "border-pine drop-shadow-pine text-pine"
-        : "border-jade drop-shadow-jade text-jade";
+      ? "border-pine drop-shadow-pine text-pine"
+      : "border-jade drop-shadow-jade text-jade";
 
   const boxClasses = clsx(
     "InfoBox max-w-[95vw] relative z-[1] font-semibold leading-5 transition-all duration-200 tracking-superwide ",
     {
       // colors and borders
       [`bg-cream ${boxOptions} font-semibold border-[3px]`]:
-        variant === "hollow" && size !== "tiny",
+        varOpt === "hollow" && size !== "tiny",
       [`bg-cream ${boxOptions} font-semibold border-[2px]`]:
-        variant === "hollow" && size === "tiny",
+        varOpt === "hollow" && size === "tiny",
       [`text-eggshell ${largeShadowColors[colorScheme]}`]:
-        variant === "filled" &&
+        varOpt === "filled" &&
         shadowSize === "standard" &&
         colorOption === "standard",
-      [`text-eggshell ${seasonalLargeShadowColors[colorScheme]}`]:
-        variant === "filled" &&
-        shadowSize === "standard" &&
-        colorOption === "seasonal",
       [`text-eggshell ${smallShadowColors[colorScheme]}`]:
-        variant === "filled" &&
+        varOpt === "filled" &&
         shadowSize === "small" &&
         colorOption === "standard",
 

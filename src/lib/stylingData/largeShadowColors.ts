@@ -42,50 +42,6 @@ export const largeShadowColors = {
   f6: "bg-magenta drop-shadow-peach",
 };
 
-export const seasonalLargeShadowColors = {
-  a1: "bg-berry drop-shadow-orange",
-  a2: "bg-ice drop-shadow-orange",
-  a3: "bg-wine drop-shadow-orange",
-  a4: "bg-plum drop-shadow-orange",
-  a5: "bg-pumpkin drop-shadow-wine",
-  a6: "bg-moss drop-shadow-wine",
-
-  b1: "bg-holly drop-shadow-moss",
-  b2: "bg-berry drop-shadow-moss",
-  b3: "bg-plum drop-shadow-moss",
-  b4: "bg-wine drop-shadow-moss",
-  b5: "bg-pumpkin drop-shadow-moss",
-  b6: "bg-apple drop-shadow-moss",
-
-  c1: "bg-sage drop-shadow-berry",
-  c2: "bg-moss drop-shadow-berry",
-  c3: "bg-pumpkin drop-shadow-berry",
-  c4: "bg-holly drop-shadow-berry",
-  c5: "bg-forest drop-shadow-berry",
-  c6: "bg-holly drop-shadow-apple",
-
-  d1: "bg-forest drop-shadow-plum",
-  d2: "bg-sage drop-shadow-plum",
-  d3: "bg-holly drop-shadow-plum",
-  d4: "bg-pumpkin drop-shadow-plum",
-  d5: "bg-moss drop-shadow-plum",
-  d6: "bg-berry drop-shadow-forest",
-
-  e1: "bg-wine drop-shadow-apricot",
-  e2: "bg-plum drop-shadow-apricot",
-  e3: "bg-ice drop-shadow-apricot",
-  e4: "bg-sage drop-shadow-apricot",
-  e5: "bg-berry drop-shadow-holly",
-  e6: "bg-apple drop-shadow-holly",
-
-  f1: "bg-pumpkin drop-shadow-ice",
-  f2: "bg-moss drop-shadow-ice",
-  f3: "bg-sage drop-shadow-ice",
-  f4: "bg-berry drop-shadow-moss",
-  f5: "bg-apple drop-shadow-moss",
-  f6: "bg-wine drop-shadow-apple",
-};
-
 export type LargeShadowColorScheme = typeof largeShadowColors;
 
 export type LargeShadowColorOption = keyof typeof largeShadowColors;

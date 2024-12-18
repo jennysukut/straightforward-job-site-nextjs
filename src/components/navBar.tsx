@@ -29,20 +29,12 @@ export default function NavBar() {
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
+
   return (
     <div
       className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}
     >
       <Link href={"/"}>
-        {colorOption === "highContrast" && (
-          <Image
-            className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-            src="/all-blue-logo.svg"
-            width={229}
-            height={75}
-            alt="Straightforward Job Site logo"
-          />
-        )}
         {colorOption === "standard" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
@@ -52,7 +44,7 @@ export default function NavBar() {
             alt="Straightforward Job Site logo"
           />
         )}
-        {colorOption === "seasonal" && (
+        {colorOption === "highContrast" && (
           <Image
             className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
             src="/hollow-sfjs-logo.svg"

@@ -16,6 +16,8 @@ function HeaderSection() {
   const { colorOption } = useColors();
   const { setPageType, accountType, isLoggedIn } = usePageContext();
 
+  const variant = colorOption === "highContrast" ? "hollow" : "filled";
+
   useEffect(() => {
     setPageType("main");
   }, []);
@@ -34,8 +36,7 @@ function HeaderSection() {
             <SiteButton
               aria="sign up"
               size="large"
-              // variant="filled"
-              variant={colorOption === "seasonal" ? "hollow" : "filled"}
+              variant={variant}
               colorScheme="b1"
             >
               manage your applications
@@ -44,7 +45,7 @@ function HeaderSection() {
           <SiteButton
             aria="support us"
             size="large"
-            variant={colorOption === "seasonal" ? "hollow" : "filled"}
+            variant={variant}
             colorScheme="e5"
           >
             check your mail
@@ -53,7 +54,7 @@ function HeaderSection() {
             <SiteButton
               aria="support us"
               size="large"
-              variant={colorOption === "seasonal" ? "hollow" : "filled"}
+              variant={variant}
               colorScheme="f1"
             >
               explore jobs
@@ -69,7 +70,7 @@ function HeaderSection() {
             <SiteButton
               aria="sign up"
               size="large"
-              variant={colorOption === "seasonal" ? "hollow" : "filled"}
+              variant={variant}
               colorScheme="b1"
             >
               manage your listings
@@ -78,7 +79,7 @@ function HeaderSection() {
           <SiteButton
             aria="support us"
             size="large"
-            variant={colorOption === "seasonal" ? "hollow" : "filled"}
+            variant={variant}
             colorScheme="e5"
           >
             check your mail
@@ -86,7 +87,7 @@ function HeaderSection() {
           <SiteButton
             aria="support us"
             size="large"
-            variant={colorOption === "seasonal" ? "hollow" : "filled"}
+            variant={variant}
             colorScheme="f1"
             onClick={() => showModal(<PostAJobModal />)}
           >
@@ -101,7 +102,7 @@ function HeaderSection() {
           <SiteButton
             aria="sign up"
             size="large"
-            variant={colorOption === "seasonal" ? "hollow" : "filled"}
+            variant={variant}
             colorScheme="b1"
             onClick={() => showModal(<SignupOptionsModal />)}
           >
@@ -110,7 +111,7 @@ function HeaderSection() {
           <SiteButton
             aria="support us"
             size="large"
-            variant={colorOption === "seasonal" ? "hollow" : "filled"}
+            variant={variant}
             colorScheme="e5"
           >
             learn more
@@ -119,7 +120,7 @@ function HeaderSection() {
             <SiteButton
               aria="support us"
               size="large"
-              variant={colorOption === "seasonal" ? "hollow" : "filled"}
+              variant={variant}
               colorScheme="f1"
             >
               explore jobs

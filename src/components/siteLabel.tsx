@@ -3,8 +3,6 @@
 import clsx from "clsx";
 import {
   smallShadowColors,
-  highContrastSmallShadowColors,
-  seasonalSmallShadowColors,
   SmallShadowColorOption,
 } from "@/lib/stylingData/smallShadowColors";
 import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
@@ -42,12 +40,8 @@ const SiteLabel: React.FC<LabelProps> = ({
 
   const labelColors =
     colorOption === "highContrast"
-      ? `${highContrastSmallShadowColors[colorScheme]}`
-      : colorOption === "seasonal"
-        ? // ? `${seasonalSmallShadowColors[colorScheme]}`
-          // `bg-eggshell border-2 border-forest drop-shadow-smForest text-forest`
-          "bg-pine drop-shadow-smForest text-eggshell"
-        : `${smallShadowColors[colorScheme]}`;
+      ? "bg-pine drop-shadow-smForest text-eggshell"
+      : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
     `Label w-fit  flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,

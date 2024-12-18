@@ -23,11 +23,12 @@ const NavButton: React.FC<ButtonProps> = ({
   addImage,
 }) => {
   const { colorOption } = useColors();
+  const buttonVar = colorOption === "highContrast" ? "hollow" : "filled";
 
   return (
     <SiteButton
       // variant={variant}
-      variant={colorOption === "seasonal" ? "hollow" : variant}
+      variant={buttonVar}
       colorScheme={colorScheme}
       size={size}
       aria={title}
