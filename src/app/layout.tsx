@@ -13,6 +13,7 @@ import { JobListingsProvider } from "@/contexts/JobListingsContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
+import Image from "next/image";
 
 const ApolloWrapper = dynamic(() => import("@/app/apolloClient"), {
   ssr: false,
@@ -51,10 +52,10 @@ export default function RootLayout({
                   <BusinessProvider>
                     <FellowProvider>
                       <ModalProvider>
-                        {/* find how to make this navBar change depending on the login status or current page - maybe set some kind of signal that we can update depending on the page to show different types of headers? */}
                         <NavBar />
                         <main className="Main flex flex-1 flex-col">
                           {children}
+                          {/* we could slip a fun background element in here? */}
                         </main>
                         <Footer />
                       </ModalProvider>

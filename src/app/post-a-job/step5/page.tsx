@@ -119,6 +119,7 @@ export default function PostAJobStep5() {
     setJob({
       ...job,
       interviewProcess: interviewProcess,
+      roundNumber: "1",
       // jobIsBeingEdited: false,
     });
     if (job?.jobIsBeingEdited) {

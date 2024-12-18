@@ -72,7 +72,12 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   ...props
 }) => {
   const { colorOption } = useColors();
-  const varOpt = colorOption === "highContrast" ? "hollow" : "filled";
+  const varOpt =
+    colorOption === "highContrast"
+      ? "hollow"
+      : variant === "hollow"
+        ? "hollow"
+        : "filled";
 
   const boxOptions =
     colorOption === "highContrast"

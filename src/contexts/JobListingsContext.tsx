@@ -27,6 +27,7 @@ export interface JobListing {
     perks?: Array<string>;
     interviewProcess?: Array<any>;
     jobIsBeingEdited?: boolean;
+    roundNumber?: string;
   };
 }
 
@@ -46,6 +47,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "derp",
       job: {
+        roundNumber: "1",
         jobTitle: "Software Engineer II",
         businessName: "TechNova Solutions",
         applicationLimit: "50",
@@ -139,6 +141,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
       job: {
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
+        roundNumber: "1",
         applicationLimit: "25",
         numberOfApps: "25",
         locationOption: "on-site",
@@ -231,7 +234,12 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         businessName: "Pinnacle Enterprises",
         applicationLimit: "40",
         numberOfApps: "10",
+        roundNumber: "1",
         locationOption: "hybrid",
+        hybridDetails: {
+          daysInOffice: "3",
+          daysRemote: "2",
+        },
         experienceLevel: "senior",
         payDetails: {
           payscaleMin: "$95,000",
@@ -244,10 +252,9 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         location: "California",
         positionSummary:
           "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
-        nonNegParams: ["Graphic Design", "Web Development"],
+        nonNegParams: ["English", "United States", "Agile"],
         idealCandidate:
           "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
-        hybridDetails: {},
         preferredSkills: [
           "Content Writing",
           "Graphic Design",
@@ -627,6 +634,10 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "30",
         numberOfApps: "29",
         locationOption: "hybrid",
+        hybridDetails: {
+          daysInOffice: "3",
+          daysRemote: "2",
+        },
         experienceLevel: "junior",
         payDetails: {
           payscaleMin: "$40,000",

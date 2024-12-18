@@ -6,6 +6,7 @@ export interface Job {
   jobTitle?: string;
   businessName?: string;
   applicationLimit?: string;
+  numberOfApps?: string;
   // this job number will probably get replaced by an
   // auto-generated id made by sending details to the server?
   jobNumber?: number;
@@ -25,6 +26,7 @@ export interface Job {
   location?: string;
   country?: string;
   jobIsBeingEdited?: boolean;
+  roundNumber?: string;
 }
 
 interface JobContextType {

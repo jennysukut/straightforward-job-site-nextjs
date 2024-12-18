@@ -117,10 +117,8 @@ const SiteButton: React.FC<ButtonProps> = ({
       // diabled
       "disabled:translate-x-1 disabled:translate-y-1 disabled:border-midnight disabled:bg-midnight disabled:text-jade disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
         disabled && colorOption === "standard",
-      "disabled:translate-x-1 disabled:translate-y-1 disabled:border-lapis disabled:bg-lapis disabled:text-eggshell disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
+      "disabled:translate-x-1 disabled:translate-y-1 disabled:border-almond disabled:bg-almond disabled:text-forest disabled:hover:cursor-not-allowed disabled:hover:-saturate-5":
         disabled && colorOption === "highContrast",
-      "disabled:translate-x-1 disabled:translate-y-1 disabled:border-berry disabled:bg-berry disabled:text-eggshell disabled:hover:cursor-not-allowed disabled:hover:saturate-100":
-        disabled && colorOption === "seasonal",
     },
     addClasses,
     addImage,

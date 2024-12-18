@@ -33,6 +33,7 @@ export interface Fellow {
   addMoreInfo?: boolean;
   subscriptionAmount?: any;
   savedJobs?: Array<any>;
+  dailyApplications?: string;
 }
 
 interface FellowContextType {
@@ -171,6 +172,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     // ],
 
     ///MY OWN CONTEXT
+    dailyApplications: "2",
     avatar: {
       standard: "/avatars/checks.svg",
       highContrast: "/avatars/blue-checks.svg",

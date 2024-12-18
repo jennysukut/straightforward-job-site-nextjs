@@ -8,6 +8,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
+import { useFellow } from "@/contexts/FellowContext";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -30,6 +31,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
   const [canEdit, setCanEdit] = useState(false);
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
+  const { fellow } = useFellow();
   const { job, setJob } = useJob();
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -39,26 +41,49 @@ export default function JobListing({ isOwn, hasId, id }: any) {
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
 
   const handleEditClick = (url: any) => {
-    // setBusiness({ ...business, profileIsBeingEdited: true });
     setJob({ ...job, jobIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
-  console.log(jobListings);
 
+  // define the current job
   let currentJob;
-
   if (hasId && jobListings) {
+    // if the job hasId we'll need to grab it's details from the database here
     currentJob = jobListings.find((job: any) => job.jobId === id)?.job;
   } else {
+    // when we're initially loading this page upon job creation, we'll use the jobContext object just created
     currentJob = job;
   }
 
-  console.log(currentJob);
+  const checkNonNegParamsMatch = () => {
+    if (!currentJob?.nonNegParams || !fellow) return false;
+
+    const { country, languages = [], skills = [] } = fellow;
+
+    // Check if all non negotiable parameters have a match in country, languages, or skills
+    return currentJob.nonNegParams.every(
+      (param) =>
+        param === country ||
+        languages.includes(param) ||
+        skills.includes(param),
+    );
+  };
+
+  //meets minimum requirements to apply
+  const hasMatchingNonNegParams = checkNonNegParamsMatch();
+
+  // if it matches parameters, hasn't met applicationLimit, and the dailyApplications
+  // for the fellow aren't at it's limit of 5, they can apply!
+  const canApply =
+    currentJob?.numberOfApps !== currentJob?.applicationLimit &&
+    hasMatchingNonNegParams === true &&
+    fellow?.dailyApplications !== "5";
 
   useEffect(() => {
-    console.log(job);
+    // if the job is being edited, set the button to stay being pressed
+    // in case they'd like to edit other things
     if (job?.jobIsBeingEdited) {
       setCanEdit(true);
     }
@@ -73,13 +98,13 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     >
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
-          {/* Non-Negotiable Parameters */}
+          {/* business buttons */}
           {isOwn && (
-            <div className="appLimitButton -mb-2 self-end">
+            <div className="BusinessTopButtons -mb-2 self-end">
               <Link href={"/job-board"}>go to job board</Link>
               <SiteButton
                 variant="filled"
-                aria="appLimit"
+                aria="apps"
                 colorScheme="b1"
                 onClick={() => showModal(<ApplicationLimitModal />)}
               >
@@ -87,6 +112,21 @@ export default function JobListing({ isOwn, hasId, id }: any) {
               </SiteButton>
             </div>
           )}
+
+          {/* fellow buttons */}
+          {!isOwn && (
+            <div className="FellowTopButtons -mb-2 -mt-14 flex flex-col items-end gap-1 self-end">
+              <SiteLabel variant="display" aria="roundNumber">
+                round: {currentJob?.roundNumber || "1"}
+              </SiteLabel>
+              <SiteLabel variant="display" aria="appLimit">
+                applications: {currentJob?.numberOfApps}/
+                {currentJob?.applicationLimit}
+              </SiteLabel>
+            </div>
+          )}
+
+          {/* Non-Negotiable Parameters */}
           <InfoBox
             variant="hollow"
             aria="nonNegotiableParameters"
@@ -206,6 +246,43 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 }
               >
                 publish
+              </SiteButton>
+            </div>
+          )}
+
+          {/* Fellow / Apply Buttons */}
+          {!isOwn && (
+            <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant="filled"
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                // we'll use the company id here to route to their page
+                // onClick={() => }
+              >
+                view company details
+              </SiteButton>
+              <SiteButton
+                aria="publish"
+                variant="filled"
+                colorScheme="f1"
+                addClasses="px-8"
+                // onClick={() =>
+                //   showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+                // }
+                disabled={canApply === false}
+              >
+                apply for this job
+              </SiteButton>
+              <SiteButton
+                aria="publish"
+                variant="filled"
+                colorScheme="e3"
+                addClasses="px-8"
+                onClick={() => console.log("report clicked")}
+              >
+                report
               </SiteButton>
             </div>
           )}

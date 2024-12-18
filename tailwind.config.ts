@@ -33,16 +33,10 @@ const config: Config = {
         watermelon: "#FFABDA",
         magenta: "#E673A9",
 
-        // HIGH CONTRAST SFJS COLOR PALETTE
-        cobalt: "#1B16A6",
-        juniper: "#0D4036",
-        denim: "#230B5C",
-        azure: "#1E16ED",
-        violet: "#A204B6",
-
         //SEASONAL HIGH CONTRAST COLOR PALETTE
         forest: "#0C776D", // emerald alt
         pine: "#0B5648", //midnight alt
+        almond: "#E1D4C8",
       },
       letterSpacing: {
         superwide: "0.15em",
@@ -64,16 +58,10 @@ const config: Config = {
       watermelon: "10px 10px 0px #FFABDA",
       magenta: "10px 10px 0px #E673A9",
 
-      // Other Drop Shadow Colors
-      cobalt: "10px 10px 0px #1B16A6",
-      juniper: "10px 10px 0px #0D4036",
-      denim: "10px 10px 0px #230B5C",
-      azure: "10px 10px 0px #1E16ED",
-      violet: "10px 10px 0px #A204B6",
-
-      // Seasonal Drop Shadow Color
+      // HighContrast Drop Shadow Color
       forest: "10px 10px 0px #0C776D", // emerald alt
       pine: "10px 10px 0px #0B5648", //midnight alt
+      almond: "10px 10px 0px #E1D4C8",
 
       // small drop shadows
       smLilac: "3px 3px 0px #D6A6DC",
@@ -90,17 +78,10 @@ const config: Config = {
       smWatermelon: "3px 3px 0px #FFABDA",
       smMagenta: "3px 3px 0px #E673A9",
 
-      //Other Small Drop Shadow Colors
-      smCobalt: "3px 3px 0px #1B16A6",
-      smDenim: "3px 3px 0px #0A04C6",
-      smAzure: "3px 3px 0px #1E16ED",
-      smLapis: "3px 3px 0px #1869FF",
-      smOcean: "3px 3px 0px #4B89FC",
-      smMist: "3px 3px 0px #94B9FF",
-
       // Small Seasonal Drop Shadow Colors
       smForest: "3px 3px 0px #0C776D", // emerald alt
       smPine: "3px 3px 0px #0B5648", //midnight alt
+      smAlmond: "3px 3px 0px #E1D4C8",
     },
   },
   plugins: [],
