@@ -9,7 +9,7 @@ import SuccessfulApplicationModal from "./successfulAppModal";
 
 export default function ApplyModal({ jobTitle, businessName }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
-  const { fellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
 
   const apply = () => {
@@ -17,6 +17,12 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
     // we should make some kind of specific error modal or something here
     // there might be a chance of a job reaching it's limit of applications at the same time an application is trying ot be submitted,
     // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
+
+    // if the application is successful, do these things:
+    setFellow({
+      ...fellow,
+      dailyApplications: String(Number(fellow?.dailyApplications) + 1),
+    });
     showModal(<SuccessfulApplicationModal />);
   };
 

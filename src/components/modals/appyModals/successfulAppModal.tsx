@@ -17,6 +17,8 @@ export default function SuccessfulApplicationModal({
   const router = useRouter();
   const appsLeft = 5 - Number(fellow?.dailyApplications);
 
+  console.log(fellow?.dailyApplications);
+
   const backToSearch = () => {
     router.push("/job-board");
     setTimeout(() => {
