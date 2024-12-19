@@ -17,6 +17,7 @@ import SiteButton from "./siteButton";
 import ApplicationLimitModal from "./modals/postAJobModals/applicationLimitModal";
 import PaymentModal from "./modals/paymentModal";
 import Link from "next/link";
+import ApplyModal from "./modals/appyModals/applyModal";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
@@ -30,8 +31,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
   const { setPageType } = usePageContext();
-  const { showModal } = useModal();
-  const { fellow } = useFellow();
+  const { showModal, hideModal } = useModal();
+  const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -39,6 +40,9 @@ export default function JobListing({ isOwn, hasId, id }: any) {
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
+  const [jobSavedStatus, setJobSavedStatus] = useState(
+    fellow?.savedJobs?.includes(id),
+  );
 
   const handleEditClick = (url: any) => {
     setJob({ ...job, jobIsBeingEdited: true });
@@ -81,6 +85,23 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     hasMatchingNonNegParams === true &&
     fellow?.dailyApplications !== "5";
 
+  const saveClick = (jobId: any) => {
+    if (fellow?.savedJobs?.includes(jobId)) {
+      setFellow({
+        ...fellow,
+        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
+      });
+      setJobSavedStatus(false);
+    } else {
+      setFellow({
+        ...fellow,
+        savedJobs: [...(fellow?.savedJobs || []), jobId],
+      });
+      setJobSavedStatus(true);
+    }
+    hideModal();
+  };
+
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
@@ -122,15 +143,25 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           {/* fellow buttons */}
           {!isOwn && (
             <div className="FellowTopButtons -mb-2 -mt-14 flex flex-col items-end gap-1 self-end">
-              <SiteButton aria="saveJob" colorScheme="d3">
-                save job
+              <SiteButton
+                aria="saveJob"
+                colorScheme="d3"
+                onClick={() => saveClick(id)}
+                isSelected={jobSavedStatus}
+              >
+                {jobSavedStatus === true ? "job saved" : "save job"}
               </SiteButton>
-              <SiteLabel variant="display" aria="roundNumber" addClasses="mt-3">
-                round: {currentJob?.roundNumber || "1"}
-              </SiteLabel>
-              <SiteLabel variant="display" aria="appLimit">
+              <SiteLabel
+                variant="display"
+                aria="appLimit"
+                addClasses="mt-3"
+                colorScheme="f3"
+              >
                 applications: {currentJob?.numberOfApps}/
                 {currentJob?.applicationLimit}
+              </SiteLabel>
+              <SiteLabel variant="display" aria="roundNumber">
+                round: {currentJob?.roundNumber || "1"}
               </SiteLabel>
             </div>
           )}
@@ -267,7 +298,6 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"
-                // we'll use the company id here to route to their page
                 onClick={() => router.push(`/profile/1b23i`)}
               >
                 view company details
@@ -277,9 +307,14 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 variant="filled"
                 colorScheme="f1"
                 addClasses="px-8"
-                // onClick={() =>
-                //   showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-                // }
+                onClick={() =>
+                  showModal(
+                    <ApplyModal
+                      jobTitle={currentJob?.jobTitle}
+                      businessName={currentJob?.businessName}
+                    />,
+                  )
+                }
                 disabled={canApply === false}
               >
                 apply for this job
@@ -347,7 +382,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                   <h2 className="LocationTypeTitle mb-4 pl-2">
                     {`Hybrid Details:`}
                   </h2>
-                  <div className="Details">
+                  <div className="Details -mt-2">
                     <p className="HybridDetails">
                       {currentJob?.hybridDetails?.daysInOffice}{" "}
                       {`days in office, `}
