@@ -58,6 +58,7 @@ export default function PostAJobStep1() {
       nonNegParams: nonNegParams,
       location: business?.location,
       businessName: business?.businessName,
+      country: business?.country,
       // jobIsBeingEdited: false,
     });
     if (job?.jobIsBeingEdited) {

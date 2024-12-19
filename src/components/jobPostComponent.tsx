@@ -13,11 +13,6 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 
-import {
-  LargeShadowColorOption,
-  largeShadowColors,
-} from "@/lib/stylingData/largeShadowColors";
-
 interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   job: any;
   colorArray: Array<string>;
@@ -49,11 +44,6 @@ const JobPost: React.FC<JobPostProps> = ({
   const viewDetails = () => {
     router.push(`/listing/${job.jobId}`);
   };
-
-  const boxOptions =
-    colorOption === "highContrast"
-      ? "border-cobalt drop-shadow-cobalt text-cobalt"
-      : "border-jade drop-shadow-jade text-jade";
 
   const saveButton = (() => {
     switch (colorOption) {
@@ -135,7 +125,8 @@ const JobPost: React.FC<JobPostProps> = ({
             with {job.job?.businessName}
           </p>
           <p className="ExperienceLevel text-sm font-normal">
-            {capitalizeFirstLetter(job.job?.experienceLevel || "junior")} Level
+            {capitalizeFirstLetter(job.job?.experienceLevel[0] || "junior")}{" "}
+            Level
           </p>
           {/* divider */}
           <Image
@@ -151,15 +142,15 @@ const JobPost: React.FC<JobPostProps> = ({
           {job.job?.locationOption === "on-site" && (
             <p className="LocationOption">On-Site: {job.job?.country}</p>
           )}
-          {/* {job.job?.locationOption === "hybrid" && (
-          <p className="LocationOption">{job.job?.hybridDetails}</p>
-        )} */}
+          {job.job?.locationOption === "hybrid" && (
+            <p className="LocationOption">Hybrid</p>
+          )}
           <p className="PositionType font-normal italic">
             {capitalizeFirstLetter(job.job?.positionType || "")} Position
           </p>
           <p className="PayDetails">
-            {job.job?.payDetails.payscaleMin} -{" "}
-            {job.job?.payDetails.payscaleMax}
+            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMin)} -{" "}
+            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMax)}
           </p>
           <p className="PayOption italic">
             {capitalizeFirstLetter(job.job?.payDetails.payOption || "")}

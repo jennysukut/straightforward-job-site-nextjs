@@ -54,6 +54,7 @@ export default function PostAJobStep2() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
+  console.log(payOption);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "locationOption" | "payOption", data: any) => {
@@ -111,7 +112,7 @@ export default function PostAJobStep2() {
       payDetails: {
         payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
         payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
-        payOption: payOption[0] || "",
+        payOption: String(payOption),
       },
       locationOption: data.locationOption,
       idealCandidate: data.idealCandidate,

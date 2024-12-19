@@ -71,6 +71,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     );
   };
 
+  console.log(currentJob);
+
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
@@ -353,8 +355,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
               )}
               {currentJob?.payDetails && (
                 <h2 className="PayDetailsTitle mb-4 pl-2">
-                  {`Pay:`} {currentJob?.payDetails.payscaleMin} -
-                  {currentJob?.payDetails.payscaleMax}{" "}
+                  {`Pay: $${new Intl.NumberFormat().format(currentJob?.payDetails?.payscaleMin || 0)} -
+                  $${new Intl.NumberFormat().format(currentJob?.payDetails?.payscaleMax || 0)}`}{" "}
                   {capitalizeFirstLetter(
                     currentJob?.payDetails?.payOption || "",
                   )}
