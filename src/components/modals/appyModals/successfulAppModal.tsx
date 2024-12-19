@@ -2,22 +2,26 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useRouter } from "next/navigation";
 
 import SiteButton from "@/components/siteButton";
 import AddAMessageModal from "./addAMessageModal";
-import SuccessfulApplicationModal from "./successfulAppModal";
 
-export default function ApplyModal({ jobTitle, businessName }: any) {
+export default function SuccessfulApplicationModal({
+  jobTitle,
+  businessName,
+}: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { fellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const router = useRouter();
+  const appsLeft = 5 - Number(fellow?.dailyApplications);
 
-  const apply = () => {
-    // send details to the database for the application - if it's successful, show the successfulApplicationModal
-    // we should make some kind of specific error modal or something here
-    // there might be a chance of a job reaching it's limit of applications at the same time an application is trying ot be submitted,
-    // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
-    showModal(<SuccessfulApplicationModal />);
+  const backToSearch = () => {
+    router.push("/job-board");
+    setTimeout(() => {
+      hideModal();
+    }, 500);
   };
 
   return (
@@ -25,41 +29,41 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
       className={`ApplyModal flex w-[40vw] flex-col items-center gap-4 ${textColor}`}
     >
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
-        {`Apply for the ${jobTitle} Job`}
+        {`Successfully Applied!`}
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.dailyApplications}/5`}</h4>
-      <p
-        className={`Details ${titleColor} text-center`}
-      >{`We’ll send ${businessName} your information.`}</p>
+      >{`daily apps left: ${appsLeft}`}</h4>
 
       <p
         className={`Details ${titleColor} text-center`}
-      >{`If you’d like to add a message or include additional information, just use the button below!`}</p>
+      >{`We wish you the best of luck!`}</p>
+      <p
+        className={`Details ${titleColor} text-center`}
+      >{`You can keep up with this application in your application management system.`}</p>
       <div className="Buttons mt-4 flex flex-row items-start gap-4">
         <SiteButton
           variant="hollow"
           size="large"
           colorScheme="b3"
           aria="go back"
-          addClasses=""
           onClick={() =>
             showModal(<AddAMessageModal business={businessName} />)
           }
         >
-          add a message
+          application manager
         </SiteButton>
-        <SiteButton
-          variant="hollow"
-          size="large"
-          colorScheme="f1"
-          aria="go back"
-          addClasses=""
-          onClick={apply}
-        >
-          apply now
-        </SiteButton>
+        {appsLeft > 0 && (
+          <SiteButton
+            variant="hollow"
+            size="large"
+            colorScheme="f1"
+            aria="go back"
+            onClick={backToSearch}
+          >
+            back to job search
+          </SiteButton>
+        )}
       </div>
     </div>
   );

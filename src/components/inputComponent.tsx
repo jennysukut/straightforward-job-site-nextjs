@@ -9,8 +9,8 @@ interface InputComponent {
   type: string;
   placeholderText: string;
   errors?: any;
-  register: any;
-  registerValue: string;
+  register?: any;
+  registerValue?: string;
   defaultValue?: any;
   width?: any;
   height?: any;
