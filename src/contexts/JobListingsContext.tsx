@@ -152,7 +152,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "blerp",
       job: {
-        applicants: ["testid"],
+        applicants: [],
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
         roundNumber: "1",

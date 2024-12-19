@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
@@ -21,7 +21,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export default function NavBar() {
   const { showModal } = useModal();
-  const { pageType, accountType, isLoggedIn } = usePageContext();
+  const { currentPage, pageType, accountType, isLoggedIn } = usePageContext();
   const { fellow } = useFellow();
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
@@ -36,7 +36,11 @@ export default function NavBar() {
     (option) => option.title === fellow?.avatar,
   );
 
-  console.log(avatarDetails);
+  useEffect(() => {
+    if (currentPage === "jobBoard") {
+      setClickedButton("jobs");
+    }
+  });
 
   return (
     <div

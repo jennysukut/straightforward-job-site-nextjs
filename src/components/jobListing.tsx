@@ -77,9 +77,11 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
-  const matchingIds = !currentJob?.applicants?.some(
-    (applicant: any) => applicant.id === fellow?.id,
-  );
+  const matchingIds =
+    currentJob?.applicants &&
+    !currentJob?.applicants?.some(
+      (applicant: any) => applicant.id === fellow?.id,
+    );
 
   // if it matches parameters, hasn't met applicationLimit, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
@@ -89,7 +91,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     currentJob?.numberOfApps !== currentJob?.applicationLimit &&
     hasMatchingNonNegParams === true &&
     fellow?.dailyApplications !== "5" &&
-    !matchingIds;
+    matchingIds === false;
 
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
@@ -148,7 +150,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
           {/* fellow buttons */}
           {!isOwn && (
-            <div className="FellowTopButtons -mb-2 -mt-14 flex flex-col items-end gap-1 self-end">
+            <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
               <SiteButton
                 aria="saveJob"
                 colorScheme="d3"
