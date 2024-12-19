@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Fellow {
+  id?: string;
   name?: string;
   email?: string;
   smallBio?: string;
@@ -74,6 +75,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     //   standard: "bg-[url('/avatars/checks.svg')]",
     //   highContrast: "bg-[url('/avatars/blue-checks.svg')]",
     // },
+    id: "testid",
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",
     smallBio:

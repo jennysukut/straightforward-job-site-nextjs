@@ -11,6 +11,7 @@ import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
 import { JobListingsProvider } from "@/contexts/JobListingsContext";
 import { BusinessListProvider } from "@/contexts/BusinessListContext";
+import { ApplicationProvider } from "@/contexts/ApplicationContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
@@ -49,22 +50,24 @@ export default function RootLayout({
           <ColorProvider>
             <ApolloWrapper>
               <BusinessListProvider>
-                <JobListingsProvider>
-                  <JobProvider>
-                    <BusinessProvider>
-                      <FellowProvider>
-                        <ModalProvider>
-                          <NavBar />
-                          <main className="Main flex flex-1 flex-col">
-                            {children}
-                            {/* we could slip a fun background element in here? */}
-                          </main>
-                          <Footer />
-                        </ModalProvider>
-                      </FellowProvider>
-                    </BusinessProvider>
-                  </JobProvider>
-                </JobListingsProvider>
+                <ApplicationProvider>
+                  <JobListingsProvider>
+                    <JobProvider>
+                      <BusinessProvider>
+                        <FellowProvider>
+                          <ModalProvider>
+                            <NavBar />
+                            <main className="Main flex flex-1 flex-col">
+                              {children}
+                              {/* we could slip a fun background element in here? */}
+                            </main>
+                            <Footer />
+                          </ModalProvider>
+                        </FellowProvider>
+                      </BusinessProvider>
+                    </JobProvider>
+                  </JobListingsProvider>
+                </ApplicationProvider>
               </BusinessListProvider>
             </ApolloWrapper>
           </ColorProvider>

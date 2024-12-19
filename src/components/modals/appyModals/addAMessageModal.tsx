@@ -7,6 +7,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useApplication } from "@/contexts/ApplicationContext";
 
 import SiteButton from "@/components/siteButton";
 import InputComponent from "@/components/inputComponent";
@@ -26,6 +27,7 @@ export default function AddAMessageModal({ business }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { fellow, setFellow } = useFellow();
+  const { application, setApplication } = useApplication();
   const {
     register,
     handleSubmit,
@@ -34,17 +36,17 @@ export default function AddAMessageModal({ business }: any) {
     resolver: zodResolver(AppMessageSchema),
   });
 
-  const apply = () => {
-    // if the application is successful, do these things:
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setApplication({
+      id: "testapp",
+      applicant: fellow?.id,
+      message: data.message,
+    });
     setFellow({
       ...fellow,
       dailyApplications: String(Number(fellow?.dailyApplications) + 1),
     });
     showModal(<SuccessfulApplicationModal />);
-  };
-
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    apply();
     setDisabledButton(true);
   };
 

@@ -6,30 +6,7 @@ import { string } from "zod";
 export interface Application {
   id?: string;
   message?: string;
-  applicant?: {
-    name?: string;
-    smallBio?: string;
-    country?: string;
-    location?: string;
-    skills?: Array<string>;
-    jobTitles?: Array<string>;
-    experience?: Record<string, any>;
-    education?: Record<string, any>;
-    awards?: Record<string, any>;
-    experienceLevels?: Record<string, any>;
-    accomplishments?: Record<string, any>;
-    passions?: string;
-    lookingFor?: string;
-    hobbies?: Array<any>;
-    bookOrQuote?: Array<any>;
-    petDetails?: string;
-    links?: Array<any>;
-    aboutMe?: string;
-    avatar?: any;
-    locationOptions?: Array<string>;
-    languages?: Array<string>;
-    addMoreInfo?: boolean;
-  };
+  applicant?: any;
 }
 
 interface ApplicationContextType {

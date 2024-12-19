@@ -3,6 +3,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useRouter } from "next/navigation";
+import { useApplication } from "@/contexts/ApplicationContext";
 
 import SiteButton from "@/components/siteButton";
 import AddAMessageModal from "./addAMessageModal";
@@ -14,10 +15,11 @@ export default function SuccessfulApplicationModal({
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { fellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const { application } = useApplication();
   const router = useRouter();
   const appsLeft = 5 - Number(fellow?.dailyApplications);
 
-  console.log(fellow?.dailyApplications);
+  console.log(application);
 
   const backToSearch = () => {
     router.push("/job-board");

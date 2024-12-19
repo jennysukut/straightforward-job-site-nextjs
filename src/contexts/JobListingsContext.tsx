@@ -6,6 +6,7 @@ import { StringValidation } from "zod";
 export interface JobListing {
   jobId?: string;
   job?: {
+    applicants?: Array<string>;
     jobId?: string;
     jobTitle?: string;
     businessName?: string;
@@ -59,6 +60,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "derp",
       job: {
+        applicants: ["testid", "123au"],
         roundNumber: "1",
         jobTitle: "Software Engineer II",
         businessName: "TechNova Solutions",
@@ -150,11 +152,12 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "blerp",
       job: {
+        applicants: ["testid"],
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
         roundNumber: "1",
         applicationLimit: "25",
-        numberOfApps: "25",
+        numberOfApps: "20",
         locationOption: "on-site",
         experienceLevel: ["junior"],
         payDetails: {

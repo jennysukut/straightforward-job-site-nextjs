@@ -77,13 +77,19 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
+  const matchingIds = !currentJob?.applicants?.some(
+    (applicant: any) => applicant.id === fellow?.id,
+  );
 
   // if it matches parameters, hasn't met applicationLimit, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
+  //we also need to check to make sure they haven't already applied to this job.
+  // We should create a list of applicantIds for each position so we can look through to check and make sure they haven't applied
   const canApply =
     currentJob?.numberOfApps !== currentJob?.applicationLimit &&
     hasMatchingNonNegParams === true &&
-    fellow?.dailyApplications !== "5";
+    fellow?.dailyApplications !== "5" &&
+    !matchingIds;
 
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
@@ -147,9 +153,14 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 aria="saveJob"
                 colorScheme="d3"
                 onClick={() => saveClick(id)}
-                isSelected={jobSavedStatus}
+                isSelected={jobSavedStatus || matchingIds}
+                disabled={matchingIds}
               >
-                {jobSavedStatus === true ? "job saved" : "save job"}
+                {jobSavedStatus === true
+                  ? "job saved"
+                  : matchingIds
+                    ? "applied"
+                    : "save job"}
               </SiteButton>
               <SiteLabel
                 variant="display"
@@ -317,7 +328,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 }
                 disabled={canApply === false}
               >
-                apply for this job
+                {matchingIds ? "already applied!" : "apply for this job"}
               </SiteButton>
               <SiteButton
                 aria="publish"

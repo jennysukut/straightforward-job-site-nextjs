@@ -6,6 +6,7 @@ export interface Job {
   // this job number will probably get replaced by an
   // auto-generated id made by sending details to the server?
   //probably best to name it jobId
+  applicants?: Array<string>;
   jobId?: string;
   jobTitle?: string;
   businessName?: string;

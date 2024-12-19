@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useApplication } from "@/contexts/ApplicationContext";
 
 import SiteButton from "@/components/siteButton";
 import AddAMessageModal from "./addAMessageModal";
@@ -11,6 +12,7 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const { setApplication } = useApplication();
 
   const apply = () => {
     // send details to the database for the application - if it's successful, show the successfulApplicationModal
@@ -19,6 +21,7 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
     // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
 
     // if the application is successful, do these things:
+    setApplication({ id: "testapp", applicant: fellow?.id });
     setFellow({
       ...fellow,
       dailyApplications: String(Number(fellow?.dailyApplications) + 1),
