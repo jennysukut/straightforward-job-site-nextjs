@@ -71,8 +71,6 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     );
   };
 
-  console.log(currentJob);
-
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
@@ -92,6 +90,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
+
+    setPageType("jobListing");
   }, []);
 
   return (
@@ -122,7 +122,10 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           {/* fellow buttons */}
           {!isOwn && (
             <div className="FellowTopButtons -mb-2 -mt-14 flex flex-col items-end gap-1 self-end">
-              <SiteLabel variant="display" aria="roundNumber">
+              <SiteButton aria="saveJob" colorScheme="d3">
+                save job
+              </SiteButton>
+              <SiteLabel variant="display" aria="roundNumber" addClasses="mt-3">
                 round: {currentJob?.roundNumber || "1"}
               </SiteLabel>
               <SiteLabel variant="display" aria="appLimit">
@@ -265,7 +268,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 aria="edit"
                 addClasses="px-8"
                 // we'll use the company id here to route to their page
-                // onClick={() => }
+                onClick={() => router.push(`/profile/1b23i`)}
               >
                 view company details
               </SiteButton>
@@ -307,9 +310,11 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           >
             <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
               <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
-              <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
-                {currentJob?.businessName}
-              </p>
+              <Link href={"/profile"}>
+                <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
+                  {currentJob?.businessName}
+                </p>
+              </Link>
               <p
                 className={`PositionSummary pl-2 pt-4 leading-7 ${secondaryTextColor}`}
               >

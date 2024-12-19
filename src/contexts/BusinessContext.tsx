@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { string } from "zod";
 
 export interface Business {
+  id?: string;
   businessName?: string;
   email?: string;
   password?: string;
@@ -39,25 +40,12 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [business, setBusiness] = useState<Business | null>({
-    // businessName: "Test Business Name",
-    // email: "testbusinessemail@gmail.com",
-    // avatar: "/avatars/magenta.svg",
-    // shadow: "drop-shadow-lime",
-    // colorScheme: "b4",
-    // buttonShadow: "bg-lime",
-    // buttonImg: "bg-[url('/avatars/magenta.svg')]",
-    // billingDetails: true,
-    // hasActiveJobs: true,
-
+    id: "1b23i",
     amountDue: "400",
     billingDetails: true,
     hasActiveJobs: true,
     businessName: "Straightforward Job Site ",
-    avatar: "/avatars/magenta.svg",
-    shadow: "drop-shadow-lime",
-    colorScheme: "b4",
-    buttonShadow: "drop-shadow-lime",
-    buttonImg: "bg-[url('/avatars/magenta.svg')]",
+    avatar: "app",
     email: "jenny@straightforwardjobsite.com",
     password: "daehfjkgrnhtjelngr",
     country: "United States",

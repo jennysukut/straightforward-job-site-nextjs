@@ -10,6 +10,7 @@ import { BusinessProvider } from "@/contexts/BusinessContext";
 import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
 import { JobListingsProvider } from "@/contexts/JobListingsContext";
+import { BusinessListProvider } from "@/contexts/BusinessListContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
@@ -47,22 +48,24 @@ export default function RootLayout({
         <PageProvider>
           <ColorProvider>
             <ApolloWrapper>
-              <JobListingsProvider>
-                <JobProvider>
-                  <BusinessProvider>
-                    <FellowProvider>
-                      <ModalProvider>
-                        <NavBar />
-                        <main className="Main flex flex-1 flex-col">
-                          {children}
-                          {/* we could slip a fun background element in here? */}
-                        </main>
-                        <Footer />
-                      </ModalProvider>
-                    </FellowProvider>
-                  </BusinessProvider>
-                </JobProvider>
-              </JobListingsProvider>
+              <BusinessListProvider>
+                <JobListingsProvider>
+                  <JobProvider>
+                    <BusinessProvider>
+                      <FellowProvider>
+                        <ModalProvider>
+                          <NavBar />
+                          <main className="Main flex flex-1 flex-col">
+                            {children}
+                            {/* we could slip a fun background element in here? */}
+                          </main>
+                          <Footer />
+                        </ModalProvider>
+                      </FellowProvider>
+                    </BusinessProvider>
+                  </JobProvider>
+                </JobListingsProvider>
+              </BusinessListProvider>
             </ApolloWrapper>
           </ColorProvider>
         </PageProvider>

@@ -4,15 +4,16 @@ import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useBusinessList } from "@/contexts/BusinessListContext";
 
 import InfoBox from "./infoBox";
 import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 
-export default function BusinessProfile({ business }: any, isOwn: boolean) {
+export default function BusinessProfile({ isOwn, business, hasId, id }: any) {
   const { setBusiness } = useBusiness();
-
+  const { businessList } = useBusinessList();
   const { setPageType } = usePageContext();
   const { showModal } = useModal();
   const { textColor, titleColor, secondaryTextColor } = useColorOptions();
@@ -30,7 +31,13 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
     setPageType("Business");
   }, []);
 
-  console.log(business?.activeJobs);
+  let thisBusiness;
+  if (hasId) {
+    thisBusiness = businessList?.find((business: any) => id === id);
+    console.log("current Business details:", thisBusiness);
+  } else {
+    thisBusiness = business;
+  }
 
   return (
     <div className="BusinessProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
@@ -48,7 +55,7 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
           >
             <h2 className="MissionVisionTitle mb-4 pl-2">{`Mission & Vision:`}</h2>
             <p className="MissionVision ml-4 font-medium italic">
-              {business.missionVision}
+              {thisBusiness.business.missionVision}
             </p>
           </InfoBox>
 
@@ -65,7 +72,7 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
             <p
               className={`BusinessField ml-8 font-medium ${secondaryTextColor}`}
             >
-              {business.businessField}
+              {thisBusiness.business.businessField}
             </p>
           </InfoBox>
 
@@ -107,9 +114,11 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
               <div className="NameBioAvatarContainer flex items-center gap-8">
                 <Avatar addClasses="self-start min-w-[60px]" />
                 <div className="NameBioContainer">
-                  <h1 className="BusinessName">{business?.businessName}</h1>
+                  <h1 className="BusinessName">
+                    {thisBusiness?.business.businessName}
+                  </h1>
                   <p className="SmallBio pt-4 leading-6">
-                    {business?.smallBio ||
+                    {thisBusiness?.business.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>
                 </div>
@@ -128,21 +137,22 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
           >
             <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
               <p className={`Location ml-2 ${titleColor}`}>
-                Location: {business?.location}, {business?.country}
+                Location: {thisBusiness?.business.location},{" "}
+                {thisBusiness?.business.country}
               </p>
               <p className={`Website -mb-2 ml-2 flex gap-2 ${titleColor}`}>
                 Website:
                 <a
-                  href={business?.website}
+                  href={thisBusiness?.business.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${secondaryTextColor} text-sm font-medium italic`}
                 >
-                  {` `} {business?.website}
+                  {` `} {thisBusiness?.business.website}
                 </a>
               </p>
               <p className={`Email ml-2 ${titleColor}`}>
-                Email: {business?.email}
+                Email: {thisBusiness?.business.email}
               </p>
             </div>
           </InfoBox>
@@ -156,11 +166,11 @@ export default function BusinessProfile({ business }: any, isOwn: boolean) {
             canEdit={canEdit}
             editClick={() => handleEditClick("/business-signup/step2")}
           >
-            <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${business.businessName}:`}</h2>
+            <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.business.businessName}:`}</h2>
             <p
               className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
             >
-              {business.moreAboutBusiness}
+              {thisBusiness.business.moreAboutBusiness}
             </p>
           </InfoBox>
         </div>
