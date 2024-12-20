@@ -18,7 +18,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | "large"
     | "extraLarge"
     | "largeCircle"
-    | "extraLargeCircle";
+    | "extraLargeCircle"
+    | "wide";
   variant?: "hollow" | "filled" | "avatar";
   colorScheme: ButtonColorOption;
   aria: string;
@@ -71,6 +72,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       "px-4 py-2 text-xs min-w-[65px]": size === "default",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:py-4 md:text-sm":
         size === "extraLarge",
+      "px-6 py-3 text-sm w-[100%]": size === "wide",
 
       // variant
       [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
@@ -146,6 +148,8 @@ const SiteButton: React.FC<ButtonProps> = ({
         size === "default",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:text-sm md:py-4 left-2 -right-2 top-2":
         size === "extraLarge",
+      "px-6 py-3 text-sm w-[100%] -right-1.5 top-1.5  left-1.5":
+        size === "wide",
 
       //highContrast
       [`bg-pine border-pine`]: colorOption === "highContrast",
@@ -184,7 +188,9 @@ const SiteButton: React.FC<ButtonProps> = ({
   const handleMouseLeave = () => setIsPressed(false);
 
   return (
-    <div className="Button group relative w-fit">
+    <div
+      className={`Button group relative ${size === "wide" ? "w-full" : "w-fit"}`}
+    >
       <button
         {...props}
         className={buttonClasses}

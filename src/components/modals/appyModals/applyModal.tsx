@@ -8,7 +8,7 @@ import SiteButton from "@/components/siteButton";
 import AddAMessageModal from "./addAMessageModal";
 import SuccessfulApplicationModal from "./successfulAppModal";
 
-export default function ApplyModal({ jobTitle, businessName }: any) {
+export default function ApplyModal({ jobTitle, business, jobId }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -21,7 +21,12 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
     // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
 
     // if the application is successful, do these things:
-    setApplication({ id: "testapp", applicant: fellow?.id });
+    setApplication({
+      id: "testapp",
+      applicant: fellow?.id,
+      jobId: jobId,
+      business: business,
+    });
     setFellow({
       ...fellow,
       dailyApplications: String(Number(fellow?.dailyApplications) + 1),
@@ -41,7 +46,7 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
       >{`daily application: ${fellow?.dailyApplications}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
-      >{`We’ll send ${businessName} your information.`}</p>
+      >{`We’ll send ${business} your information.`}</p>
 
       <p
         className={`Details ${titleColor} text-center`}
@@ -54,7 +59,7 @@ export default function ApplyModal({ jobTitle, businessName }: any) {
           aria="go back"
           addClasses=""
           onClick={() =>
-            showModal(<AddAMessageModal business={businessName} />)
+            showModal(<AddAMessageModal business={business} jobId={jobId} />)
           }
         >
           add a message

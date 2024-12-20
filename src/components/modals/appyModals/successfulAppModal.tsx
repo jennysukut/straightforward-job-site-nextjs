@@ -4,6 +4,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useRouter } from "next/navigation";
 import { useApplication } from "@/contexts/ApplicationContext";
+import { useEffect } from "react";
 
 import SiteButton from "@/components/siteButton";
 import AddAMessageModal from "./addAMessageModal";

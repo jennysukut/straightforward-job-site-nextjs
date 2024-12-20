@@ -29,6 +29,7 @@ interface TieredButtonOptionsComponent {
   flexOpt?: string;
   buttonSize?: any;
   setArray?: any;
+  horizontalSecondaryButtons?: boolean;
 }
 
 const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
@@ -45,13 +46,13 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   flexOpt,
   setArray,
   buttonSize = "default",
+  horizontalSecondaryButtons,
 }) => {
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
 
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
-      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
@@ -63,18 +64,6 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
     secondaryButtons: any,
     currentButton: any,
   ) => {
-    // Update selectedArray to remove any matching topTierButton
-    //we need to be sure to delete the secondary ones as well, that'll remove details completely
-    console.log(
-      "removing top tier button:",
-      topTierButton,
-      "secondaryButtons:",
-      secondaryButtons,
-      "type:",
-      type,
-      "currentButton:",
-      currentButton,
-    );
     const updatedArray = selectedArray.filter(
       (item: any) => item !== topTierButton && !secondaryButtons.includes(item),
     );
@@ -87,7 +76,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   }, []);
 
   return (
-    <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
+    <div className={`ButtonOptionsComponentContainer ${addClasses}`}>
       <div
         className={`ButtonsContainer mb-4 flex justify-center gap-4 ${flexOpt}`}
       >
@@ -130,7 +119,9 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                   {button.title}
                 </SiteButton>
                 {selectedArray.includes(button.title) && (
-                  <div className="SecondTierOptions -mb-10 flex flex-col items-center">
+                  <div
+                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "flex-row" : "flex-col"} -mb-10 flex items-center`}
+                  >
                     <ButtonOptionsComponent
                       type={button.type}
                       buttons={button.options}
@@ -139,7 +130,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                       handleDelete={handleDelete}
                       classesForButtons="px-6"
                       flexOpt="flex-col gap-2"
-                      buttonContainerClasses="flex-col items-center gap-3 self-center"
+                      buttonContainerClasses={`${horizontalSecondaryButtons ? "flex-row" : "flex-col"} items-center gap-3 self-center`}
                       addClasses="-mb-1"
                     />
                     <SiteButton

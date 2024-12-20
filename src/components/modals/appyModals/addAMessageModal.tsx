@@ -21,7 +21,7 @@ const AppMessageSchema = z.object({
 
 type FormData = z.infer<typeof AppMessageSchema>;
 
-export default function AddAMessageModal({ business }: any) {
+export default function AddAMessageModal({ business, jobId }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
 
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
@@ -41,6 +41,8 @@ export default function AddAMessageModal({ business }: any) {
       id: "testapp",
       applicant: fellow?.id,
       message: data.message,
+      business: business,
+      jobId: jobId,
     });
     setFellow({
       ...fellow,

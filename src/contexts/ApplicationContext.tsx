@@ -7,6 +7,8 @@ export interface Application {
   id?: string;
   message?: string;
   applicant?: any;
+  jobId?: string;
+  business?: string;
 }
 
 interface ApplicationContextType {

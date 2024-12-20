@@ -9,6 +9,7 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
+import { useApplication } from "@/contexts/ApplicationContext";
 
 import InfoBox from "@/components/infoBox";
 import SiteLabel from "@/components/siteLabel";
@@ -36,6 +37,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
   const { job, setJob } = useJob();
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const { application } = useApplication();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
@@ -83,15 +85,13 @@ export default function JobListing({ isOwn, hasId, id }: any) {
       (applicant: any) => applicant.id === fellow?.id,
     );
 
-  // if it matches parameters, hasn't met applicationLimit, and the dailyApplications
+  // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
-  //we also need to check to make sure they haven't already applied to this job.
-  // We should create a list of applicantIds for each position so we can look through to check and make sure they haven't applied
   const canApply =
     currentJob?.numberOfApps !== currentJob?.applicationLimit &&
     hasMatchingNonNegParams === true &&
     fellow?.dailyApplications !== "5" &&
-    matchingIds === false;
+    matchingIds;
 
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
@@ -122,6 +122,12 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
     setPageType("jobListing");
   }, []);
+
+  //I need to reload and update this page when the fellow applies to it, that way the buttons reflect the fact that they've applied.
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [application, 1]);
 
   return (
     <div
@@ -324,7 +330,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                   showModal(
                     <ApplyModal
                       jobTitle={currentJob?.jobTitle}
-                      businessName={currentJob?.businessName}
+                      business={currentJob?.businessName}
+                      jobId={currentJob?.jobId}
                     />,
                   )
                 }

@@ -323,6 +323,7 @@ export default function JobBoard() {
             handleDelete={handleDelete}
             classesForButtons="px-6"
             setArray={setFilters}
+            addClasses="mt-2"
           />
 
           {/* country input */}
