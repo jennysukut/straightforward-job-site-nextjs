@@ -26,7 +26,7 @@ export default function FellowAMS() {
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
-
+  const [appOptions, setAppOptions] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
@@ -50,6 +50,16 @@ export default function FellowAMS() {
     setFilteredJobs(filteredJobs);
   };
 
+  const retract = () => {
+    if (selectedApps.length > 0) {
+      console.log("need to retract these applications:", selectedApps);
+      // remove the selectedApps from the applications list and retract the applications
+      // we can only do this after a confirmation modal has been successful
+    } else {
+      return;
+    }
+  };
+
   useEffect(() => {
     // if (filters.length > 0 || country.length > 0) {
     //     filterSearch(matches);
@@ -66,28 +76,37 @@ export default function FellowAMS() {
   }, [filters, appStatus]);
 
   // handlers for adding, updating, and deleting details
-  const handleAdd = (type: "filters" | "appStatus", data: any) => {
+  const handleAdd = (
+    type: "filters" | "appStatus" | "selectedApps",
+    data: any,
+  ) => {
     AddHandler({
       item: data,
       type,
       setFunctions: {
         filters: setFilters,
         appStatus: setAppStatus,
+        selectedApps: setSelectedApps,
       },
       oneChoice: {
         filters: false,
         appStatus: true,
+        selectedApps: false,
       },
     });
   };
 
-  const handleDelete = (type: "filters" | "appStatus", id: any) => {
+  const handleDelete = (
+    type: "filters" | "appStatus" | "selectedApps",
+    id: any,
+  ) => {
     DeleteHandler({
       item: id,
       type,
       setFunctions: {
         filters: setFilters,
         appStatus: setAppStatus,
+        selectedApps: setSelectedApps,
       },
     });
   };
@@ -181,6 +200,8 @@ export default function FellowAMS() {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
+  const [currentDate, setCurrentDate] = useState(new Date().toDateString());
+
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center ${textColor} w-[84%] max-w-[1600px]`}
@@ -188,24 +209,16 @@ export default function FellowAMS() {
       <div className="ButtonsAndTitle flex w-full justify-between">
         {/* application status */}
         <div className="FilterButtons flex items-center gap-4">
-          <TieredButtonOptionsComponent
-            type="filters"
-            buttons={[
-              {
-                title: appStatus.length > 1 ? appStatus : "application status",
-                type: "appStatus",
-                array: appStatus,
-                options: ["entry-level", "junior", "senior"],
-              },
-            ]}
-            selectedArray={filters}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            classesForButtons="px-6"
-            setArray={setFilters}
-            horizontalSecondaryButtons
-          />
           <div className="OtherButtons flex gap-4 self-start">
+            <SiteButton
+              colorScheme="d6"
+              variant="hollow"
+              aria="viewClosedJobs"
+              isSelected={filters.includes("appStatus")}
+              onClick={() => setFilters(["appStatus"])}
+            >
+              application status
+            </SiteButton>
             {/* view closed jobs */}
             <SiteButton
               colorScheme="b1"
@@ -222,8 +235,7 @@ export default function FellowAMS() {
               colorScheme="d6"
               variant="hollow"
               aria="viewClosedJobs"
-              // onClick={() => setViewClosedJobs(!viewClosedJobs)}
-              // isSelected={viewClosedJobs}
+              onClick={retract}
             >
               retract
             </SiteButton>
@@ -244,6 +256,10 @@ export default function FellowAMS() {
               jobId={app.jobId}
               dateOfApp={app.dateOfApp}
               appStatus={app.appStatus}
+              selectedApps={selectedApps}
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+              appOptions={appOptions}
             />
           );
         })}

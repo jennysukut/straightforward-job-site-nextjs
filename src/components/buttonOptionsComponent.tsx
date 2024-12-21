@@ -10,7 +10,7 @@ interface ButtonOptionsComponent {
   title?: string;
   errors?: any;
   buttons: any;
-  selectedArray?: any;
+  selectedArray: any;
   handleAdd: Function;
   required?: boolean;
   handleDelete: Function;
@@ -40,7 +40,6 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   const { textColor, errorColor } = useColorOptions();
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
-      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
@@ -83,7 +82,6 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
                 onClick={() => buttonClick(button)}
                 addClasses={`text-nowrap ${classesForButtons || ""}`}
                 isSelected={selectedArray.includes(button)}
-                // isSelected={true}
               >
                 {button}
               </SiteButton>
