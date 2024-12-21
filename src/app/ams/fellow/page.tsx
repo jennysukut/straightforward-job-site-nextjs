@@ -208,38 +208,42 @@ export default function FellowAMS() {
     >
       <div className="ButtonsAndTitle flex w-full justify-between">
         {/* application status */}
-        <div className="FilterButtons flex items-center gap-4">
-          <div className="OtherButtons flex gap-4 self-start">
-            <SiteButton
-              colorScheme="d6"
-              variant="hollow"
-              aria="viewClosedJobs"
-              isSelected={filters.includes("appStatus")}
-              onClick={() => setFilters(["appStatus"])}
-            >
-              application status
-            </SiteButton>
-            {/* view closed jobs */}
-            <SiteButton
-              colorScheme="b1"
-              variant="hollow"
-              aria="viewClosedJobs"
-              onClick={() => setViewClosedJobs(!viewClosedJobs)}
-              isSelected={viewClosedJobs}
-            >
-              {viewClosedJobs === true ? "view open jobs" : "view closed jobs"}
-            </SiteButton>
-
-            {/* retract button */}
-            <SiteButton
-              colorScheme="d6"
-              variant="hollow"
-              aria="viewClosedJobs"
-              onClick={retract}
-            >
-              retract
-            </SiteButton>
-          </div>
+        <div className="FilterButtons -mb-8 ml-4 flex items-center">
+          <TieredButtonOptionsComponent
+            type="filters"
+            selectedArray={filters}
+            setArray={setFilters}
+            buttons={[
+              {
+                title:
+                  appStatus.length > 1
+                    ? `status: ${appStatus}`
+                    : "application status",
+                type: "appStatus",
+                array: appStatus,
+                options: [
+                  "unopened",
+                  "viewed",
+                  "stage 1",
+                  "stage 2",
+                  "stage 3",
+                  "offer",
+                ],
+              },
+            ]}
+            horizontalSecondaryButtons
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+          />
+          {/* <SiteButton
+            colorScheme="d6"
+            variant="hollow"
+            aria="viewClosedJobs"
+            isSelected={filters.includes("appStatus")}
+            onClick={() => setFilters(["appStatus"])}
+          >
+            application status
+          </SiteButton> */}
         </div>
         <h1 className="AMSTitle">Your Applications</h1>
       </div>

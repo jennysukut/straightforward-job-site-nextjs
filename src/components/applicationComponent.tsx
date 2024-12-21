@@ -52,7 +52,7 @@ const Application: React.FC<ApplicationProps> = ({
     }
   };
 
-  const viewDetails = () => {
+  const viewListing = () => {
     router.push(`/listing/${jobId}`);
   };
 
@@ -95,6 +95,7 @@ const Application: React.FC<ApplicationProps> = ({
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[0]}
+            onClick={viewListing}
           >
             view listing
           </SiteButton>

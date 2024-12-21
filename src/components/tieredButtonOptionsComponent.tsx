@@ -97,7 +97,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
           {buttons.map((button: Button, index: number) => {
             return (
               <div
-                className="ButtonAndOptions flex flex-col items-center"
+                className={`ButtonAndOptions flex flex-col ${horizontalSecondaryButtons ? "items-start" : "items-center"} `}
                 key={index}
               >
                 <SiteButton
@@ -120,7 +120,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                 </SiteButton>
                 {selectedArray.includes(button.title) && (
                   <div
-                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "flex-row" : "flex-col"} -mb-10 flex items-center`}
+                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "ml-2 flex-row gap-3 align-middle" : "-mb-10 flex-col"} flex items-center`}
                   >
                     <ButtonOptionsComponent
                       type={button.type}
