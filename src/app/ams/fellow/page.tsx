@@ -24,31 +24,10 @@ export default function FellowAMS() {
   const { applications } = useApplications();
 
   const [colorArray, setColorArray] = useState<[]>([]);
-  const [inputValue, setInputValue] = useState("");
-  const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
   const [appOptions, setAppOptions] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
-  const [viewClosedJobs, setViewClosedJobs] = useState<boolean>(false);
-
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setInputValue(value);
-  };
-
-  const filterSearch = (jobs: any) => {
-    const filteredJobs = jobs.filter((job: any) => {
-      const matchesStatus =
-        appStatus.length > 0
-          ? appStatus.includes(job.job?.experienceLevel || "")
-          : true;
-
-      return matchesStatus;
-    });
-
-    setFilteredJobs(filteredJobs);
-  };
 
   const retract = () => {
     if (selectedApps.length > 0) {
@@ -59,21 +38,6 @@ export default function FellowAMS() {
       return;
     }
   };
-
-  useEffect(() => {
-    // if (filters.length > 0 || country.length > 0) {
-    //     filterSearch(matches);
-    //   } else {
-    //     setFilteredJobs(matches);
-    //   }
-    // } else if (filters.length > 0) {
-    //   filterSearch(jobListings);
-    // } else if (country.length > 0) {
-    //   filterSearch(jobListings);
-    // } else {
-    //   setFilteredJobs([]);
-    // }
-  }, [filters, appStatus]);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -110,91 +74,6 @@ export default function FellowAMS() {
       },
     });
   };
-
-  // const renderJobApplications = () => {
-  //   const activeApps = jobListings?.filter((job: any) => {
-  //     return job.job?.numberOfApps !== job.job?.applicationLimit;
-  //   });
-
-  //   const closedApps = jobListings?.filter((job: any) => {
-  //     return job.job?.numberOfApps === job.job?.applicationLimit;
-  //   });
-
-  //   const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
-  //     return job.job?.numberOfApps !== job.job?.applicationLimit;
-  //   });
-
-  //   const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
-  //     return job.job?.numberOfApps === job.job?.applicationLimit;
-  //   });
-
-  //   if (inputValue.length < 3 && filters.length === 0 && !viewClosedJobs) {
-  //     return activeJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   } else if (
-  //     inputValue.length < 3 &&
-  //     filters.length === 0 &&
-  //     viewClosedJobs
-  //   ) {
-  //     return pendingJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   } else if (filters.length > 0 && !viewClosedJobs) {
-  //     console.log("trying to show filtered jobs", filteredActiveJobListings);
-  //     return filteredActiveJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   } else if (filters.length > 0 && viewClosedJobs) {
-  //     return filteredPendingJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   } else if (viewClosedJobs) {
-  //     return filteredPendingJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   } else {
-  //     return filteredActiveJobListings?.map((job: any, index: number) => (
-  //       <JobPost
-  //         job={job}
-  //         index={index}
-  //         colorArray={colorArray}
-  //         key={job.jobId}
-  //         saveClick={() => saveClick(job.jobId)}
-  //       />
-  //     ));
-  //   }
-  // };
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);

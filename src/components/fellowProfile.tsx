@@ -11,7 +11,19 @@ import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 
-export default function FellowProfile({ fellow }: any, isOwn: boolean) {
+interface FellowProfile {
+  hasId?: boolean;
+  id?: string;
+  fellow?: any;
+  isOwn?: boolean;
+}
+
+const FellowProfile: React.FC<FellowProfile> = ({
+  hasId,
+  id,
+  fellow,
+  isOwn,
+}) => {
   const { setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -21,8 +33,17 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
-
   const [canEdit, setCanEdit] = useState(false);
+
+  // define the current fellow
+  // let currentFellow;
+  // if (hasId) {
+  //   // if the fellow has an Id, it's being accessed from outside, so we'll need to set it up as an application?
+  //   // currentFellow = jobListings.find((job: any) => job.jobId === id)?.job;
+  // } else {
+  //   //if it's just the currentFellow, we'll pass the fellow parameter through here?
+  //   currentFellow = fellow;
+  // }
 
   const handleEditClick = (url: any) => {
     setFellow({ ...fellow, profileIsBeingEdited: true });
@@ -566,4 +587,6 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
       </div>
     </div>
   );
-}
+};
+
+export default FellowProfile;
