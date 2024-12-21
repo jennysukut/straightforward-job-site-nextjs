@@ -43,6 +43,8 @@ export default function AddAMessageModal({ business, jobId }: any) {
       message: data.message,
       business: business,
       jobId: jobId,
+      dateOfApp: "12.20.2024",
+      appStatus: "submitted",
     });
     setFellow({
       ...fellow,

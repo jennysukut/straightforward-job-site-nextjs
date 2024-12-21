@@ -26,6 +26,8 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       applicant: fellow?.id,
       jobId: jobId,
       business: business,
+      dateOfApp: "12.20.2024",
+      appStatus: "submitted",
     });
     setFellow({
       ...fellow,

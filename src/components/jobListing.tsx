@@ -331,7 +331,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                     <ApplyModal
                       jobTitle={currentJob?.jobTitle}
                       business={currentJob?.businessName}
-                      jobId={currentJob?.jobId}
+                      jobId={id}
                     />,
                   )
                 }

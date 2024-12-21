@@ -9,6 +9,8 @@ export interface Application {
   applicant?: any;
   jobId?: string;
   business?: string;
+  dateOfApp?: any;
+  appStatus?: string;
 }
 
 interface ApplicationContextType {

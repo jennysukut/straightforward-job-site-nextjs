@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { JobListing } from "@/contexts/JobListingsContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
 import InfoBox from "@/components/infoBox";
@@ -14,13 +14,14 @@ import AddHandler from "@/components/addHandler";
 import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
 import SiteButton from "@/components/siteButton";
+import Application from "@/components/applicationComponent";
 
 export default function FellowAMS() {
   const { accountType } = usePageContext();
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
-  const { jobListings } = useJobListings();
   const { hideModal } = useModal();
+  const { applications } = useApplications();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -182,7 +183,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center md:pb-12 ${textColor} w-[84%] max-w-[1600px]`}
+      className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center ${textColor} w-[84%] max-w-[1600px]`}
     >
       <div className="ButtonsAndTitle flex w-full justify-between">
         {/* application status */}
@@ -231,30 +232,21 @@ export default function FellowAMS() {
         <h1 className="AMSTitle">Your Applications</h1>
       </div>
 
-      <div className="JobApplications flex w-full flex-wrap gap-8">
-        <div className="Application flex w-full gap-3">
-          <div className="MultiSelectionButton self-center">
-            <SiteButton
-              size="smallCircle"
-              colorScheme="f1"
-              aria="selectButton"
-              variant="hollow"
-            ></SiteButton>
-          </div>
-          <SiteButton
-            aria="JobApplication"
-            variant="hollow"
-            colorScheme="b1"
-            size="wide"
-          >
-            <div className="AppInfo flex justify-between">
-              <p className="TitleAndBusiness">
-                Social Media Manager | Social Business
-              </p>
-              <p className="Details">8.20.2024 | viewed</p>
-            </div>
-          </SiteButton>
-        </div>
+      <div className="JobApplications flex w-full flex-wrap gap-6">
+        {applications?.map((app: any, index: number) => {
+          return (
+            <Application
+              key={app.id}
+              id={app.id}
+              colorArray={colorArray}
+              index={index}
+              business={app.business}
+              jobId={app.jobId}
+              dateOfApp={app.dateOfApp}
+              appStatus={app.appStatus}
+            />
+          );
+        })}
       </div>
     </div>
   );
