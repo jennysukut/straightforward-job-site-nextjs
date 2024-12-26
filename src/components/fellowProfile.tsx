@@ -14,17 +14,21 @@ import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 interface FellowProfile {
   hasId?: boolean;
   id?: string;
-  fellow?: any;
+  self?: any;
   isOwn?: boolean;
+  isApp?: boolean;
+  appId?: string;
 }
 
 const FellowProfile: React.FC<FellowProfile> = ({
   hasId,
   id,
-  fellow,
+  self,
   isOwn,
+  isApp,
+  appId,
 }) => {
-  const { setFellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { colorOption } = useColors();
@@ -36,14 +40,16 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [canEdit, setCanEdit] = useState(false);
 
   // define the current fellow
-  // let currentFellow;
-  // if (hasId) {
-  //   // if the fellow has an Id, it's being accessed from outside, so we'll need to set it up as an application?
-  //   // currentFellow = jobListings.find((job: any) => job.jobId === id)?.job;
-  // } else {
-  //   //if it's just the currentFellow, we'll pass the fellow parameter through here?
-  //   currentFellow = fellow;
-  // }
+  let currentFellow;
+  if (hasId) {
+    //if the fellow has an Id, it's being accessed by a business, so we'll need to take the id from the parameters and find the fellow who's information we're using
+    currentFellow = fellow;
+  } else {
+    //if it's just the currentFellow, we'll pass the fellow parameter through here?
+    currentFellow = self || fellow;
+  }
+
+  console.log(currentFellow);
 
   const handleEditClick = (url: any) => {
     setFellow({ ...fellow, profileIsBeingEdited: true });
@@ -106,8 +112,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
             <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {fellow?.skills && fellow.skills.length > 0 ? (
-                fellow.skills.map((skill: any, index: number) => {
+              {currentFellow?.skills && currentFellow.skills.length > 0 ? (
+                currentFellow.skills.map((skill: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={skill}
@@ -126,7 +132,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               )}
             </div>
           </InfoBox>
-          {fellow?.education && (
+          {currentFellow?.education && (
             <InfoBox
               variant="hollow"
               aria="education"
@@ -139,7 +145,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`EducationList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.education.map((edu: any, index: number) => {
+                {currentFellow.education.map((edu: any, index: number) => {
                   return (
                     <li className="EducationItem" key={index}>
                       <p className="DegreeFOS">
@@ -158,7 +164,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {fellow?.experience && (
+          {currentFellow?.experience && (
             <InfoBox
               variant="hollow"
               aria="experience"
@@ -171,7 +177,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.experience.map((exp: any, index: number) => {
+                {currentFellow.experience.map((exp: any, index: number) => {
                   return (
                     <li className="ExperienceItem" key={index}>
                       <p className="JobTitle pr-4">
@@ -200,7 +206,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {fellow?.awards.length >= 1 && (
+          {currentFellow?.awards.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="awards"
@@ -213,7 +219,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`AwardsList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.awards.map((award: any, index: number) => {
+                {currentFellow.awards.map((award: any, index: number) => {
                   return (
                     <li className="AwardItem" key={index}>
                       <p className="AwardTitle pr-4">{award.awardTitle},</p>
@@ -231,7 +237,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {fellow?.experienceLevels && (
+          {currentFellow?.experienceLevels && (
             <InfoBox
               variant="hollow"
               aria="expLevels"
@@ -244,26 +250,28 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.experienceLevels.map((exp: any, index: number) => {
-                  return (
-                    <li className="ExperienceLevelItem" key={index}>
-                      <p className="ExperienceLevelAndSkill pr-4">
-                        {exp.experienceLevel}: {exp.expLevelSkill}
-                      </p>
-                      {exp.skillYears && (
-                        <p
-                          className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
-                        >
-                          {exp.skillYears}
+                {currentFellow.experienceLevels.map(
+                  (exp: any, index: number) => {
+                    return (
+                      <li className="ExperienceLevelItem" key={index}>
+                        <p className="ExperienceLevelAndSkill pr-4">
+                          {exp.experienceLevel}: {exp.expLevelSkill}
                         </p>
-                      )}
-                    </li>
-                  );
-                })}
+                        {exp.skillYears && (
+                          <p
+                            className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
+                          >
+                            {exp.skillYears}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </InfoBox>
           )}
-          {fellow?.bookOrQuote && (
+          {currentFellow?.bookOrQuote && (
             <InfoBox
               variant="hollow"
               aria="bookOrQuote"
@@ -276,7 +284,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.bookOrQuote.map((bq: any, index: number) => {
+                {currentFellow.bookOrQuote.map((bq: any, index: number) => {
                   return (
                     <li className="BookOrQuoteItem" key={index}>
                       <p className="BookOrQuote">{bq.bookOrQuote}</p>
@@ -289,7 +297,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {fellow?.petDetails && (
+          {currentFellow?.petDetails && (
             <InfoBox
               variant="hollow"
               aria="petInfo"
@@ -302,7 +310,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <p
                 className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}
               >
-                {fellow.petDetails}
+                {currentFellow.petDetails}
               </p>
             </InfoBox>
           )}
@@ -341,11 +349,12 @@ const FellowProfile: React.FC<FellowProfile> = ({
               editClick={() => handleEditClick("/individual-signup/step1")}
             >
               <div className="NameBioAvatarContainer flex items-center gap-8">
-                <Avatar addClasses="self-start min-w-[60px]" />
+                {/* need to make option for the avatar to show a not-self avatar based off the person's avatar choice */}
+                {/* <Avatar addClasses="self-start min-w-[60px]" /> */}
                 <div className="NameBioContainer">
-                  <h1 className="Name">{fellow?.name}</h1>
+                  <h1 className="Name">{currentFellow?.name}</h1>
                   <p className="SmallBio min-w-[20vw] pt-4 leading-6">
-                    {fellow?.smallBio ||
+                    {currentFellow?.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>
                 </div>
@@ -363,7 +372,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <div className="LocationInfo flex flex-col gap-2">
               <p className={`Location ml-2 ${titleColor}`}>
-                Location: {fellow?.location}, {fellow?.country}
+                Location: {currentFellow?.location}, {currentFellow?.country}
               </p>
             </div>
           </InfoBox>
@@ -379,26 +388,28 @@ const FellowProfile: React.FC<FellowProfile> = ({
             <div className="LocationTypesInfo flex flex-col gap-2">
               <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
               <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
-                {fellow?.locationOptions.map((opt: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      variant="display"
-                      aria="locationOption"
-                      key={index}
-                      size="medium"
-                      colorScheme={
-                        thirdColorArray[index % thirdColorArray.length]
-                      }
-                    >
-                      {opt}
-                    </SiteLabel>
-                  );
-                })}
+                {currentFellow?.locationOptions.map(
+                  (opt: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        variant="display"
+                        aria="locationOption"
+                        key={index}
+                        size="medium"
+                        colorScheme={
+                          thirdColorArray[index % thirdColorArray.length]
+                        }
+                      >
+                        {opt}
+                      </SiteLabel>
+                    );
+                  },
+                )}
               </div>
             </div>
           </InfoBox>
 
-          {fellow?.links && (
+          {currentFellow?.links && (
             <InfoBox
               variant="hollow"
               aria="links"
@@ -407,11 +418,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
               canEdit={canEdit}
               editClick={() => handleEditClick("/individual-signup/step6")}
             >
-              <h2 className="LinksTitle mb-4 pl-2">{`${fellow.name}'s Links:`}</h2>
+              <h2 className="LinksTitle mb-4 pl-2">{`${currentFellow.name}'s Links:`}</h2>
               <div className="Links ml-8 flex flex-col gap-2">
-                {fellow?.links && (
+                {currentFellow?.links && (
                   <div className="LinksList mt-2 flex flex-col gap-2">
-                    {fellow.links.map((link: any, index: number) => {
+                    {currentFellow.links.map((link: any, index: number) => {
                       return (
                         <div className="Link" key={index}>
                           <p className={`Link ${titleColor}`}>
@@ -444,8 +455,9 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <h2 className="JobTitlesTitle text-center">{`My Job Titles:`}</h2>
             <div className="JobTitlesContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {fellow?.jobTitles && fellow.jobTitles.length > 0 ? (
-                fellow.jobTitles.map((title: any, index: number) => {
+              {currentFellow?.jobTitles &&
+              currentFellow.jobTitles.length > 0 ? (
+                currentFellow.jobTitles.map((title: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={title}
@@ -465,7 +477,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               )}
             </div>
           </InfoBox>
-          {fellow?.passions && (
+          {currentFellow?.passions && (
             <InfoBox
               variant="hollow"
               aria="passionateAbout"
@@ -478,11 +490,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 className={`PassionateAboutTitle mb-4 pl-2 ${titleColor}`}
               >{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
-                {fellow.passions}
+                {currentFellow.passions}
               </p>
             </InfoBox>
           )}
-          {fellow?.lookingFor && (
+          {currentFellow?.lookingFor && (
             <InfoBox
               variant="hollow"
               aria="lookingFor"
@@ -498,11 +510,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <p
                 className={`LookingFor text-md mt-4 px-6 font-medium ${secondaryTextColor}`}
               >
-                {fellow.lookingFor}
+                {currentFellow.lookingFor}
               </p>
             </InfoBox>
           )}
-          {fellow?.hobbies && (
+          {currentFellow?.hobbies && (
             <InfoBox
               variant="hollow"
               aria="hobbies"
@@ -515,7 +527,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.hobbies.map((hobby: any, index: number) => {
+                {currentFellow.hobbies.map((hobby: any, index: number) => {
                   return (
                     <li className={`HobbyItem ${textColor}`} key={index}>
                       <p className="Hobby">
@@ -533,7 +545,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {fellow?.accomplishments.length >= 1 && (
+          {currentFellow?.accomplishments.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="accomplishments"
@@ -546,27 +558,29 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.accomplishments.map((acc: any, index: number) => {
-                  return (
-                    <li
-                      className={`AccomplishmentItem ${textColor}`}
-                      key={index}
-                    >
-                      <p className="Accomplishment">{acc.accTitle}</p>
-                      {acc.accDetails && (
-                        <p
-                          className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
-                        >
-                          {acc.accDetails}
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
+                {currentFellow.accomplishments.map(
+                  (acc: any, index: number) => {
+                    return (
+                      <li
+                        className={`AccomplishmentItem ${textColor}`}
+                        key={index}
+                      >
+                        <p className="Accomplishment">{acc.accTitle}</p>
+                        {acc.accDetails && (
+                          <p
+                            className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
+                          >
+                            {acc.accDetails}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </InfoBox>
           )}
-          {fellow?.aboutMe && (
+          {currentFellow?.aboutMe && (
             <InfoBox
               variant="hollow"
               aria="moreAboutMe"
@@ -579,7 +593,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 className={`AboutMeTitle mb-4 pl-2 ${titleColor}`}
               >{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">
-                {fellow.aboutMe}
+                {currentFellow.aboutMe}
               </p>
             </InfoBox>
           )}

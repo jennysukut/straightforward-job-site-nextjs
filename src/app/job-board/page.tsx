@@ -17,10 +17,8 @@ import DeleteHandler from "@/components/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
 import SiteButton from "@/components/siteButton";
-import { filter } from "framer-motion/client";
 
 export default function JobBoard() {
-  const { accountType } = usePageContext();
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
   const { jobListings } = useJobListings();
@@ -29,7 +27,6 @@ export default function JobBoard() {
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
-
   const [filters, setFilters] = useState<string[]>([]);
   const [level, setLevel] = useState<string[]>([]);
   const [pay, setPay] = useState<string[]>([]);
@@ -39,11 +36,13 @@ export default function JobBoard() {
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
 
+  // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
   };
 
+  // function for when you use our filtering buttons
   const filterSearch = (jobs: any) => {
     const filteredJobs = jobs.filter((job: any) => {
       const matchesExperience =
@@ -72,6 +71,7 @@ export default function JobBoard() {
     setFilteredJobs(filteredJobs);
   };
 
+  // whenever input or buttons change, it determines what kind of filtering we do
   useEffect(() => {
     if (inputValue.length >= 3) {
       // filter and make matches out of any card where the jobTitle matches the inputValue
@@ -167,6 +167,7 @@ export default function JobBoard() {
     });
   };
 
+  // rendering job listings depending on the input and filters
   const renderJobListings = () => {
     const activeJobListings = jobListings?.filter((job: any) => {
       return job.job?.numberOfApps !== job.job?.applicationLimit;
@@ -252,6 +253,7 @@ export default function JobBoard() {
     }
   };
 
+  // save jobs to saved-jobs list/page
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
       setFellow({
@@ -340,8 +342,6 @@ export default function JobBoard() {
               width="extraSmall"
               optionsContainerClasses="max-w-[20vw]"
             />
-            {/* add pay filters here */}
-            {/* add location filters here */}
           </div>
         </div>
       </div>
@@ -356,6 +356,8 @@ export default function JobBoard() {
           {viewPendingJobs === true ? "view open jobs" : "view pending jobs"}
         </SiteButton>
       </div>
+
+      {/* job listings */}
       <div className="JobListings flex flex-wrap justify-center gap-8">
         {renderJobListings()}
       </div>

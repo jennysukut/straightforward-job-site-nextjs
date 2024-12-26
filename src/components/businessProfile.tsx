@@ -11,7 +11,19 @@ import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 
-export default function BusinessProfile({ isOwn, business, hasId, id }: any) {
+interface BusinessProfile {
+  hasId?: boolean;
+  id?: string;
+  business?: any;
+  isOwn?: boolean;
+}
+
+const BusinessProfile: React.FC<BusinessProfile> = ({
+  isOwn,
+  business,
+  hasId,
+  id,
+}) => {
   const { setBusiness } = useBusiness();
   const { businessList } = useBusinessList();
   const { setPageType } = usePageContext();
@@ -177,4 +189,6 @@ export default function BusinessProfile({ isOwn, business, hasId, id }: any) {
       </div>
     </div>
   );
-}
+};
+
+export default BusinessProfile;
