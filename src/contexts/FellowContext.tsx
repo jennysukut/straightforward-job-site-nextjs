@@ -48,33 +48,9 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [fellow, setFellow] = useState<Fellow | null>({
-    // avatar: "/avatars/peach.svg",
-    // shadow: "drop-shadow-lime",
-    // colorScheme: "b6",
-    // buttonShadow: "bg-lime",
-    // buttonImg: "bg-[url('/avatars/magenta.svg')]",
-
     ///MY OWN CONTEXT
     dailyApplications: "2",
     avatar: "checks",
-    // avatar: {
-    //   standard: "/avatars/checks.svg",
-    //   highContrast: "/avatars/blue-checks.svg",
-    // },
-    // savedJobs: [1, 2],
-    // shadow: {
-    //   standard: "drop-shadow-magenta",
-    //   highContrast: "drop-shadow-ocean",
-    // },
-    // colorScheme: "a5",
-    // buttonShadow: {
-    //   standard: "drop-shadow-magenta",
-    //   highContrast: "drop-shadow-ocean",
-    // },
-    // buttonImg: {
-    //   standard: "bg-[url('/avatars/checks.svg')]",
-    //   highContrast: "bg-[url('/avatars/blue-checks.svg')]",
-    // },
     id: "testid",
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",

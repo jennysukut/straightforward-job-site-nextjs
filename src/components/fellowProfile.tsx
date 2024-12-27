@@ -120,15 +120,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
           )}
           {isOwn && isApp && (
             <div className="AppInfoContainer -mt-28 flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
-                colorScheme="c4"
-                aria="edit"
-                addClasses="px-8"
-                onClick={viewJobDetails}
-              >
-                view job details
-              </SiteButton>
               <SiteLabel
                 variant="display"
                 aria="appDate"
@@ -136,6 +127,14 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 colorScheme="f3"
               >
                 applied on: {currentApp?.dateOfApp}
+              </SiteLabel>
+              <SiteLabel
+                variant="display"
+                aria="appStage"
+                addClasses="-mr-1 mt-1 -mb-2"
+                colorScheme="b6"
+              >
+                status: {currentApp?.appStatus}
               </SiteLabel>
             </div>
           )}
@@ -351,7 +350,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </p>
             </InfoBox>
           )}
-          {isOwn && (
+          {isOwn && !isApp && (
             <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
               <SiteButton
                 variant={colorOption === "seasonal" ? "hollow" : "filled"}
@@ -371,6 +370,47 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 onClick={addMoreInfo}
               >
                 add more info
+              </SiteButton>
+            </div>
+          )}
+          {isOwn && isApp && (
+            <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+                aria="edit"
+                addClasses="px-8"
+                onClick={viewJobDetails}
+              >
+                view job details
+              </SiteButton>
+              <SiteButton
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                colorScheme="f3"
+                aria="edit"
+                addClasses="px-8"
+                onClick={() => setCanEdit(!canEdit)}
+                isSelected={canEdit}
+              >
+                business info
+              </SiteButton>
+              <SiteButton
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={addMoreInfo}
+              >
+                send a message
+              </SiteButton>
+              <SiteButton
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                colorScheme="f5"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={addMoreInfo}
+              >
+                retract
               </SiteButton>
             </div>
           )}
@@ -403,7 +443,23 @@ const FellowProfile: React.FC<FellowProfile> = ({
             </InfoBox>
           </div>
 
-          {isApp && (
+          {isApp && isOwn && (
+            <InfoBox
+              variant="filled"
+              aria="appMessage"
+              size="profile"
+              width="medium"
+              colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+            >
+              <div className="AppMessage flex flex-col gap-2">
+                <p className={`MessageTitle mb-2 ml-2`}>Message From You:</p>
+                <p className={`Message ml-2 indent-10`}>
+                  {currentApp?.message}
+                </p>
+              </div>
+            </InfoBox>
+          )}
+          {isApp && !isOwn && (
             <InfoBox
               variant="filled"
               aria="appMessage"
