@@ -135,7 +135,11 @@ export default function IndividualSignupPage5() {
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg">optional: human details</h2>
           <div className="AvatarContainer self-end pr-6">
-            <Avatar addClasses="self-end -mt-14" />
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
           </div>
         </div>
 

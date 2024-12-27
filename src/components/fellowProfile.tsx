@@ -350,7 +350,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
             >
               <div className="NameBioAvatarContainer flex items-center gap-8">
                 {/* need to make option for the avatar to show a not-self avatar based off the person's avatar choice */}
-                {/* <Avatar addClasses="self-start min-w-[60px]" /> */}
+                <Avatar
+                  addClasses="self-start min-w-[60px]"
+                  avatarType="Fellow"
+                  fellow={currentFellow}
+                />
                 <div className="NameBioContainer">
                   <h1 className="Name">{currentFellow?.name}</h1>
                   <p className="SmallBio min-w-[20vw] pt-4 leading-6">

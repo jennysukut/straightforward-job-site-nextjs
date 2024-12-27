@@ -134,7 +134,11 @@ export default function IndividualSignupPage6() {
             optional: links + more about you
           </h2>
           <div className="AvatarContainer self-end pr-6">
-            <Avatar addClasses="self-end -mt-14" />
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
           </div>
         </div>
 

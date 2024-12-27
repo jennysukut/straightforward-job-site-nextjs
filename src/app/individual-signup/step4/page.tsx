@@ -104,7 +104,11 @@ export default function IndividualSignupPage4() {
             optional: work-related details
           </h2>
           <div className="AvatarContainer self-end pr-6">
-            <Avatar addClasses="self-end -mt-14" />
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
           </div>
         </div>
 

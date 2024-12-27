@@ -56,7 +56,11 @@ export default function BusinessSignupPage2() {
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg">all about your business</h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <Avatar
+            addClasses="self-end -mt-14"
+            avatarType="Business"
+            business={business}
+          />
         </div>
 
         {/* business field input */}

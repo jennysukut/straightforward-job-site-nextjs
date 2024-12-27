@@ -37,6 +37,7 @@ export default function Profile() {
   console.log(accountType, isLoggedIn);
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
+      {/* here, we'll have to look to make sure the id of the current person is used to set their profile info */}
       {accountType === "Fellow" && <FellowProfile self={fellow} isOwn />}
       {accountType === "Business" && (
         <BusinessProfile business={business} isOwn />

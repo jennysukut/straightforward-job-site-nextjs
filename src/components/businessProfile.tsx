@@ -124,7 +124,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               editClick={() => handleEditClick("/business-signup/step1")}
             >
               <div className="NameBioAvatarContainer flex items-center gap-8">
-                <Avatar addClasses="self-start min-w-[60px]" />
+                <Avatar
+                  addClasses="self-start min-w-[60px]"
+                  business={thisBusiness}
+                  avatarType="Business"
+                />
                 <div className="NameBioContainer">
                   <h1 className="BusinessName">
                     {thisBusiness?.business.businessName}
