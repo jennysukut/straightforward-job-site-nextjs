@@ -4,12 +4,15 @@ import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
 import SiteButton from "./siteButton";
 import Avatar from "./avatarComponent";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 interface FellowProfile {
   hasId?: boolean;
@@ -32,6 +35,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { colorOption } = useColors();
+  const { applications } = useApplications();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -49,7 +53,21 @@ const FellowProfile: React.FC<FellowProfile> = ({
     currentFellow = self || fellow;
   }
 
-  console.log(currentFellow);
+  let currentApp: any;
+  if (isApp) {
+    currentApp = applications?.find((app) => app.id === appId);
+  }
+
+  let avatarDetails;
+  if (fellow) {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === fellow?.avatar,
+    );
+  }
+
+  const viewJobDetails = () => {
+    router.push(`/listing/${currentApp.jobId}`);
+  };
 
   const handleEditClick = (url: any) => {
     setFellow({ ...fellow, profileIsBeingEdited: true });
@@ -64,14 +82,12 @@ const FellowProfile: React.FC<FellowProfile> = ({
   };
 
   useEffect(() => {
-    setAccountType("Fellow");
     setPageType("Fellow");
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
 
-  console.log(fellow);
   return (
     <div
       className={`ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
@@ -79,7 +95,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
-          {isOwn && (
+          {isOwn && !isApp && (
             <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
               <SiteButton
                 variant={colorOption === "seasonal" ? "hollow" : "filled"}
@@ -100,6 +116,27 @@ const FellowProfile: React.FC<FellowProfile> = ({
               >
                 add more info
               </SiteButton>
+            </div>
+          )}
+          {isOwn && isApp && (
+            <div className="AppInfoContainer -mt-28 flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                onClick={viewJobDetails}
+              >
+                view job details
+              </SiteButton>
+              <SiteLabel
+                variant="display"
+                aria="appDate"
+                addClasses="-mr-1 mt-0 -mb-2"
+                colorScheme="f3"
+              >
+                applied on: {currentApp?.dateOfApp}
+              </SiteLabel>
             </div>
           )}
           <InfoBox
@@ -366,6 +403,24 @@ const FellowProfile: React.FC<FellowProfile> = ({
             </InfoBox>
           </div>
 
+          {isApp && (
+            <InfoBox
+              variant="filled"
+              aria="appMessage"
+              size="profile"
+              width="medium"
+              colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+            >
+              <div className="AppMessage flex flex-col gap-2">
+                <p className={`MessageTitle mb-2 ml-2`}>
+                  Message To You From {currentFellow?.name}:
+                </p>
+                <p className={`Message ml-2 indent-10`}>
+                  {currentApp?.message}
+                </p>
+              </div>
+            </InfoBox>
+          )}
           <InfoBox
             variant="hollow"
             aria="location"

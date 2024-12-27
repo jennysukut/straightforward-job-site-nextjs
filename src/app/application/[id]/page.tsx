@@ -14,7 +14,7 @@ export default function Application({ params }: any) {
         <FellowProfile hasId id="testId" isApp appId={params.id} />
       )}
       {accountType === "Fellow" && (
-        <FellowProfile self={fellow} isApp appId={params.id} />
+        <FellowProfile self={fellow} isOwn isApp appId={params.id} />
       )}
     </div>
   );
