@@ -41,8 +41,12 @@ export default function Avatar({
       )}
       {avatarType === "Business" && (
         <Image
-          className={`AvatarImage ${business?.shadow} ${addClasses}`}
-          src={business?.avatar}
+          className={`AvatarImage ${colorOption === "highContrast" ? avatarDetails?.dropShadow.highContrast : ""} ${colorOption === "standard" ? avatarDetails?.dropShadow.standard : ""} ${addClasses}`}
+          src={
+            colorOption === "highContrast"
+              ? avatarDetails?.url.highContrast || "/default-avatar.png"
+              : avatarDetails?.url.standard || "/default-avatar.png"
+          }
           width={60}
           height={60}
           alt="avatar"

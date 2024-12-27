@@ -32,9 +32,16 @@ export default function NavBar() {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
 
-  const avatarDetails = avatarOptions.find(
-    (option) => option.title === fellow?.avatar,
-  );
+  let avatarDetails;
+  if (accountType === "Fellow") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === fellow?.avatar,
+    );
+  } else if (accountType === "Business") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === business?.avatar,
+    );
+  }
 
   useEffect(() => {
     if (currentPage === "jobBoard") {
@@ -184,7 +191,7 @@ export default function NavBar() {
                 />
               </Link>
               <Link href={"/profile"}>
-                <NavButton
+                {/* <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={business?.colorScheme as ButtonColorOption}
                   title="account"
@@ -192,6 +199,15 @@ export default function NavBar() {
                   variant="avatar"
                   size="mediumCircle"
                   addImage={business?.buttonImg}
+                /> */}
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+                  title="account"
+                  clickedButton={clickedButton}
+                  variant="avatar"
+                  size="mediumCircle"
+                  addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
                 />
               </Link>
             </div>

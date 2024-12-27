@@ -34,7 +34,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { fellow, setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
-  const { colorOption } = useColors();
   const { applications } = useApplications();
   const router = useRouter();
 
@@ -98,7 +97,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
           {isOwn && !isApp && (
             <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="b6"
                 aria="edit"
                 addClasses="px-8"
@@ -108,7 +107,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 edit details
               </SiteButton>
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"
@@ -136,6 +135,37 @@ const FellowProfile: React.FC<FellowProfile> = ({
               >
                 status: {currentApp?.appStatus}
               </SiteLabel>
+            </div>
+          )}
+          {!isOwn && isApp && (
+            <div className="BusinessAppButtonsContainer -mt-28 flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant="filled"
+                colorScheme="b5"
+                aria="Contact"
+                addClasses="px-8"
+                // onClick={() => setCanEdit(!canEdit)}
+              >
+                contact
+              </SiteButton>
+              <SiteButton
+                variant="filled"
+                colorScheme="e5"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={addMoreInfo}
+              >
+                add a note
+              </SiteButton>
+              <SiteButton
+                variant="filled"
+                colorScheme="f3"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={addMoreInfo}
+              >
+                status
+              </SiteButton>
             </div>
           )}
           <InfoBox
@@ -353,7 +383,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
           {isOwn && !isApp && (
             <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="b6"
                 aria="edit"
                 addClasses="px-8"
@@ -363,7 +393,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 edit details
               </SiteButton>
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"
@@ -376,7 +406,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
           {isOwn && isApp && (
             <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
                 aria="edit"
                 addClasses="px-8"
@@ -385,17 +415,16 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 view job details
               </SiteButton>
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="f3"
                 aria="edit"
                 addClasses="px-8"
-                onClick={() => setCanEdit(!canEdit)}
-                isSelected={canEdit}
+                onClick={() => router.push(`/profile/1b23i`)}
               >
                 business info
               </SiteButton>
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="c4"
                 aria="edit"
                 addClasses="px-8"
@@ -404,7 +433,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 send a message
               </SiteButton>
               <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
+                variant="filled"
                 colorScheme="f5"
                 aria="edit"
                 addClasses="px-8"

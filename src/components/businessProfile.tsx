@@ -14,13 +14,13 @@ import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 interface BusinessProfile {
   hasId?: boolean;
   id?: string;
-  business?: any;
+  self?: any;
   isOwn?: boolean;
 }
 
 const BusinessProfile: React.FC<BusinessProfile> = ({
   isOwn,
-  business,
+  self,
   hasId,
   id,
 }) => {
@@ -33,7 +33,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   const [canEdit, setCanEdit] = useState(false);
 
   const handleEditClick = (url: any) => {
-    setBusiness({ ...business, profileIsBeingEdited: true });
+    setBusiness({ ...self, profileIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
@@ -48,8 +48,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
     thisBusiness = businessList?.find((business: any) => id === id);
     console.log("current Business details:", thisBusiness);
   } else {
-    thisBusiness = business;
+    console.log("business = self");
+    thisBusiness = self;
   }
+
+  console.log(thisBusiness);
 
   return (
     <div className="BusinessProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
@@ -67,7 +70,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
           >
             <h2 className="MissionVisionTitle mb-4 pl-2">{`Mission & Vision:`}</h2>
             <p className="MissionVision ml-4 font-medium italic">
-              {thisBusiness.business.missionVision}
+              {thisBusiness.missionVision}
             </p>
           </InfoBox>
 
@@ -84,7 +87,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             <p
               className={`BusinessField ml-8 font-medium ${secondaryTextColor}`}
             >
-              {thisBusiness.business.businessField}
+              {thisBusiness.businessField}
             </p>
           </InfoBox>
 
@@ -130,11 +133,9 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                   avatarType="Business"
                 />
                 <div className="NameBioContainer">
-                  <h1 className="BusinessName">
-                    {thisBusiness?.business.businessName}
-                  </h1>
+                  <h1 className="BusinessName">{thisBusiness?.businessName}</h1>
                   <p className="SmallBio pt-4 leading-6">
-                    {thisBusiness?.business.smallBio ||
+                    {thisBusiness?.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>
                 </div>
@@ -153,22 +154,21 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
           >
             <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
               <p className={`Location ml-2 ${titleColor}`}>
-                Location: {thisBusiness?.business.location},{" "}
-                {thisBusiness?.business.country}
+                Location: {thisBusiness?.location}, {thisBusiness?.country}
               </p>
               <p className={`Website -mb-2 ml-2 flex gap-2 ${titleColor}`}>
                 Website:
                 <a
-                  href={thisBusiness?.business.website}
+                  href={thisBusiness?.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`${secondaryTextColor} text-sm font-medium italic`}
                 >
-                  {` `} {thisBusiness?.business.website}
+                  {` `} {thisBusiness?.website}
                 </a>
               </p>
               <p className={`Email ml-2 ${titleColor}`}>
-                Email: {thisBusiness?.business.email}
+                Email: {thisBusiness?.email}
               </p>
             </div>
           </InfoBox>
@@ -182,11 +182,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             canEdit={canEdit}
             editClick={() => handleEditClick("/business-signup/step2")}
           >
-            <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.business.businessName}:`}</h2>
+            <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.businessName}:`}</h2>
             <p
               className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
             >
-              {thisBusiness.business.moreAboutBusiness}
+              {thisBusiness.moreAboutBusiness}
             </p>
           </InfoBox>
         </div>
