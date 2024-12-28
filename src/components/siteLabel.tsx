@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useColors } from "@/contexts/ColorContext";
 
 interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant: "display" | "functional";
+  variant: "display" | "functional" | "hollow";
   colorScheme?: SmallShadowColorOption;
   aria: string;
   type?: string;
@@ -19,7 +19,7 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
   canAdd?: boolean;
   handleAdd?: any;
-  size?: "medium";
+  size?: "medium" | "small";
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -41,7 +41,9 @@ const SiteLabel: React.FC<LabelProps> = ({
   const labelColors =
     colorOption === "highContrast"
       ? "bg-pine drop-shadow-smForest text-eggshell"
-      : `${smallShadowColors[colorScheme]}`;
+      : variant === "hollow"
+        ? "bg-cream drop-shadow-smJade text-jade border-jade border-[2px]"
+        : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
     `Label w-fit  flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
@@ -49,6 +51,7 @@ const SiteLabel: React.FC<LabelProps> = ({
       // size
       "py-2 px-6": size === "standard",
       "py-3 px-8": size === "medium",
+      "py-1.5 px-4": size === "small",
 
       // variant
       "py-2 px-4": variant === "display",

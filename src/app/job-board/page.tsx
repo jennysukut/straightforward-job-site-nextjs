@@ -272,6 +272,8 @@ export default function JobBoard() {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
+  console.log(colorArray);
+
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center md:pb-12 ${textColor} w-[84%] max-w-[1600px]`}

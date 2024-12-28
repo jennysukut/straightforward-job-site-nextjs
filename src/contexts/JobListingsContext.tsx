@@ -325,6 +325,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "4",
       job: {
+        applicants: ["testid", "123au"],
         jobTitle: "Data Analyst",
         businessName: "Insight Analytics Co.",
         applicationLimit: "30",

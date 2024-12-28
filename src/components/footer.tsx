@@ -1,12 +1,17 @@
 "use client";
 
 import SiteButton from "./siteButton";
+import SiteLabel from "./siteLabel";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { usePageContext } from "@/contexts/PageContext";
+import { useFellow } from "@/contexts/FellowContext";
 
 export default function Footer() {
   const { secondaryTextColor } = useColorOptions();
   const { colorOption } = useColors();
+  const { accountType } = usePageContext();
+  const { fellow } = useFellow();
 
   const variant = colorOption === "highContrast" ? "hollow" : "filled";
   return (

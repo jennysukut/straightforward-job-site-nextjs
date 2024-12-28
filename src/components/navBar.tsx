@@ -14,6 +14,7 @@ import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./navButton";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
+import SiteLabel from "./siteLabel";
 
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
@@ -111,6 +112,10 @@ export default function NavBar() {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+              {/* I'm not sure if the daily apps should be the amount that have been submitted or if it should show the ones remaining for the day */}
+              <SiteLabel aria="dailyApps" variant="hollow" size="small">
+                daily apps: {fellow?.dailyApplications}/5
+              </SiteLabel>
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"
