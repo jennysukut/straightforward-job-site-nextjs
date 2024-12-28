@@ -98,6 +98,7 @@ export default function FellowAMS() {
                   appStatus.length > 1
                     ? `status: ${appStatus}`
                     : "application status",
+                initialTitle: "application status",
                 type: "appStatus",
                 array: appStatus,
                 options: [
@@ -114,15 +115,6 @@ export default function FellowAMS() {
             handleAdd={handleAdd}
             handleDelete={handleDelete}
           />
-          {/* <SiteButton
-            colorScheme="d6"
-            variant="hollow"
-            aria="viewClosedJobs"
-            isSelected={filters.includes("appStatus")}
-            onClick={() => setFilters(["appStatus"])}
-          >
-            application status
-          </SiteButton> */}
         </div>
         <h1 className="AMSTitle">Your Applications</h1>
       </div>

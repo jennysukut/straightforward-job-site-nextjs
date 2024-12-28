@@ -45,7 +45,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
 
   let thisBusiness;
   if (hasId) {
-    thisBusiness = businessList?.find((business: any) => id === id);
+    thisBusiness = businessList?.find((business: any) => id === id)?.business;
     console.log("current Business details:", thisBusiness);
   } else {
     console.log("business = self");
@@ -59,6 +59,29 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-32 flex flex-col gap-8">
+          {!isOwn && (
+            <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
+              <SiteButton
+                variant="filled"
+                colorScheme="b6"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={() => setCanEdit(!canEdit)}
+                // isSelected={canEdit}
+              >
+                send a message
+              </SiteButton>
+              <SiteButton
+                variant="filled"
+                colorScheme="c4"
+                aria="edit"
+                addClasses="px-8"
+                // onClick={addMoreInfo}
+              >
+                view their open jobs
+              </SiteButton>
+            </div>
+          )}
           {/* Mission & Vision */}
           <InfoBox
             variant="hollow"
@@ -156,15 +179,15 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               <p className={`Location ml-2 ${titleColor}`}>
                 Location: {thisBusiness?.location}, {thisBusiness?.country}
               </p>
-              <p className={`Website -mb-2 ml-2 flex gap-2 ${titleColor}`}>
+              <p className={`Website ml-2 flex gap-2 ${titleColor}`}>
                 Website:
                 <a
                   href={thisBusiness?.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`${secondaryTextColor} text-sm font-medium italic`}
+                  className={`${secondaryTextColor} mt-[2px] text-sm font-medium italic`}
                 >
-                  {` `} {thisBusiness?.website}
+                  {thisBusiness?.website}
                 </a>
               </p>
               <p className={`Email ml-2 ${titleColor}`}>

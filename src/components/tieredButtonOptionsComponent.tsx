@@ -9,6 +9,7 @@ import ButtonOptionsComponent from "./buttonOptionsComponent";
 // Define the interface for button objects
 interface Button {
   title: any;
+  initialTitle?: string;
   type: string;
   array?: Array<any>;
   options: any[]; // You can specify a more specific type if known
@@ -65,7 +66,10 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
     currentButton: any,
   ) => {
     const updatedArray = selectedArray.filter(
-      (item: any) => item !== topTierButton && !secondaryButtons.includes(item),
+      (item: any) =>
+        item !== topTierButton &&
+        !secondaryButtons.includes(item) &&
+        !currentButton,
     );
     setArray(updatedArray);
     handleDelete(topTierButton, currentButton);
@@ -139,7 +143,11 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                       size="smallCircle"
                       colorScheme="f1"
                       onClick={() =>
-                        removeTopTier(button.type, button.options, button.title)
+                        removeTopTier(
+                          button.type,
+                          button.options,
+                          button.initialTitle,
+                        )
                       }
                     >
                       X

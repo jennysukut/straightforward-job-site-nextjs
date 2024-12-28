@@ -99,7 +99,7 @@ export default function NavBar() {
             </div>
           );
         } else if (pageType === "Business Signup") {
-          // INDIVIDUAL SIGNUP NAV BAR
+          // BUSINESS SIGNUP NAV BAR
           return (
             <div className="TellUsAboutYou">
               <p className="TellAboutYouTitle">
@@ -133,12 +133,14 @@ export default function NavBar() {
                   clickedButton={clickedButton}
                 />
               </Link>
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="f3"
-                title="applications"
-                clickedButton={clickedButton}
-              />
+              <Link href={"/ams/fellow"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="f3"
+                  title="applications"
+                  clickedButton={clickedButton}
+                />
+              </Link>
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}

@@ -210,7 +210,6 @@ export default function JobBoard() {
         />
       ));
     } else if (filters.length > 0 && !viewPendingJobs) {
-      console.log("trying to show filtered jobs", filteredActiveJobListings);
       return filteredActiveJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
@@ -303,18 +302,21 @@ export default function JobBoard() {
             buttons={[
               {
                 title: level.length > 1 ? level : "level",
+                initialTitle: "level",
                 type: "level",
                 array: level,
                 options: ["entry-level", "junior", "senior"],
               },
               {
                 title: locationType.length > 1 ? locationType : "location type",
+                initialTitle: "location type",
                 type: "locationType",
                 array: locationType,
                 options: ["remote", "on-site", "hybrid"],
               },
               {
                 title: positionType.length > 1 ? positionType : "position type",
+                initialTitle: "position type",
                 type: "positionType",
                 array: positionType,
                 options: ["full-time", "part-time", "contract"],
