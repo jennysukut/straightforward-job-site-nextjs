@@ -139,9 +139,11 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                     />
                     <SiteButton
                       aria="removeButton"
-                      variant="filled"
                       size="smallCircle"
-                      colorScheme="f1"
+                      variant="filled"
+                      colorScheme="d2"
+                      addImage="bg-[url('/top-tier-delete.svg')]"
+                      addClasses={`bg-center ${horizontalSecondaryButtons ? "mt-2 ml-1" : ""} `}
                       onClick={() =>
                         removeTopTier(
                           button.type,
@@ -149,9 +151,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                           button.initialTitle,
                         )
                       }
-                    >
-                      X
-                    </SiteButton>
+                    />
                   </div>
                 )}
               </div>
