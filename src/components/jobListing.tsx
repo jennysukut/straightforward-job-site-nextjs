@@ -321,24 +321,49 @@ export default function JobListing({ isOwn, hasId, id }: any) {
               >
                 view company details
               </SiteButton>
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="f1"
-                addClasses="px-8"
-                onClick={() =>
-                  showModal(
-                    <ApplyModal
-                      jobTitle={currentJob?.jobTitle}
-                      business={currentJob?.businessName}
-                      jobId={id}
-                    />,
-                  )
-                }
-                disabled={canApply === false}
-              >
-                {matchingIds ? "already applied!" : "apply for this job"}
-              </SiteButton>
+              {!matchingIds && (
+                <SiteButton
+                  aria="publish"
+                  variant="filled"
+                  colorScheme="f1"
+                  addClasses="px-8"
+                  onClick={() =>
+                    showModal(
+                      <ApplyModal
+                        jobTitle={currentJob?.jobTitle}
+                        business={currentJob?.businessName}
+                        jobId={id}
+                      />,
+                    )
+                  }
+                  disabled={canApply === false || matchingIds}
+                >
+                  apply for this job
+                </SiteButton>
+              )}
+              {matchingIds && (
+                <div className="ApplicationButtons flex flex-col items-end gap-4 self-end">
+                  <SiteButton
+                    aria="publish"
+                    variant="filled"
+                    colorScheme="b3"
+                    addClasses="px-8"
+                    // onClick={}
+                  >
+                    send a message
+                  </SiteButton>
+                  <SiteButton
+                    aria="publish"
+                    variant="filled"
+                    colorScheme="f1"
+                    addClasses="px-8"
+                    // onClick={}
+                  >
+                    view your application
+                  </SiteButton>
+                </div>
+              )}
+
               <SiteButton
                 aria="publish"
                 variant="filled"

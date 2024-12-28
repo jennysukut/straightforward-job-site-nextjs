@@ -5,6 +5,7 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { useJobListings } from "@/contexts/JobListingsContext";
 
 import InfoBox from "./infoBox";
 import SiteLabel from "./siteLabel";
@@ -13,6 +14,7 @@ import Avatar from "./avatarComponent";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { useJob } from "@/contexts/JobContext";
 
 interface FellowProfile {
   hasId?: boolean;
@@ -35,6 +37,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { applications } = useApplications();
+  const { jobListings } = useJobListings();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -53,9 +56,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
   }
 
   let currentApp: any;
+  let currentJob: any;
   if (isApp) {
     currentApp = applications?.find((app) => app.id === appId);
+    currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
   }
+
+  console.log(currentJob);
 
   let avatarDetails;
   if (fellow) {
@@ -119,6 +126,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
           )}
           {isOwn && isApp && (
             <div className="AppInfoContainer -mt-28 flex flex-col items-end gap-4 self-end">
+              <div className="AppDetails -mt-4 mb-4 max-w-[30vw] text-end">
+                <h2 className="Title mb-1">Your Application:</h2>
+                <p className="Title">{currentJob?.job.jobTitle}</p>
+                <p className="Title italic">
+                  with {currentJob?.job.businessName}
+                </p>
+              </div>
               <SiteLabel
                 variant="display"
                 aria="appDate"
@@ -425,7 +439,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </SiteButton>
               <SiteButton
                 variant="filled"
-                colorScheme="c4"
+                colorScheme="d4"
                 aria="edit"
                 addClasses="px-8"
                 // onClick={addMoreInfo}

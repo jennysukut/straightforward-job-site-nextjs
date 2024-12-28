@@ -481,6 +481,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
     {
       jobId: "6",
       job: {
+        applicants: ["testid", "123au"],
         jobTitle: "Customer Service Representative",
         businessName: "QuickAssist Corp",
         applicationLimit: "100",

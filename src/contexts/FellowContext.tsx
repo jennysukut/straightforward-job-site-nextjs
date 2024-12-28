@@ -50,7 +50,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   const [fellow, setFellow] = useState<Fellow | null>({
     ///MY OWN CONTEXT
     dailyApplications: "2",
-    avatar: "checks",
+    avatar: "flower",
     id: "testid",
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",
