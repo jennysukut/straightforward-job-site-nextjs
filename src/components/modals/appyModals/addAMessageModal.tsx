@@ -9,8 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useApplication } from "@/contexts/ApplicationContext";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import SuccessfulApplicationModal from "./successfulAppModal";
 
 const AppMessageSchema = z.object({

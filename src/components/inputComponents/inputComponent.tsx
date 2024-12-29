@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import InfoBox from "./infoBox";
+import InfoBox from "../informationDisplayComponents/infoBox";
 import { useColors } from "@/contexts/ColorContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 

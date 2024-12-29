@@ -9,8 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import FormInputComponent from "@/components/formInputComponent";
-import FormSubmissionButton from "@/components/formSubmissionButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const ExperienceLevelSchema = z.object({

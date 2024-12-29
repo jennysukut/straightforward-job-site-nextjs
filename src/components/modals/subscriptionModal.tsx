@@ -8,7 +8,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useColors } from "@/contexts/ColorContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 import PaymentModal from "./paymentModal";
 
 export default function SubscriptionModal(isBeingUpdated: any) {

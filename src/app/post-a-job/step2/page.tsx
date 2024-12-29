@@ -9,11 +9,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 
 const jobSchema = z.object({
   payscaleMin: z.string().min(2, {

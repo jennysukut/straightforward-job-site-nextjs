@@ -6,10 +6,10 @@ import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useBusinessList } from "@/contexts/BusinessListContext";
 
-import InfoBox from "./infoBox";
-import SiteButton from "./siteButton";
-import Avatar from "./avatarComponent";
-import PostAJobModal from "./modals/postAJobModals/postAJobModal";
+import InfoBox from "../informationDisplayComponents/infoBox";
+import SiteButton from "../buttonsAndLabels/siteButton";
+import Avatar from "../avatarComponent";
+import PostAJobModal from "../modals/postAJobModals/postAJobModal";
 
 interface BusinessProfile {
   hasId?: boolean;

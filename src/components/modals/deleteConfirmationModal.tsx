@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 
 export default function DeleteConfirmationModal({ continueDelete, item }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();

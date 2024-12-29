@@ -11,11 +11,11 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useBusiness } from "@/contexts/BusinessContext";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 

@@ -8,8 +8,8 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
-import JobPost from "@/components/jobPostComponent";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import JobPost from "@/components/jobBoardComponents/jobPostComponent";
 
 export default function SavedJobs() {
   const { accountType } = usePageContext();

@@ -8,13 +8,13 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
 
 import Image from "next/image";
-import SiteButton from "./siteButton";
+import SiteButton from "./buttonsAndLabels/siteButton";
 import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
-import NavButton from "./navButton";
+import NavButton from "./buttonsAndLabels/navButton";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
-import SiteLabel from "./siteLabel";
+import SiteLabel from "./buttonsAndLabels/siteLabel";
 
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";

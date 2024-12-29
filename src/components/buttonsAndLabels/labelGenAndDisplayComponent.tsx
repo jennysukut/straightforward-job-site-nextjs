@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import InfoBox from "./infoBox";
+import InfoBox from "../informationDisplayComponents/infoBox";
 import SiteLabel from "./siteLabel";
 import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";

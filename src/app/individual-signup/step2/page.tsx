@@ -4,14 +4,14 @@ import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
 import AddEducationModal from "@/components/modals/profilePopulationModals/addEducationModal";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import Avatar from "@/components/avatarComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import UpdateHandler from "@/components/updateHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
 
 export default function IndividualSignupPage2() {
   const { fellow, setFellow } = useFellow();

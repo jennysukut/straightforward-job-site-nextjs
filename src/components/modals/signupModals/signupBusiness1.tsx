@@ -10,8 +10,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "../../siteButton";
-import FormInputComponent from "@/components/formInputComponent";
+import SiteButton from "../../buttonsAndLabels/siteButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
 const businessSchema = z.object({
   businessName: z.string().min(2, { message: "Required" }),

@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 import { useModal } from "@/contexts/ModalContext";
 
 export default function PaymentSuccessfulModal(isJobPost: any) {

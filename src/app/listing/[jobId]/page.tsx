@@ -1,7 +1,7 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import JobListing from "@/components/jobListing";
+import JobListing from "@/components/pages/jobListing";
 import { useJobListings } from "@/contexts/JobListingsContext";
 
 export default function ListingPage({ params }: any) {

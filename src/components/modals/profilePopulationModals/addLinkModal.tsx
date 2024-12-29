@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import Image from "next/image";
-import SiteButton from "../../siteButton";
+import SiteButton from "../../buttonsAndLabels/siteButton";
 import ErrorModal from "../errorModal";
 
 import DeleteConfirmationModal from "../deleteConfirmationModal";

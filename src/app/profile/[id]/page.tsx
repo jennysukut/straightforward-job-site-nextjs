@@ -1,9 +1,9 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import JobListing from "@/components/jobListing";
+import JobListing from "@/components/pages/jobListing";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import BusinessProfile from "@/components/businessProfile";
+import BusinessProfile from "@/components/pages/businessProfile";
 
 export default function ListingPage({ params }: any) {
   const { accountType } = usePageContext();

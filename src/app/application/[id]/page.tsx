@@ -1,7 +1,7 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import FellowProfile from "@/components/fellowProfile";
+import FellowProfile from "@/components/pages/fellowProfile";
 import { useFellow } from "@/contexts/FellowContext";
 
 export default function Application({ params }: any) {

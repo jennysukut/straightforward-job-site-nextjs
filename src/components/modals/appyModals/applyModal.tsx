@@ -4,7 +4,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useApplication } from "@/contexts/ApplicationContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAMessageModal from "./addAMessageModal";
 import SuccessfulApplicationModal from "./successfulAppModal";
 

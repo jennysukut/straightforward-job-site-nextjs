@@ -6,15 +6,15 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAwardModal from "@/components/modals/profilePopulationModals/addAwardModal";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddExperienceLevelModal from "@/components/modals/profilePopulationModals/addExperienceLevels";
 import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/addAccomplishmentsModal";
 import Avatar from "@/components/avatarComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import UpdateHandler from "@/components/updateHandler";
-import AddHandler from "@/components/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import AddHandler from "@/components/handlers/addHandler";
 
 export default function IndividualSignupPage3() {
   const { fellow, setFellow } = useFellow();

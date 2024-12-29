@@ -10,11 +10,11 @@ import { useModal } from "@/contexts/ModalContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import UpdateHandler from "@/components/updateHandler";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddInterviewProcessModal from "@/components/modals/postAJobModals/addInterviewProcessModal";
 import ApplicationLimitModal from "@/components/modals/postAJobModals/applicationLimitModal";
 

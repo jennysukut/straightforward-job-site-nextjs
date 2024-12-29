@@ -1,13 +1,13 @@
 "use client";
 
-import SiteButton from "./siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import ButtonOptionsComponent from "./buttonOptionsComponent";
-import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
+import ButtonOptionsComponent from "../buttonsAndLabels/buttonOptionsComponent";
+import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 
 interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;

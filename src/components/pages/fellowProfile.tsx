@@ -6,15 +6,15 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
-
-import InfoBox from "./infoBox";
-import SiteLabel from "./siteLabel";
-import SiteButton from "./siteButton";
-import Avatar from "./avatarComponent";
-import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJob } from "@/contexts/JobContext";
+
+import InfoBox from "../informationDisplayComponents/infoBox";
+import SiteLabel from "../buttonsAndLabels/siteLabel";
+import SiteButton from "../buttonsAndLabels/siteButton";
+import Avatar from "../avatarComponent";
+import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 
 interface FellowProfile {
   hasId?: boolean;

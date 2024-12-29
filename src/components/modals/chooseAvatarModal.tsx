@@ -1,5 +1,5 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useColors } from "@/contexts/ColorContext";

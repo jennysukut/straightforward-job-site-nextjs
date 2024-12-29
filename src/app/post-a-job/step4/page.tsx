@@ -9,12 +9,12 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
-import PopulateDisplayField from "@/components/populateDisplayField";
-import UpdateHandler from "@/components/updateHandler";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
+import UpdateHandler from "@/components/handlers/updateHandler";
 import AddResponsibilityModal from "@/components/modals/postAJobModals/addResponsibilitiesModal";
 
 const jobSchema = z.object({

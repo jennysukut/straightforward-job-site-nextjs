@@ -11,12 +11,12 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
-import InputComponent from "@/components/inputComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import AddHandler from "@/components/addHandler";
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import AddHandler from "@/components/handlers/addHandler";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 
 import { countries } from "@/lib/countriesList";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";

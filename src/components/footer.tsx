@@ -1,7 +1,7 @@
 "use client";
 
-import SiteButton from "./siteButton";
-import SiteLabel from "./siteLabel";
+import SiteButton from "./buttonsAndLabels/siteButton";
+import SiteLabel from "./buttonsAndLabels/siteLabel";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { usePageContext } from "@/contexts/PageContext";

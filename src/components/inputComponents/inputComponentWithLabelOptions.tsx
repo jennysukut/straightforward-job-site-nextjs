@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import InfoBox from "./infoBox";
-import SiteLabel from "./siteLabel";
+import InfoBox from "../informationDisplayComponents/infoBox";
+import SiteLabel from "../buttonsAndLabels/siteLabel";
 import { useState, useEffect } from "react";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 

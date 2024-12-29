@@ -5,8 +5,8 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
 import Link from "next/link";
 
-import SiteButton from "@/components/siteButton";
-import ButtonContainer from "@/components/buttonContainer";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import ButtonContainer from "@/components/buttonsAndLabels/buttonContainer";
 import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsModal";
 import PostAJobModal from "@/components/modals/postAJobModals/postAJobModal";
 

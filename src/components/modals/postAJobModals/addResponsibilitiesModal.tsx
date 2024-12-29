@@ -12,8 +12,8 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import ErrorModal from "../errorModal";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
-import FormInputComponent from "@/components/formInputComponent";
-import FormSubmissionButton from "@/components/formSubmissionButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
 
 const ResponsibilitySchema = z.object({
   responsibility: z.string().min(3, { message: "More Info Required" }),

@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import InfoBox from "./infoBox";
-import SiteButton from "./siteButton";
-import DeleteConfirmationModal from "./modals/deleteConfirmationModal";
-import { useRouter } from "next/navigation";
+import InfoBox from "../informationDisplayComponents/infoBox";
+import SiteButton from "../buttonsAndLabels/siteButton";
+import DeleteConfirmationModal from "../modals/deleteConfirmationModal";
 
+import { useRouter } from "next/navigation";
 import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
 import { useColors } from "@/contexts/ColorContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";

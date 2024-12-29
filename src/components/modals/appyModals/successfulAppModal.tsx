@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useEffect } from "react";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAMessageModal from "./addAMessageModal";
 
 export default function SuccessfulApplicationModal({

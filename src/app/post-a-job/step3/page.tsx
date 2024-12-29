@@ -10,12 +10,12 @@ import { skillsList } from "@/lib/skillsList";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
   experienceLevel: z.string(),

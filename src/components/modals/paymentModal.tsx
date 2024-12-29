@@ -11,9 +11,9 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useJob } from "@/contexts/JobContext";
 
-import SiteButton from "../siteButton";
-import FormSubmissionButton from "@/components/formSubmissionButton";
-import InputComponent from "../inputComponent";
+import SiteButton from "../buttonsAndLabels/siteButton";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
+import InputComponent from "../inputComponents/inputComponent";
 import PaymentSuccessfulModal from "./paymentSuccessfulModal";
 
 const PaymentSchema = z.object({

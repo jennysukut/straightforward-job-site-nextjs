@@ -8,8 +8,8 @@ import { useModal } from "@/contexts/ModalContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import InfoBox from "@/components/infoBox";
-import SiteButton from "@/components/siteButton";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SubscriptionModal from "@/components/modals/subscriptionModal";
 
 export default function Settings() {

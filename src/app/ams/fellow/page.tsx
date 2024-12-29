@@ -8,13 +8,13 @@ import { useModal } from "@/contexts/ModalContext";
 import { JobListing } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
-import InfoBox from "@/components/infoBox";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
-import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
-import SiteButton from "@/components/siteButton";
-import Application from "@/components/applicationComponent";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import Application from "@/components/amsComponents/applicationComponent";
 
 export default function FellowAMS() {
   const { accountType } = usePageContext();

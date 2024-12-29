@@ -9,14 +9,14 @@ import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
 
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
-import JobPost from "@/components/jobPostComponent";
-import InfoBox from "@/components/infoBox";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
-import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import SiteButton from "@/components/siteButton";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import JobPost from "@/components/jobBoardComponents/jobPostComponent";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();

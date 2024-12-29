@@ -9,8 +9,8 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
-import SiteLabel from "@/components/siteLabel";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 
 export default function ApplicationLimitModal(isBeingUpdated: any) {
   const { job, setJob } = useJob();
