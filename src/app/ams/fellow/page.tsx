@@ -87,7 +87,7 @@ export default function FellowAMS() {
     >
       <div className="ButtonsAndTitle flex w-full justify-between">
         {/* application status */}
-        <div className="FilterButtons -mb-8 ml-4 flex items-center">
+        <div className="FilterButtons -mb-8 flex items-center">
           <TieredButtonOptionsComponent
             type="filters"
             selectedArray={filters}

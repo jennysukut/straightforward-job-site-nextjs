@@ -63,14 +63,14 @@ const Application: React.FC<ApplicationProps> = ({
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons flex items-center gap-4">
-        <SiteButton
+        {/* <SiteButton
           size="smallCircle"
           colorScheme="f1"
           aria="selectButton"
           variant="hollow"
           isSelected={selectedApps?.includes(id)}
           onClick={() => buttonClick(id)}
-        ></SiteButton>
+        ></SiteButton> */}
         <SiteButton
           aria="JobApplication"
           variant="hollow"
@@ -79,18 +79,19 @@ const Application: React.FC<ApplicationProps> = ({
           }
           size="wide"
           onClick={() => setJobClicked(!jobClicked)}
+          isSelected={jobClicked}
         >
           <div className="AppInfo flex justify-between">
-            <p className="TitleAndBusiness">
+            <p className="TitleAndBusiness text-md">
               {`${selectedJob?.jobTitle} | ${business}`}
             </p>
-            <p className="Details">{`${dateOfApp} | ${appStatus}`}</p>
+            <p className="Details self-center text-sm">{`${dateOfApp} | ${appStatus}`}</p>
           </div>
         </SiteButton>
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons ml-14 mt-2 flex gap-4">
+        <div className="SecondaryButtons ml-6 mt-2 flex gap-4">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
@@ -111,7 +112,7 @@ const Application: React.FC<ApplicationProps> = ({
             variant="hollow"
             colorScheme={betterColorArray[2]}
           >
-            review application
+            review your application
           </SiteButton>
           <SiteButton
             aria="viewDetails"

@@ -42,7 +42,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "QuickAssist Corp",
       jobId: "6",
       dateOfApp: "12.20.2024",
-      appStatus: "submitted",
+      appStatus: "viewed",
     },
     {
       id: "d87fhw",
@@ -50,7 +50,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "7",
       business: "Innovatech Manufacturing",
       dateOfApp: "12.20.2024",
-      appStatus: "submitted",
+      appStatus: "stage 2",
     },
     {
       id: "iuhec8",
@@ -59,7 +59,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "NetSecure Systems",
       jobId: "9",
       dateOfApp: "12.20.2024",
-      appStatus: "submitted",
+      appStatus: "offer",
     },
   ]);
 
