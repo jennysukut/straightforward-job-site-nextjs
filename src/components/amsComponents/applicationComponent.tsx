@@ -13,32 +13,26 @@ interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
   colorArray: Array<string>;
   index: any;
-  business?: string;
   jobId?: string;
   dateOfApp?: any;
   appStatus?: string;
   selectedApps?: Array<string>;
   handleAdd?: any;
   handleDelete?: any;
-  appOptions?: Array<string>;
 }
 
 const Application: React.FC<ApplicationProps> = ({
   id,
   colorArray,
   index,
-  business,
   jobId,
-  dateOfApp,
   appStatus,
   selectedApps,
   handleAdd,
   handleDelete,
-  appOptions,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
-  const [jobClicked, setJobClicked] = useState(false);
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   // search through the jobListings to find the job with the matching jobId
@@ -51,6 +45,8 @@ const Application: React.FC<ApplicationProps> = ({
       handleAdd("selectedApps", id);
     }
   };
+
+  const jobClicked = selectedApps?.includes(id);
 
   const viewListing = () => {
     router.push(`/listing/${jobId}`);
@@ -78,20 +74,20 @@ const Application: React.FC<ApplicationProps> = ({
             colorArray[index % colorArray.length] as ButtonColorOption
           }
           size="wide"
-          onClick={() => setJobClicked(!jobClicked)}
-          isSelected={jobClicked}
+          onClick={() => buttonClick(id)}
+          isSelected={selectedApps?.includes(id)}
         >
           <div className="AppInfo flex justify-between">
             <p className="TitleAndBusiness text-md">
-              {`${selectedJob?.jobTitle} | ${business}`}
+              {`${selectedJob?.jobTitle} | ${selectedJob?.businessName}`}
             </p>
-            <p className="Details self-center text-sm">{`${dateOfApp} | ${appStatus}`}</p>
+            <p className="Details self-center text-sm">{`${appStatus}`}</p>
           </div>
         </SiteButton>
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons ml-6 mt-2 flex gap-4">
+        <div className="SecondaryButtons mb-1 ml-6 mt-2 flex flex-wrap gap-4">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
@@ -105,14 +101,14 @@ const Application: React.FC<ApplicationProps> = ({
             variant="hollow"
             colorScheme={betterColorArray[1]}
           >
-            go to company page
+            company page
           </SiteButton>
           <SiteButton
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[2]}
           >
-            review your application
+            your app
           </SiteButton>
           <SiteButton
             aria="viewDetails"
@@ -121,13 +117,13 @@ const Application: React.FC<ApplicationProps> = ({
           >
             message business
           </SiteButton>
-          <SiteButton
+          {/* <SiteButton
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[4]}
           >
             retract
-          </SiteButton>
+          </SiteButton> */}
         </div>
       )}
     </div>

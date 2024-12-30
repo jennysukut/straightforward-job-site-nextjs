@@ -61,6 +61,41 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "12.20.2024",
       appStatus: "offer",
     },
+    {
+      id: "chwit7",
+      applicant: "testid",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      dateOfApp: "12.20.2024",
+      appStatus: "submitted",
+    },
+    {
+      id: "dfkjb8",
+      applicant: "testid",
+      message:
+        "I'd like to be a customer service representative! Here are some things I think would be helpful if I mentioned: Things and Stuff.",
+      business: "QuickAssist Corp",
+      jobId: "6",
+      dateOfApp: "12.20.2024",
+      appStatus: "viewed",
+    },
+    {
+      id: "d87fhw",
+      applicant: "testid",
+      jobId: "7",
+      business: "Innovatech Manufacturing",
+      dateOfApp: "12.20.2024",
+      appStatus: "stage 2",
+    },
+    {
+      id: "iuhec8",
+      applicant: "testid",
+      message: "Have you tried turning it off and on again?",
+      business: "NetSecure Systems",
+      jobId: "9",
+      dateOfApp: "12.20.2024",
+      appStatus: "offer",
+    },
   ]);
 
   return (

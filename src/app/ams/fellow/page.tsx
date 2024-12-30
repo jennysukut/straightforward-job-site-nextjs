@@ -24,7 +24,6 @@ export default function FellowAMS() {
   const { applications } = useApplications();
 
   const [colorArray, setColorArray] = useState<[]>([]);
-  const [appOptions, setAppOptions] = useState<string[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
@@ -55,7 +54,7 @@ export default function FellowAMS() {
       oneChoice: {
         filters: false,
         appStatus: true,
-        selectedApps: false,
+        selectedApps: true,
       },
     });
   };
@@ -92,6 +91,7 @@ export default function FellowAMS() {
             type="filters"
             selectedArray={filters}
             setArray={setFilters}
+            addClasses="-mb-2"
             buttons={[
               {
                 title:
@@ -116,28 +116,38 @@ export default function FellowAMS() {
             handleDelete={handleDelete}
           />
         </div>
-        <h1 className="AMSTitle">Your Applications</h1>
+        <h1 className="AMSTitle mr-2">Your Applications</h1>
       </div>
 
-      <div className="JobApplications flex w-full flex-wrap gap-6">
-        {applications?.map((app: any, index: number) => {
-          return (
-            <Application
-              key={app.id}
-              id={app.id}
-              colorArray={colorArray}
-              index={index}
-              business={app.business}
-              jobId={app.jobId}
-              dateOfApp={app.dateOfApp}
-              appStatus={app.appStatus}
-              selectedApps={selectedApps}
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-              appOptions={appOptions}
-            />
-          );
-        })}
+      <div className="JobApplications flex w-full flex-row justify-between gap-6">
+        <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
+          {applications?.map((app: any, index: number) => {
+            return (
+              <Application
+                key={app.id}
+                id={app.id}
+                colorArray={colorArray}
+                index={index}
+                jobId={app.jobId}
+                dateOfApp={app.dateOfApp}
+                appStatus={app.appStatus}
+                selectedApps={selectedApps}
+                handleAdd={handleAdd}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+        </div>
+        <div className="ApplicationInfo">
+          <InfoBox
+            aria="amsAppInfo"
+            variant="hollow"
+            size="medium"
+            width="small"
+          >
+            Details About Job:
+          </InfoBox>
+        </div>
       </div>
     </div>
   );

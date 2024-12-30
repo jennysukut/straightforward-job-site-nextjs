@@ -72,7 +72,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       "px-4 py-2 text-xs min-w-[65px]": size === "default",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:py-4 md:text-sm":
         size === "extraLarge",
-      "px-6 py-3  w-[100%]": size === "wide",
+      "px-6 py-3 text-sm w-[100%]": size === "wide",
 
       // variant
       [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
