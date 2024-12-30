@@ -14,10 +14,10 @@ import { useApplication } from "@/contexts/ApplicationContext";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
-import SiteButton from "../buttonsAndLabels/siteButton";
-import ApplicationLimitModal from "../modals/postAJobModals/applicationLimitModal";
-import ApplyModal from "../modals/appyModals/applyModal";
-import PaymentModal from "../modals/paymentModal";
+import SiteButton from "../../buttonsAndLabels/siteButton";
+import ApplicationLimitModal from "../../modals/postAJobModals/applicationLimitModal";
+import ApplyModal from "../../modals/appyModals/applyModal";
+import PaymentModal from "../../modals/paymentModal";
 import Link from "next/link";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";

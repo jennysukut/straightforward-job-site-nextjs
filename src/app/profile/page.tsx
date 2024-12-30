@@ -6,8 +6,8 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 
-import BusinessProfile from "@/components/pages/businessProfile";
-import FellowProfile from "@/components/pages/fellowProfile";
+import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
+import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
 export default function Profile() {
   const {

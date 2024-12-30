@@ -6,10 +6,10 @@ import { string } from "zod";
 export interface Application {
   id?: string;
   message?: string;
-  applicant?: any;
+  applicant?: string;
   jobId?: string;
   business?: string;
-  dateOfApp?: any;
+  dateOfApp?: string;
   appStatus?: string;
 }
 

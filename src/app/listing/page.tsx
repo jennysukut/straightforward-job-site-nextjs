@@ -1,7 +1,7 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import JobListing from "@/components/pages/jobListing";
+import JobListing from "@/components/pages/jobListing/jobListing";
 
 export default function ListingPage() {
   const { accountType } = usePageContext();
