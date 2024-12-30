@@ -1,5 +1,6 @@
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
 
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
@@ -130,9 +131,29 @@ const OwnFellowAppBottomButtons = ({
   );
 };
 
+const OwnAppMessage = ({ avatarDetails, currentApp }: any) => {
+  if (currentApp.message) {
+    return (
+      <InfoBox
+        variant="filled"
+        aria="appMessage"
+        size="profile"
+        width="medium"
+        colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+      >
+        <div className="AppMessage flex flex-col gap-2">
+          <p className={`MessageTitle mb-2 ml-2`}>Message From You:</p>
+          <p className={`Message ml-2 indent-10`}>{currentApp?.message}</p>
+        </div>
+      </InfoBox>
+    );
+  }
+};
+
 export {
   OwnFellowTopButtons,
   OwnFellowBottomButtons,
   OwnFellowAppTopButtons,
   OwnFellowAppBottomButtons,
+  OwnAppMessage,
 };

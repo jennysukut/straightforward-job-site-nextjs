@@ -14,7 +14,9 @@ import {
   OwnFellowBottomButtons,
   OwnFellowAppTopButtons,
   OwnFellowAppBottomButtons,
+  OwnAppMessage,
 } from "../fellowProfile/ownProfileButtons";
+import { AppFellowTopButtons, AppMessage } from "./applicationProfileOptions";
 
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteLabel from "../../buttonsAndLabels/siteLabel";
@@ -107,6 +109,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
+          {/* TOP BUTTON OPTIONS */}
           {isOwn && !isApp && (
             <OwnFellowTopButtons
               setCanEdit={setCanEdit}
@@ -121,37 +124,9 @@ const FellowProfile: React.FC<FellowProfile> = ({
               currentJob={currentJob}
             />
           )}
-          {!isOwn && isApp && (
-            <div className="BusinessAppButtonsContainer -mt-28 flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant="filled"
-                colorScheme="b5"
-                aria="Contact"
-                addClasses="px-8"
-                // onClick={() => setCanEdit(!canEdit)}
-              >
-                contact
-              </SiteButton>
-              <SiteButton
-                variant="filled"
-                colorScheme="e5"
-                aria="edit"
-                addClasses="px-8"
-                // onClick={addMoreInfo}
-              >
-                add a note
-              </SiteButton>
-              <SiteButton
-                variant="filled"
-                colorScheme="f3"
-                aria="edit"
-                addClasses="px-8"
-                // onClick={addMoreInfo}
-              >
-                status
-              </SiteButton>
-            </div>
-          )}
+          {!isOwn && isApp && <AppFellowTopButtons />}
+
+          {/* SKILLS DETAILS */}
           <InfoBox
             variant="hollow"
             aria="skills"
@@ -364,6 +339,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </p>
             </InfoBox>
           )}
+
+          {/* BOTTOM BUTTON OPTIONS */}
           {isOwn && !isApp && (
             <OwnFellowBottomButtons
               setCanEdit={setCanEdit}
@@ -407,40 +384,23 @@ const FellowProfile: React.FC<FellowProfile> = ({
             </InfoBox>
           </div>
 
+          {/* APP MESSAGE FOR REVIEW */}
           {isApp && isOwn && (
-            <InfoBox
-              variant="filled"
-              aria="appMessage"
-              size="profile"
-              width="medium"
-              colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-            >
-              <div className="AppMessage flex flex-col gap-2">
-                <p className={`MessageTitle mb-2 ml-2`}>Message From You:</p>
-                <p className={`Message ml-2 indent-10`}>
-                  {currentApp?.message}
-                </p>
-              </div>
-            </InfoBox>
+            <OwnAppMessage
+              avatarDetails={avatarDetails}
+              currentApp={currentApp}
+            />
           )}
+
+          {/* APP MESSAGE TO BUSINESS */}
           {isApp && !isOwn && (
-            <InfoBox
-              variant="filled"
-              aria="appMessage"
-              size="profile"
-              width="medium"
-              colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-            >
-              <div className="AppMessage flex flex-col gap-2">
-                <p className={`MessageTitle mb-2 ml-2`}>
-                  Message To You From {currentFellow?.name}:
-                </p>
-                <p className={`Message ml-2 indent-10`}>
-                  {currentApp?.message}
-                </p>
-              </div>
-            </InfoBox>
+            <AppMessage
+              avatarDetails={avatarDetails}
+              currentFellow={currentFellow}
+              currentApp={currentApp}
+            />
           )}
+
           <InfoBox
             variant="hollow"
             aria="location"
