@@ -19,6 +19,8 @@ interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
   selectedApps?: Array<string>;
   handleAdd?: any;
   handleDelete?: any;
+  setCurrentJob?: any;
+  setSelectedColor?: any;
 }
 
 const Application: React.FC<ApplicationProps> = ({
@@ -30,6 +32,8 @@ const Application: React.FC<ApplicationProps> = ({
   selectedApps,
   handleAdd,
   handleDelete,
+  setCurrentJob,
+  setSelectedColor,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
@@ -41,8 +45,12 @@ const Application: React.FC<ApplicationProps> = ({
   const buttonClick = (id: string) => {
     if (selectedApps?.includes(id)) {
       handleDelete("selectedApps", id);
+      setCurrentJob("");
+      setSelectedColor("");
     } else {
       handleAdd("selectedApps", id);
+      setCurrentJob(selectedJob);
+      setSelectedColor(colorArray[index % colorArray.length]);
     }
   };
 
