@@ -19,6 +19,7 @@ import Application from "@/components/amsComponents/applicationComponent";
 import { Job } from "@/contexts/JobContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import Image from "next/image";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 
 export default function FellowAMS() {
   const { accountType } = usePageContext();
@@ -96,41 +97,39 @@ export default function FellowAMS() {
       className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       <div className="AMSContainer flex w-full">
-        <div className="AMSTabOptions -ml-14 -mr-8 mt-28 max-w-[10%] gap-6">
+        <div className="AMSTabOptions max-w-[10%] gap-6">
           {/* set these as button choices to be set with add and delete handlers */}
-          <SiteButton
-            aria="testing"
-            colorScheme="d4"
-            addClasses="-rotate-90"
-            variant="hollow"
-            onClick={() => setAltViewChoice("calendar")}
-          >
-            calendar
-          </SiteButton>
-          <SiteButton
-            aria="testing"
-            colorScheme="d4"
-            addClasses="-rotate-90 mt-20"
-            variant="hollow"
-            onClick={() => setAltViewChoice("messages")}
-          >
-            messages
-          </SiteButton>
+          <ButtonOptionsComponent
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            type="altViewChoice"
+            selectedArray={altViewChoice}
+            classesForButtons="-rotate-90"
+            buttons={["calendar", "messages"]}
+            buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
+          />
         </div>
         {altViewChoice === "calendar" && (
           <div className="Calendar">Calendar Here</div>
         )}
+        {altViewChoice === "messages" && (
+          <div className="Messages">Messages Here</div>
+        )}
 
-        {!altViewChoice && (
+        {(altViewChoice === "" || altViewChoice.length == 0) && (
           <div className="ApplicationList flex w-full flex-col gap-4">
-            <div className="ButtonsAndTitle flex w-full justify-between">
+            <div className="ButtonsAndTitle flex w-full flex-col justify-between">
+              <h1 className="AMSTitle -mb-8 mr-8 text-right">
+                Application Manager
+              </h1>
+
               {/* application status filter */}
-              <div className="FilterButtons -mb-8 flex flex-wrap items-center">
+              <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
                 <TieredButtonOptionsComponent
                   type="filters"
                   selectedArray={filters}
                   setArray={setFilters}
-                  addClasses="flex-wrap mb-4"
+                  addClasses="flex-wrap mb-2"
                   buttons={[
                     {
                       title:
@@ -153,9 +152,9 @@ export default function FellowAMS() {
                   horizontalSecondaryButtons
                   handleAdd={handleAdd}
                   handleDelete={handleDelete}
+                  secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
                 />
               </div>
-              <h1 className="AMSTitle mr-8">Your Applications</h1>
             </div>
             <div className="JobApplications flex w-full flex-col justify-between gap-6">
               <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">

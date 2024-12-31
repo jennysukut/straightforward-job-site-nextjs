@@ -95,7 +95,7 @@ const Application: React.FC<ApplicationProps> = ({
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons mb-1 ml-6 mt-2 flex flex-wrap gap-4">
+        <div className="SecondaryButtons mb-1 ml-6 mt-1 flex flex-wrap gap-4">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
@@ -118,20 +118,6 @@ const Application: React.FC<ApplicationProps> = ({
           >
             your app
           </SiteButton>
-          <SiteButton
-            aria="viewDetails"
-            variant="hollow"
-            colorScheme={betterColorArray[3]}
-          >
-            message business
-          </SiteButton>
-          {/* <SiteButton
-            aria="viewDetails"
-            variant="hollow"
-            colorScheme={betterColorArray[4]}
-          >
-            retract
-          </SiteButton> */}
         </div>
       )}
     </div>

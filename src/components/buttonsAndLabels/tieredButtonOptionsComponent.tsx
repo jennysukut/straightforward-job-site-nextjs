@@ -31,6 +31,7 @@ interface TieredButtonOptionsComponent {
   buttonSize?: any;
   setArray?: any;
   horizontalSecondaryButtons?: boolean;
+  secondaryButtonClasses?: string;
 }
 
 const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
@@ -48,6 +49,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   setArray,
   buttonSize = "default",
   horizontalSecondaryButtons,
+  secondaryButtonClasses,
 }) => {
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
@@ -124,7 +126,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                 </SiteButton>
                 {selectedArray.includes(button.title) && (
                   <div
-                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "ml-2 flex-row gap-3 align-middle" : "-mb-10 flex-col"} flex items-center`}
+                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "ml-2 flex-row gap-1 align-middle" : "-mb-10 flex-col"} flex items-center`}
                   >
                     <ButtonOptionsComponent
                       type={button.type}
@@ -133,11 +135,19 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                       handleAdd={handleAdd}
                       handleDelete={handleDelete}
                       classesForButtons="px-6"
-                      flexOpt="flex-col gap-2"
-                      buttonContainerClasses={`${horizontalSecondaryButtons ? "flex-row" : "flex-col"} items-center gap-3 self-center`}
+                      flexOpt={`${secondaryButtonClasses}`}
+                      buttonContainerClasses={`${horizontalSecondaryButtons ? "flex-row" : "flex-col items-center self-center"} ${secondaryButtonClasses} gap-3`}
                       addClasses="-mb-1"
+                      deleteButton
+                      deleteClick={() =>
+                        removeTopTier(
+                          button.type,
+                          button.options,
+                          button.initialTitle,
+                        )
+                      }
                     />
-                    <SiteButton
+                    {/* <SiteButton
                       aria="removeButton"
                       size="smallCircle"
                       variant="filled"
@@ -151,7 +161,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                           button.initialTitle,
                         )
                       }
-                    />
+                    /> */}
                   </div>
                 )}
               </div>
