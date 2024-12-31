@@ -36,6 +36,7 @@ export default function FellowAMS() {
   const [currentJob, setCurrentJob] = useState<Job | undefined>(undefined);
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
+  const [filteredApps, setFilteredApps] = useState<string[]>([]);
 
   const retract = () => {
     if (selectedApps.length > 0) {
@@ -46,6 +47,108 @@ export default function FellowAMS() {
       return;
     }
   };
+
+  const filterApps = (applications: any) => {
+    const filteredApps = applications.filter((app: any) => {
+      const matchesStatus =
+        appStatus.length > 0 ? appStatus.includes(app.appStatus) : true;
+
+      return matchesStatus;
+    });
+
+    setFilteredApps(filteredApps);
+  };
+
+  // use filters
+  useEffect(() => {
+    if (filters.length > 0) {
+      filterApps(applications);
+    }
+  }, [filters, appStatus]);
+
+  const renderApplications = () => {
+    if (appStatus.length > 0) {
+      return filteredApps?.map((app: any, index: number) => (
+        <Application
+          key={app.id}
+          id={app.id}
+          colorArray={colorArray}
+          index={index}
+          jobId={app.jobId}
+          dateOfApp={app.dateOfApp}
+          appStatus={app.appStatus}
+          selectedApps={selectedApps}
+          setCurrentJob={setCurrentJob}
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          setSelectedColor={setSelectedColor}
+        />
+      ));
+    } else {
+      return applications?.map((app: any, index: number) => (
+        <Application
+          key={app.id}
+          id={app.id}
+          colorArray={colorArray}
+          index={index}
+          jobId={app.jobId}
+          dateOfApp={app.dateOfApp}
+          appStatus={app.appStatus}
+          selectedApps={selectedApps}
+          setCurrentJob={setCurrentJob}
+          handleAdd={handleAdd}
+          handleDelete={handleDelete}
+          setSelectedColor={setSelectedColor}
+        />
+      ));
+    }
+  };
+
+  // const renderApplications = () => {
+  //   if (filters.length > 0) {
+  //     {
+  //       applications?.map((app: any, index: number) => {
+  //         return (
+  //           <Application
+  //             key={app.id}
+  //             id={app.id}
+  //             colorArray={colorArray}
+  //             index={index}
+  //             jobId={app.jobId}
+  //             dateOfApp={app.dateOfApp}
+  //             appStatus={app.appStatus}
+  //             selectedApps={selectedApps}
+  //             setCurrentJob={setCurrentJob}
+  //             handleAdd={handleAdd}
+  //             handleDelete={handleDelete}
+  //             setSelectedColor={setSelectedColor}
+  //           />
+  //         );
+  //       });
+  //     }
+  //   } else {
+  //     {
+  //       filteredApps?.map((app: any, index: number) => {
+  //         return (
+  //           <Application
+  //             key={app.id}
+  //             id={app.id}
+  //             colorArray={colorArray}
+  //             index={index}
+  //             jobId={app.jobId}
+  //             dateOfApp={app.dateOfApp}
+  //             appStatus={app.appStatus}
+  //             selectedApps={selectedApps}
+  //             setCurrentJob={setCurrentJob}
+  //             handleAdd={handleAdd}
+  //             handleDelete={handleDelete}
+  //             setSelectedColor={setSelectedColor}
+  //           />
+  //         );
+  //       });
+  //     }
+  //   }
+  // };
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -158,7 +261,8 @@ export default function FellowAMS() {
             </div>
             <div className="JobApplications flex w-full flex-col justify-between gap-6">
               <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
-                {applications?.map((app: any, index: number) => {
+                {renderApplications()}
+                {/* {applications?.map((app: any, index: number) => {
                   return (
                     <Application
                       key={app.id}
@@ -175,7 +279,7 @@ export default function FellowAMS() {
                       setSelectedColor={setSelectedColor}
                     />
                   );
-                })}
+                })} */}
               </div>
             </div>
           </div>
