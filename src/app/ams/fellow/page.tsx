@@ -34,6 +34,7 @@ export default function FellowAMS() {
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
   const [currentJob, setCurrentJob] = useState<Job | undefined>(undefined);
   const [selectedColor, setSelectedColor] = useState("");
+  const [altViewChoice, setAltViewChoice] = useState("");
 
   const retract = () => {
     if (selectedApps.length > 0) {
@@ -47,7 +48,7 @@ export default function FellowAMS() {
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
-    type: "filters" | "appStatus" | "selectedApps",
+    type: "filters" | "appStatus" | "selectedApps" | "altViewChoice",
     data: any,
   ) => {
     AddHandler({
@@ -57,17 +58,19 @@ export default function FellowAMS() {
         filters: setFilters,
         appStatus: setAppStatus,
         selectedApps: setSelectedApps,
+        altViewChoice: setAltViewChoice,
       },
       oneChoice: {
         filters: false,
         appStatus: true,
         selectedApps: true,
+        altViewChoice: true,
       },
     });
   };
 
   const handleDelete = (
-    type: "filters" | "appStatus" | "selectedApps",
+    type: "filters" | "appStatus" | "selectedApps" | "altViewChoice",
     id: any,
   ) => {
     DeleteHandler({
@@ -77,6 +80,7 @@ export default function FellowAMS() {
         filters: setFilters,
         appStatus: setAppStatus,
         selectedApps: setSelectedApps,
+        altViewChoice: setAltViewChoice,
       },
     });
   };
@@ -89,66 +93,96 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "w-[110%] flex-col items-center" : "w-[84%]"} gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
-      <div className="ApplicationList flex w-[70%] flex-col gap-4">
-        <div className="ButtonsAndTitle flex w-full justify-between">
-          {/* application status filter */}
-          <div className="FilterButtons -mb-8 flex flex-wrap items-center">
-            <TieredButtonOptionsComponent
-              type="filters"
-              selectedArray={filters}
-              setArray={setFilters}
-              addClasses="flex-wrap mb-4"
-              buttons={[
-                {
-                  title:
-                    appStatus.length > 1
-                      ? `status: ${appStatus}`
-                      : "application status",
-                  initialTitle: "application status",
-                  type: "appStatus",
-                  array: appStatus,
-                  options: [
-                    "unopened",
-                    "viewed",
-                    "stage 1",
-                    "stage 2",
-                    "stage 3",
-                    "offer",
-                  ],
-                },
-              ]}
-              horizontalSecondaryButtons
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-            />
-          </div>
-          <h1 className="AMSTitle mr-8">Your Applications</h1>
+      <div className="AMSContainer flex w-full">
+        <div className="AMSTabOptions -ml-14 -mr-8 mt-28 max-w-[10%] gap-6">
+          {/* set these as button choices to be set with add and delete handlers */}
+          <SiteButton
+            aria="testing"
+            colorScheme="d4"
+            addClasses="-rotate-90"
+            variant="hollow"
+            onClick={() => setAltViewChoice("calendar")}
+          >
+            calendar
+          </SiteButton>
+          <SiteButton
+            aria="testing"
+            colorScheme="d4"
+            addClasses="-rotate-90 mt-20"
+            variant="hollow"
+            onClick={() => setAltViewChoice("messages")}
+          >
+            messages
+          </SiteButton>
         </div>
-        <div className="JobApplications flex w-full flex-col justify-between gap-6">
-          <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
-            {applications?.map((app: any, index: number) => {
-              return (
-                <Application
-                  key={app.id}
-                  id={app.id}
-                  colorArray={colorArray}
-                  index={index}
-                  jobId={app.jobId}
-                  dateOfApp={app.dateOfApp}
-                  appStatus={app.appStatus}
-                  selectedApps={selectedApps}
-                  setCurrentJob={setCurrentJob}
+        {altViewChoice === "calendar" && (
+          <div className="Calendar">Calendar Here</div>
+        )}
+
+        {!altViewChoice && (
+          <div className="ApplicationList flex w-full flex-col gap-4">
+            <div className="ButtonsAndTitle flex w-full justify-between">
+              {/* application status filter */}
+              <div className="FilterButtons -mb-8 flex flex-wrap items-center">
+                <TieredButtonOptionsComponent
+                  type="filters"
+                  selectedArray={filters}
+                  setArray={setFilters}
+                  addClasses="flex-wrap mb-4"
+                  buttons={[
+                    {
+                      title:
+                        appStatus.length > 1
+                          ? `status: ${appStatus}`
+                          : "application status",
+                      initialTitle: "application status",
+                      type: "appStatus",
+                      array: appStatus,
+                      options: [
+                        "unopened",
+                        "viewed",
+                        "stage 1",
+                        "stage 2",
+                        "stage 3",
+                        "offer",
+                      ],
+                    },
+                  ]}
+                  horizontalSecondaryButtons
                   handleAdd={handleAdd}
                   handleDelete={handleDelete}
-                  setSelectedColor={setSelectedColor}
                 />
-              );
-            })}
+              </div>
+              <h1 className="AMSTitle mr-8">Your Applications</h1>
+            </div>
+            <div className="JobApplications flex w-full flex-col justify-between gap-6">
+              <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
+                {applications?.map((app: any, index: number) => {
+                  return (
+                    <Application
+                      key={app.id}
+                      id={app.id}
+                      colorArray={colorArray}
+                      index={index}
+                      jobId={app.jobId}
+                      dateOfApp={app.dateOfApp}
+                      appStatus={app.appStatus}
+                      selectedApps={selectedApps}
+                      setCurrentJob={setCurrentJob}
+                      handleAdd={handleAdd}
+                      handleDelete={handleDelete}
+                      setSelectedColor={setSelectedColor}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
+
       {currentJob && (
         <div className="ApplicationInfo">
           <InfoBox
@@ -157,62 +191,50 @@ export default function FellowAMS() {
             width="small"
             colorScheme={selectedColor as ButtonColorOption | "a1"}
           >
-            {!currentJob && (
-              <div className="Details">
-                Choose an application from your list to see more details here!
-              </div>
-            )}
-            {currentJob && (
-              <div className="JobDetails flex flex-col gap-1 text-center">
-                <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
-                <p className="BusinessName font-medium italic">
-                  with {currentJob?.businessName}
-                </p>
+            <div className="JobDetails flex flex-col gap-1 text-center">
+              <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
+              <p className="BusinessName font-medium italic">
+                with {currentJob?.businessName}
+              </p>
 
-                <p className="ExperienceLevel text-sm font-normal">
-                  {capitalizeFirstLetter(
-                    currentJob?.experienceLevel?.[0] || "junior",
-                  )}{" "}
-                  Level
-                </p>
+              <p className="ExperienceLevel text-sm font-normal">
+                {capitalizeFirstLetter(
+                  currentJob?.experienceLevel?.[0] || "junior",
+                )}{" "}
+                Level
+              </p>
 
-                <Image
-                  src="/listing-divider.svg"
-                  alt="listingDivider"
-                  width={240}
-                  height={0}
-                  className="my-4 opacity-80"
-                ></Image>
-                {currentJob?.locationOption === "remote" && (
-                  <p className="LocationOption">100% Remote</p>
-                )}
-                {currentJob?.locationOption === "on-site" && (
-                  <p className="LocationOption">
-                    On-Site: {currentJob?.country}
-                  </p>
-                )}
-                {currentJob?.locationOption === "hybrid" && (
-                  <p className="LocationOption">Hybrid</p>
-                )}
-                <p className="PositionType font-normal italic">
-                  {capitalizeFirstLetter(currentJob?.positionType || "")}{" "}
-                  Position
-                </p>
-                <p className="PayDetails">
-                  $
-                  {new Intl.NumberFormat().format(
-                    currentJob?.payDetails?.payscaleMin ?? 0,
-                  )}{" "}
-                  - $
-                  {new Intl.NumberFormat().format(
-                    currentJob?.payDetails?.payscaleMax ?? 0,
-                  )}{" "}
-                  {capitalizeFirstLetter(
-                    currentJob?.payDetails?.payOption || "",
-                  )}
-                </p>
-              </div>
-            )}
+              <Image
+                src="/listing-divider.svg"
+                alt="listingDivider"
+                width={240}
+                height={0}
+                className="my-4 opacity-80"
+              ></Image>
+              {currentJob?.locationOption === "remote" && (
+                <p className="LocationOption">100% Remote</p>
+              )}
+              {currentJob?.locationOption === "on-site" && (
+                <p className="LocationOption">On-Site: {currentJob?.country}</p>
+              )}
+              {currentJob?.locationOption === "hybrid" && (
+                <p className="LocationOption">Hybrid</p>
+              )}
+              <p className="PositionType font-normal italic">
+                {capitalizeFirstLetter(currentJob?.positionType || "")} Position
+              </p>
+              <p className="PayDetails">
+                $
+                {new Intl.NumberFormat().format(
+                  currentJob?.payDetails?.payscaleMin ?? 0,
+                )}{" "}
+                - $
+                {new Intl.NumberFormat().format(
+                  currentJob?.payDetails?.payscaleMax ?? 0,
+                )}{" "}
+                {capitalizeFirstLetter(currentJob?.payDetails?.payOption || "")}
+              </p>
+            </div>
           </InfoBox>
           <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
             <SiteButton
