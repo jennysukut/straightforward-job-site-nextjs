@@ -62,7 +62,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     jobTitles: ["Web Developer", "Startup Founder"],
     languages: ["English"],
     profileIsBeingEdited: false,
-    savedJobs: [3, 4],
+    savedJobs: [],
     experience: [
       {
         title: "Graphic Designer",

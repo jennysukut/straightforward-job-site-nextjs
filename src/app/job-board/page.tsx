@@ -22,6 +22,7 @@ export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
   const { jobListings } = useJobListings();
+  const { currentPage, setCurrentPage } = usePageContext();
   const { hideModal } = useModal();
 
   const [colorArray, setColorArray] = useState<[]>([]);
@@ -270,9 +271,9 @@ export default function JobBoard() {
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+    setCurrentPage("jobBoard");
   }, []);
-
-  console.log(colorArray);
+  console.log(currentPage);
 
   return (
     <div

@@ -63,6 +63,8 @@ export default function FellowAMS() {
   useEffect(() => {
     if (filters.length > 0) {
       filterApps(applications);
+      setSelectedApps([]);
+      setCurrentJob(undefined);
     }
   }, [filters, appStatus]);
 
@@ -103,52 +105,6 @@ export default function FellowAMS() {
       ));
     }
   };
-
-  // const renderApplications = () => {
-  //   if (filters.length > 0) {
-  //     {
-  //       applications?.map((app: any, index: number) => {
-  //         return (
-  //           <Application
-  //             key={app.id}
-  //             id={app.id}
-  //             colorArray={colorArray}
-  //             index={index}
-  //             jobId={app.jobId}
-  //             dateOfApp={app.dateOfApp}
-  //             appStatus={app.appStatus}
-  //             selectedApps={selectedApps}
-  //             setCurrentJob={setCurrentJob}
-  //             handleAdd={handleAdd}
-  //             handleDelete={handleDelete}
-  //             setSelectedColor={setSelectedColor}
-  //           />
-  //         );
-  //       });
-  //     }
-  //   } else {
-  //     {
-  //       filteredApps?.map((app: any, index: number) => {
-  //         return (
-  //           <Application
-  //             key={app.id}
-  //             id={app.id}
-  //             colorArray={colorArray}
-  //             index={index}
-  //             jobId={app.jobId}
-  //             dateOfApp={app.dateOfApp}
-  //             appStatus={app.appStatus}
-  //             selectedApps={selectedApps}
-  //             setCurrentJob={setCurrentJob}
-  //             handleAdd={handleAdd}
-  //             handleDelete={handleDelete}
-  //             setSelectedColor={setSelectedColor}
-  //           />
-  //         );
-  //       });
-  //     }
-  //   }
-  // };
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -201,7 +157,6 @@ export default function FellowAMS() {
     >
       <div className="AMSContainer flex w-full">
         <div className="AMSTabOptions max-w-[10%] gap-6">
-          {/* set these as button choices to be set with add and delete handlers */}
           <ButtonOptionsComponent
             handleAdd={handleAdd}
             handleDelete={handleDelete}
@@ -223,7 +178,7 @@ export default function FellowAMS() {
           <div className="ApplicationList flex w-full flex-col gap-4">
             <div className="ButtonsAndTitle flex w-full flex-col justify-between">
               <h1 className="AMSTitle -mb-8 mr-8 text-right">
-                Application Manager
+                Your Applications
               </h1>
 
               {/* application status filter */}
@@ -262,24 +217,6 @@ export default function FellowAMS() {
             <div className="JobApplications flex w-full flex-col justify-between gap-6">
               <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
                 {renderApplications()}
-                {/* {applications?.map((app: any, index: number) => {
-                  return (
-                    <Application
-                      key={app.id}
-                      id={app.id}
-                      colorArray={colorArray}
-                      index={index}
-                      jobId={app.jobId}
-                      dateOfApp={app.dateOfApp}
-                      appStatus={app.appStatus}
-                      selectedApps={selectedApps}
-                      setCurrentJob={setCurrentJob}
-                      handleAdd={handleAdd}
-                      handleDelete={handleDelete}
-                      setSelectedColor={setSelectedColor}
-                    />
-                  );
-                })} */}
               </div>
             </div>
           </div>

@@ -48,7 +48,7 @@ export default function NavBar() {
     if (currentPage === "jobBoard") {
       setClickedButton("jobs");
     }
-  });
+  }, [currentPage]);
 
   return (
     <div
@@ -116,16 +116,17 @@ export default function NavBar() {
               <SiteLabel aria="dailyApps" variant="hollow" size="small">
                 daily apps: {fellow?.dailyApplications}/5
               </SiteLabel>
-              <NavButton
+              {/* <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"
                 title="mailbox"
                 clickedButton={clickedButton}
-              />
+              /> */}
               <Link href={"/job-board"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme="e5"
+                  colorScheme="b4"
+                  // colorScheme="e5"
                   title="jobs"
                   clickedButton={clickedButton}
                 />
@@ -142,7 +143,7 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="f3"
-                  title="applications"
+                  title="application manager"
                   clickedButton={clickedButton}
                 />
               </Link>
