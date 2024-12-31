@@ -89,7 +89,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex gap-8 self-center ${textColor} w-[84%] max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "w-[110%] flex-col items-center" : "w-[84%]"} gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       <div className="ApplicationList flex w-[70%] flex-col gap-4">
         <div className="ButtonsAndTitle flex w-full justify-between">
