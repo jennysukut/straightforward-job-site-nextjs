@@ -18,6 +18,7 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import Application from "@/components/amsComponents/applicationComponent";
 import { Job } from "@/contexts/JobContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import Image from "next/image";
 
 export default function FellowAMS() {
   const { accountType } = usePageContext();
@@ -148,58 +149,96 @@ export default function FellowAMS() {
           </div>
         </div>
       </div>
-      <div className="ApplicationInfo">
-        <InfoBox
-          aria="amsAppInfo"
-          variant={currentJob ? "filled" : "hollow"}
-          width="small"
-          colorScheme={selectedColor as ButtonColorOption | "a1"}
-        >
-          {!currentJob && (
-            <div className="Details">
-              Choose an application from your list to see more details here!
-            </div>
-          )}
-          {currentJob && (
-            <div className="JobDetails flex flex-col gap-1 text-center">
-              <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
-              <p className="BusinessName font-medium italic">
-                with {currentJob?.businessName}
-              </p>
-              {/* <p className="ExperienceLevel text-sm font-normal">
-                {capitalizeFirstLetter(
-                  currentJob?.experienceLevel[0] || "junior",
-                )}{" "}
-                Level
-              </p> */}
+      {currentJob && (
+        <div className="ApplicationInfo">
+          <InfoBox
+            aria="amsAppInfo"
+            variant={currentJob ? "filled" : "hollow"}
+            width="small"
+            colorScheme={selectedColor as ButtonColorOption | "a1"}
+          >
+            {!currentJob && (
+              <div className="Details">
+                Choose an application from your list to see more details here!
+              </div>
+            )}
+            {currentJob && (
+              <div className="JobDetails flex flex-col gap-1 text-center">
+                <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
+                <p className="BusinessName font-medium italic">
+                  with {currentJob?.businessName}
+                </p>
 
-              {currentJob?.locationOption === "remote" && (
-                <p className="LocationOption">100% Remote</p>
-              )}
-              {currentJob?.locationOption === "on-site" && (
-                <p className="LocationOption">On-Site: {currentJob?.country}</p>
-              )}
-              {currentJob?.locationOption === "hybrid" && (
-                <p className="LocationOption">Hybrid</p>
-              )}
-              <p className="PositionType font-normal italic">
-                {capitalizeFirstLetter(currentJob?.positionType || "")} Position
-              </p>
-              <p className="PayDetails">
-                $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMin ?? 0,
-                )}{" "}
-                - $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMax ?? 0,
-                )}{" "}
-                {capitalizeFirstLetter(currentJob?.payDetails?.payOption || "")}
-              </p>
-            </div>
-          )}
-        </InfoBox>
-      </div>
+                <p className="ExperienceLevel text-sm font-normal">
+                  {capitalizeFirstLetter(
+                    currentJob?.experienceLevel?.[0] || "junior",
+                  )}{" "}
+                  Level
+                </p>
+
+                <Image
+                  src="/listing-divider.svg"
+                  alt="listingDivider"
+                  width={240}
+                  height={0}
+                  className="my-4 opacity-80"
+                ></Image>
+                {currentJob?.locationOption === "remote" && (
+                  <p className="LocationOption">100% Remote</p>
+                )}
+                {currentJob?.locationOption === "on-site" && (
+                  <p className="LocationOption">
+                    On-Site: {currentJob?.country}
+                  </p>
+                )}
+                {currentJob?.locationOption === "hybrid" && (
+                  <p className="LocationOption">Hybrid</p>
+                )}
+                <p className="PositionType font-normal italic">
+                  {capitalizeFirstLetter(currentJob?.positionType || "")}{" "}
+                  Position
+                </p>
+                <p className="PayDetails">
+                  $
+                  {new Intl.NumberFormat().format(
+                    currentJob?.payDetails?.payscaleMin ?? 0,
+                  )}{" "}
+                  - $
+                  {new Intl.NumberFormat().format(
+                    currentJob?.payDetails?.payscaleMax ?? 0,
+                  )}{" "}
+                  {capitalizeFirstLetter(
+                    currentJob?.payDetails?.payOption || "",
+                  )}
+                </p>
+              </div>
+            )}
+          </InfoBox>
+          <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
+            <SiteButton
+              variant="hollow"
+              colorScheme="b3"
+              aria="jobDetailsButton"
+            >
+              view calendar
+            </SiteButton>
+            <SiteButton
+              variant="hollow"
+              colorScheme="f5"
+              aria="jobDetailsButton"
+            >
+              messages
+            </SiteButton>
+            <SiteButton
+              variant="hollow"
+              colorScheme="d3"
+              aria="jobDetailsButton"
+            >
+              retract
+            </SiteButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
