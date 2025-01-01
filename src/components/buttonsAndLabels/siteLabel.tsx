@@ -15,11 +15,11 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   aria: string;
   type?: string;
   addClasses?: string;
-  textSize?: "medium" | "large";
+  textSize?: "small" | "medium" | "large";
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
   canAdd?: boolean;
   handleAdd?: any;
-  size?: "medium" | "small";
+  size?: "medium" | "small" | "extraSmall";
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -52,6 +52,7 @@ const SiteLabel: React.FC<LabelProps> = ({
       "py-2 px-6": size === "standard",
       "py-3 px-8": size === "medium",
       "py-1.5 px-4": size === "small",
+      "py-1 px-2": size === "extraSmall",
 
       // variant
       "py-2 px-4": variant === "display",
@@ -59,6 +60,7 @@ const SiteLabel: React.FC<LabelProps> = ({
 
       //textSize
       "text-xs": !textSize,
+      "text-[10px]": textSize === "small",
       "text-sm": textSize === "medium",
       "text-md": textSize === "large",
     },
