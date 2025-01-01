@@ -95,7 +95,7 @@ const Application: React.FC<ApplicationProps> = ({
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons mb-1 ml-6 mt-1 flex flex-wrap gap-4">
+        <div className="SecondaryButtons mb-1 mt-1 flex flex-wrap gap-4 self-center">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
@@ -116,7 +116,7 @@ const Application: React.FC<ApplicationProps> = ({
             variant="hollow"
             colorScheme={betterColorArray[2]}
           >
-            your app
+            your application
           </SiteButton>
         </div>
       )}

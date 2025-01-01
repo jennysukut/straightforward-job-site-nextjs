@@ -4,6 +4,10 @@
 
 :root {
   letter-spacing: 0.15em;
+  --fc-button-bg-color: #0c776d;
+  --fc-button-border-color: hsla(0, 0%, 0%, 0.1);
+  --fc-button-text-color: #fff9f3;
+  /* --fc-border-color: black; */
 }
 
 @font-face {
@@ -59,6 +63,32 @@ body {
 
 textarea {
   resize: none;
+}
+
+.fc-button {
+  box-shadow: 10px, 10px, 0px, #0a04c6;
+  font-size: smaller;
+  background-position: center;
+}
+
+.fc-prev-button .fv-next-button {
+  max-width: 30px;
+}
+
+.fc-today-button {
+  background-color: #0a04c6;
+}
+
+.fc .fc-daygrid-day.fc-day-today {
+  background-color: peachpuff;
+}
+
+/* .fc-theme-standard
+  .fc-scrollgrid
+  .fc-scrollgrid-section
+  .fc-scrollgrid-section-header { */
+.fc .fc-daygrid-day-frame .fc-daygrid .fc-day {
+  border: 2px solid #50b09f;
 }
 
 ::-webkit-scrollbar {
@@ -171,5 +201,9 @@ textarea {
   }
   .scrollbar-thumb-rounded-full {
     --scrollbar-thumb-radius: 9999px;
+  }
+
+  .fc-button {
+    --fc-button-bg-color: green;
   }
 }

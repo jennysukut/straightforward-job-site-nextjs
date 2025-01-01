@@ -95,7 +95,6 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
             );
           })}
           {deleteButton && (
-            // <div className="DeleteButton self-center align-middle">
             <SiteButton
               aria="removeButton"
               size="smallCircle"
@@ -105,7 +104,6 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
               addClasses={`bg-center mt-2`}
               onClick={deleteClick}
             />
-            // </div>
           )}
         </div>
       </div>

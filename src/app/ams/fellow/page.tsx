@@ -8,6 +8,8 @@ import { useModal } from "@/contexts/ModalContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
+import { Job } from "@/contexts/JobContext";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
@@ -16,10 +18,9 @@ import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import Application from "@/components/amsComponents/applicationComponent";
-import { Job } from "@/contexts/JobContext";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import Image from "next/image";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
+import CalendarComp from "@/components/calendar";
 
 export default function FellowAMS() {
   const { accountType } = usePageContext();
@@ -167,9 +168,7 @@ export default function FellowAMS() {
             buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
           />
         </div>
-        {altViewChoice === "calendar" && (
-          <div className="Calendar">Calendar Here</div>
-        )}
+        {altViewChoice === "calendar" && <CalendarComp />}
         {altViewChoice === "messages" && (
           <div className="Messages">Messages Here</div>
         )}
@@ -214,7 +213,7 @@ export default function FellowAMS() {
                 />
               </div>
             </div>
-            <div className="JobApplications flex w-full flex-col justify-between gap-6">
+            <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
               <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
                 {renderApplications()}
               </div>
