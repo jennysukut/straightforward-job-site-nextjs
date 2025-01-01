@@ -6,7 +6,7 @@ export default function CalendarPage() {
   const { textColor, inputColors } = useColorOptions();
 
   return (
-    <div className={`CalendarPage ${textColor} `}>
+    <div className={`CalendarPage ${textColor} w-full`}>
       <CalendarComp />
     </div>
   );
