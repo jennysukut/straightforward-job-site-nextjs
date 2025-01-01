@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import SiteButton from "./buttonsAndLabels/siteButton";
 
 const CalendarComp = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -14,7 +15,16 @@ const CalendarComp = () => {
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
-      days.push(<td key={i}>{i}</td>);
+      days.push(
+        <td
+          className="h-[4rem] w-[5rem] items-start border-[2px] border-jade border-opacity-40 text-end"
+          key={i}
+        >
+          <div className="CalendarInfo m-1 flex h-[100%] items-start">
+            <p className="Date self-start">{i}</p>
+          </div>
+        </td>,
+      );
     }
 
     const rows = [];
@@ -46,15 +56,15 @@ const CalendarComp = () => {
   };
 
   return (
-    <div className="Calendar">
-      <div className="MonthAndButtons flex gap-6">
+    <div className="Calendar justify-center self-center">
+      <div className="MonthAndButtons mb-2 flex items-center justify-evenly gap-6 self-center text-emerald">
         <button onClick={handlePrevMonth}>Prev</button>
-        <h2>
+        <h1 className="MonthName">
           {new Date(currentYear, currentMonth).toLocaleString("default", {
             month: "long",
             year: "numeric",
           })}
-        </h2>
+        </h1>
         <button onClick={handleNextMonth}>Next</button>
       </div>
       <table>
