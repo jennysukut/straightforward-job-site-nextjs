@@ -15,11 +15,11 @@ interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
   aria: string;
   type?: string;
   addClasses?: string;
-  textSize?: "small" | "medium" | "large";
+  textSize?: "small" | "medium" | "large" | "extraSmall";
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
   canAdd?: boolean;
   handleAdd?: any;
-  size?: "medium" | "small" | "extraSmall";
+  size?: "medium" | "small" | "extraSmall" | "tiny";
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -46,13 +46,15 @@ const SiteLabel: React.FC<LabelProps> = ({
         : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
-    `Label w-fit flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
+    `Label flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
+    // w-fit
     {
       // size
       "py-2 px-6": size === "standard",
       "py-3 px-8": size === "medium",
       "py-1.5 px-4": size === "small",
       "py-1 px-2": size === "extraSmall",
+      "py-[5px] px-1.5": size === "tiny",
 
       // variant
       "py-2 px-4": variant === "display",

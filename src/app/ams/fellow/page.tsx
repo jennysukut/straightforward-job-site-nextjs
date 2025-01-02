@@ -60,6 +60,17 @@ export default function FellowAMS() {
     setFilteredApps(filteredApps);
   };
 
+  const currentApp = applications?.find((app: any) => {
+    return app.id === selectedApps;
+  });
+
+  const getMonthName = (month: any) => {
+    const d = new Date();
+    d.setMonth(month);
+    const monthName = d.toLocaleString("default", { month: "long" });
+    return monthName;
+  };
+
   // use filters
   useEffect(() => {
     if (filters.length > 0) {
@@ -146,6 +157,19 @@ export default function FellowAMS() {
     });
   };
 
+  const closeJobDetails = () => {
+    setCurrentJob(undefined);
+    setSelectedApps([]);
+  };
+
+  const calendarClick = () => {
+    if (altViewChoice === "calendar") {
+      setAltViewChoice("");
+    } else {
+      setAltViewChoice("calendar");
+    }
+  };
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
@@ -168,7 +192,12 @@ export default function FellowAMS() {
             buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
           />
         </div>
-        {altViewChoice === "calendar" && <CalendarComp />}
+        {altViewChoice === "calendar" && (
+          <CalendarComp
+            size={currentJob ? "small" : ""}
+            addClasses={currentJob ? "pr-0" : ""}
+          />
+        )}
         {altViewChoice === "messages" && (
           <div className="Messages">Messages Here</div>
         )}
@@ -228,8 +257,19 @@ export default function FellowAMS() {
             aria="amsAppInfo"
             variant={currentJob ? "filled" : "hollow"}
             width="small"
+            addClasses="flex flex-col"
             colorScheme={selectedColor as ButtonColorOption | "a1"}
           >
+            <div className="CloseButton -mr-8 -mt-8 self-end">
+              <Image
+                src="/cream-close-button.svg"
+                alt="closeDetails"
+                width={20}
+                height={20}
+                className="m-0 opacity-80 hover:cursor-pointer"
+                onClick={closeJobDetails}
+              ></Image>
+            </div>
             <div className="JobDetails flex flex-col gap-1 text-center">
               <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
               <p className="BusinessName font-medium italic">
@@ -275,13 +315,34 @@ export default function FellowAMS() {
               </p>
             </div>
           </InfoBox>
+          {currentApp && currentApp.appointments && (
+            <div className="AppointmentDetails -mb-3 mt-4 flex justify-center">
+              <SiteButton
+                variant="hollow"
+                aria="currentJobAppointmentDetails"
+                size="wide"
+                colorScheme={selectedColor as ButtonColorOption | "a1"}
+              >
+                appointment:{" "}
+                {getMonthName(
+                  currentApp?.appointments?.[0]?.interviewDate?.month,
+                )}{" "}
+                {currentApp?.appointments?.[0]?.interviewDate?.day} -{" "}
+                {currentApp?.appointments?.[0]?.interviewTime}
+              </SiteButton>
+            </div>
+          )}
           <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
             <SiteButton
               variant="hollow"
               colorScheme="b3"
               aria="jobDetailsButton"
+              onClick={calendarClick}
+              isSelected={altViewChoice === "calendar"}
             >
-              view calendar
+              {altViewChoice === "calendar"
+                ? "close calendar"
+                : "view calendar"}
             </SiteButton>
             <SiteButton
               variant="hollow"

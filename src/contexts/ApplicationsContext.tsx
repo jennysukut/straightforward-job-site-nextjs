@@ -11,14 +11,16 @@ export interface Applications {
   business?: string;
   dateOfApp?: string;
   appStatus?: string;
-  interview?: {
-    interviewStep?: string;
-    interviewDate?: {
-      month?: number;
-      day?: number;
-    };
-    interviewTime?: string;
-  };
+  appointments?: [
+    {
+      interviewStep?: string;
+      interviewDate?: {
+        month?: number;
+        day?: number;
+      };
+      interviewTime?: string;
+    },
+  ];
 }
 
 interface ApplicationsContextType {
@@ -41,14 +43,16 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Insight Analytics Co.",
       dateOfApp: "12.20.2024",
       appStatus: "submitted",
-      interview: {
-        interviewStep: "1",
-        interviewDate: {
-          month: 0,
-          day: 5,
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 5,
+          },
+          interviewTime: "12:00pm",
         },
-        interviewTime: "12:00pm",
-      },
+      ],
     },
     {
       id: "dfkjb8",
@@ -59,6 +63,16 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "6",
       dateOfApp: "12.20.2024",
       appStatus: "viewed",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 9,
+          },
+          interviewTime: "2:00pm",
+        },
+      ],
     },
     {
       id: "d87fhw",
@@ -67,6 +81,16 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Innovatech Manufacturing",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 17,
+          },
+          interviewTime: "5:00pm",
+        },
+      ],
     },
     {
       id: "iuhec8",

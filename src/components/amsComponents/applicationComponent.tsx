@@ -95,7 +95,7 @@ const Application: React.FC<ApplicationProps> = ({
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons mb-1 mt-1 flex flex-wrap gap-4 self-center">
+        <div className="SecondaryButtons mb-1 mt-1 flex gap-6 self-center">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
