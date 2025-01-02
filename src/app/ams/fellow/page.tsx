@@ -243,7 +243,9 @@ export default function FellowAMS() {
               </div>
             </div>
             <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
-              <div className="Applications flex h-80 w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4">
+              <div
+                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4`}
+              >
                 {renderApplications()}
               </div>
             </div>
@@ -270,7 +272,7 @@ export default function FellowAMS() {
                 onClick={closeJobDetails}
               ></Image>
             </div>
-            <div className="JobDetails flex flex-col gap-1 text-center">
+            <div className="JobDetails flex flex-col gap-1 pt-6 text-center">
               <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
               <p className="BusinessName font-medium italic">
                 with {currentJob?.businessName}

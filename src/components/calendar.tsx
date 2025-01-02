@@ -22,6 +22,26 @@ const CalendarComp = ({ size, addClasses }: any) => {
     { month: 1, day: 14, time: "3:00pm", company: "Other Company" },
   ];
 
+  // const renderAppointments = (day: any) => {
+  //   const dailyAppointments = appointments
+  //     .filter((app) => app.day === day && app.month === currentMonth)
+  //     .map((app, index) => (
+  //       <SiteLabel
+  //         aria="apptTest"
+  //         key={index}
+  //         variant="display"
+  //         colorScheme={colorArray[index % colorArray.length]}
+  //         textSize="small"
+  //         size={size === "small" ? "tiny" : "extraSmall"}
+  //         addClasses="justify-center items-center cursor-pointer mx-1"
+  //         onClick={() => console.log(app)}
+  //       >
+  //         {size === "small" ? `${app.time}` : `${app.time} with ${app.company}`}
+  //       </SiteLabel>
+  //     ));
+  //   return dailyAppointments;
+  // };
+
   const generateCalendar = (size: any) => {
     const firstDay = new Date(currentYear, currentMonth).getDay();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -43,6 +63,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
           >
             <p className="Date self-start px-2 pt-1">{i}</p>
             <div className="Appointment flex flex-col items-center justify-center gap-0 text-center">
+              {/* {renderAppointments(i)} */}
               {appointments.map((app, index) => {
                 if (app.day === i && app.month === currentMonth) {
                   return (
