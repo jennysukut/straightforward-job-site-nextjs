@@ -46,7 +46,7 @@ const SiteLabel: React.FC<LabelProps> = ({
         : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
-    `Label w-fit  flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
+    `Label w-fit flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
     {
       // size
       "py-2 px-6": size === "standard",

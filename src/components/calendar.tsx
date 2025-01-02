@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import SiteButton from "./buttonsAndLabels/siteButton";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
+import Image from "next/image";
+
 const CalendarComp = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
@@ -12,6 +14,14 @@ const CalendarComp = () => {
     day: 9,
     company: "Test Company",
   };
+
+  // we need to make sure we sort the appointments by time when we're adding them to the list so they'll be rendered in the correct order?
+  const appointments = [
+    { month: 0, day: 9, time: "12:00pm", company: "Business Co." },
+    { month: 0, day: 14, time: "3:00pm", company: "Other Company" },
+    { month: 0, day: 14, time: "5:00pm", company: "Appt Company" },
+    { month: 0, day: 15, time: "2:00am", company: "Holden Co." },
+  ];
 
   const generateCalendar = () => {
     const firstDay = new Date(currentYear, currentMonth).getDay();
@@ -30,26 +40,30 @@ const CalendarComp = () => {
         >
           <div
             onClick={() => console.log(currentMonth, i)}
-            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} flex h-[100%] w-[100%] flex-col items-start overflow-hidden p-1`}
+            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex h-[104%] w-[104%] flex-col items-start justify-between overflow-visible p-1`}
           >
             <p className="Date self-start">{i}</p>
-            {interviewDate.day === i &&
-              interviewDate.month === currentMonth && (
-                <div className="Appointment flex flex-col items-center gap-1">
-                  <SiteLabel
-                    aria="apptTest"
-                    variant="display"
-                    colorScheme="b6"
-                    textSize="small"
-                    size="extraSmall"
+            {appointments.map((app, index) => {
+              if (app.day === i && app.month === currentMonth) {
+                return (
+                  <div
+                    className="Appointment flex flex-col items-center gap-1 text-center"
+                    key={index}
                   >
-                    12:00pm
-                  </SiteLabel>
-                  <p className="AppointmentDetails text-center text-xs">
-                    interview with Business With Long Name
-                  </p>
-                </div>
-              )}
+                    <SiteLabel
+                      aria="apptTest"
+                      variant="display"
+                      colorScheme="b6"
+                      textSize="small"
+                      size="extraSmall"
+                      addClasses="w-full"
+                    >
+                      {app.time} with {app.company}
+                    </SiteLabel>
+                  </div>
+                );
+              }
+            })}
           </div>
         </td>,
       );
@@ -86,25 +100,41 @@ const CalendarComp = () => {
   return (
     <div className="Calendar justify-center self-center">
       <div className="MonthAndButtons mb-2 flex items-center justify-center gap-8 self-center text-emerald">
-        <button onClick={handlePrevMonth}>Prev</button>
+        <button onClick={handlePrevMonth}>
+          <Image
+            src="/back-arrow.svg"
+            alt="prev"
+            width={20}
+            height={20}
+            className="opacity-50 hover:opacity-80"
+          />
+        </button>
         <h1 className="MonthName">
           {new Date(currentYear, currentMonth).toLocaleString("default", {
             month: "long",
             year: "numeric",
           })}
         </h1>
-        <button onClick={handleNextMonth}>Next</button>
+        <button onClick={handleNextMonth}>
+          <Image
+            src="/forward-arrow.svg"
+            alt="next"
+            width={20}
+            height={20}
+            className="opacity-50 hover:opacity-80"
+          />
+        </button>
       </div>
       <table>
         <thead>
           <tr className="mb-2">
-            <th>SUN</th>
-            <th>MON</th>
-            <th>TUE</th>
-            <th>WED</th>
-            <th>THU</th>
-            <th>FRI</th>
-            <th>SAT</th>
+            <th>sun</th>
+            <th>mon</th>
+            <th>tue</th>
+            <th>wed</th>
+            <th>thu</th>
+            <th>fri</th>
+            <th>sat</th>
           </tr>
         </thead>
         <tbody>{generateCalendar()}</tbody>
