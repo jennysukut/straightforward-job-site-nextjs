@@ -5,7 +5,7 @@ import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
 import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import { useModal } from "@/contexts/ModalContext";
-import ApplicationDetailsModal from "./modals/appointmentModals/appointmentDetailsModal";
+import AppointmentDetailsModal from "./modals/appointmentModals/appointmentDetailsModal";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 
 const CalendarComp = ({ size, addClasses }: any) => {
@@ -30,8 +30,6 @@ const CalendarComp = ({ size, addClasses }: any) => {
     }
     setExpandedDays(newExpandedDays);
   };
-
-  console.log(appointments);
 
   const generateCalendar = (size: any) => {
     const firstDay = new Date(currentYear, currentMonth).getDay();
@@ -74,7 +72,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
                           size={size === "small" ? "tiny" : "extraSmall"}
                           addClasses={`justify-center items-center cursor-pointer mx-1 mb-2 ${size === "small" ? "w-[5rem]" : "w-[7rem]"}`}
                           onClick={() =>
-                            showModal(<ApplicationDetailsModal app={app} />)
+                            showModal(<AppointmentDetailsModal app={app} />)
                           }
                         >
                           {app.time}
@@ -150,8 +148,6 @@ const CalendarComp = ({ size, addClasses }: any) => {
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
-
-  console.log(size);
 
   return (
     <div

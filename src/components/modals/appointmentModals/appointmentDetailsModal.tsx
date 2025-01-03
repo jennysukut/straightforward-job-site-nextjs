@@ -14,12 +14,12 @@ import ButtonOptionsComponent from "../../buttonsAndLabels/buttonOptionsComponen
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
 import AppointmentNoteModal from "./appointmentNote";
 
-interface ApplicationDetailsModalProps
+interface AppointmentDetailsModalProps
   extends React.HTMLAttributes<HTMLDivElement> {
   app: any;
 }
 
-const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
+const AppointmentDetailsModal: React.FC<AppointmentDetailsModalProps> = ({
   app,
 }) => {
   const router = useRouter();
@@ -127,4 +127,4 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
   );
 };
 
-export default ApplicationDetailsModal;
+export default AppointmentDetailsModal;

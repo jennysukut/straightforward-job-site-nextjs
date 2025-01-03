@@ -9,6 +9,7 @@ export interface Applications {
   applicant?: string;
   jobId?: string;
   business?: string;
+  businessId?: string;
   dateOfApp?: string;
   appStatus?: string;
   appointments?: [
@@ -41,6 +42,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       applicant: "testid",
       jobId: "4",
       business: "Insight Analytics Co.",
+      businessId: "1b23i",
       dateOfApp: "12.20.2024",
       appStatus: "submitted",
       appointments: [

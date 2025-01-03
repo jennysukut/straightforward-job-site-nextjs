@@ -1,11 +1,11 @@
 "use client";
 
-import SiteButton from "../buttonsAndLabels/siteButton";
-
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
+
+import SiteButton from "../buttonsAndLabels/siteButton";
 import ButtonOptionsComponent from "../buttonsAndLabels/buttonOptionsComponent";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 
@@ -21,6 +21,7 @@ interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
   handleDelete?: any;
   setCurrentJob?: any;
   setSelectedColor?: any;
+  viewCompanyDetails?: any;
 }
 
 const Application: React.FC<ApplicationProps> = ({
@@ -34,6 +35,7 @@ const Application: React.FC<ApplicationProps> = ({
   handleDelete,
   setCurrentJob,
   setSelectedColor,
+  viewCompanyDetails,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
@@ -58,6 +60,10 @@ const Application: React.FC<ApplicationProps> = ({
 
   const viewListing = () => {
     router.push(`/listing/${jobId}`);
+  };
+
+  const viewApplication = () => {
+    router.push(`/application/${id}`);
   };
 
   useEffect(() => {
@@ -108,6 +114,7 @@ const Application: React.FC<ApplicationProps> = ({
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[1]}
+            onClick={viewCompanyDetails}
           >
             company page
           </SiteButton>
@@ -115,6 +122,7 @@ const Application: React.FC<ApplicationProps> = ({
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[2]}
+            onClick={viewApplication}
           >
             your application
           </SiteButton>

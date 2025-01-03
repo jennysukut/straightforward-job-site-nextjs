@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
-import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { useAppointments } from "@/contexts/AppointmentsContext";
+import { useRouter } from "next/navigation";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
@@ -21,14 +20,15 @@ import Application from "@/components/amsComponents/applicationComponent";
 import Image from "next/image";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 import CalendarComp from "@/components/calendar";
+import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 
 export default function FellowAMS() {
-  const { accountType } = usePageContext();
-  const { jobListings } = useJobListings();
-  const { fellow, setFellow } = useFellow();
-  const { textColor, inputColors } = useColorOptions();
-  const { hideModal } = useModal();
+  const router = useRouter();
+
+  const { textColor } = useColorOptions();
+  const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
+  const { appointments } = useAppointments();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
@@ -38,6 +38,14 @@ export default function FellowAMS() {
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredApps, setFilteredApps] = useState<string[]>([]);
+
+  const currentApp = applications?.find((app: any) => {
+    return app.id === selectedApps;
+  });
+
+  const currentAppointment = appointments?.find((app: any) => {
+    return app.jobId === currentApp?.jobId;
+  });
 
   const retract = () => {
     if (selectedApps.length > 0) {
@@ -60,10 +68,6 @@ export default function FellowAMS() {
     setFilteredApps(filteredApps);
   };
 
-  const currentApp = applications?.find((app: any) => {
-    return app.id === selectedApps;
-  });
-
   const getMonthName = (month: any) => {
     const d = new Date();
     d.setMonth(month);
@@ -71,14 +75,22 @@ export default function FellowAMS() {
     return monthName;
   };
 
-  // use filters
-  useEffect(() => {
-    if (filters.length > 0) {
-      filterApps(applications);
-      setSelectedApps([]);
-      setCurrentJob(undefined);
+  const closeJobDetails = () => {
+    setCurrentJob(undefined);
+    setSelectedApps([]);
+  };
+
+  const viewCompanyDetails = () => {
+    router.push(`/profile/${currentApp?.businessId}`);
+  };
+
+  const calendarClick = () => {
+    if (altViewChoice === "calendar") {
+      setAltViewChoice("");
+    } else {
+      setAltViewChoice("calendar");
     }
-  }, [filters, appStatus]);
+  };
 
   const renderApplications = () => {
     if (appStatus.length > 0) {
@@ -96,6 +108,7 @@ export default function FellowAMS() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           setSelectedColor={setSelectedColor}
+          viewCompanyDetails={viewCompanyDetails}
         />
       ));
     } else {
@@ -113,6 +126,7 @@ export default function FellowAMS() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           setSelectedColor={setSelectedColor}
+          viewCompanyDetails={viewCompanyDetails}
         />
       ));
     }
@@ -157,22 +171,18 @@ export default function FellowAMS() {
     });
   };
 
-  const closeJobDetails = () => {
-    setCurrentJob(undefined);
-    setSelectedApps([]);
-  };
-
-  const calendarClick = () => {
-    if (altViewChoice === "calendar") {
-      setAltViewChoice("");
-    } else {
-      setAltViewChoice("calendar");
-    }
-  };
-
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
+
+  // use filters
+  useEffect(() => {
+    if (filters.length > 0) {
+      filterApps(applications);
+      setSelectedApps([]);
+      setCurrentJob(undefined);
+    }
+  }, [filters, appStatus]);
 
   const [currentDate, setCurrentDate] = useState(new Date().toDateString());
 
@@ -324,6 +334,11 @@ export default function FellowAMS() {
                 aria="currentJobAppointmentDetails"
                 size="wide"
                 colorScheme={selectedColor as ButtonColorOption | "a1"}
+                onClick={() =>
+                  showModal(
+                    <ApplicationDetailsModal app={currentAppointment} />,
+                  )
+                }
               >
                 appointment:{" "}
                 {getMonthName(
@@ -338,7 +353,7 @@ export default function FellowAMS() {
             <SiteButton
               variant="hollow"
               colorScheme="b3"
-              aria="jobDetailsButton"
+              aria="calendar"
               onClick={calendarClick}
               isSelected={altViewChoice === "calendar"}
             >
@@ -346,18 +361,10 @@ export default function FellowAMS() {
                 ? "close calendar"
                 : "view calendar"}
             </SiteButton>
-            <SiteButton
-              variant="hollow"
-              colorScheme="f5"
-              aria="jobDetailsButton"
-            >
+            <SiteButton variant="hollow" colorScheme="f5" aria="message">
               messages
             </SiteButton>
-            <SiteButton
-              variant="hollow"
-              colorScheme="d3"
-              aria="jobDetailsButton"
-            >
+            <SiteButton variant="hollow" colorScheme="d3" aria="retract">
               retract
             </SiteButton>
           </div>
