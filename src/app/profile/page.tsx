@@ -27,14 +27,11 @@ export default function Profile() {
     setCurrentPage("Profile");
     if (accountType === "Fellow") {
       setPageType("Fellow");
-      setIsLoggedIn(true);
     } else if (accountType === "Business") {
       setPageType("Business");
-      setIsLoggedIn(true);
     }
   }, [setCurrentPage, setPageType, accountType]);
 
-  console.log(accountType, isLoggedIn);
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
       {/* here, we'll have to look to make sure the id of the current person is used to set their profile info */}

@@ -1,8 +1,9 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 import { useFellow } from "@/contexts/FellowContext";
+
+import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
 export default function Application({ params }: any) {
   const { accountType } = usePageContext();

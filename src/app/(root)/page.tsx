@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
 import { useEffect } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 
+import React from "react";
 import HeaderSection from "./headerSection";
 
 export default function Home() {

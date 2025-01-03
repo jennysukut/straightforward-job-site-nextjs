@@ -1,10 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 
@@ -12,7 +10,6 @@ import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdea
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
 
 export default function SavedJobs() {
-  const { accountType } = usePageContext();
   const { fellow, setFellow } = useFellow();
   const { textColor } = useColorOptions();
   const { jobListings } = useJobListings();
@@ -38,8 +35,6 @@ export default function SavedJobs() {
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
-
-  console.log(fellow?.savedJobs);
 
   return (
     <div

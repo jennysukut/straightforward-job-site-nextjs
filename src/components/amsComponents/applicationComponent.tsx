@@ -6,7 +6,6 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
-import ButtonOptionsComponent from "../buttonsAndLabels/buttonOptionsComponent";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 
 interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
