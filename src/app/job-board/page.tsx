@@ -17,13 +17,14 @@ import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
 import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import LoginPromptModal from "@/components/modals/logInPromptModal";
 
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
   const { jobListings } = useJobListings();
-  const { currentPage, setCurrentPage } = usePageContext();
-  const { hideModal } = useModal();
+  const { currentPage, setCurrentPage, isLoggedIn } = usePageContext();
+  const { hideModal, showModal } = useModal();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -41,6 +42,26 @@ export default function JobBoard() {
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
+  };
+
+  // save jobs to saved-jobs list/page
+  const saveClick = (jobId: any) => {
+    if (!isLoggedIn) {
+      showModal(<LoginPromptModal />);
+      return;
+    }
+    if (fellow?.savedJobs?.includes(jobId)) {
+      setFellow({
+        ...fellow,
+        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
+      });
+    } else {
+      setFellow({
+        ...fellow,
+        savedJobs: [...(fellow?.savedJobs || []), jobId],
+      });
+    }
+    hideModal();
   };
 
   // function for when you use our filtering buttons
@@ -251,22 +272,6 @@ export default function JobBoard() {
         />
       ));
     }
-  };
-
-  // save jobs to saved-jobs list/page
-  const saveClick = (jobId: any) => {
-    if (fellow?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
-      });
-    } else {
-      setFellow({
-        ...fellow,
-        savedJobs: [...(fellow?.savedJobs || []), jobId],
-      });
-    }
-    hideModal();
   };
 
   useEffect(() => {

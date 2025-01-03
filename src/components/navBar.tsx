@@ -139,7 +139,7 @@ export default function NavBar() {
                   clickedButton={clickedButton}
                 />
               </Link>
-              <Link href={"/ams/fellow"}>
+              <Link href={"/ams"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="f3"

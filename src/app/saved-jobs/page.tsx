@@ -6,6 +6,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 
+import Link from "next/link";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
 
@@ -48,7 +49,10 @@ export default function SavedJobs() {
               {`You don't have any saved jobs at the moment.`}
             </h2>
             <h2 className="NoSavedJobs">
-              {`Check out our job listings to see if there's an exciting
+              <Link href="/job-board" className="underline">
+                Check out our active jobs
+              </Link>
+              {` to see if there's an exciting
               opportunity for you!`}
             </h2>
           </div>
