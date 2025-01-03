@@ -4,6 +4,8 @@ import SiteLabel from "./buttonsAndLabels/siteLabel";
 import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
 import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
+import { useModal } from "@/contexts/ModalContext";
+import ApplicationDetailsModal from "./amsComponents/appointmentDetailsModal";
 
 const CalendarComp = ({ size, addClasses }: any) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -11,16 +13,58 @@ const CalendarComp = ({ size, addClasses }: any) => {
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [actualMonth, setActualMonth] = useState(new Date().getMonth());
   const [colorArray, setColorArray] = useState(Array<any>);
-
+  const { showModal, hideModal } = useModal();
   // we need to make sure we sort the appointments by time when we're adding them to the list so they'll be rendered in the correct order?
   const appointments = [
-    { month: 0, day: 9, time: "12:00pm", company: "Business Co." },
-    { month: 0, day: 14, time: "3:00pm", company: "Other Company" },
-    { month: 0, day: 14, time: "5:00pm", company: "Appt Company" },
-    { month: 0, day: 15, time: "2:00am", company: "Holden Co." },
-    { month: 0, day: 14, time: "9:00pm", company: "Place & Stuff Co." },
-    { month: 0, day: 14, time: "2:00am", company: "Other Business" },
-    { month: 1, day: 14, time: "3:00pm", company: "Other Company" },
+    {
+      month: 0,
+      day: 9,
+      time: "12:00pm",
+      businessName: "TechNova Solutions",
+      jobId: "derp",
+    },
+    {
+      month: 0,
+      day: 14,
+      time: "3:00pm",
+      businessName: "Creative Minds Studio",
+      jobId: "blerp",
+    },
+    {
+      month: 0,
+      day: 14,
+      time: "5:00pm",
+      businessName: "Pinnacle Enterprises",
+      jobId: "3",
+    },
+    {
+      month: 0,
+      day: 15,
+      time: "2:00am",
+      businessName: "Insight Analytics Co.",
+      jobId: "4",
+    },
+    {
+      month: 0,
+      day: 14,
+      time: "9:00pm",
+      businessName: "Finance Pros Ltd.",
+      jobId: "5",
+    },
+    {
+      month: 0,
+      day: 14,
+      time: "2:00am",
+      businessName: "QuickAssist Corp",
+      jobId: "6",
+    },
+    {
+      month: 1,
+      day: 14,
+      time: "3:00pm",
+      businessName: "Innovatech Manufacturing",
+      jobId: "7",
+    },
   ];
 
   const [expandedDays, setExpandedDays] = useState(new Set());
@@ -35,26 +79,6 @@ const CalendarComp = ({ size, addClasses }: any) => {
     }
     setExpandedDays(newExpandedDays);
   };
-
-  // const renderAppointments = (day: any) => {
-  //   const dailyAppointments = appointments
-  //     .filter((app) => app.day === day && app.month === currentMonth)
-  //     .map((app, index) => (
-  //       <SiteLabel
-  //         aria="apptTest"
-  //         key={index}
-  //         variant="display"
-  //         colorScheme={colorArray[index % colorArray.length]}
-  //         textSize="small"
-  //         size={size === "small" ? "tiny" : "extraSmall"}
-  //         addClasses="justify-center items-center cursor-pointer mx-1"
-  //         onClick={() => console.log(app)}
-  //       >
-  //         {size === "small" ? `${app.time}` : `${app.time} with ${app.company}`}
-  //       </SiteLabel>
-  //     ));
-  //   return dailyAppointments;
-  // };
 
   const generateCalendar = (size: any) => {
     const firstDay = new Date(currentYear, currentMonth).getDay();
@@ -73,36 +97,13 @@ const CalendarComp = ({ size, addClasses }: any) => {
         >
           <div
             onClick={() => console.log(currentMonth, i)}
-            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden p-1`}
+            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden overflow-y-visible p-1`}
           >
             <p className="Date self-start px-2 pt-1">{i}</p>
             <div className="Appointment flex flex-col items-center justify-center gap-0 text-center">
-              {/* {renderAppointments(i)} */}
-              {/* {appointments.map((app, index) => {
-                if (app.day === i && app.month === currentMonth) {
-                  return (
-                    <SiteLabel
-                      aria="apptTest"
-                      key={index}
-                      variant="display"
-                      colorScheme={colorArray[index % colorArray.length]}
-                      textSize="small"
-                      size={size === "small" ? "tiny" : "extraSmall"}
-                      addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
-                      onClick={() => console.log(app)}
-                    >
-                      {size === "small"
-                        ? `${app.time}`
-                        : `${app.time} with ${app.company}`}
-                    </SiteLabel>
-                  );
-                }
-              })} */}
               {appointments
-                // First, filter appointments for current day and month
                 .filter((app) => app.day === i && app.month === currentMonth)
                 .map((app, index, filteredApps) => {
-                  // Only show first appointment if not expanded
                   if (!expandedDays.has(i) && index > 0) return null;
 
                   return (
@@ -118,7 +119,9 @@ const CalendarComp = ({ size, addClasses }: any) => {
                         textSize="small"
                         size={size === "small" ? "tiny" : "extraSmall"}
                         addClasses={`justify-center items-center cursor-pointer mx-1 mb-2 ${size === "small" ? "w-[5rem]" : "w-[7rem]"}`}
-                        onClick={() => console.log(app)}
+                        onClick={() =>
+                          showModal(<ApplicationDetailsModal app={app} />)
+                        }
                       >
                         {/* {size === "small"
                           ? `${app.time}`
@@ -149,10 +152,11 @@ const CalendarComp = ({ size, addClasses }: any) => {
                             aria="test"
                             variant="display"
                             size="tiny"
+                            textSize="small"
                             addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
                             onClick={() => toggleDayExpand(i)}
                           >
-                            Show less
+                            show less
                           </SiteLabel>
                         )}
                     </div>
