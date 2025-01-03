@@ -3,6 +3,7 @@ import SiteButton from "./buttonsAndLabels/siteButton";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
 import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
+import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 
 const CalendarComp = ({ size, addClasses }: any) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -21,6 +22,19 @@ const CalendarComp = ({ size, addClasses }: any) => {
     { month: 0, day: 14, time: "2:00am", company: "Other Business" },
     { month: 1, day: 14, time: "3:00pm", company: "Other Company" },
   ];
+
+  const [expandedDays, setExpandedDays] = useState(new Set());
+
+  // Helper function to toggle expanded state for a day
+  const toggleDayExpand = (day: any) => {
+    const newExpandedDays = new Set(expandedDays);
+    if (newExpandedDays.has(day)) {
+      newExpandedDays.delete(day);
+    } else {
+      newExpandedDays.add(day);
+    }
+    setExpandedDays(newExpandedDays);
+  };
 
   // const renderAppointments = (day: any) => {
   //   const dailyAppointments = appointments
@@ -59,12 +73,12 @@ const CalendarComp = ({ size, addClasses }: any) => {
         >
           <div
             onClick={() => console.log(currentMonth, i)}
-            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden overflow-y-visible p-1`}
+            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden p-1`}
           >
             <p className="Date self-start px-2 pt-1">{i}</p>
             <div className="Appointment flex flex-col items-center justify-center gap-0 text-center">
               {/* {renderAppointments(i)} */}
-              {appointments.map((app, index) => {
+              {/* {appointments.map((app, index) => {
                 if (app.day === i && app.month === currentMonth) {
                   return (
                     <SiteLabel
@@ -74,7 +88,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
                       colorScheme={colorArray[index % colorArray.length]}
                       textSize="small"
                       size={size === "small" ? "tiny" : "extraSmall"}
-                      addClasses="justify-center items-center cursor-pointer mx-1"
+                      addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
                       onClick={() => console.log(app)}
                     >
                       {size === "small"
@@ -83,7 +97,67 @@ const CalendarComp = ({ size, addClasses }: any) => {
                     </SiteLabel>
                   );
                 }
-              })}
+              })} */}
+              {appointments
+                // First, filter appointments for current day and month
+                .filter((app) => app.day === i && app.month === currentMonth)
+                .map((app, index, filteredApps) => {
+                  // Only show first appointment if not expanded
+                  if (!expandedDays.has(i) && index > 0) return null;
+
+                  return (
+                    <div key={index}>
+                      <SiteLabel
+                        aria="apptTest"
+                        variant="display"
+                        colorScheme={
+                          colorArray[
+                            Math.floor(Math.random() * colorArray.length)
+                          ]
+                        }
+                        textSize="small"
+                        size={size === "small" ? "tiny" : "extraSmall"}
+                        addClasses={`justify-center items-center cursor-pointer mx-1 mb-2 ${size === "small" ? "w-[5rem]" : "w-[7rem]"}`}
+                        onClick={() => console.log(app)}
+                      >
+                        {/* {size === "small"
+                          ? `${app.time}`
+                          : `${app.time} with ${app.company}`} */}
+                        {app.time}
+                      </SiteLabel>
+
+                      {/* Show "Show More" button only after first appointment if there are more */}
+                      {index === 0 &&
+                        filteredApps.length > 1 &&
+                        !expandedDays.has(i) && (
+                          <SiteLabel
+                            variant="display"
+                            aria="test"
+                            size="tiny"
+                            textSize="small"
+                            addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
+                            onClick={() => toggleDayExpand(i)}
+                          >
+                            +{filteredApps.length - 1} more
+                          </SiteLabel>
+                        )}
+
+                      {/* Show "Show Less" button after last appointment when expanded */}
+                      {index === filteredApps.length - 1 &&
+                        expandedDays.has(i) && (
+                          <SiteLabel
+                            aria="test"
+                            variant="display"
+                            size="tiny"
+                            addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
+                            onClick={() => toggleDayExpand(i)}
+                          >
+                            Show less
+                          </SiteLabel>
+                        )}
+                    </div>
+                  );
+                })}
             </div>
           </div>
         </td>,
