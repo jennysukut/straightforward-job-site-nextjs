@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
@@ -22,7 +22,6 @@ type FormData = z.infer<typeof AppointmentNoteSchema>;
 
 export default function AppointmentNoteModal({ appointment }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
-
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { fellow, setFellow } = useFellow();
@@ -31,6 +30,7 @@ export default function AppointmentNoteModal({ appointment }: any) {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(AppointmentNoteSchema),
@@ -47,6 +47,13 @@ export default function AppointmentNoteModal({ appointment }: any) {
     hideModal();
     setDisabledButton(true);
   };
+
+
+  useEffect(() => {
+    if (appointment?.note) {
+      setValue("note", appointment?.note);
+    }
+  });
 
   return (
     <div

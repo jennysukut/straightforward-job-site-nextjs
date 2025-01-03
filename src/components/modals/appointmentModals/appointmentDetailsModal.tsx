@@ -23,9 +23,11 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
   app,
 }) => {
   const router = useRouter();
+
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor } = useColorOptions();
-  const { showModal } = useModal();
+  const { showModal, hideModal } = useModal();
+
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   const getMonthName = (month: any) => {
@@ -39,7 +41,10 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
     (job: any) => job.jobId === app.jobId,
   )?.job;
 
-  console.log(currentJob);
+  const viewListing = () => {
+    router.push(`/listing/${app.jobId}`);
+    hideModal();
+  };
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setBetterColorArray);
@@ -94,7 +99,12 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
           </a>
         </p>
         <div className="ButtonOptions flex justify-center gap-4 pt-4">
-          <SiteButton aria="viewlisting" variant="hollow" colorScheme="f1">
+          <SiteButton
+            aria="viewlisting"
+            variant="hollow"
+            colorScheme="f1"
+            onClick={viewListing}
+          >
             view listing
           </SiteButton>
           <SiteButton aria="messages" variant="hollow" colorScheme="b4">
@@ -108,7 +118,8 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
               showModal(<AppointmentNoteModal appointment={app} />)
             }
           >
-            add a note
+            {app.note ? "read / add to note" : "add a note"}
+            {/* add a note */}
           </SiteButton>
         </div>
       </div>
