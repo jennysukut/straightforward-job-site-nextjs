@@ -1,6 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../buttonsAndLabels/siteButton";
+
 import { useModal } from "@/contexts/ModalContext";
+
+import SiteButton from "../buttonsAndLabels/siteButton";
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
 import LoginModal from "./loginModal";
 
