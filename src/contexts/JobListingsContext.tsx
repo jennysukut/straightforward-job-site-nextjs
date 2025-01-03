@@ -17,6 +17,7 @@ export interface JobListing {
     nonNegParams?: Array<string>;
     locationOption?: string;
     idealCandidate?: string;
+    interviewer?: { name: string; details: string };
     payDetails?: {
       payscaleMin?: number;
       payscaleMax?: number;
@@ -66,6 +67,11 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         businessName: "TechNova Solutions",
         applicationLimit: "50",
         numberOfApps: "35",
+        interviewer: {
+          name: "Josh Brian",
+          details:
+            "Josh is our interviewer. We're using this information to test displaying details about the person who'll be conducting interviews for this position.",
+        },
         locationOption: "remote",
         experienceLevel: ["senior"],
         payDetails: {

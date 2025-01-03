@@ -1,24 +1,22 @@
 "use client";
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../buttonsAndLabels/siteButton";
-import SiteLabel from "../buttonsAndLabels/siteLabel";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import ButtonOptionsComponent from "../buttonsAndLabels/buttonOptionsComponent";
-import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useModal } from "@/contexts/ModalContext";
+
+import SiteButton from "../../buttonsAndLabels/siteButton";
+import SiteLabel from "../../buttonsAndLabels/siteLabel";
+import ButtonOptionsComponent from "../../buttonsAndLabels/buttonOptionsComponent";
+import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
+import AppointmentNoteModal from "./appointmentNote";
 
 interface ApplicationDetailsModalProps
   extends React.HTMLAttributes<HTMLDivElement> {
-  app: {
-    month: number;
-    day: number;
-    time: string;
-    businessName: string;
-    jobId: string;
-  };
+  app: any;
 }
 
 const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
@@ -27,8 +25,8 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
   const router = useRouter();
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor } = useColorOptions();
+  const { showModal } = useModal();
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
-  console.log(app);
 
   const getMonthName = (month: any) => {
     const d = new Date();
@@ -59,7 +57,9 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
       <div className="Details leading flex flex-col gap-2 text-center">
         <p className="Info">
           You have a meeting with{" "}
-          <span className="Business italic">{app.businessName}</span>
+          <span className="Business italic text-emerald">
+            {app.businessName}
+          </span>
         </p>
         <p className="Info">
           to discuss the
@@ -69,6 +69,11 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
           </span>{" "}
           position.
         </p>
+        {currentJob?.interviewer && (
+          <p className="InterviewerDetails italic">
+            {`You'll be meeting with ${currentJob.interviewer.name}.`}
+          </p>
+        )}
         <p className="Info py-3">
           {`It's set for: `}
           <span className="DateTime italic text-olive">
@@ -88,9 +93,22 @@ const ApplicationDetailsModal: React.FC<ApplicationDetailsModalProps> = ({
             straightforwardjobsite.com/link-to-meeting
           </a>
         </p>
-        <div className="ButtonOptions flex justify-center gap-3 pt-4">
+        <div className="ButtonOptions flex justify-center gap-4 pt-4">
           <SiteButton aria="viewlisting" variant="hollow" colorScheme="f1">
             view listing
+          </SiteButton>
+          <SiteButton aria="messages" variant="hollow" colorScheme="b4">
+            go to messages
+          </SiteButton>
+          <SiteButton
+            aria="meetingNote"
+            variant="hollow"
+            colorScheme="d3"
+            onClick={() =>
+              showModal(<AppointmentNoteModal appointment={app} />)
+            }
+          >
+            add a note
           </SiteButton>
         </div>
       </div>

@@ -13,6 +13,7 @@ import { JobListingsProvider } from "@/contexts/JobListingsContext";
 import { BusinessListProvider } from "@/contexts/BusinessListContext";
 import { ApplicationProvider } from "@/contexts/ApplicationContext";
 import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
+import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
@@ -51,26 +52,28 @@ export default function RootLayout({
           <ColorProvider>
             <ApolloWrapper>
               <BusinessListProvider>
-                <ApplicationsProvider>
-                  <ApplicationProvider>
-                    <JobListingsProvider>
-                      <JobProvider>
-                        <BusinessProvider>
-                          <FellowProvider>
-                            <ModalProvider>
-                              <NavBar />
-                              <main className="Main flex flex-1 flex-col">
-                                {children}
-                                {/* we could slip a fun background element in here? */}
-                              </main>
-                              <Footer />
-                            </ModalProvider>
-                          </FellowProvider>
-                        </BusinessProvider>
-                      </JobProvider>
-                    </JobListingsProvider>
-                  </ApplicationProvider>
-                </ApplicationsProvider>
+                <AppointmentsContextProvider>
+                  <ApplicationsProvider>
+                    <ApplicationProvider>
+                      <JobListingsProvider>
+                        <JobProvider>
+                          <BusinessProvider>
+                            <FellowProvider>
+                              <ModalProvider>
+                                <NavBar />
+                                <main className="Main flex flex-1 flex-col">
+                                  {children}
+                                  {/* we could slip a fun background element in here? */}
+                                </main>
+                                <Footer />
+                              </ModalProvider>
+                            </FellowProvider>
+                          </BusinessProvider>
+                        </JobProvider>
+                      </JobListingsProvider>
+                    </ApplicationProvider>
+                  </ApplicationsProvider>
+                </AppointmentsContextProvider>
               </BusinessListProvider>
             </ApolloWrapper>
           </ColorProvider>

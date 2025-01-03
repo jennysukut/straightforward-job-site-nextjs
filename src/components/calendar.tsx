@@ -5,7 +5,8 @@ import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
 import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
 import { useModal } from "@/contexts/ModalContext";
-import ApplicationDetailsModal from "./amsComponents/appointmentDetailsModal";
+import ApplicationDetailsModal from "./modals/appointmentModals/appointmentDetailsModal";
+import { useAppointments } from "@/contexts/AppointmentsContext";
 
 const CalendarComp = ({ size, addClasses }: any) => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
@@ -14,58 +15,8 @@ const CalendarComp = ({ size, addClasses }: any) => {
   const [actualMonth, setActualMonth] = useState(new Date().getMonth());
   const [colorArray, setColorArray] = useState(Array<any>);
   const { showModal, hideModal } = useModal();
+  const { appointments } = useAppointments();
   // we need to make sure we sort the appointments by time when we're adding them to the list so they'll be rendered in the correct order?
-  const appointments = [
-    {
-      month: 0,
-      day: 9,
-      time: "12:00pm",
-      businessName: "TechNova Solutions",
-      jobId: "derp",
-    },
-    {
-      month: 0,
-      day: 14,
-      time: "3:00pm",
-      businessName: "Creative Minds Studio",
-      jobId: "blerp",
-    },
-    {
-      month: 0,
-      day: 14,
-      time: "5:00pm",
-      businessName: "Pinnacle Enterprises",
-      jobId: "3",
-    },
-    {
-      month: 0,
-      day: 15,
-      time: "2:00am",
-      businessName: "Insight Analytics Co.",
-      jobId: "4",
-    },
-    {
-      month: 0,
-      day: 14,
-      time: "9:00pm",
-      businessName: "Finance Pros Ltd.",
-      jobId: "5",
-    },
-    {
-      month: 0,
-      day: 14,
-      time: "2:00am",
-      businessName: "QuickAssist Corp",
-      jobId: "6",
-    },
-    {
-      month: 1,
-      day: 14,
-      time: "3:00pm",
-      businessName: "Innovatech Manufacturing",
-      jobId: "7",
-    },
-  ];
 
   const [expandedDays, setExpandedDays] = useState(new Set());
 
@@ -79,6 +30,8 @@ const CalendarComp = ({ size, addClasses }: any) => {
     }
     setExpandedDays(newExpandedDays);
   };
+
+  console.log(appointments);
 
   const generateCalendar = (size: any) => {
     const firstDay = new Date(currentYear, currentMonth).getDay();
@@ -101,67 +54,65 @@ const CalendarComp = ({ size, addClasses }: any) => {
           >
             <p className="Date self-start px-2 pt-1">{i}</p>
             <div className="Appointment flex flex-col items-center justify-center gap-0 text-center">
-              {appointments
-                .filter((app) => app.day === i && app.month === currentMonth)
-                .map((app, index, filteredApps) => {
-                  if (!expandedDays.has(i) && index > 0) return null;
+              {appointments &&
+                appointments
+                  .filter((app) => app.day === i && app.month === currentMonth)
+                  .map((app, index, filteredApps) => {
+                    if (!expandedDays.has(i) && index > 0) return null;
 
-                  return (
-                    <div key={index}>
-                      <SiteLabel
-                        aria="apptTest"
-                        variant="display"
-                        colorScheme={
-                          colorArray[
-                            Math.floor(Math.random() * colorArray.length)
-                          ]
-                        }
-                        textSize="small"
-                        size={size === "small" ? "tiny" : "extraSmall"}
-                        addClasses={`justify-center items-center cursor-pointer mx-1 mb-2 ${size === "small" ? "w-[5rem]" : "w-[7rem]"}`}
-                        onClick={() =>
-                          showModal(<ApplicationDetailsModal app={app} />)
-                        }
-                      >
-                        {/* {size === "small"
-                          ? `${app.time}`
-                          : `${app.time} with ${app.company}`} */}
-                        {app.time}
-                      </SiteLabel>
+                    return (
+                      <div key={index}>
+                        <SiteLabel
+                          aria="apptTest"
+                          variant="display"
+                          colorScheme={
+                            colorArray[
+                              Math.floor(Math.random() * colorArray.length)
+                            ]
+                          }
+                          textSize="small"
+                          size={size === "small" ? "tiny" : "extraSmall"}
+                          addClasses={`justify-center items-center cursor-pointer mx-1 mb-2 ${size === "small" ? "w-[5rem]" : "w-[7rem]"}`}
+                          onClick={() =>
+                            showModal(<ApplicationDetailsModal app={app} />)
+                          }
+                        >
+                          {app.time}
+                        </SiteLabel>
 
-                      {/* Show "Show More" button only after first appointment if there are more */}
-                      {index === 0 &&
-                        filteredApps.length > 1 &&
-                        !expandedDays.has(i) && (
-                          <SiteLabel
-                            variant="display"
-                            aria="test"
-                            size="tiny"
-                            textSize="small"
-                            addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
-                            onClick={() => toggleDayExpand(i)}
-                          >
-                            +{filteredApps.length - 1} more
-                          </SiteLabel>
-                        )}
+                        {/* Show "Show More" button only after first appointment if there are more */}
+                        {index === 0 &&
+                          filteredApps.length > 1 &&
+                          !expandedDays.has(i) && (
+                            <SiteLabel
+                              variant="display"
+                              aria="test"
+                              size="tiny"
+                              textSize="small"
+                              addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
+                              onClick={() => toggleDayExpand(i)}
+                            >
+                              +{filteredApps.length - 1} more
+                            </SiteLabel>
+                          )}
 
-                      {/* Show "Show Less" button after last appointment when expanded */}
-                      {index === filteredApps.length - 1 &&
-                        expandedDays.has(i) && (
-                          <SiteLabel
-                            aria="test"
-                            variant="display"
-                            size="tiny"
-                            textSize="small"
-                            addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
-                            onClick={() => toggleDayExpand(i)}
-                          >
-                            show less
-                          </SiteLabel>
-                        )}
-                    </div>
-                  );
-                })}
+                        {/* Show "Show Less" button after last appointment when expanded */}
+                        {index === filteredApps.length - 1 &&
+                          expandedDays.has(i) && (
+                            <SiteLabel
+                              aria="test"
+                              variant="display"
+                              size="tiny"
+                              textSize="small"
+                              addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
+                              onClick={() => toggleDayExpand(i)}
+                            >
+                              show less
+                            </SiteLabel>
+                          )}
+                      </div>
+                    );
+                  })}
             </div>
           </div>
         </td>,
