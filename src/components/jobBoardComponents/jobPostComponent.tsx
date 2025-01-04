@@ -44,6 +44,9 @@ const JobPost: React.FC<JobPostProps> = ({
     router.push(`/listing/${job.jobId}`);
   };
 
+  const appNumber = job?.job.applications?.length;
+  console.log(job, appNumber);
+
   const saveButton = (() => {
     switch (colorOption) {
       case "highContrast":
@@ -86,7 +89,7 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {job.job?.numberOfApps}/{job.job?.applicationLimit} apps
+            {appNumber}/{job.job?.applicationLimit} apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
             {fellow?.savedJobs?.includes(job.jobId) ? (

@@ -10,6 +10,7 @@ export interface Job {
   jobId?: string;
   jobTitle?: string;
   businessName?: string;
+  applications?: Array<string>;
   applicationLimit?: string;
   numberOfApps?: string;
   positionType?: string;
@@ -57,6 +58,7 @@ export const JobProvider: React.FC<{ children: ReactNode }> = ({
     // jobIsBeingEdited: false,
     jobIsBeingEdited: false,
     applicationLimit: "25",
+    applications: [],
     businessName: "Straightforward Job Site",
     location: "Montana",
     country: "United States",

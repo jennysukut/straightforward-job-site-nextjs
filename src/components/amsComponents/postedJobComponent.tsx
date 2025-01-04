@@ -15,7 +15,7 @@ interface PostedJobComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   jobId?: string;
   dateOfApp?: any;
   appStatus?: string;
-  selectedApps?: Array<string>;
+  selectedJobs?: Array<string>;
   handleAdd?: any;
   handleDelete?: any;
   setCurrentJob?: any;
@@ -29,7 +29,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   index,
   jobId,
   appStatus,
-  selectedApps,
+  selectedJobs,
   handleAdd,
   handleDelete,
   setCurrentJob,
@@ -44,18 +44,19 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
   const buttonClick = (id: string) => {
-    if (selectedApps?.includes(id)) {
-      handleDelete("selectedApps", id);
+    if (selectedJobs?.includes(id)) {
+      handleDelete("selectedJobs", id);
       setCurrentJob("");
       setSelectedColor("");
     } else {
-      handleAdd("selectedApps", id);
+      handleAdd("selectedJobs", id);
       setCurrentJob(selectedJob);
       setSelectedColor(colorArray[index % colorArray.length]);
     }
   };
 
-  const jobClicked = selectedApps?.includes(id);
+  const jobClicked = selectedJobs?.includes(id);
+  const appNumbers = selectedJob?.applications?.length;
 
   const viewListing = () => {
     router.push(`/listing/${jobId}`);
@@ -81,22 +82,21 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
           onClick={() => buttonClick(id)}
         ></SiteButton> */}
         <SiteButton
-          aria="JobApplication"
+          aria="JobListings"
           variant="hollow"
           colorScheme={
             colorArray[index % colorArray.length] as ButtonColorOption
           }
           size="wide"
           onClick={() => buttonClick(id)}
-          isSelected={selectedApps?.includes(id)}
+          isSelected={selectedJobs?.includes(id)}
         >
           <div className="AppInfo flex justify-between">
             <p className="TitleAndBusiness text-md">
               {`${selectedJob?.jobTitle}`}
             </p>
             <p className="Details self-center text-sm">
-              {selectedJob?.numberOfApps} applicants | 2 reviewed | 1 interview
-              set
+              {appNumbers} applicants | 2 reviewed | 1 interview set
             </p>
           </div>
         </SiteButton>

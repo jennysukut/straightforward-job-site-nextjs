@@ -63,6 +63,8 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     currentJob = job;
   }
 
+  const appNumber = currentJob?.applications?.length;
+
   const checkNonNegParamsMatch = () => {
     if (!currentJob?.nonNegParams || !fellow) return false;
 
@@ -176,8 +178,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                 addClasses="mt-3"
                 colorScheme="f3"
               >
-                applications: {currentJob?.numberOfApps}/
-                {currentJob?.applicationLimit}
+                applications: {appNumber}/{currentJob?.applicationLimit}
               </SiteLabel>
               <SiteLabel variant="display" aria="roundNumber">
                 round: {currentJob?.roundNumber || "1"}

@@ -38,29 +38,29 @@ export default function BusinessAMS() {
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
-  const [selectedApps, setSelectedApps] = useState<string[]>([]);
+  const [selectedJobs, setSelectedJobs] = useState<string[]>([]);
   const [currentJob, setCurrentJob] = useState<Job | undefined>(undefined);
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredJobs, setFilteredJobs] = useState<string[]>([]);
 
-  const currentApp = applications?.find((app: any) => {
-    return app.id === selectedApps;
+  const currentListing = jobListings?.find((job: any) => {
+    return job.id === selectedJobs;
   });
 
-  const currentAppointment = appointments?.find((app: any) => {
-    return app.jobId === currentApp?.jobId;
-  });
+  // const currentAppointment = appointments?.find((app: any) => {
+  //   return app.jobId === currentApp?.jobId;
+  // });
 
-  const retract = () => {
-    if (selectedApps.length > 0) {
-      console.log("need to retract these applications:", selectedApps);
-      // remove the selectedApps from the applications list and retract the applications
-      // we can only do this after a confirmation modal has been successful
-    } else {
-      return;
-    }
-  };
+  // const retract = () => {
+  //   if (selectedApps.length > 0) {
+  //     console.log("need to retract these applications:", selectedApps);
+  //     // remove the selectedApps from the applications list and retract the applications
+  //     // we can only do this after a confirmation modal has been successful
+  //   } else {
+  //     return;
+  //   }
+  // };
 
   // const filterApps = (applications: any) => {
   //   const filteredApps = applications.filter((app: any) => {
@@ -80,14 +80,14 @@ export default function BusinessAMS() {
     return monthName;
   };
 
-  const closeJobDetails = () => {
-    setCurrentJob(undefined);
-    setSelectedApps([]);
-  };
+  // const closeJobDetails = () => {
+  //   setCurrentJob(undefined);
+  //   setSelectedApps([]);
+  // };
 
-  const viewCompanyDetails = () => {
-    router.push(`/profile/${currentApp?.businessId}`);
-  };
+  // const viewCompanyDetails = () => {
+  //   router.push(`/profile/${currentApp?.businessId}`);
+  // };
 
   const calendarClick = () => {
     if (altViewChoice === "calendar") {
@@ -118,12 +118,12 @@ export default function BusinessAMS() {
         jobId={job.jobId}
         dateOfApp={job.dateOfApp}
         appStatus={job.appStatus}
-        selectedApps={selectedApps}
+        selectedJobs={selectedJobs}
         setCurrentJob={setCurrentJob}
         handleAdd={handleAdd}
         handleDelete={handleDelete}
         setSelectedColor={setSelectedColor}
-        viewCompanyDetails={viewCompanyDetails}
+        // viewCompanyDetails={viewCompanyDetails}
       />
 
       // <Application
@@ -186,7 +186,7 @@ export default function BusinessAMS() {
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
-    type: "filters" | "appStatus" | "selectedApps" | "altViewChoice",
+    type: "filters" | "appStatus" | "selectedJobs" | "altViewChoice",
     data: any,
   ) => {
     AddHandler({
@@ -195,7 +195,7 @@ export default function BusinessAMS() {
       setFunctions: {
         filters: setFilters,
         appStatus: setAppStatus,
-        selectedApps: setSelectedApps,
+        selectedJobs: setSelectedJobs,
         altViewChoice: setAltViewChoice,
       },
       oneChoice: {
@@ -208,7 +208,7 @@ export default function BusinessAMS() {
   };
 
   const handleDelete = (
-    type: "filters" | "appStatus" | "selectedApps" | "altViewChoice",
+    type: "filters" | "appStatus" | "selectedJobs" | "altViewChoice",
     id: any,
   ) => {
     DeleteHandler({
@@ -217,7 +217,7 @@ export default function BusinessAMS() {
       setFunctions: {
         filters: setFilters,
         appStatus: setAppStatus,
-        selectedApps: setSelectedApps,
+        selectedJobs: setSelectedJobs,
         altViewChoice: setAltViewChoice,
       },
     });
@@ -333,7 +333,7 @@ export default function BusinessAMS() {
                 width={20}
                 height={20}
                 className="m-0 opacity-80 hover:cursor-pointer"
-                onClick={closeJobDetails}
+                // onClick={closeJobDetails}
               ></Image>
             </div>
             <div className="JobDetails flex flex-col gap-1 pt-6 text-center">
@@ -381,7 +381,7 @@ export default function BusinessAMS() {
               </p>
             </div>
           </InfoBox>
-          {currentApp && currentApp.appointments && (
+          {/* {currentApp && currentApp.appointments && (
             <div className="AppointmentDetails -mb-3 mt-4 flex justify-center">
               <SiteButton
                 variant="hollow"
@@ -390,7 +390,7 @@ export default function BusinessAMS() {
                 colorScheme={selectedColor as ButtonColorOption | "a1"}
                 onClick={() =>
                   showModal(
-                    <ApplicationDetailsModal app={currentAppointment} />,
+                    // <ApplicationDetailsModal app={currentAppointment} />,
                   )
                 }
               >
@@ -402,7 +402,7 @@ export default function BusinessAMS() {
                 {currentApp?.appointments?.[0]?.interviewTime}
               </SiteButton>
             </div>
-          )}
+          )} */}
           <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
             <SiteButton
               variant="hollow"

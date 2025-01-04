@@ -11,6 +11,7 @@ export interface JobListing {
     jobTitle?: string;
     businessName?: string;
     businessId?: string;
+    applications?: Array<string>;
     applicationLimit?: string;
     numberOfApps?: string;
     positionType?: string;
@@ -67,6 +68,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Software Engineer II",
         businessName: "TechNova Solutions",
         businessId: "1b23i",
+        applications: [],
         applicationLimit: "50",
         numberOfApps: "35",
         interviewer: {
@@ -164,6 +166,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Graphic Designer",
         businessName: "Creative Minds Studio",
         businessId: "1b23i",
+        applications: [],
         roundNumber: "1",
         applicationLimit: "25",
         numberOfApps: "20",
@@ -255,7 +258,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Project Manager",
         businessName: "Pinnacle Enterprises",
         businessId: "1b23i",
-
+        applications: [],
         applicationLimit: "40",
         numberOfApps: "10",
         roundNumber: "1",
@@ -340,7 +343,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Data Analyst",
         businessName: "Insight Analytics Co.",
         businessId: "1b23i",
-
+        applications: ["chwit7", "fhuek4"],
         applicationLimit: "30",
         numberOfApps: "28",
         locationOption: "remote",
@@ -420,7 +423,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Senior Accountant",
         businessName: "Finance Pros Ltd.",
         businessId: "1b23i",
-
+        applications: [],
         applicationLimit: "20",
         numberOfApps: "20",
         locationOption: "on-site",
@@ -501,6 +504,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Customer Service Representative",
         businessName: "QuickAssist Corp",
         businessId: "1b23i",
+        applications: ["dfkjb8", "dsfkv9"],
 
         applicationLimit: "100",
         numberOfApps: "85",
@@ -581,6 +585,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Mechanical Engineer",
         businessName: "Innovatech Manufacturing",
         businessId: "1b23i",
+        applications: ["d87fhw", "cv9t4t"],
 
         applicationLimit: "15",
         numberOfApps: "10",
@@ -661,7 +666,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Marketing Specialist",
         businessName: "BrightPath Marketing",
         businessId: "1b23i",
-
+        applications: [],
         applicationLimit: "30",
         numberOfApps: "29",
         locationOption: "hybrid",
@@ -686,6 +691,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "IT Support Technician",
         businessName: "NetSecure Systems",
         businessId: "1b23i",
+        applications: ["iuhec8", ""],
 
         applicationLimit: "25",
         numberOfApps: "24",
@@ -766,7 +772,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Content Writer",
         businessName: "WordFlow Media",
         businessId: "1b23i",
-
+        applications: [],
         applicationLimit: "50",
         numberOfApps: "50",
         locationOption: "remote",
@@ -846,7 +852,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         applicationLimit: "25",
         businessName: "Straightforward Job Site",
         businessId: "1b23i",
-
+        applications: [],
         location: "Montana",
         country: "United States",
         jobTitle: "Front-End Engineer & Graphic Designer",
