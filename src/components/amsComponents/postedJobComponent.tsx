@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
@@ -38,6 +39,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
+  const { applications } = useApplications();
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   // search through the jobListings to find the job with the matching jobId
@@ -57,6 +59,20 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
 
   const jobClicked = selectedJobs?.includes(id);
   const appNumbers = selectedJob?.applications?.length;
+
+  let viewedApplications: any = [];
+
+  const applicationList = selectedJob?.applications?.map((app) => {
+    const relevantApp = applications?.find(
+      (application: any) => application.id === app,
+    );
+    const isViewed = relevantApp?.appStatus !== "submitted";
+    if (isViewed) {
+      viewedApplications.push(relevantApp);
+    }
+  });
+
+  console.log(viewedApplications);
 
   const viewListing = () => {
     router.push(`/listing/${jobId}`);
@@ -96,7 +112,8 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
               {`${selectedJob?.jobTitle}`}
             </p>
             <p className="Details self-center text-sm">
-              {appNumbers} applicants | 2 reviewed | 1 interview set
+              {appNumbers} applicants | {viewedApplications.length} reviewed | 1
+              interview set
             </p>
           </div>
         </SiteButton>
