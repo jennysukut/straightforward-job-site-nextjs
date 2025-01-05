@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
@@ -8,7 +7,6 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
-import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "../informationDisplayComponents/infoBox";
 import Image from "next/image";
 
@@ -18,12 +16,6 @@ interface PostedJobComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   index: any;
   jobId?: string;
   dateOfApp?: any;
-  selectedJobs?: Array<string>;
-  handleAdd?: any;
-  handleDelete?: any;
-  setCurrentJob?: any;
-  setSelectedColor?: any;
-  viewCompanyDetails?: any;
 }
 
 const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
@@ -31,34 +23,18 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   colorArray,
   index,
   jobId,
-  selectedJobs,
-  handleAdd,
-  handleDelete,
-  setCurrentJob,
-  setSelectedColor,
-  viewCompanyDetails,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
   const { applications } = useApplications();
-  const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
-  const buttonClick = (id: string) => {
-    if (selectedJobs?.includes(id)) {
-      handleDelete("selectedJobs", id);
-      setCurrentJob("");
-      setSelectedColor("");
-    } else {
-      handleAdd("selectedJobs", id);
-      setCurrentJob(selectedJob);
-      setSelectedColor(colorArray[index % colorArray.length]);
-    }
+  const buttonClick = () => {
+    router.push(`/ams/${jobId}`);
   };
 
-  const jobClicked = selectedJobs?.includes(id);
   const appNumbers = selectedJob?.applications?.length;
 
   let viewedApplications: any = [];
@@ -79,18 +55,6 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
     }
   });
 
-  const viewListing = () => {
-    router.push(`/listing/${jobId}`);
-  };
-
-  const viewApplication = () => {
-    router.push(`/application/${id}`);
-  };
-
-  useEffect(() => {
-    ShuffleIdealButtonPattern(setBetterColorArray);
-  }, []);
-
   return (
     <div className="PostedJob flex flex-col gap-4" key={id}>
       <InfoBox
@@ -99,12 +63,25 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
         size="jobListing"
         width="extraWide"
-        onClick={() => buttonClick(id)}
       >
         <div className="AppInfo mb-4 flex flex-col justify-between gap-2 text-center">
           <div className="AppLimitInfo -mt-4 ml-2 flex items-start justify-between pb-8">
             <div className="AppLimit -ml-4 text-xs font-medium italic">
               {appNumbers}/{selectedJob?.applicationLimit} apps
+            </div>
+            {/* we need to put this notification button on the item only when there's new + un-looked-at information */}
+            {/* perhaps we should change the button below the app to have alt text if there's a notification as well, like "review new applications"? */}
+            <div className="NotificationButton -mr-2">
+              <SiteButton
+                aria="addJobsButton"
+                size="extraSmallCircle"
+                variant="filled"
+                colorScheme={
+                  colorArray[
+                    (index + 1) % colorArray.length
+                  ] as ButtonColorOption
+                }
+              ></SiteButton>
             </div>
           </div>
           <h1 className="Title">{`${selectedJob?.jobTitle}`}</h1>
@@ -112,7 +89,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
             {capitalizeFirstLetter(
               selectedJob?.experienceLevel?.[0] || "junior",
             )}{" "}
-            Level
+            {selectedJob?.experienceLevel?.[0] !== "entry-level" ? "Level" : ""}
           </p>
           {/* divider */}
           <Image
@@ -122,24 +99,24 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
             height={0}
             className="my-8 self-center opacity-80"
           ></Image>
-          <p className="ApplicationDetails mb-2 self-center text-sm">
+          <p className="ApplicationDetails self-center text-sm">
             {appNumbers} applications
           </p>
-          <p className="ReviewDetails">
+          <p className="ReviewDetails mb-4 text-sm">
             {viewedApplications.length} reviewed | {numberOfInterviews}{" "}
             {`${(numberOfInterviews ?? 0) > 1 ? "interviews" : (numberOfInterviews ?? 0) < 1 ? "no interview" : "interview"} set`}
           </p>
         </div>
       </InfoBox>
-      <div className="ManageButton mt-1 flex w-full justify-center">
+      <div className="ManageButton mt-1 flex w-full justify-end">
         <SiteButton
           aria="manageListing"
           variant="filled"
           colorScheme={
             colorArray[index % colorArray.length] as ButtonColorOption
           }
-          onClick={() => buttonClick(id)}
-          size="large"
+          onClick={buttonClick}
+          addClasses="px-8 py-3"
         >
           view applications | manage listing
         </SiteButton>
