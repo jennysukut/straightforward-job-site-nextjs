@@ -103,21 +103,20 @@ export default function BusinessAMS() {
 
       return matchesBusiness;
     });
-    console.log(jobList, business);
-    console.log(filteredJobs);
     setFilteredJobs(filteredJobs);
   };
+
+  console.log(selectedJobs);
 
   const renderJobs = () => {
     return filteredJobs?.map((job: any, index: number) => (
       <PostedJobComponent
-        key={job.id}
-        id={job.id}
+        key={job.jobId}
+        id={job.jobId}
         colorArray={colorArray}
         index={index}
         jobId={job.jobId}
         dateOfApp={job.dateOfApp}
-        appStatus={job.appStatus}
         selectedJobs={selectedJobs}
         setCurrentJob={setCurrentJob}
         handleAdd={handleAdd}
@@ -201,7 +200,7 @@ export default function BusinessAMS() {
       oneChoice: {
         filters: false,
         appStatus: true,
-        selectedApps: true,
+        selectedJobs: true,
         altViewChoice: true,
       },
     });
@@ -305,19 +304,15 @@ export default function BusinessAMS() {
                 />
               </div>
             </div>
-            <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
-              <div
-                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4`}
-              >
-                {renderJobs()}
-                {/* {renderApplications()} */}
-              </div>
+            <div className="JobListings m-4 flex w-full flex-wrap items-center justify-evenly gap-8 py-4">
+              {renderJobs()}
+              {/* {renderApplications()} */}
             </div>
           </div>
         )}
       </div>
 
-      {currentJob && (
+      {/* {currentJob && (
         <div className="ApplicationInfo">
           <InfoBox
             aria="amsAppInfo"
@@ -380,8 +375,8 @@ export default function BusinessAMS() {
                 {capitalizeFirstLetter(currentJob?.payDetails?.payOption || "")}
               </p>
             </div>
-          </InfoBox>
-          {/* {currentApp && currentApp.appointments && (
+          </InfoBox> */}
+      {/* {currentApp && currentApp.appointments && (
             <div className="AppointmentDetails -mb-3 mt-4 flex justify-center">
               <SiteButton
                 variant="hollow"
@@ -403,7 +398,7 @@ export default function BusinessAMS() {
               </SiteButton>
             </div>
           )} */}
-          <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
+      {/* <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
             <SiteButton
               variant="hollow"
               colorScheme="b3"
@@ -423,7 +418,7 @@ export default function BusinessAMS() {
             </SiteButton>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

@@ -12,16 +12,14 @@ export interface Applications {
   businessId?: string;
   dateOfApp?: string;
   appStatus?: string;
-  appointments?: [
-    {
-      interviewStep?: string;
-      interviewDate?: {
-        month?: number;
-        day?: number;
-      };
-      interviewTime?: string;
-    },
-  ];
+  appointments?: Array<{
+    interviewStep?: string;
+    interviewDate?: {
+      month?: number;
+      day?: number;
+    };
+    interviewTime?: string;
+  }>;
 }
 
 interface ApplicationsContextType {
@@ -44,7 +42,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Insight Analytics Co.",
       businessId: "1b23i",
       dateOfApp: "12.20.2024",
-      appStatus: "submitted",
+      appStatus: "viewed",
       appointments: [
         {
           interviewStep: "1",
@@ -91,6 +89,14 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
             day: 17,
           },
           interviewTime: "5:00pm",
+        },
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 15,
+          },
+          interviewTime: "3:00pm",
         },
       ],
     },
