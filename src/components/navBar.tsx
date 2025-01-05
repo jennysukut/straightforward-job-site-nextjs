@@ -172,9 +172,17 @@ export default function NavBar() {
           // BUSINESS NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+              <Link href="/calendar">
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="b4"
+                  title="calendar"
+                  clickedButton={clickedButton}
+                />
+              </Link>
               <NavButton
                 onClick={handleNavButtonClick}
-                colorScheme="b4"
+                colorScheme="d4"
                 title="mailbox"
                 clickedButton={clickedButton}
               />
@@ -187,7 +195,7 @@ export default function NavBar() {
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="f3"
-                title="ams"
+                title="application manager"
                 clickedButton={clickedButton}
               />
               <Link href={"/settings"}>

@@ -23,6 +23,7 @@ import Image from "next/image";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
+import BusinessApplication from "@/components/amsComponents/businessApplicationComponent";
 
 export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
@@ -55,6 +56,7 @@ export default function ApplicationManager({ jobId }: any) {
       (application: any) => application.id === app,
     );
     currentApplications.push(relevantApp);
+    console.log(currentApplications);
   });
 
   const currentAppointment = appointments?.find((app: any) => {
@@ -127,11 +129,12 @@ export default function ApplicationManager({ jobId }: any) {
       ));
     } else {
       return currentApplications?.map((app: any, index: number) => (
-        <Application
+        <BusinessApplication
           key={app.id}
           id={app.id}
           colorArray={colorArray}
           index={index}
+          app={app}
           jobId={app.jobId}
           dateOfApp={app.dateOfApp}
           appStatus={app.appStatus}
@@ -231,7 +234,7 @@ export default function ApplicationManager({ jobId }: any) {
             <div className="ButtonsAndTitle flex w-full flex-col justify-between">
               <div className="TitleSubtitle -mb-8 mr-8 text-right">
                 <h1 className="Title">{currentJob?.jobTitle}</h1>
-                <p className="Subtitle text-medium italic">
+                <p className="Subtitle text-medium italic text-emerald">
                   round {currentJob?.roundNumber || 1}:{" "}
                   {currentJob?.applications?.length} applications
                 </p>
@@ -272,7 +275,7 @@ export default function ApplicationManager({ jobId }: any) {
             </div>
             <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
               <div
-                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4`}
+                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
               >
                 {renderApplications()}
               </div>
