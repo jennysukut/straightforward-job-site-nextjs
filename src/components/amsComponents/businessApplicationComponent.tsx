@@ -100,8 +100,9 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             colorArray[index % colorArray.length] as ButtonColorOption
           }
           size="wide"
-          onClick={() => buttonClick(id)}
-          isSelected={selectedApps?.includes(id)}
+          addClasses="max-w-[77vw]"
+          // onClick={() => buttonClick(id)}
+          // isSelected={selectedApps?.includes(id)}
         >
           <div className="AppInfo flex justify-between">
             <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">

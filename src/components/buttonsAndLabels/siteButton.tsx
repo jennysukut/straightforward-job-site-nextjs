@@ -19,7 +19,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | "extraLarge"
     | "largeCircle"
     | "extraLargeCircle"
-    | "wide";
+    | "wide"
+    | "horizontal";
   variant?: "hollow" | "filled" | "avatar";
   colorScheme: ButtonColorOption;
   aria: string;
@@ -73,6 +74,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:py-4 md:text-sm":
         size === "extraLarge",
       "px-6 py-3 text-sm w-[100%]": size === "wide",
+      "px-6 py-2 text-sm w-[125px]": size === "horizontal",
 
       // variant
       [`bg-cream ${hollowOptions} border-[2px] ${textColor}`]:
@@ -150,6 +152,8 @@ const SiteButton: React.FC<ButtonProps> = ({
         size === "extraLarge",
       "px-6 py-3 text-sm w-[100%] -right-1.5 top-1.5  left-1.5":
         size === "wide",
+      "px-6 py-2 text-sm w-[125px] -right-1.5 top-1.5  left-1.5":
+        size === "horizontal",
 
       //highContrast
       [`bg-pine border-pine`]: colorOption === "highContrast",

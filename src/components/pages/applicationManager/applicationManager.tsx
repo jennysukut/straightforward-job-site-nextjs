@@ -205,35 +205,36 @@ export default function ApplicationManager({ jobId }: any) {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage w-[84%] self-center ${textColor} max-w-[1600px]`}
     >
-      <div className="AMSContainer flex w-full">
-        <div className="AMSTabOptions max-w-[10%] gap-6">
+      <div className="AMSContainer flex">
+        <div className="AMSTabOptions max-w-[10%] gap-4">
           <ButtonOptionsComponent
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             type="altViewChoice"
             selectedArray={altViewChoice}
             classesForButtons="-rotate-90"
-            buttons={["calendar", "messages"]}
-            buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
+            buttons={["calendar", "messages", "details"]}
+            buttonContainerClasses="flex-col gap-28 -mx-14 mt-24"
+            buttonSize="horizontal"
           />
         </div>
-        {altViewChoice === "calendar" && (
-          <CalendarComp
-            size={currentJob ? "small" : ""}
-            addClasses={currentJob ? "pr-0" : ""}
-          />
-        )}
+        {altViewChoice === "calendar" && <CalendarComp />}
         {altViewChoice === "messages" && (
           <div className="Messages">Messages Here</div>
         )}
+        {altViewChoice === "details" && (
+          <div className="Details">Job Listing Details Go Here</div>
+        )}
 
         {(altViewChoice === "" || altViewChoice.length == 0) && (
-          <div className="ApplicationList flex w-full flex-col gap-4">
+          <div className="ApplicationList flex w-full flex-col items-center gap-4">
             <div className="ButtonsAndTitle flex w-full flex-col justify-between">
               <div className="TitleSubtitle -mb-8 mr-8 text-right">
-                <h1 className="Title">{currentJob?.jobTitle}</h1>
+                <button onClick={() => setAltViewChoice("details")}>
+                  <h1 className="Title">{currentJob?.jobTitle}</h1>
+                </button>
                 <p className="Subtitle text-medium italic text-emerald">
                   round {currentJob?.roundNumber || 1}:{" "}
                   {currentJob?.applications?.length} applications
@@ -241,7 +242,7 @@ export default function ApplicationManager({ jobId }: any) {
               </div>
 
               {/* application status filter */}
-              <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
+              <div className="FilterButtons max-w[100%] -mb-8 ml-6 flex flex-wrap items-center">
                 <TieredButtonOptionsComponent
                   type="filters"
                   selectedArray={filters}
@@ -273,12 +274,10 @@ export default function ApplicationManager({ jobId }: any) {
                 />
               </div>
             </div>
-            <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
-              <div
-                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
-              >
-                {renderApplications()}
-              </div>
+            <div
+              className={`Applications ${currentJob ? "h-[25.5rem]" : "-mt-4 h-[26rem]"} ml-4 flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+            >
+              {renderApplications()}
             </div>
           </div>
         )}
