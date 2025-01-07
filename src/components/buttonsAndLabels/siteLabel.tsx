@@ -73,7 +73,7 @@ const SiteLabel: React.FC<LabelProps> = ({
       // variant
       "py-2 px-4": variant === "display",
       "py-2 pr-3 pl-4": variant === "functional",
-      "w-[16px] h-[16px]": variant === "notification",
+      "w-[18px] h-[18px] z-[20]": variant === "notification",
 
       //textSize
       "text-xs": !textSize,

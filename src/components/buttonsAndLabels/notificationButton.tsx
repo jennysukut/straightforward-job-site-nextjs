@@ -35,7 +35,7 @@ const Notification: React.FC<NotificationProps> = ({
         onMouseEnter={hoverIn}
         onMouseLeave={hoverOut}
       />
-      {onHover && (
+      {onHover && message && (
         <SiteLabel
           variant="display"
           aria="notificationDetails"
@@ -50,4 +50,37 @@ const Notification: React.FC<NotificationProps> = ({
   );
 };
 
-export default Notification;
+const JobAMSNotificationButton: any = ({ colorScheme, message }: any) => {
+  const [onHover, setOnHover] = useState(false);
+
+  const hoverIn = () => {
+    setTimeout(() => {
+      setOnHover(true);
+    }, 100);
+  };
+
+  const hoverOut = () => {
+    setOnHover(false);
+  };
+
+  return (
+    <div className="NotificationButton -mr-2">
+      {onHover && message && (
+        <p className="NotificationDetails absolute right-14 mt-1 text-xs">
+          {message}
+        </p>
+      )}
+      <SiteLabel
+        variant="notification"
+        size="notification"
+        colorScheme={colorScheme}
+        aria="notification"
+        onMouseEnter={hoverIn}
+        onMouseLeave={hoverOut}
+        addClasses="bg-[url('/notification-icon.svg')]"
+      />
+    </div>
+  );
+};
+
+export { Notification, JobAMSNotificationButton };

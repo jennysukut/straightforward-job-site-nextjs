@@ -192,12 +192,14 @@ export default function NavBar() {
                 title="post a job"
                 clickedButton={clickedButton}
               />
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="f3"
-                title="application manager"
-                clickedButton={clickedButton}
-              />
+              <Link href={"/ams"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="f3"
+                  title="application manager"
+                  clickedButton={clickedButton}
+                />
+              </Link>
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}

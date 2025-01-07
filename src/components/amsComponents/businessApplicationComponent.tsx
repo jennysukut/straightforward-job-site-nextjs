@@ -10,7 +10,7 @@ import SiteButton from "../buttonsAndLabels/siteButton";
 import SiteLabel from "../buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import Image from "next/image";
-import Notification from "../buttonsAndLabels/notificationButton";
+import { Notification } from "../buttonsAndLabels/notificationButton";
 
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {

@@ -166,17 +166,17 @@ const ListingBottomButtons = ({
 const AmsTopButtons = ({ currentJob }: any) => {
   return (
     <div className="DetailsButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
-      <SiteLabel colorScheme="c6" aria="postDate" variant="display">
+      <SiteLabel colorScheme="c1" aria="postDate" variant="display">
         Posted Date: January 5
       </SiteLabel>
-      <SiteLabel colorScheme="e6" aria="nextPayment" variant="display">
+      <SiteLabel colorScheme="f1" aria="nextPayment" variant="display">
         Next Payment: $200 on February 5
       </SiteLabel>
-      <SiteLabel colorScheme="f3" aria="applicationNumber" variant="display">
+      <SiteLabel colorScheme="b3" aria="applicationNumber" variant="display">
         Applications: {currentJob?.applications?.length}/
         {currentJob?.applicationLimit}
       </SiteLabel>
-      <SiteLabel colorScheme="d1" aria="Interviews" variant="display">
+      <SiteLabel colorScheme="c4" aria="Interviews" variant="display">
         Interviews For The Position: 2
       </SiteLabel>
     </div>

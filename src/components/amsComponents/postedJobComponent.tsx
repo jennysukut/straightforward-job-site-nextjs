@@ -5,7 +5,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
-
+import { JobAMSNotificationButton } from "../buttonsAndLabels/notificationButton";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InfoBox from "../informationDisplayComponents/infoBox";
 import Image from "next/image";
@@ -38,6 +38,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   const appNumbers = selectedJob?.applications?.length;
 
   let viewedApplications: any = [];
+  let notification;
   let numberOfInterviews;
 
   const applicationList = selectedJob?.applications?.map((app) => {
@@ -48,10 +49,14 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
     if (isViewed) {
       viewedApplications.push(relevantApp);
     }
+    if (!isViewed) {
+      notification = "unopened applications";
+    }
 
     const hasInterviews = (relevantApp?.appointments?.length || 0) > 0;
     if (hasInterviews) {
       numberOfInterviews = relevantApp?.appointments?.length;
+      notification = "new appointment";
     }
   });
 
@@ -69,20 +74,14 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
             <div className="AppLimit -ml-4 text-xs font-medium italic">
               {appNumbers}/{selectedJob?.applicationLimit} apps
             </div>
-            {/* we need to put this notification button on the item only when there's new + un-looked-at information */}
-            {/* perhaps we should change the button below the app to have alt text if there's a notification as well, like "review new applications"? */}
-            <div className="NotificationButton -mr-2">
-              <SiteButton
-                aria="addJobsButton"
-                size="extraSmallCircle"
-                variant="filled"
+            {notification && (
+              <JobAMSNotificationButton
                 colorScheme={
-                  colorArray[
-                    (index + 1) % colorArray.length
-                  ] as ButtonColorOption
+                  colorArray[index % colorArray.length] as ButtonColorOption
                 }
-              ></SiteButton>
-            </div>
+                message={notification}
+              />
+            )}
           </div>
           <h1 className="Title">{`${selectedJob?.jobTitle}`}</h1>
           <p className="ExperienceLevel text-md font-normal italic">
