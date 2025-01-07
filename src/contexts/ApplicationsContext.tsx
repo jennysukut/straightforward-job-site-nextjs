@@ -12,7 +12,8 @@ export interface Applications {
   businessId?: string;
   dateOfApp?: string;
   appStatus?: string;
-  businessNote?: string;
+  businessNote?: Array<string>;
+  fellowNote?: Array<string>;
   appointments?: Array<{
     interviewStep?: string;
     interviewDate?: {
@@ -126,8 +127,10 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "QuickAssist Corp",
       jobId: "6",
       dateOfApp: "12.20.2024",
-      businessNote:
+      businessNote: [
         "Here's a note I have about this application / applicant. I think we could use a lot of words to see if our thoughts overflow and make the relevant icon box too big for it's parameters inside the ams page",
+        "Here's a secondary little note, also for testing.",
+      ],
       appStatus: "viewed",
     },
     {

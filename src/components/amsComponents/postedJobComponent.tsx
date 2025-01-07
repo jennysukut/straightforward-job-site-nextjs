@@ -67,7 +67,6 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
         variant="filled"
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
         size="jobListing"
-        width="extraWide"
       >
         <div className="AppInfo mb-4 flex flex-col justify-between gap-2 text-center">
           <div className="AppLimitInfo -mt-4 ml-2 flex items-start justify-between pb-8">

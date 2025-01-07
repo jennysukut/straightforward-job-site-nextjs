@@ -5,17 +5,12 @@ import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
+import { Notification } from "../buttonsAndLabels/notificationButton";
+import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
-import SiteLabel from "../buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
-import Image from "next/image";
-import { Notification } from "../buttonsAndLabels/notificationButton";
-import Application from "@/app/application/[id]/page";
-import Link from "next/link";
-import InfoBox from "../informationDisplayComponents/infoBox";
-import InputComponent from "../inputComponents/inputComponent";
-import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
+import ApplicationNoteModal from "../modals/appyModals/applicationNoteModal";
 
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -50,6 +45,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const { jobListings } = useJobListings();
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { fellow } = useFellow();
+  const { showModal } = useModal();
   const [appClicked, setAppClicked] = useState(false);
   const [showNote, setShowNote] = useState(false);
   // const currentApplicant = fellows?.find((fellow: any) => {
@@ -68,6 +64,11 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   const highlight = () => {
     console.log("highlighting app");
+  };
+
+  const noteClick = () => {
+    setShowNote(!showNote);
+    showModal(<ApplicationNoteModal app={app} />);
   };
 
   useEffect(() => {
@@ -118,7 +119,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               aria="viewDetails"
               variant="hollow"
               colorScheme={betterColorArray[1]}
-              onClick={() => setShowNote(!showNote)}
+              onClick={noteClick}
               isSelected={showNote}
             >
               {app.businessNote ? "view your notes" : "add a note"}
@@ -140,7 +141,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               highlight
             </SiteButton>
           </div>
-          {showNote && (
+          {/* {showNote && (
             <form action="" className="Note">
               <InputComponent
                 addClasses="mb-2 self-center w-full"
@@ -153,7 +154,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
                 testing
               </SiteButton>
             </form>
-          )}
+          )} */}
         </div>
       )}
     </div>
