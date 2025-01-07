@@ -38,6 +38,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
     {
       id: "chwit7",
       applicant: "testid",
+      message: "test message to see if it causes a notification",
       jobId: "4",
       business: "Insight Analytics Co.",
       businessId: "1b23i",

@@ -52,7 +52,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   // });
 
   const currentApplicant = fellow;
-  const notification = true;
+  const notification = app.message ? true : false;
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
@@ -113,20 +113,17 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             </p>
             <p className="Details flex gap-2 self-center text-sm">
               {app.dateOfApp} | {appStatus}
-              {notification && (
-                <div className="Notification flex gap-2">
-                  |{" "}
-                  <Image
-                    src="/notif-icon.svg"
-                    alt="notification"
-                    width={15}
-                    height={15}
-                  ></Image>
-                </div>
-              )}
             </p>
           </div>
         </SiteButton>
+        {notification && (
+          <Image
+            src="/notif-icon.svg"
+            alt="notification"
+            width={16}
+            height={15}
+          ></Image>
+        )}
       </div>
 
       {jobClicked && (

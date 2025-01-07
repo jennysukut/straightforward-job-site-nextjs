@@ -8,6 +8,7 @@ import {
   ButtonColorOption,
 } from "@/lib/stylingData/buttonColors";
 import clsx from "clsx";
+import Image from "next/image";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   addClasses?: string;
