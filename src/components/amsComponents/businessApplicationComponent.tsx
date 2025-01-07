@@ -10,6 +10,7 @@ import SiteButton from "../buttonsAndLabels/siteButton";
 import SiteLabel from "../buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import Image from "next/image";
+import Notification from "../buttonsAndLabels/notificationButton";
 
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -116,14 +117,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             </p>
           </div>
         </SiteButton>
-        {notification && (
-          <Image
-            src="/notif-icon.svg"
-            alt="notification"
-            width={16}
-            height={15}
-          ></Image>
-        )}
+        {notification && <Notification message="new interview request" />}
       </div>
 
       {jobClicked && (
