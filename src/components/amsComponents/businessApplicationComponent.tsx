@@ -11,6 +11,11 @@ import SiteLabel from "../buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import Image from "next/image";
 import { Notification } from "../buttonsAndLabels/notificationButton";
+import Application from "@/app/application/[id]/page";
+import Link from "next/link";
+import InfoBox from "../informationDisplayComponents/infoBox";
+import InputComponent from "../inputComponents/inputComponent";
+import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
 
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,7 +25,6 @@ interface BusinessApplicationProps
   jobId?: string;
   dateOfApp?: any;
   appStatus?: string;
-  selectedApps?: Array<string>;
   handleAdd?: any;
   handleDelete?: any;
   setCurrentJob?: any;
@@ -35,7 +39,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   index,
   jobId,
   appStatus,
-  selectedApps,
   handleAdd,
   handleDelete,
   setCurrentJob,
@@ -47,36 +50,24 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const { jobListings } = useJobListings();
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { fellow } = useFellow();
-
+  const [appClicked, setAppClicked] = useState(false);
+  const [showNote, setShowNote] = useState(false);
   // const currentApplicant = fellows?.find((fellow: any) => {
   //   return fellow.id === app?.applicant;
   // });
 
   const currentApplicant = fellow;
   const notification = app.message ? true : false;
+
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
-  const buttonClick = (id: string) => {
-    if (selectedApps?.includes(id)) {
-      handleDelete("selectedApps", id);
-      setCurrentJob("");
-      setSelectedColor("");
-    } else {
-      handleAdd("selectedApps", id);
-      setCurrentJob(selectedJob);
-      setSelectedColor(colorArray[index % colorArray.length]);
-    }
-  };
-
-  const jobClicked = selectedApps?.includes(id);
-
-  const viewListing = () => {
-    router.push(`/listing/${jobId}`);
-  };
-
   const viewApplication = () => {
     router.push(`/application/${id}`);
+  };
+
+  const highlight = () => {
+    console.log("highlighting app");
   };
 
   useEffect(() => {
@@ -86,14 +77,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons flex items-center gap-4">
-        {/* <SiteButton
-          size="smallCircle"
-          colorScheme="f1"
-          aria="selectButton"
-          variant="hollow"
-          isSelected={selectedApps?.includes(id)}
-          onClick={() => buttonClick(id)}
-        ></SiteButton> */}
         <SiteButton
           aria="JobApplication"
           variant="hollow"
@@ -102,8 +85,8 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
           }
           size="wide"
           addClasses="max-w-[77vw]"
-          // onClick={() => buttonClick(id)}
-          // isSelected={selectedApps?.includes(id)}
+          onClick={() => setAppClicked(!appClicked)}
+          isSelected={appClicked}
         >
           <div className="AppInfo flex justify-between">
             <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
@@ -120,32 +103,57 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
         {notification && <Notification message="new interview request" />}
       </div>
 
-      {jobClicked && (
-        <div className="SecondaryButtons mb-1 mt-1 flex gap-6 self-center">
-          <SiteButton
-            aria="viewDetails"
-            variant="hollow"
-            colorScheme={betterColorArray[0]}
-            onClick={viewListing}
-          >
-            view listing
-          </SiteButton>
-          <SiteButton
-            aria="viewDetails"
-            variant="hollow"
-            colorScheme={betterColorArray[1]}
-            onClick={viewCompanyDetails}
-          >
-            company page
-          </SiteButton>
-          <SiteButton
-            aria="viewDetails"
-            variant="hollow"
-            colorScheme={betterColorArray[2]}
-            onClick={viewApplication}
-          >
-            your application
-          </SiteButton>
+      {appClicked && (
+        <div className="DetailsAndOptions ml-1 mr-10 flex flex-col gap-4">
+          <div className="SecondaryButtons mb-1 mt-1 flex justify-end gap-4 align-top">
+            <SiteButton
+              aria="viewDetails"
+              variant="hollow"
+              colorScheme={betterColorArray[0]}
+              onClick={viewApplication}
+            >
+              view this application
+            </SiteButton>
+            <SiteButton
+              aria="viewDetails"
+              variant="hollow"
+              colorScheme={betterColorArray[1]}
+              onClick={() => setShowNote(!showNote)}
+              isSelected={showNote}
+            >
+              {app.businessNote ? "view your notes" : "add a note"}
+            </SiteButton>
+            <SiteButton
+              aria="viewDetails"
+              variant="hollow"
+              colorScheme={betterColorArray[2]}
+              onClick={viewApplication}
+            >
+              messages
+            </SiteButton>
+            <SiteButton
+              aria="viewDetails"
+              variant="hollow"
+              colorScheme={betterColorArray[3]}
+              onClick={highlight}
+            >
+              highlight
+            </SiteButton>
+          </div>
+          {showNote && (
+            <form action="" className="Note">
+              <InputComponent
+                addClasses="mb-2 self-center w-full"
+                type="text"
+                size="tall"
+                defaultValue={app.businessNote}
+                placeholderText="Add Your Note Here..."
+              ></InputComponent>
+              <SiteButton aria="test" colorScheme="f1" variant="filled">
+                testing
+              </SiteButton>
+            </form>
+          )}
         </div>
       )}
     </div>

@@ -136,8 +136,6 @@ export default function ApplicationManager({ jobId }: any) {
           jobId={app.jobId}
           dateOfApp={app.dateOfApp}
           appStatus={app.appStatus}
-          selectedApps={selectedApps}
-          // setCurrentJob={setCurrentJob}
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           setSelectedColor={setSelectedColor}

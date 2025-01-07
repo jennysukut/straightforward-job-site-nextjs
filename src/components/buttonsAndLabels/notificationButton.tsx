@@ -41,7 +41,7 @@ const Notification: React.FC<NotificationProps> = ({
           aria="notificationDetails"
           size="notificationDetails"
           absolute
-          addClasses="mt-6 right-14"
+          addClasses="mt-8 right-14"
         >
           <p className="NotificationDetails">{message}</p>
         </SiteLabel>
