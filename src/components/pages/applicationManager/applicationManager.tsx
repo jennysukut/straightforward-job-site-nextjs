@@ -24,6 +24,7 @@ import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsC
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 import BusinessApplication from "@/components/amsComponents/businessApplicationComponent";
+import JobListing from "../jobListing/jobListing";
 
 export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
@@ -43,20 +44,17 @@ export default function ApplicationManager({ jobId }: any) {
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredApps, setFilteredApps] = useState<string[]>([]);
 
+  let currentApplications: any = [];
+  const currentJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
   });
-
-  const currentJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
-
-  let currentApplications: any = [];
 
   const applicationList = currentJob?.applications?.map((app: any) => {
     const relevantApp = applications?.find(
       (application: any) => application.id === app,
     );
     currentApplications.push(relevantApp);
-    console.log(currentApplications);
   });
 
   const currentAppointment = appointments?.find((app: any) => {
@@ -215,20 +213,39 @@ export default function ApplicationManager({ jobId }: any) {
             type="altViewChoice"
             selectedArray={altViewChoice}
             classesForButtons="-rotate-90"
-            buttons={["calendar", "messages", "details"]}
+            buttons={
+              altViewChoice === "details"
+                ? ["calendar", "messages", "details", "ams"]
+                : ["calendar", "messages", "details"]
+            }
             buttonContainerClasses="flex-col gap-28 -mx-14 mt-24"
             buttonSize="horizontal"
           />
         </div>
-        {altViewChoice === "calendar" && <CalendarComp />}
+        {altViewChoice === "calendar" && <CalendarComp addClasses="ml-10" />}
         {altViewChoice === "messages" && (
           <div className="Messages">Messages Here</div>
         )}
         {altViewChoice === "details" && (
-          <div className="Details">Job Listing Details Go Here</div>
+          <div className="Details flex w-full flex-col items-center gap-4">
+            {/* <div className="TitleSubtitle -mb-8 mr-6 self-end text-right">
+              <button onClick={() => setAltViewChoice("details")}>
+                <h1 className="Title">{currentJob?.jobTitle}</h1>
+              </button>
+              <p className="Subtitle text-medium italic text-emerald">
+                round {currentJob?.roundNumber || 1}:{" "}
+                {currentJob?.applications?.length} applications
+              </p> */}
+            {/* </div> */}
+            <div className="JobDetails">
+              <JobListing isOwn hasId id={jobId} inAms />
+            </div>
+          </div>
         )}
 
-        {(altViewChoice === "" || altViewChoice.length == 0) && (
+        {(altViewChoice === "" ||
+          altViewChoice.length == 0 ||
+          altViewChoice === "ams") && (
           <div className="ApplicationList flex w-full flex-col items-center gap-4">
             <div className="ButtonsAndTitle flex w-full flex-col justify-between">
               <div className="TitleSubtitle -mb-8 mr-8 text-right">
@@ -275,7 +292,7 @@ export default function ApplicationManager({ jobId }: any) {
               </div>
             </div>
             <div
-              className={`Applications ${currentJob ? "h-[25.5rem]" : "-mt-4 h-[26rem]"} ml-4 flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+              className={`Applications ${currentJob ? "h-[25.5rem]" : "-mt-4 h-[26rem]"} ml-8 flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
             >
               {renderApplications()}
             </div>

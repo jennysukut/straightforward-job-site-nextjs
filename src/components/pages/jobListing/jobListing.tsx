@@ -20,6 +20,13 @@ import ApplyModal from "../../modals/appyModals/applyModal";
 import PaymentModal from "../../modals/paymentModal";
 import Link from "next/link";
 
+import {
+  OwnListingTopButtons,
+  OwnJobBottomButtons,
+  ListingTopButtons,
+  ListingBottomButtons,
+  AmsTopButtons,
+} from "./jobListingButtons";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
 // ADD DETAILS FOR HYBRID SCHEDULE AS WELL
@@ -27,7 +34,7 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
-export default function JobListing({ isOwn, hasId, id }: any) {
+export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   // const { business, setBusiness } = useBusiness();
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
@@ -46,13 +53,6 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
-  const handleEditClick = (url: any) => {
-    setJob({ ...job, jobIsBeingEdited: true });
-    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
-    console.log("edit button was clicked, redirecting to: ", url);
-    router.push(url);
-  };
-
   // define the current job
   let currentJob;
   if (hasId && jobListings) {
@@ -65,11 +65,16 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
   const appNumber = currentJob?.applications?.length;
 
+  const handleEditClick = (url: any) => {
+    setJob({ ...job, jobIsBeingEdited: true });
+    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
+    console.log("edit button was clicked, redirecting to: ", url);
+    router.push(url);
+  };
+
   const checkNonNegParamsMatch = () => {
     if (!currentJob?.nonNegParams || !fellow) return false;
-
     const { country, languages = [], skills = [] } = fellow;
-
     // Check if all non negotiable parameters have a match in country, languages, or skills
     return currentJob.nonNegParams.every(
       (param) =>
@@ -137,53 +142,24 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     >
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
-          {/* business buttons */}
-          {isOwn && (
-            <div className="BusinessTopButtons -mb-2 -mt-10 flex flex-col items-end gap-2 self-end">
-              <Link href={"/job-board"}>
-                <SiteButton aria="job board" colorScheme="d5">
-                  go to job board
-                </SiteButton>
-              </Link>
-              <SiteButton
-                variant="filled"
-                aria="apps"
-                colorScheme="b1"
-                onClick={() => showModal(<ApplicationLimitModal />)}
-              >
-                application limit: {currentJob?.applicationLimit}
-              </SiteButton>
-            </div>
-          )}
+          {/* TOP BUTTONS */}
+
+          {/* business buttons - not ams */}
+          {isOwn && !inAms && <OwnListingTopButtons currentJob={currentJob} />}
+
+          {/* business buttons - in ams */}
+          {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
 
           {/* fellow buttons */}
           {!isOwn && (
-            <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
-              <SiteButton
-                aria="saveJob"
-                colorScheme="d3"
-                onClick={() => saveClick(id)}
-                isSelected={jobSavedStatus || matchingIds}
-                disabled={matchingIds}
-              >
-                {jobSavedStatus === true
-                  ? "job saved"
-                  : matchingIds
-                    ? "applied"
-                    : "save job"}
-              </SiteButton>
-              <SiteLabel
-                variant="display"
-                aria="appLimit"
-                addClasses="mt-3"
-                colorScheme="f3"
-              >
-                applications: {appNumber}/{currentJob?.applicationLimit}
-              </SiteLabel>
-              <SiteLabel variant="display" aria="roundNumber">
-                round: {currentJob?.roundNumber || "1"}
-              </SiteLabel>
-            </div>
+            <ListingTopButtons
+              id={id}
+              saveClick={saveClick}
+              jobSavedStatus={jobSavedStatus}
+              matchingIds={matchingIds}
+              appNumber={appNumber}
+              currentJob={currentJob}
+            />
           )}
 
           {/* Non-Negotiable Parameters */}
@@ -283,98 +259,36 @@ export default function JobListing({ isOwn, hasId, id }: any) {
             </ul>
           </InfoBox>
 
-          {/* Edit Buttons */}
-          {isOwn && (
-            <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant="filled"
-                colorScheme="b6"
-                aria="edit"
-                addClasses="px-8"
-                onClick={() => setCanEdit(!canEdit)}
-                isSelected={canEdit}
-              >
-                {canEdit ? "finish editing" : "edit"}
+          {/* BOTTOM BUTTONS */}
+
+          {/* business buttons - not in ams */}
+          {isOwn && !inAms && (
+            <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
+          )}
+
+          {/* business buttons - in ams */}
+          {isOwn && inAms && (
+            <div className="ListingAmsBottomButtons flex flex-col items-end gap-3 self-end">
+              <SiteButton aria="closeListing" variant="filled" colorScheme="c1">
+                settings / history
               </SiteButton>
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="f1"
-                addClasses="px-8"
-                onClick={() =>
-                  showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-                }
-              >
-                publish
+              <SiteButton aria="closeListing" variant="filled" colorScheme="f1">
+                close listing
+              </SiteButton>
+              <SiteButton aria="closeListing" variant="filled" colorScheme="b3">
+                message us?
               </SiteButton>
             </div>
           )}
 
-          {/* Fellow / Apply Buttons */}
+          {/* fellow / apply buttons */}
           {!isOwn && (
-            <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant="filled"
-                colorScheme="c4"
-                aria="edit"
-                addClasses="px-8"
-                onClick={() => router.push(`/profile/1b23i`)}
-              >
-                view company details
-              </SiteButton>
-              {!matchingIds && (
-                <SiteButton
-                  aria="publish"
-                  variant="filled"
-                  colorScheme="f1"
-                  addClasses="px-8"
-                  onClick={() =>
-                    showModal(
-                      <ApplyModal
-                        jobTitle={currentJob?.jobTitle}
-                        business={currentJob?.businessName}
-                        jobId={id}
-                      />,
-                    )
-                  }
-                  disabled={canApply === false || matchingIds}
-                >
-                  apply for this job
-                </SiteButton>
-              )}
-              {matchingIds && (
-                <div className="ApplicationButtons flex flex-col items-end gap-4 self-end">
-                  <SiteButton
-                    aria="publish"
-                    variant="filled"
-                    colorScheme="b3"
-                    addClasses="px-8"
-                    // onClick={}
-                  >
-                    send a message
-                  </SiteButton>
-                  <SiteButton
-                    aria="publish"
-                    variant="filled"
-                    colorScheme="f1"
-                    addClasses="px-8"
-                    // onClick={}
-                  >
-                    view your application
-                  </SiteButton>
-                </div>
-              )}
-
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="e3"
-                addClasses="px-8"
-                onClick={() => console.log("report clicked")}
-              >
-                report
-              </SiteButton>
-            </div>
+            <ListingBottomButtons
+              matchingIds={matchingIds}
+              canApply={canApply}
+              currentJob={currentJob}
+              id={id}
+            />
           )}
         </div>
 
@@ -469,7 +383,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           >
             {/* More About The Job */}
             <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
-            <p className={`AboutJob pl-8 pt-4 leading-8 ${textColor}`}>
+            <p className={`AboutJob pl-8 pt-4 italic leading-8 ${titleColor}`}>
               {currentJob?.moreAboutPosition}
             </p>
             {/* Responsibilities */}
