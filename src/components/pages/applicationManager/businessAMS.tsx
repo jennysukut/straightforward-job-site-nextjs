@@ -36,7 +36,6 @@ export default function BusinessAMS() {
         colorArray={colorArray}
         index={index}
         jobId={job.jobId}
-        dateOfApp={job.dateOfApp}
       />
     ));
   };

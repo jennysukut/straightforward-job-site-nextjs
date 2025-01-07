@@ -44,12 +44,12 @@ export default function ApplicationManager({ jobId }: any) {
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredApps, setFilteredApps] = useState<string[]>([]);
 
-  let currentApplications: any = [];
   const currentJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
   });
 
+  let currentApplications: any = [];
   const applicationList = currentJob?.applications?.map((app: any) => {
     const relevantApp = applications?.find(
       (application: any) => application.id === app,
@@ -226,15 +226,6 @@ export default function ApplicationManager({ jobId }: any) {
         )}
         {altViewChoice === "details" && (
           <div className="Details flex w-full flex-col items-center gap-4">
-            {/* <div className="TitleSubtitle -mb-8 mr-6 self-end text-right">
-              <button onClick={() => setAltViewChoice("details")}>
-                <h1 className="Title">{currentJob?.jobTitle}</h1>
-              </button>
-              <p className="Subtitle text-medium italic text-emerald">
-                round {currentJob?.roundNumber || 1}:{" "}
-                {currentJob?.applications?.length} applications
-              </p> */}
-            {/* </div> */}
             <div className="JobDetails">
               <JobListing isOwn hasId id={jobId} inAms />
             </div>
@@ -297,114 +288,6 @@ export default function ApplicationManager({ jobId }: any) {
           </div>
         )}
       </div>
-
-      {/* {currentJob && (
-        <div className="ApplicationInfo">
-          <InfoBox
-            aria="amsAppInfo"
-            variant={currentJob ? "filled" : "hollow"}
-            width="small"
-            addClasses="flex flex-col"
-            colorScheme={selectedColor as ButtonColorOption | "a1"}
-          >
-            <div className="CloseButton -mr-8 -mt-8 self-end">
-              <Image
-                src="/cream-close-button.svg"
-                alt="closeDetails"
-                width={20}
-                height={20}
-                className="m-0 opacity-80 hover:cursor-pointer"
-                onClick={closeJobDetails}
-              ></Image>
-            </div>
-            <div className="JobDetails flex flex-col gap-1 pt-6 text-center">
-              <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
-              <p className="BusinessName font-medium italic">
-                with {currentJob?.businessName}
-              </p>
-
-              <p className="ExperienceLevel text-sm font-normal">
-                {capitalizeFirstLetter(
-                  currentJob?.experienceLevel?.[0] || "junior",
-                )}{" "}
-                Level
-              </p>
-
-              <Image
-                src="/listing-divider.svg"
-                alt="listingDivider"
-                width={240}
-                height={0}
-                className="my-4 opacity-80"
-              ></Image>
-              {currentJob?.locationOption === "remote" && (
-                <p className="LocationOption">100% Remote</p>
-              )}
-              {currentJob?.locationOption === "on-site" && (
-                <p className="LocationOption">On-Site: {currentJob?.country}</p>
-              )}
-              {currentJob?.locationOption === "hybrid" && (
-                <p className="LocationOption">Hybrid</p>
-              )}
-              <p className="PositionType font-normal italic">
-                {capitalizeFirstLetter(currentJob?.positionType || "")} Position
-              </p>
-              <p className="PayDetails">
-                $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMin ?? 0,
-                )}{" "}
-                - $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMax ?? 0,
-                )}{" "}
-                {capitalizeFirstLetter(currentJob?.payDetails?.payOption || "")}
-              </p>
-            </div>
-          </InfoBox>
-          {currentApp && currentApp.appointments && (
-            <div className="AppointmentDetails -mb-3 mt-4 flex justify-center">
-              <SiteButton
-                variant="hollow"
-                aria="currentJobAppointmentDetails"
-                size="wide"
-                colorScheme={selectedColor as ButtonColorOption | "a1"}
-                onClick={() =>
-                  showModal(
-                    <ApplicationDetailsModal app={currentAppointment} />,
-                  )
-                }
-              >
-                appointment:{" "}
-                {getMonthName(
-                  currentApp?.appointments?.[0]?.interviewDate?.month,
-                )}{" "}
-                {currentApp?.appointments?.[0]?.interviewDate?.day} -{" "}
-                {currentApp?.appointments?.[0]?.interviewTime}
-              </SiteButton>
-            </div>
-          )}
-          <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
-            <SiteButton
-              variant="hollow"
-              colorScheme="b3"
-              aria="calendar"
-              onClick={calendarClick}
-              isSelected={altViewChoice === "calendar"}
-            >
-              {altViewChoice === "calendar"
-                ? "close calendar"
-                : "view calendar"}
-            </SiteButton>
-            <SiteButton variant="hollow" colorScheme="f5" aria="message">
-              messages
-            </SiteButton>
-            <SiteButton variant="hollow" colorScheme="d3" aria="retract">
-              retract
-            </SiteButton>
-          </div>
-        </div>
-      )} */}
     </div>
   );
 }

@@ -107,17 +107,6 @@ const JobPost: React.FC<JobPostProps> = ({
               ></SiteButton>
             ) : (
               saveButton
-              // <SiteButton
-              //   aria="addJobsButton"
-              //   size="extraSmallCircle"
-              //   variant="filled"
-              //   onClick={saveClick}
-              //   colorScheme={
-              //     colorArray[index % colorArray.length] as ButtonColorOption
-              //   }
-              //   addClasses="bg-center"
-              //   addImage="bg-[url('/save-job-icon.svg')]"
-              // ></SiteButton>
             )}
           </div>
         </div>
