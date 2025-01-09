@@ -28,6 +28,7 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "profile"
     | "jobPost"
     | "thin"
+    | "note"
     | "jobListing";
   width?:
     | "extraSmall"
@@ -126,6 +127,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         size === "profile",
       "py-6 px-2 sm:py-10 sm:px-6 md:py-10 md:px-6 rounded-2xl sm:rounded-3xl":
         size === "thin",
+      "py-3 px-3 sm:py-4 sm:px-4 md:py-6 md:px-6 rounded-2xl sm:rounded-3xl":
+        size === "note",
 
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[300px] max-h-[450px]":
         size === "jobPost",
@@ -146,30 +149,31 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   return (
     <div className={`${boxClasses}`}>
       {/* profile edit button */}
-      {canEdit && (size === "profile" || size === "thin") && (
-        <button
-          type="button"
-          className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
-          onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
-        >
-          {colorOption === "highContrast" && (
-            <Image
-              src="/hc-edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-          {colorOption === "standard" && (
-            <Image
-              src="/edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-        </button>
-      )}
+      {canEdit &&
+        (size === "profile" || size === "thin" || size === "note") && (
+          <button
+            type="button"
+            className={`EditButton ${size === "note" ? "-mt-2" : "-mt-6"} absolute right-0 mr-4 opacity-50 hover:opacity-100`}
+            onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
+          >
+            {colorOption === "highContrast" && (
+              <Image
+                src="/hc-edit-icon.svg"
+                alt="editButton"
+                width={16}
+                height={16}
+              ></Image>
+            )}
+            {colorOption === "standard" && (
+              <Image
+                src="/edit-icon.svg"
+                alt="editButton"
+                width={16}
+                height={16}
+              ></Image>
+            )}
+          </button>
+        )}
 
       {title && (
         <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
@@ -252,10 +256,10 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       )}
 
       {/* edit button */}
-      {canEdit && size !== "profile" && size !== "thin" && (
+      {canEdit && size !== "profile" && size !== "thin" && size !== "note" && (
         <button
           type="button"
-          className="EditButton self-end opacity-100 hover:opacity-50"
+          className="EditButton self-end opacity-50 hover:opacity-100"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           {colorOption === "highContrast" && (

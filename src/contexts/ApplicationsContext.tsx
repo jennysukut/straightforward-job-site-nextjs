@@ -63,6 +63,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       message:
         "I'd like to be a customer service representative! Here are some things I think would be helpful if I mentioned: Things and Stuff.",
       business: "QuickAssist Corp",
+      businessNote: ["Business Note Testing Here", "Another Business Note"],
       jobId: "6",
       dateOfApp: "12.20.2024",
       appStatus: "viewed",

@@ -10,7 +10,7 @@ import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
-import ApplicationNoteModal from "../modals/appyModals/applicationNoteModal";
+import ApplicationNoteModal from "../modals/applicationModals/applicationNoteModal";
 
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {

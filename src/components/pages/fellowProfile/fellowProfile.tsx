@@ -9,6 +9,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJob } from "@/contexts/JobContext";
+import { useModal } from "@/contexts/ModalContext";
 import {
   OwnFellowTopButtons,
   OwnFellowBottomButtons,
@@ -16,13 +17,19 @@ import {
   OwnFellowAppBottomButtons,
   OwnAppMessage,
 } from "../fellowProfile/ownProfileButtons";
-import { AppFellowTopButtons, AppMessage } from "./applicationProfileOptions";
+import {
+  AppFellowTopButtons,
+  AppFellowBottomButtons,
+  AppMessage,
+  AppFellowNotes,
+} from "./applicationProfileOptions";
 
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteLabel from "../../buttonsAndLabels/siteLabel";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import Avatar from "../../avatarComponent";
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
+import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 
 interface FellowProfile {
   hasId?: boolean;
@@ -46,6 +53,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { applications } = useApplications();
   const { jobListings } = useJobListings();
+  const { showModal } = useModal();
   const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -69,8 +77,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
     currentApp = applications?.find((app) => app.id === appId);
     currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
   }
-
-  console.log(currentJob);
 
   let avatarDetails;
   if (fellow) {
@@ -96,7 +102,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   };
 
   useEffect(() => {
-    setPageType("Fellow");
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
@@ -124,7 +129,18 @@ const FellowProfile: React.FC<FellowProfile> = ({
               currentJob={currentJob}
             />
           )}
-          {!isOwn && isApp && <AppFellowTopButtons />}
+
+          {!isOwn && isApp && (
+            <AppFellowTopButtons
+              app={currentApp}
+              applicant={currentFellow.name}
+            />
+          )}
+
+          {/* Business Note On App */}
+          {!isOwn && isApp && currentApp.businessNote.length > 0 && (
+            <AppFellowNotes currentApp={currentApp} />
+          )}
 
           {/* SKILLS DETAILS */}
           <InfoBox
@@ -353,6 +369,12 @@ const FellowProfile: React.FC<FellowProfile> = ({
               avatarDetails={avatarDetails}
               router={router}
               viewJobDetails={viewJobDetails}
+            />
+          )}
+          {!isOwn && isApp && (
+            <AppFellowBottomButtons
+              app={currentApp}
+              applicant={currentFellow.name}
             />
           )}
         </div>

@@ -16,7 +16,7 @@ import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import ApplicationLimitModal from "../../modals/postAJobModals/applicationLimitModal";
-import ApplyModal from "../../modals/appyModals/applyModal";
+import ApplyModal from "../../modals/applicationModals/applyModal";
 import PaymentModal from "../../modals/paymentModal";
 import Link from "next/link";
 
@@ -120,14 +120,14 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
-    if (job?.jobIsBeingEdited) {
-      setCanEdit(true);
-    }
+    // if (job?.jobIsBeingEdited) {
+    //   setCanEdit(true);
+    // }
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
 
-    setPageType("jobListing");
+    // setPageType("jobListing");
   }, []);
 
   //I need to reload and update this page when the fellow applies to it, that way the buttons reflect the fact that they've applied.

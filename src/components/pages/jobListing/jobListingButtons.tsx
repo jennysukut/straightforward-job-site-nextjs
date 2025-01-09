@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import ApplicationLimitModal from "@/components/modals/postAJobModals/applicationLimitModal";
 import PaymentModal from "@/components/modals/paymentModal";
-import ApplyModal from "@/components/modals/appyModals/applyModal";
+import ApplyModal from "@/components/modals/applicationModals/applyModal";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
