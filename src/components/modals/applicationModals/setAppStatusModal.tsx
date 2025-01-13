@@ -2,6 +2,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { stageList } from "@/lib/stageList";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import RejectAppModal from "./rejectAppModal";
 
 export default function SetAppStatusModal({
   applicant,
@@ -47,7 +48,7 @@ export default function SetAppStatusModal({
           colorScheme="b3"
           aria="go back"
           addClasses="w-[250px]"
-          // onClick={goBack}
+          onClick={() => showModal(<RejectAppModal applicant={applicant} />)}
         >
           reject
         </SiteButton>

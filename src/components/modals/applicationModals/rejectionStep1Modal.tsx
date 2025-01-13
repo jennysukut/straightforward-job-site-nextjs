@@ -18,7 +18,7 @@ export default function RejectionStep1Modal() {
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
         {`Non-Specific Rejection`}
       </Dialog.Title>
-      <p className="Details text-center text-sm">
+      <p className="Details text-center text-sm text-olive">
         {`We have a few options for general rejections. Would you like us to send our favorite or would you like to take a look at some options? `}{" "}
       </p>
       <div className="Buttons mt-4 flex flex-col items-center gap-4">

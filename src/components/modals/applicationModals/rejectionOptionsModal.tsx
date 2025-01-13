@@ -19,7 +19,7 @@ export default function RejectionOptionsModal() {
   return (
     <div className="RejectionOptionsModal flex w-[350px] flex-col items-center gap-4">
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
-        {`Rejection Message Options:`}
+        {`Message Options:`}
       </Dialog.Title>
 
       <div className="Buttons mt-4 flex flex-col items-center gap-4">
