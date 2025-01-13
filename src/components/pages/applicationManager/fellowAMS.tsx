@@ -21,23 +21,26 @@ import Image from "next/image";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
+import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
+import { useJobListings } from "@/contexts/JobListingsContext";
 
 export default function FellowAMS() {
   const router = useRouter();
 
   const { textColor } = useColorOptions();
   const { showModal, hideModal } = useModal();
-  const { applications } = useApplications();
+  const { applications, setApplications } = useApplications();
   const { appointments } = useAppointments();
+  const { jobListings, setJobListings } = useJobListings();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
+  const [filteredApps, setFilteredApps] = useState<string[]>([]);
   const [currentJob, setCurrentJob] = useState<Job | undefined>(undefined);
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
-  const [filteredApps, setFilteredApps] = useState<string[]>([]);
 
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
@@ -47,14 +50,33 @@ export default function FellowAMS() {
     return app.jobId === currentApp?.jobId;
   });
 
+  const selectedJob = jobListings?.find(
+    (job: any) => job.jobId === currentApp?.jobId,
+  )?.job;
+
   const retract = () => {
-    if (selectedApps.length > 0) {
-      console.log("need to retract these applications:", selectedApps);
-      // remove the selectedApps from the applications list and retract the applications
-      // we can only do this after a confirmation modal has been successful
-    } else {
-      return;
-    }
+    showModal(
+      <RetractionConfirmationModal
+        continueRetract={continueRetract}
+        jobTitle={selectedJob?.jobTitle}
+      />,
+    );
+  };
+
+  const continueRetract = () => {
+    // close the selected Application/Job Details
+    setSelectedApps([]);
+    setCurrentJob(undefined);
+    // remove the job from the applications object
+    // on the front-end only, we might need to remove it from the job applications list?
+    // when we're working with the database, we probably won't need to, since we'll be editing the nested structure inside the jobId
+    // and it'll change in both locations
+    const updatedApplications = applications?.filter(
+      (app) => app.id !== currentApp?.id,
+    );
+    // I won't worry about updating the jobListing's array of "applications", since that'll happen automatically when we're using the database.
+    setApplications(updatedApplications || []);
+    hideModal();
   };
 
   const filterApps = (applications: any) => {
@@ -259,7 +281,7 @@ export default function FellowAMS() {
             </div>
             <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
               <div
-                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-scroll p-4`}
+                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-visible p-4`}
               >
                 {renderApplications()}
               </div>
@@ -374,7 +396,12 @@ export default function FellowAMS() {
             >
               messages
             </SiteButton>
-            <SiteButton variant="hollow" colorScheme="d3" aria="retract">
+            <SiteButton
+              variant="hollow"
+              colorScheme="d3"
+              aria="retract"
+              onClick={retract}
+            >
               retract
             </SiteButton>
           </div>

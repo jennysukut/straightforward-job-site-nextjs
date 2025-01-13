@@ -73,6 +73,8 @@ export default function ApplicationNoteModal({ app, note }: any) {
     hideModal();
   };
 
+  console.log(app);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const updatedApplications = applications?.map((application) => {
       if (application.id === app.id) {

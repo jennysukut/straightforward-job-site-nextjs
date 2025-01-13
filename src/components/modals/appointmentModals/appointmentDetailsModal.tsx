@@ -42,7 +42,7 @@ const AppointmentDetailsModal: React.FC<AppointmentDetailsModalProps> = ({
   )?.job;
 
   const viewListing = () => {
-    router.push(`/listing/${app.jobId}`);
+    router.push(`/ams/listing/${currentJob}`);
     hideModal();
   };
 

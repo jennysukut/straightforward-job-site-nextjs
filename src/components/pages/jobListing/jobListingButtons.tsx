@@ -70,6 +70,7 @@ const ListingTopButtons = ({
   app,
 }: any) => {
   const { showModal } = useModal();
+  console.log(app);
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <SiteButton
@@ -219,7 +220,7 @@ const AmsBottomButtons = ({ avatarDetails, currentApp }: any) => {
 
 const AppFellowNotes = ({ currentApp }: any) => {
   const { showModal } = useModal();
-  if (currentApp.fellowNote && currentApp.fellowNote.length > 0) {
+  if (currentApp?.fellowNote && currentApp.fellowNote.length > 0) {
     return (
       <div className="FellowNotes flex flex-col gap-4">
         <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>

@@ -27,44 +27,12 @@ export const AppointmentsContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [appointments, setAppointments] = useState<Appointments[] | null>([
     {
-      id: "7",
-      month: 0,
-      day: 9,
-      time: "12:00pm",
-      businessName: "TechNova Solutions",
-      jobId: "derp",
-    },
-    {
-      id: "5",
-      month: 0,
-      day: 14,
-      time: "3:00pm",
-      businessName: "Creative Minds Studio",
-      jobId: "blerp",
-    },
-    {
-      id: "6",
-      month: 0,
-      day: 14,
-      time: "5:00pm",
-      businessName: "Pinnacle Enterprises",
-      jobId: "3",
-    },
-    {
       id: "1",
       month: 0,
       day: 15,
       time: "2:00am",
       businessName: "Insight Analytics Co.",
-      jobId: "4",
-    },
-    {
-      id: "2",
-      month: 0,
-      day: 14,
-      time: "9:00pm",
-      businessName: "Finance Pros Ltd.",
-      jobId: "5",
+      jobId: "chwit7",
     },
     {
       id: "3",
@@ -72,7 +40,7 @@ export const AppointmentsContextProvider: React.FC<{ children: ReactNode }> = ({
       day: 14,
       time: "2:00am",
       businessName: "QuickAssist Corp",
-      jobId: "6",
+      jobId: "dfkjb8",
     },
     {
       id: "4",
@@ -80,7 +48,7 @@ export const AppointmentsContextProvider: React.FC<{ children: ReactNode }> = ({
       day: 14,
       time: "3:00pm",
       businessName: "Innovatech Manufacturing",
-      jobId: "7",
+      jobId: "cv9t4t",
     },
   ]);
 

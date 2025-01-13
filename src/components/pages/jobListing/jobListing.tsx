@@ -54,10 +54,13 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
+  console.log(inAms);
+  console.log(id);
   let currentApp;
   if (inAms) {
     // Filter applications for the current jobId
     const currentApps = applications?.filter((app) => app.jobId === id);
+    console.log(currentApps);
     // Find the application where the applicant matches the fellow's id
     currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
   }
@@ -167,7 +170,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
               matchingIds={matchingIds}
               appNumber={appNumber}
               currentJob={currentJob}
-              app={currentApp}
+              app={currentApp ? currentApp : "no current app here"}
             />
           )}
 
