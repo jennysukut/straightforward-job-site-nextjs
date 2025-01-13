@@ -58,7 +58,7 @@ const Application: React.FC<ApplicationProps> = ({
   const jobClicked = selectedApps?.includes(id);
 
   const viewListing = () => {
-    router.push(`/listing/${jobId}`);
+    router.push(`/ams/listing/${jobId}`);
   };
 
   const viewApplication = () => {
@@ -72,14 +72,6 @@ const Application: React.FC<ApplicationProps> = ({
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons flex items-center gap-4">
-        {/* <SiteButton
-          size="smallCircle"
-          colorScheme="f1"
-          aria="selectButton"
-          variant="hollow"
-          isSelected={selectedApps?.includes(id)}
-          onClick={() => buttonClick(id)}
-        ></SiteButton> */}
         <SiteButton
           aria="JobApplication"
           variant="hollow"

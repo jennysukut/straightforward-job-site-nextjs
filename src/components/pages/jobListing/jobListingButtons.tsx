@@ -8,6 +8,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import ApplicationLimitModal from "@/components/modals/postAJobModals/applicationLimitModal";
 import PaymentModal from "@/components/modals/paymentModal";
 import ApplyModal from "@/components/modals/applicationModals/applyModal";
+import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
@@ -66,7 +67,9 @@ const ListingTopButtons = ({
   matchingIds,
   appNumber,
   currentJob,
+  app,
 }: any) => {
+  const { showModal } = useModal();
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <SiteButton
@@ -90,9 +93,21 @@ const ListingTopButtons = ({
       >
         applications: {appNumber}/{currentJob?.applicationLimit}
       </SiteLabel>
+
       <SiteLabel variant="display" aria="roundNumber">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
+      {matchingIds && (
+        <SiteButton
+          variant="filled"
+          colorScheme="b6"
+          aria="addANote"
+          addClasses="mt-1"
+          onClick={() => showModal(<ApplicationNoteModal app={app} />)}
+        >
+          create a note
+        </SiteButton>
+      )}
     </div>
   );
 };
@@ -202,10 +217,40 @@ const AmsBottomButtons = ({ avatarDetails, currentApp }: any) => {
   }
 };
 
+const AppFellowNotes = ({ currentApp }: any) => {
+  const { showModal } = useModal();
+  if (currentApp.fellowNote && currentApp.fellowNote.length > 0) {
+    return (
+      <div className="FellowNotes flex flex-col gap-4">
+        <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
+        {currentApp.fellowNote.map((note: string, index: number) => {
+          return (
+            <InfoBox
+              key={index}
+              variant="hollow"
+              aria="businessNote"
+              size="note"
+              canEdit
+              addClasses="text-midnight"
+              editClick={() =>
+                showModal(<ApplicationNoteModal app={currentApp} note={note} />)
+              }
+            >
+              {note}
+            </InfoBox>
+          );
+        })}
+        <div className="Divider mt-6 h-[3px] w-[90%] self-center rounded-full bg-jade opacity-80"></div>
+      </div>
+    );
+  }
+};
+
 export {
   OwnListingTopButtons,
   OwnJobBottomButtons,
   ListingTopButtons,
   ListingBottomButtons,
+  AppFellowNotes,
   AmsTopButtons,
 };

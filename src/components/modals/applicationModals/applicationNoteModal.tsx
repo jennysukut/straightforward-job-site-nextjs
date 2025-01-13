@@ -77,9 +77,20 @@ export default function ApplicationNoteModal({ app, note }: any) {
     const updatedApplications = applications?.map((application) => {
       if (application.id === app.id) {
         if (accountType === "Fellow") {
+          const existingNotes = [...(application.fellowNote || [])];
+          if (note) {
+            // If editing an existing note, find and update it
+            const noteIndex = existingNotes.indexOf(note);
+            if (noteIndex !== -1) {
+              existingNotes[noteIndex] = data.note;
+            }
+          } else {
+            // If adding a new note, append it
+            existingNotes.push(data.note);
+          }
           return {
             ...application,
-            fellowNote: [...(application.fellowNote || []), data.note],
+            fellowNote: existingNotes,
           };
         } else if (accountType === "Business") {
           const existingNotes = [...(application.businessNote || [])];
@@ -110,8 +121,8 @@ export default function ApplicationNoteModal({ app, note }: any) {
   useEffect(() => {
     if (accountType === "Business" && note) {
       setValue("note", note);
-    } else if (accountType === "Fellow" && app?.fellowNote) {
-      // setValue("note", app?.fellowNote);
+    } else if (accountType === "Fellow" && note) {
+      setValue("note", note);
     }
   });
 

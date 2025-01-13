@@ -84,6 +84,10 @@ export default function FellowAMS() {
     router.push(`/profile/${currentApp?.businessId}`);
   };
 
+  const goToMessages = () => {
+    router.push(`/messages/${currentApp?.id}`);
+  };
+
   const calendarClick = () => {
     if (altViewChoice === "calendar") {
       setAltViewChoice("");
@@ -210,6 +214,7 @@ export default function FellowAMS() {
         )}
         {altViewChoice === "messages" && (
           <div className="Messages">Messages Here</div>
+          // for these messages, you can filter if there is a currentApp.id
         )}
 
         {(altViewChoice === "" || altViewChoice.length == 0) && (
@@ -361,7 +366,12 @@ export default function FellowAMS() {
                 ? "close calendar"
                 : "view calendar"}
             </SiteButton>
-            <SiteButton variant="hollow" colorScheme="f5" aria="message">
+            <SiteButton
+              variant="hollow"
+              colorScheme="f5"
+              aria="message"
+              onClick={goToMessages}
+            >
               messages
             </SiteButton>
             <SiteButton variant="hollow" colorScheme="d3" aria="retract">

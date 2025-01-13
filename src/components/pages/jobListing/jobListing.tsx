@@ -10,7 +10,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
-
+import { useApplications } from "@/contexts/ApplicationsContext";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -25,6 +25,7 @@ import {
   OwnJobBottomButtons,
   ListingTopButtons,
   ListingBottomButtons,
+  AppFellowNotes,
   AmsTopButtons,
 } from "./jobListingButtons";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
@@ -45,7 +46,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
-
+  const { applications } = useApplications();
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
@@ -53,6 +54,13 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
+  let currentApp;
+  if (inAms) {
+    // Filter applications for the current jobId
+    const currentApps = applications?.filter((app) => app.jobId === id);
+    // Find the application where the applicant matches the fellow's id
+    currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
+  }
   // define the current job
   let currentJob;
   if (hasId && jobListings) {
@@ -159,8 +167,11 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
               matchingIds={matchingIds}
               appNumber={appNumber}
               currentJob={currentJob}
+              app={currentApp}
             />
           )}
+
+          {!isOwn && inAms && <AppFellowNotes currentApp={currentApp} />}
 
           {/* Non-Negotiable Parameters */}
           <InfoBox
