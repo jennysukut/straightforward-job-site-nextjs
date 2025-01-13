@@ -31,7 +31,9 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
     });
     setFellow({
       ...fellow,
-      dailyApplications: String(Number(fellow?.dailyApplications) + 1),
+      dailyApplications: {
+        count: fellow?.dailyApplications?.count + 1,
+      },
     });
     showModal(<SuccessfulApplicationModal />);
   };
@@ -45,7 +47,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.dailyApplications}/5`}</h4>
+      >{`daily application: ${fellow?.dailyApplications?.count}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
       >{`We’ll send ${business} your information.`}</p>

@@ -34,22 +34,58 @@ export interface Fellow {
   addMoreInfo?: boolean;
   subscriptionAmount?: any;
   savedJobs?: Array<any>;
-  dailyApplications?: string;
+  dailyApplications?: Record<string, any>;
 }
 
 interface FellowContextType {
   fellow: Fellow | null;
   setFellow: (fellow: Fellow) => void;
+  dailyLimit: DailyLimit | null;
+  setDailyLimit: (type: any) => void;
 }
+
+//DATA FOR HANDLING DAILY APPLICATION LIMIT
+interface DailyLimit {
+  count: number;
+  lastReset: string;
+}
+
+const shouldResetDaily = (lastResetDate: string): boolean => {
+  const lastReset = new Date(lastResetDate);
+  const now = new Date();
+  // Reset if it's a different day
+  return lastReset.toDateString() !== now.toDateString();
+};
+
+const handleDailyLimit = (currentLimit: DailyLimit): DailyLimit => {
+  if (shouldResetDaily(currentLimit.lastReset)) {
+    // It's a new day, reset the count
+    return {
+      count: 0,
+      lastReset: new Date().toISOString(),
+    };
+  }
+  return currentLimit;
+};
+
+//////
 
 const FellowContext = createContext<FellowContextType | undefined>(undefined);
 
 export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
+    count: 0,
+    lastReset: new Date().toISOString(),
+  });
+
   const [fellow, setFellow] = useState<Fellow | null>({
     ///MY OWN CONTEXT
-    dailyApplications: "2",
+    dailyApplications: {
+      count: dailyLimit.count,
+      lastReset: dailyLimit.lastReset,
+    },
     avatar: "flower",
     id: "testid",
     name: "Jenny Sukut",
@@ -155,7 +191,9 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   return (
-    <FellowContext.Provider value={{ fellow, setFellow }}>
+    <FellowContext.Provider
+      value={{ fellow, setFellow, dailyLimit, setDailyLimit }}
+    >
       {children}
     </FellowContext.Provider>
   );

@@ -114,7 +114,7 @@ export default function NavBar() {
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
               {/* I'm not sure if the daily apps should be the amount that have been submitted or if it should show the ones remaining for the day */}
               <SiteLabel aria="dailyApps" variant="hollow" size="small">
-                daily apps: {fellow?.dailyApplications}/5
+                daily apps: {fellow?.dailyApplications?.count}/5
               </SiteLabel>
               {/* <NavButton
                 onClick={handleNavButtonClick}

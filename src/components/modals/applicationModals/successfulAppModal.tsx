@@ -18,9 +18,14 @@ export default function SuccessfulApplicationModal({
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const router = useRouter();
-  const appsLeft = 5 - Number(fellow?.dailyApplications);
+  const appsLeft = 5 - fellow?.dailyApplications?.count;
 
-  console.log(application);
+  const goToAms = () => {
+    router.push("/ams");
+    setTimeout(() => {
+      hideModal();
+    }, 500);
+  };
 
   const backToSearch = () => {
     router.push("/job-board");
@@ -52,9 +57,7 @@ export default function SuccessfulApplicationModal({
           size="large"
           colorScheme="b3"
           aria="go back"
-          onClick={() =>
-            showModal(<AddAMessageModal business={businessName} />)
-          }
+          onClick={goToAms}
         >
           application manager
         </SiteButton>

@@ -48,7 +48,9 @@ export default function AddAMessageModal({ business, jobId }: any) {
     });
     setFellow({
       ...fellow,
-      dailyApplications: String(Number(fellow?.dailyApplications) + 1),
+      dailyApplications: {
+        count: fellow?.dailyApplications?.count + 1,
+      },
     });
     showModal(<SuccessfulApplicationModal />);
     setDisabledButton(true);

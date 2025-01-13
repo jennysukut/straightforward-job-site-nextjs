@@ -108,7 +108,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   const canApply =
     currentJob?.numberOfApps !== currentJob?.applicationLimit &&
     hasMatchingNonNegParams === true &&
-    fellow?.dailyApplications !== "5" &&
+    fellow?.dailyApplications?.count !== 5 &&
     matchingIds;
 
   const saveClick = (jobId: any) => {
