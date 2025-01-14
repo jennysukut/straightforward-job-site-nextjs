@@ -58,6 +58,17 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       ],
     },
     {
+      id: "flippin",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+    },
+    {
       id: "dfkjb8",
       applicant: "testid",
       message:

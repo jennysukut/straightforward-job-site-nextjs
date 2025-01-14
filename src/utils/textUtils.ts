@@ -9,3 +9,10 @@ export const today =
   new Date().getDate() +
   "." +
   new Date().getFullYear();
+
+export const getMonthName = (month: any) => {
+  const d = new Date();
+  d.setMonth(month);
+  const monthName = d.toLocaleString("default", { month: "long" });
+  return monthName;
+};

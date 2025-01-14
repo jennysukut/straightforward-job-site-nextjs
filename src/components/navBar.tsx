@@ -8,7 +8,6 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
 
 import Image from "next/image";
-import SiteButton from "./buttonsAndLabels/siteButton";
 import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
@@ -43,6 +42,10 @@ export default function NavBar() {
       (option) => option.title === business?.avatar,
     );
   }
+
+  useEffect(() => {
+    setClickedButton(currentPage);
+  }, [currentPage]);
 
   console.log(currentPage);
 
@@ -204,15 +207,6 @@ export default function NavBar() {
                 />
               </Link>
               <Link href={"/profile"}>
-                {/* <NavButton
-                  onClick={handleNavButtonClick}
-                  colorScheme={business?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
-                  variant="avatar"
-                  size="mediumCircle"
-                  addImage={business?.buttonImg}
-                /> */}
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}

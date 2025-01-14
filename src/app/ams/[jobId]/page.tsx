@@ -11,7 +11,7 @@ export default function AMSJobPage({ params }: any) {
   const { textColor } = useColorOptions();
 
   useEffect(() => {
-    setCurrentPage("application manager");
+    setCurrentPage("listing");
   }, []);
 
   // Here, we'll need to check to make sure the jobId listed is owned by the business that's currently logged in.

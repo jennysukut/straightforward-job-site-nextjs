@@ -47,7 +47,9 @@ const AppFellowTopButtons = ({ app, applicant }: any) => {
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
-        {app.businessNote.length > 0 ? "add another note" : "add a note"}
+        {app.BusinessNote && app.businessNote.length > 0
+          ? "add another note"
+          : "add a note"}
       </SiteButton>
       <SiteButton
         variant="filled"
@@ -115,7 +117,9 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
-        {app.businessNote.length > 0 ? "add another note" : "add a note"}
+        {app.BusinessNote && app.businessNote.length > 0
+          ? "add another note"
+          : "add a note"}
       </SiteButton>
       <SiteButton
         variant="filled"

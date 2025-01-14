@@ -8,6 +8,7 @@ import SiteLabel from "./buttonsAndLabels/siteLabel";
 import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
 import AppointmentDetailsModal from "./modals/appointmentModals/appointmentDetailsModal";
+import AppointmentListModal from "./modals/appointmentModals/AppointmentListModal";
 
 const CalendarComp = ({ size, addClasses }: any) => {
   const { showModal, hideModal } = useModal();
@@ -30,6 +31,17 @@ const CalendarComp = ({ size, addClasses }: any) => {
       newExpandedDays.add(day);
     }
     setExpandedDays(newExpandedDays);
+  };
+
+  const viewAppointments = (apps: any, i: any) => {
+    console.log(apps);
+    showModal(
+      <AppointmentListModal
+        apps={apps}
+        date={i}
+        currentMonth={currentMonth + 1}
+      />,
+    );
   };
 
   const generateCalendar = (size: any) => {
@@ -89,14 +101,15 @@ const CalendarComp = ({ size, addClasses }: any) => {
                               size="tiny"
                               textSize="small"
                               addClasses="justify-center items-center cursor-pointer mx-1 mb-2"
-                              onClick={() => toggleDayExpand(i)}
+                              // onClick={() => toggleDayExpand(i)}
+                              onClick={() => viewAppointments(filteredApps, i)}
                             >
                               +{filteredApps.length - 1} more
                             </SiteLabel>
                           )}
 
                         {/* Show "Show Less" button after last appointment when expanded */}
-                        {index === filteredApps.length - 1 &&
+                        {/* {index === filteredApps.length - 1 &&
                           expandedDays.has(i) && (
                             <SiteLabel
                               aria="test"
@@ -108,7 +121,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
                             >
                               show less
                             </SiteLabel>
-                          )}
+                          )} */}
                       </div>
                     );
                   })}

@@ -7,6 +7,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useModal } from "@/contexts/ModalContext";
+import { getMonthName } from "@/utils/textUtils";
 
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import SiteLabel from "../../buttonsAndLabels/siteLabel";
@@ -29,13 +30,6 @@ const AppointmentDetailsModal: React.FC<AppointmentDetailsModalProps> = ({
   const { showModal, hideModal } = useModal();
 
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
-
-  const getMonthName = (month: any) => {
-    const d = new Date();
-    d.setMonth(month);
-    const monthName = d.toLocaleString("default", { month: "long" });
-    return monthName;
-  };
 
   const currentJob = jobListings?.find(
     (job: any) => job.jobId === app.jobId,

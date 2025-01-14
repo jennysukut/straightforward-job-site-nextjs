@@ -7,7 +7,8 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { Notification } from "../buttonsAndLabels/notificationButton";
 import { useModal } from "@/contexts/ModalContext";
-
+import { useFellows } from "@/contexts/FellowsContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import ApplicationNoteModal from "../modals/applicationModals/applicationNoteModal";
@@ -33,19 +34,19 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   app,
 }) => {
   const router = useRouter();
-
+  const { fellows } = useFellows();
   const { jobListings } = useJobListings();
   const { fellow } = useFellow();
   const { showModal } = useModal();
+  const { applications } = useApplications();
 
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
   const [showNote, setShowNote] = useState(false);
 
-  // const currentApplicant = fellows?.find((fellow: any) => {
-  //   return fellow.id === app?.applicant;
-  // });
-  const currentApplicant = fellow;
+  const currentApplicant = fellows?.find((fellow: any) => {
+    return fellow.id === app?.applicant;
+  });
 
   //here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
   const notification = app.message ? true : false;
@@ -54,6 +55,10 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
   const viewApplication = () => {
+    const currentApplication = applications?.filter((app) => {
+      app.id === app.jobId;
+    });
+    console.log(currentApplication);
     router.push(`/application/${id}`);
   };
 

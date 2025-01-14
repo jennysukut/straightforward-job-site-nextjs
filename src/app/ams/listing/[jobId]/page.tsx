@@ -8,7 +8,7 @@ export default function ListingPage({ params }: any) {
   const { setCurrentPage } = usePageContext();
 
   useEffect(() => {
-    setCurrentPage("application manager");
+    setCurrentPage("listing");
   }, []);
 
   return (

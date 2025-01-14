@@ -343,7 +343,7 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         jobTitle: "Data Analyst",
         businessName: "Insight Analytics Co.",
         businessId: "1b23i",
-        applications: ["chwit7", "fhuek4"],
+        applications: ["chwit7", "fhuek4", "flippin"],
         applicationLimit: "30",
         numberOfApps: "28",
         locationOption: "remote",
