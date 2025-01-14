@@ -2,13 +2,14 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import Link from "next/link";
-import { useModal } from "@/contexts/ModalContext";
-import { useRouter } from "next/navigation";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import ApplicationLimitModal from "@/components/modals/postAJobModals/applicationLimitModal";
 import PaymentModal from "@/components/modals/paymentModal";
 import ApplyModal from "@/components/modals/applicationModals/applyModal";
 import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
+
+import { useModal } from "@/contexts/ModalContext";
+import { useRouter } from "next/navigation";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();

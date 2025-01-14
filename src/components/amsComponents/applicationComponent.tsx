@@ -46,6 +46,7 @@ const Application: React.FC<ApplicationProps> = ({
 
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
+  const jobClicked = selectedApps?.includes(id);
 
   const buttonClick = (id: string) => {
     if (selectedApps?.includes(id)) {
@@ -58,8 +59,6 @@ const Application: React.FC<ApplicationProps> = ({
       setSelectedColor(colorArray[index % colorArray.length]);
     }
   };
-
-  const jobClicked = selectedApps?.includes(id);
 
   const viewListing = () => {
     router.push(`/ams/listing/${jobId}`);

@@ -3,12 +3,9 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useColors } from "@/contexts/ColorContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import { useJob } from "@/contexts/JobContext";
 import { useModal } from "@/contexts/ModalContext";
 import {
   OwnFellowTopButtons,
@@ -26,10 +23,8 @@ import {
 
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteLabel from "../../buttonsAndLabels/siteLabel";
-import SiteButton from "../../buttonsAndLabels/siteButton";
 import Avatar from "../../avatarComponent";
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
-import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 
 interface FellowProfile {
   hasId?: boolean;
@@ -48,13 +43,14 @@ const FellowProfile: React.FC<FellowProfile> = ({
   isApp,
   appId,
 }) => {
+  const router = useRouter();
+
   const { fellow, setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { applications } = useApplications();
   const { jobListings } = useJobListings();
   const { showModal } = useModal();
-  const router = useRouter();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);

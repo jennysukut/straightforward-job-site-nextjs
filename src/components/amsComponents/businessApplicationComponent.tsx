@@ -20,11 +20,6 @@ interface BusinessApplicationProps
   jobId?: string;
   dateOfApp?: any;
   appStatus?: string;
-  handleAdd?: any;
-  handleDelete?: any;
-  setCurrentJob?: any;
-  setSelectedColor?: any;
-  viewCompanyDetails?: any;
   app?: any;
 }
 
@@ -33,26 +28,26 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   colorArray,
   index,
   jobId,
+  dateOfApp,
   appStatus,
-  handleAdd,
-  handleDelete,
-  setCurrentJob,
-  setSelectedColor,
-  viewCompanyDetails,
   app,
 }) => {
   const router = useRouter();
+
   const { jobListings } = useJobListings();
-  const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { fellow } = useFellow();
   const { showModal } = useModal();
+
+  const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
   const [showNote, setShowNote] = useState(false);
+
   // const currentApplicant = fellows?.find((fellow: any) => {
   //   return fellow.id === app?.applicant;
   // });
-
   const currentApplicant = fellow;
+
+  //here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
   const notification = app.message ? true : false;
 
   // search through the jobListings to find the job with the matching jobId
@@ -62,10 +57,12 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
     router.push(`/application/${id}`);
   };
 
+  // figure out what to do with highlighting?
   const highlight = () => {
     console.log("highlighting app");
   };
 
+  //  for showing notes, it might be best to have a modal or page that compiles them.
   const noteClick = () => {
     setShowNote(!showNote);
     showModal(<ApplicationNoteModal app={app} />);

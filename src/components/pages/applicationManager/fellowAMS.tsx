@@ -9,6 +9,7 @@ import { Job } from "@/contexts/JobContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
+import { useJobListings } from "@/contexts/JobListingsContext";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
@@ -22,7 +23,6 @@ import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsC
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
-import { useJobListings } from "@/contexts/JobListingsContext";
 
 export default function FellowAMS() {
   const router = useRouter();
@@ -120,43 +120,49 @@ export default function FellowAMS() {
 
   const renderApplications = () => {
     if (appStatus.length > 0) {
-      return filteredApps?.map((app: any, index: number) => (
-        <Application
-          key={app.id}
-          id={app.id}
-          colorArray={colorArray}
-          index={index}
-          jobId={app.jobId}
-          dateOfApp={app.dateOfApp}
-          appStatus={app.appStatus}
-          selectedApps={selectedApps}
-          setCurrentJob={setCurrentJob}
-          currentJob={currentJob}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          setSelectedColor={setSelectedColor}
-          viewCompanyDetails={viewCompanyDetails}
-        />
-      ));
+      return filteredApps
+        ?.slice()
+        .reverse()
+        .map((app: any, index: number) => (
+          <Application
+            key={app.id}
+            id={app.id}
+            colorArray={colorArray}
+            index={index}
+            jobId={app.jobId}
+            dateOfApp={app.dateOfApp}
+            appStatus={app.appStatus}
+            selectedApps={selectedApps}
+            setCurrentJob={setCurrentJob}
+            currentJob={currentJob}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            setSelectedColor={setSelectedColor}
+            viewCompanyDetails={viewCompanyDetails}
+          />
+        ));
     } else {
-      return applications?.map((app: any, index: number) => (
-        <Application
-          key={app.id}
-          id={app.id}
-          colorArray={colorArray}
-          index={index}
-          jobId={app.jobId}
-          dateOfApp={app.dateOfApp}
-          appStatus={app.appStatus}
-          selectedApps={selectedApps}
-          setCurrentJob={setCurrentJob}
-          handleAdd={handleAdd}
-          currentJob={currentJob}
-          handleDelete={handleDelete}
-          setSelectedColor={setSelectedColor}
-          viewCompanyDetails={viewCompanyDetails}
-        />
-      ));
+      return applications
+        ?.slice()
+        .reverse()
+        .map((app: any, index: number) => (
+          <Application
+            key={app.id}
+            id={app.id}
+            colorArray={colorArray}
+            index={index}
+            jobId={app.jobId}
+            dateOfApp={app.dateOfApp}
+            appStatus={app.appStatus}
+            selectedApps={selectedApps}
+            setCurrentJob={setCurrentJob}
+            handleAdd={handleAdd}
+            currentJob={currentJob}
+            handleDelete={handleDelete}
+            setSelectedColor={setSelectedColor}
+            viewCompanyDetails={viewCompanyDetails}
+          />
+        ));
     }
   };
 

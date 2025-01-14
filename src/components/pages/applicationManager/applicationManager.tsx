@@ -4,25 +4,18 @@ import { useEffect, useState } from "react";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-import { capitalizeFirstLetter } from "@/utils/textUtils";
-import { Job } from "@/contexts/JobContext";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
-import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import AddHandler from "@/components/handlers/addHandler";
 import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
-import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import Application from "@/components/amsComponents/applicationComponent";
-import Image from "next/image";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 import CalendarComp from "@/components/calendar";
-import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 import BusinessApplication from "@/components/amsComponents/businessApplicationComponent";
 import JobListing from "../jobListing/jobListing";
 
@@ -30,7 +23,6 @@ export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
 
   const { jobListings } = useJobListings();
-  const { business } = useBusiness();
   const { textColor } = useColorOptions();
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
@@ -108,40 +100,42 @@ export default function ApplicationManager({ jobId }: any) {
 
   const renderApplications = () => {
     if (appStatus.length > 0) {
-      return filteredApps?.map((app: any, index: number) => (
-        <Application
-          key={app.id}
-          id={app.id}
-          colorArray={colorArray}
-          index={index}
-          jobId={app.jobId}
-          dateOfApp={app.dateOfApp}
-          appStatus={app.appStatus}
-          selectedApps={selectedApps}
-          // setCurrentJob={setCurrentJob}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          setSelectedColor={setSelectedColor}
-          viewCompanyDetails={viewCompanyDetails}
-        />
-      ));
+      return filteredApps
+        ?.slice()
+        .reverse()
+        .map((app: any, index: number) => (
+          <Application
+            key={app.id}
+            id={app.id}
+            colorArray={colorArray}
+            index={index}
+            jobId={app.jobId}
+            dateOfApp={app.dateOfApp}
+            appStatus={app.appStatus}
+            selectedApps={selectedApps}
+            // setCurrentJob={setCurrentJob}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+            setSelectedColor={setSelectedColor}
+            viewCompanyDetails={viewCompanyDetails}
+          />
+        ));
     } else {
-      return currentApplications?.map((app: any, index: number) => (
-        <BusinessApplication
-          key={app.id}
-          id={app.id}
-          colorArray={colorArray}
-          index={index}
-          app={app}
-          jobId={app.jobId}
-          dateOfApp={app.dateOfApp}
-          appStatus={app.appStatus}
-          handleAdd={handleAdd}
-          handleDelete={handleDelete}
-          setSelectedColor={setSelectedColor}
-          viewCompanyDetails={viewCompanyDetails}
-        />
-      ));
+      return currentApplications
+        ?.slice()
+        .reverse()
+        .map((app: any, index: number) => (
+          <BusinessApplication
+            key={app.id}
+            id={app.id}
+            colorArray={colorArray}
+            index={index}
+            app={app}
+            jobId={app.jobId}
+            dateOfApp={app.dateOfApp}
+            appStatus={app.appStatus}
+          />
+        ));
     }
   };
 

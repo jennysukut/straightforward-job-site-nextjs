@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
+import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
+import { useModal } from "@/contexts/ModalContext";
+import { useAppointments } from "@/contexts/AppointmentsContext";
+
 import SiteButton from "./buttonsAndLabels/siteButton";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
 import Image from "next/image";
 import ShuffleIdealButtonPattern from "./buttonsAndLabels/shuffleIdealButtonPattern";
-import { getRandomColorScheme } from "@/utils/getRandomColorScheme";
-import { useModal } from "@/contexts/ModalContext";
 import AppointmentDetailsModal from "./modals/appointmentModals/appointmentDetailsModal";
-import { useAppointments } from "@/contexts/AppointmentsContext";
 
 const CalendarComp = ({ size, addClasses }: any) => {
+  const { showModal, hideModal } = useModal();
+  const { appointments } = useAppointments();
+
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentDay, setCurrentDay] = useState(new Date().getDate());
   const [actualMonth, setActualMonth] = useState(new Date().getMonth());
   const [colorArray, setColorArray] = useState(Array<any>);
-  const { showModal, hideModal } = useModal();
-  const { appointments } = useAppointments();
-  // we need to make sure we sort the appointments by time when we're adding them to the list so they'll be rendered in the correct order?
 
   const [expandedDays, setExpandedDays] = useState(new Set());
 

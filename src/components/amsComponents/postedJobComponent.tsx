@@ -6,6 +6,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { JobAMSNotificationButton } from "../buttonsAndLabels/notificationButton";
+
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InfoBox from "../informationDisplayComponents/infoBox";
 import Image from "next/image";
@@ -30,13 +31,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
 
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
-
-  const buttonClick = () => {
-    router.push(`/ams/${jobId}`);
-  };
-
   const appNumbers = selectedJob?.applications?.length;
-
   let viewedApplications: any = [];
   let notification;
   let numberOfInterviews;
@@ -59,6 +54,10 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
       notification = "new appointment";
     }
   });
+
+  const buttonClick = () => {
+    router.push(`/ams/${jobId}`);
+  };
 
   return (
     <div className="PostedJob flex flex-col gap-4" key={id}>

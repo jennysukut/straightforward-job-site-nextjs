@@ -11,13 +11,11 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
+
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "../../buttonsAndLabels/siteButton";
-import ApplicationLimitModal from "../../modals/postAJobModals/applicationLimitModal";
-import ApplyModal from "../../modals/applicationModals/applyModal";
-import PaymentModal from "../../modals/paymentModal";
 import Link from "next/link";
 
 import {
@@ -28,6 +26,7 @@ import {
   AppFellowNotes,
   AmsTopButtons,
 } from "./jobListingButtons";
+
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
 // ADD DETAILS FOR HYBRID SCHEDULE AS WELL
@@ -36,9 +35,8 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // If the listing is active, add Business Button to : view applications or go to application management system
 
 export default function JobListing({ isOwn, hasId, id, inAms }: any) {
-  // const { business, setBusiness } = useBusiness();
   const router = useRouter();
-  const [canEdit, setCanEdit] = useState(false);
+
   const { setPageType } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
@@ -47,6 +45,8 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const { applications } = useApplications();
+
+  const [canEdit, setCanEdit] = useState(false);
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
@@ -54,8 +54,6 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
-  console.log(inAms);
-  console.log(id);
   let currentApp;
   if (inAms) {
     // Filter applications for the current jobId

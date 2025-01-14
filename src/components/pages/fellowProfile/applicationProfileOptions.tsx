@@ -3,11 +3,11 @@ import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 import SetAppStatusModal from "@/components/modals/applicationModals/setAppStatusModal";
+import RejectAppModal from "@/components/modals/applicationModals/rejectAppModal";
 
 import { useModal } from "@/contexts/ModalContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
-import RejectAppModal from "@/components/modals/applicationModals/rejectAppModal";
 
 const AppFellowTopButtons = ({ app, applicant }: any) => {
   const { showModal, hideModal } = useModal();
