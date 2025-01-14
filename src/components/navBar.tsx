@@ -47,8 +47,6 @@ export default function NavBar() {
     setClickedButton(currentPage);
   }, [currentPage]);
 
-  console.log(currentPage);
-
   return (
     <div
       className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}

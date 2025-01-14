@@ -38,7 +38,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const { jobListings } = useJobListings();
   const { fellow } = useFellow();
   const { showModal } = useModal();
-  const { applications } = useApplications();
+  const { applications, setApplications } = useApplications();
 
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
@@ -55,10 +55,16 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
   const viewApplication = () => {
-    const currentApplication = applications?.filter((app) => {
-      app.id === app.jobId;
-    });
-    console.log(currentApplication);
+    const relevantApp = applications?.find(
+      (application: any) => application.id === app.id,
+    );
+
+    if (relevantApp && applications) {
+      if (relevantApp.appStatus === "submitted") {
+        relevantApp.appStatus = "viewed";
+      }
+      setApplications([...applications]);
+    }
     router.push(`/application/${id}`);
   };
 
