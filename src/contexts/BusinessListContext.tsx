@@ -44,6 +44,7 @@ export const BusinessListProvider: React.FC<{ children: ReactNode }> = ({
         amountDue: "400",
         billingDetails: true,
         hasActiveJobs: true,
+        activeJobs: ["derp", "blerp", "4", "5"],
         businessName: "Straightforward Job Site ",
         avatar: "app",
         email: "jenny@straightforwardjobsite.com",

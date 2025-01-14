@@ -4,8 +4,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
-import FormInputComponent from "../formInputComponent";
-import FormSubmissionButton from "../formSubmissionButton";
+import FormInputComponent from "../inputComponents/formInputComponent";
+import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
 
 import { useState } from "react";
 import { useModal } from "@/contexts/ModalContext";

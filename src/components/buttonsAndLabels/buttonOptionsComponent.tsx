@@ -10,7 +10,7 @@ interface ButtonOptionsComponent {
   title?: string;
   errors?: any;
   buttons: any;
-  selectedArray?: any;
+  selectedArray: any;
   handleAdd: Function;
   required?: boolean;
   handleDelete: Function;
@@ -19,6 +19,8 @@ interface ButtonOptionsComponent {
   flexOpt?: string;
   buttonSize?: any;
   buttonContainerClasses?: string;
+  deleteButton?: boolean;
+  deleteClick?: any;
 }
 
 const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
@@ -35,12 +37,13 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   flexOpt,
   buttonSize = "default",
   buttonContainerClasses,
+  deleteButton,
+  deleteClick,
 }) => {
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
-      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
@@ -54,23 +57,26 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
   return (
     <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
       <div
-        className={`ButtonsContainer mb-4 flex justify-center ${flexOpt ? flexOpt : "gap-6"}`}
+        className={`ButtonsContainer mb-4 flex ${flexOpt ? flexOpt : "justify-center gap-6"}`}
       >
-        <label
-          htmlFor={title}
-          className={`ButtonOptionsTitle self-center ${textColor}`}
-        >
-          {title}
-          {required && (
-            <span
-              className={`required flex-end text-md m-0 pl-1 text-start align-baseline ${textColor}`}
-            >
-              *
-            </span>
-          )}
-        </label>
+        {title && (
+          <label
+            htmlFor={title}
+            className={`ButtonOptionsTitle self-center ${textColor}`}
+          >
+            {title}
+            {required && (
+              <span
+                className={`required flex-end text-md m-0 pl-1 text-start align-baseline ${textColor}`}
+              >
+                *
+              </span>
+            )}
+          </label>
+        )}
+
         <div
-          className={`Buttons flex ${buttonContainerClasses ? buttonContainerClasses : "gap-6"} justify-center`}
+          className={`Buttons flex ${buttonContainerClasses ? buttonContainerClasses : "justify-center gap-6"}`}
         >
           {buttons.map((button: string, index: any) => {
             return (
@@ -83,12 +89,22 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
                 onClick={() => buttonClick(button)}
                 addClasses={`text-nowrap ${classesForButtons || ""}`}
                 isSelected={selectedArray.includes(button)}
-                // isSelected={true}
               >
                 {button}
               </SiteButton>
             );
           })}
+          {deleteButton && (
+            <SiteButton
+              aria="removeButton"
+              size="smallCircle"
+              variant="filled"
+              colorScheme="d2"
+              addImage="bg-[url('/top-tier-delete.svg')]"
+              addClasses={`bg-center mt-2`}
+              onClick={deleteClick}
+            />
+          )}
         </div>
       </div>
       {errors?.message && (

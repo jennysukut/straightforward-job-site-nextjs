@@ -10,16 +10,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
 import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
-import InputComponent from "@/components/inputComponent";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import Avatar from "@/components/avatarComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import UpdateHandler from "@/components/updateHandler";
-import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 
 const fellowSchema = z.object({
   hobbies: z.array(z.string()).optional(),
@@ -135,7 +135,11 @@ export default function IndividualSignupPage5() {
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg">optional: human details</h2>
           <div className="AvatarContainer self-end pr-6">
-            <Avatar addClasses="self-end -mt-14" />
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
           </div>
         </div>
 

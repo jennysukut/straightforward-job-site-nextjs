@@ -3,8 +3,8 @@
 import { useState } from "react";
 
 import Image from "next/image";
-import SiteButton from "@/components/siteButton";
-import InfoBox from "@/components/infoBox";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
 
 import { pricingDetails } from "@/lib/siteCopy/pricingDetails";
 

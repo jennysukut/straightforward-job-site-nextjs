@@ -10,8 +10,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import DeleteConfirmationModal from "../deleteConfirmationModal";
-import FormSubmissionButton from "@/components/formSubmissionButton";
-import FormInputComponent from "@/components/formInputComponent";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
 const ExperienceSchema = z.object({
   title: z.string().min(2, { message: "Job Title Required" }),

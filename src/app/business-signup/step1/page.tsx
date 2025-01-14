@@ -9,16 +9,18 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
-import InputComponent from "@/components/inputComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import AddHandler from "@/components/addHandler";
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import AddHandler from "@/components/handlers/addHandler";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 
 import { countries } from "@/lib/countriesList";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 type CurrentSchemeType = ButtonColorOption;
 
 const businessSchema = z.object({
@@ -39,16 +41,13 @@ export default function BusinessSignupPage1() {
   const { business, setBusiness } = useBusiness();
   const { showModal } = useModal();
   const { textColor, titleColor } = useColorOptions();
-
+  const { colorOption } = useColors();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [avatarOptions, setAvatarOptions] = useState({
-    url: business?.avatar,
-    shadow: business?.shadow,
-    colorScheme: business?.colorScheme,
-    buttonShadow: business?.shadow,
-    buttonImg: business?.buttonImg,
-  });
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === business?.avatar,
+  );
+  const [avatar, setAvatar] = useState(avatarDetails);
 
   const {
     handleSubmit,
@@ -72,11 +71,7 @@ export default function BusinessSignupPage1() {
       location: data.location,
       smallBio: data.smallBio,
       website: data.website,
-      avatar: avatarOptions.url,
-      shadow: avatarOptions.shadow,
-      colorScheme: avatarOptions.colorScheme,
-      buttonShadow: avatarOptions.shadow,
-      buttonImg: avatarOptions.buttonImg,
+      avatar: avatar?.title,
       profileIsBeingEdited: false,
     });
     if (business?.profileIsBeingEdited) {
@@ -114,22 +109,18 @@ export default function BusinessSignupPage1() {
             <div className="AvatarContainer flex items-baseline gap-4 self-end">
               <button
                 className="max-w-[45%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
-                onClick={() =>
-                  showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-                }
+                onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
               >
                 {`choose your avatar & colors`}
               </button>
               <SiteButton
                 variant="avatar"
-                colorScheme={avatarOptions.colorScheme as ButtonColorOption}
+                colorScheme={avatar?.colorScheme as ButtonColorOption}
                 size="largeCircle"
                 aria="avatar"
-                addImage={`${avatarOptions.buttonImg}`}
+                addImage={`${colorOption === "standard" ? avatar?.img.standard : avatar?.img.highContrast}`}
                 addClasses="self-end"
-                onClick={() =>
-                  showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-                }
+                onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
               />
             </div>
           </div>

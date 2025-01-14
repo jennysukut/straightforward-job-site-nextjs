@@ -9,10 +9,6 @@ export interface Business {
   email?: string;
   password?: string;
   avatar?: any;
-  shadow?: string;
-  colorScheme?: string;
-  buttonShadow?: string;
-  buttonImg?: any;
   smallBio?: string;
   country?: string;
   location?: string;

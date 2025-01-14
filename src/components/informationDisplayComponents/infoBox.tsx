@@ -27,7 +27,9 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "medium"
     | "profile"
     | "jobPost"
-    | "thin";
+    | "thin"
+    | "note"
+    | "jobListing";
   width?:
     | "extraSmall"
     | "small"
@@ -110,25 +112,32 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       "py-2 px-4 sm:py-2 sm:px-4 rounded-full sm:rounded-full": size === "tiny",
       "py-2 px-4 sm:py-3 sm:px-6 rounded-full sm:rounded-full":
         size === "extraSmall",
+
       "py-4 px-8 sm:py-6 sm:px-10 md:py-14 md:px-16 rounded-2xl sm:rounded-3xl":
         size === "standard",
       "py-4 px-10 sm:py-6 sm:px-14 rounded-2xl sm:rounded-3xl":
         size === "small",
       "py-8 px-8 xs:px-10 sm:py-8 sm:px-12 md:py-14 md:px-16 rounded-3xl":
         size === "large",
+
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[200px]": size === "tall",
       "py-4 px-4 sm:py-6 sm:px-6 rounded-3xl h-[100px]": size === "medium",
+
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl":
         size === "profile",
       "py-6 px-2 sm:py-10 sm:px-6 md:py-10 md:px-6 rounded-2xl sm:rounded-3xl":
         size === "thin",
+      "py-3 px-3 sm:py-4 sm:px-4 md:py-6 md:px-6 rounded-2xl sm:rounded-3xl":
+        size === "note",
+
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[300px] max-h-[450px]":
         size === "jobPost",
+      "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[25rem] min-h-[300px] max-h-[500px]":
+        size === "jobListing",
 
       //width
       "max-w-screen-sm": width === "standard",
       "w-full": width === "full",
-      "w-[84%] max-w-[1600px] ": width === "extraWide",
       "w-[15vw]": width === "extraSmall",
       "w-[30vw]": width === "small",
       "w-[40vw]": width === "medium",
@@ -140,30 +149,31 @@ const InfoBox: React.FC<InfoBoxProps> = ({
   return (
     <div className={`${boxClasses}`}>
       {/* profile edit button */}
-      {canEdit && (size === "profile" || size === "thin") && (
-        <button
-          type="button"
-          className="EditButton absolute right-0 -mt-6 mr-4 opacity-100 hover:opacity-50"
-          onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
-        >
-          {colorOption === "highContrast" && (
-            <Image
-              src="/hc-edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-          {colorOption === "standard" && (
-            <Image
-              src="/edit-icon.svg"
-              alt="editButton"
-              width={16}
-              height={16}
-            ></Image>
-          )}
-        </button>
-      )}
+      {canEdit &&
+        (size === "profile" || size === "thin" || size === "note") && (
+          <button
+            type="button"
+            className={`EditButton ${size === "note" ? "-mt-2" : "-mt-6"} absolute right-0 mr-4 opacity-50 hover:opacity-100`}
+            onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
+          >
+            {colorOption === "highContrast" && (
+              <Image
+                src="/hc-edit-icon.svg"
+                alt="editButton"
+                width={16}
+                height={16}
+              ></Image>
+            )}
+            {colorOption === "standard" && (
+              <Image
+                src="/edit-icon.svg"
+                alt="editButton"
+                width={16}
+                height={16}
+              ></Image>
+            )}
+          </button>
+        )}
 
       {title && (
         <h3 className="Title max-w-[95%] overflow-hidden truncate text-nowrap">
@@ -246,10 +256,10 @@ const InfoBox: React.FC<InfoBoxProps> = ({
       )}
 
       {/* edit button */}
-      {canEdit && size !== "profile" && size !== "thin" && (
+      {canEdit && size !== "profile" && size !== "thin" && size !== "note" && (
         <button
           type="button"
-          className="EditButton self-end opacity-100 hover:opacity-50"
+          className="EditButton self-end opacity-50 hover:opacity-100"
           onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
         >
           {colorOption === "highContrast" && (

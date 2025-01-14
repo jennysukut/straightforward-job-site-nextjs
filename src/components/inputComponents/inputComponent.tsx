@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import InfoBox from "./infoBox";
+import InfoBox from "../informationDisplayComponents/infoBox";
 import { useColors } from "@/contexts/ColorContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
@@ -9,8 +9,8 @@ interface InputComponent {
   type: string;
   placeholderText: string;
   errors?: any;
-  register: any;
-  registerValue: string;
+  register?: any;
+  registerValue?: string;
   defaultValue?: any;
   width?: any;
   height?: any;

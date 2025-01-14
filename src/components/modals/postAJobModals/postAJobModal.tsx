@@ -10,12 +10,12 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
-import FormInputComponent from "@/components/formInputComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
 
 const jobSchema = z.object({
   jobTitle: z.string().min(2, { message: "Job Title Required" }),

@@ -11,14 +11,14 @@ import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
-import InputComponent from "@/components/inputComponent";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import Avatar from "@/components/avatarComponent";
-import AddHandler from "@/components/addHandler";
-import UpdateHandler from "@/components/updateHandler";
-import DeleteHandler from "@/components/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
 import SubscriptionModal from "@/components/modals/subscriptionModal";
 
 const fellowSchema = z.object({
@@ -134,7 +134,11 @@ export default function IndividualSignupPage6() {
             optional: links + more about you
           </h2>
           <div className="AvatarContainer self-end pr-6">
-            <Avatar addClasses="self-end -mt-14" />
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
           </div>
         </div>
 

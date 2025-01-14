@@ -6,15 +6,15 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAwardModal from "@/components/modals/profilePopulationModals/addAwardModal";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddExperienceLevelModal from "@/components/modals/profilePopulationModals/addExperienceLevels";
 import AddAccomplishmentModal from "@/components/modals/profilePopulationModals/addAccomplishmentsModal";
 import Avatar from "@/components/avatarComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import UpdateHandler from "@/components/updateHandler";
-import AddHandler from "@/components/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import AddHandler from "@/components/handlers/addHandler";
 
 export default function IndividualSignupPage3() {
   const { fellow, setFellow } = useFellow();
@@ -119,7 +119,11 @@ export default function IndividualSignupPage3() {
     <div className="IndividualSignupPage3 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="AvatarContainer self-end pr-6">
-          <Avatar addClasses="self-end -mt-14" />
+          <Avatar
+            addClasses="self-end -mt-14"
+            avatarType="Fellow"
+            fellow={fellow}
+          />
         </div>
 
         {/* Add + Display Awards / Honors */}

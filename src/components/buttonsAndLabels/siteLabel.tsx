@@ -10,16 +10,23 @@ import Image from "next/image";
 import { useColors } from "@/contexts/ColorContext";
 
 interface LabelProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant: "display" | "functional";
+  variant: "display" | "functional" | "hollow" | "notification";
   colorScheme?: SmallShadowColorOption;
   aria: string;
   type?: string;
   addClasses?: string;
-  textSize?: "medium" | "large";
+  textSize?: "small" | "medium" | "large" | "extraSmall";
   handleDelete?: React.MouseEventHandler<HTMLButtonElement>;
   canAdd?: boolean;
   handleAdd?: any;
-  size?: "medium";
+  size?:
+    | "medium"
+    | "small"
+    | "extraSmall"
+    | "tiny"
+    | "notification"
+    | "notificationDetails";
+  absolute?: boolean;
 }
 
 const SiteLabel: React.FC<LabelProps> = ({
@@ -34,6 +41,7 @@ const SiteLabel: React.FC<LabelProps> = ({
   canAdd,
   handleAdd,
   handleDelete,
+  absolute,
   ...props
 }) => {
   const { colorOption } = useColors();
@@ -41,21 +49,35 @@ const SiteLabel: React.FC<LabelProps> = ({
   const labelColors =
     colorOption === "highContrast"
       ? "bg-pine drop-shadow-smForest text-eggshell"
-      : `${smallShadowColors[colorScheme]}`;
+      : variant === "hollow"
+        ? "bg-cream drop-shadow-smJade text-jade border-jade border-[2px]"
+        : `${smallShadowColors[colorScheme]}`;
 
   const labelClasses = clsx(
-    `Label w-fit  flex relative z-[1] rounded-full font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
+    `Label flex z-[1] font-medium transition-all duration-200 ${labelColors} text-eggshell tracking-widest m-1`,
+    // w-fit relative
     {
+      //position
+      "relative rounded-full": !absolute,
+      "absolute rounded-xl z-[20]": absolute,
+
       // size
       "py-2 px-6": size === "standard",
       "py-3 px-8": size === "medium",
+      "py-1.5 px-4": size === "small",
+      "py-1 px-2": size === "extraSmall",
+      "py-[5px] px-1.5": size === "tiny",
+      "p-0": size === "notification",
+      "py-[5px] px-2": size === "notificationDetails",
 
       // variant
       "py-2 px-4": variant === "display",
       "py-2 pr-3 pl-4": variant === "functional",
+      "w-[18px] h-[18px] z-[10]": variant === "notification",
 
       //textSize
       "text-xs": !textSize,
+      "text-[10px]": textSize === "small",
       "text-sm": textSize === "medium",
       "text-md": textSize === "large",
     },

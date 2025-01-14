@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Fellow {
+  id?: string;
   name?: string;
   email?: string;
   smallBio?: string;
@@ -33,47 +34,60 @@ export interface Fellow {
   addMoreInfo?: boolean;
   subscriptionAmount?: any;
   savedJobs?: Array<any>;
-  dailyApplications?: string;
+  dailyApplications?: Record<string, any>;
 }
 
 interface FellowContextType {
   fellow: Fellow | null;
   setFellow: (fellow: Fellow) => void;
+  dailyLimit: DailyLimit | null;
+  setDailyLimit: (type: any) => void;
 }
+
+//DATA FOR HANDLING DAILY APPLICATION LIMIT
+interface DailyLimit {
+  count: number;
+  lastReset: string;
+}
+
+const shouldResetDaily = (lastResetDate: string): boolean => {
+  const lastReset = new Date(lastResetDate);
+  const now = new Date();
+  // Reset if it's a different day
+  return lastReset.toDateString() !== now.toDateString();
+};
+
+const handleDailyLimit = (currentLimit: DailyLimit): DailyLimit => {
+  if (shouldResetDaily(currentLimit.lastReset)) {
+    // It's a new day, reset the count
+    return {
+      count: 0,
+      lastReset: new Date().toISOString(),
+    };
+  }
+  return currentLimit;
+};
+
+//////
 
 const FellowContext = createContext<FellowContextType | undefined>(undefined);
 
 export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [fellow, setFellow] = useState<Fellow | null>({
-    // avatar: "/avatars/peach.svg",
-    // shadow: "drop-shadow-lime",
-    // colorScheme: "b6",
-    // buttonShadow: "bg-lime",
-    // buttonImg: "bg-[url('/avatars/magenta.svg')]",
+  const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
+    count: 0,
+    lastReset: new Date().toISOString(),
+  });
 
+  const [fellow, setFellow] = useState<Fellow | null>({
     ///MY OWN CONTEXT
-    dailyApplications: "2",
-    avatar: "checks",
-    // avatar: {
-    //   standard: "/avatars/checks.svg",
-    //   highContrast: "/avatars/blue-checks.svg",
-    // },
-    // savedJobs: [1, 2],
-    // shadow: {
-    //   standard: "drop-shadow-magenta",
-    //   highContrast: "drop-shadow-ocean",
-    // },
-    // colorScheme: "a5",
-    // buttonShadow: {
-    //   standard: "drop-shadow-magenta",
-    //   highContrast: "drop-shadow-ocean",
-    // },
-    // buttonImg: {
-    //   standard: "bg-[url('/avatars/checks.svg')]",
-    //   highContrast: "bg-[url('/avatars/blue-checks.svg')]",
-    // },
+    dailyApplications: {
+      count: dailyLimit.count,
+      lastReset: dailyLimit.lastReset,
+    },
+    avatar: "flower",
+    id: "testid",
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",
     smallBio:
@@ -84,6 +98,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     jobTitles: ["Web Developer", "Startup Founder"],
     languages: ["English"],
     profileIsBeingEdited: false,
+    savedJobs: [],
     experience: [
       {
         title: "Graphic Designer",
@@ -176,7 +191,9 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   return (
-    <FellowContext.Provider value={{ fellow, setFellow }}>
+    <FellowContext.Provider
+      value={{ fellow, setFellow, dailyLimit, setDailyLimit }}
+    >
       {children}
     </FellowContext.Provider>
   );

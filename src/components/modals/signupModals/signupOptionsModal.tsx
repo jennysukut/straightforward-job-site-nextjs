@@ -3,7 +3,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "../../siteButton";
+import SiteButton from "../../buttonsAndLabels/siteButton";
 import SignupModalIndividual1 from "./signupIndividual1";
 import SignupModalBusiness1 from "./signupBusiness1";
 import LoginModal from "../loginModal";

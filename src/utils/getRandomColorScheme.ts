@@ -6,6 +6,7 @@ import {
   SmallShadowColorOption,
   smallShadowColorOptions,
 } from "@/lib/stylingData/smallShadowColors";
+import { idealButtonPattern } from "@/lib/stylingData/idealButtonPattern";
 
 type CurrentSchemeType = ButtonColorOption | SmallShadowColorOption;
 

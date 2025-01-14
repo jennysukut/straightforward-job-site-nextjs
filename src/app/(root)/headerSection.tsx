@@ -3,10 +3,10 @@ import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
-import Link from "next/link";
 
-import SiteButton from "@/components/siteButton";
-import ButtonContainer from "@/components/buttonContainer";
+import Link from "next/link";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import ButtonContainer from "@/components/buttonsAndLabels/buttonContainer";
 import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsModal";
 import PostAJobModal from "@/components/modals/postAJobModals/postAJobModal";
 
@@ -14,10 +14,12 @@ function HeaderSection() {
   const { showModal } = useModal();
   const { titleColor } = useColorOptions();
   const { colorOption } = useColors();
-  const { setPageType, accountType, isLoggedIn } = usePageContext();
+  const { setPageType, accountType, isLoggedIn, setCurrentPage } =
+    usePageContext();
 
   useEffect(() => {
     setPageType("main");
+    setCurrentPage("main");
   }, []);
   return (
     <section className="HeaderSection items-left flex w-full flex-grow flex-col gap-4">
@@ -30,7 +32,7 @@ function HeaderSection() {
       {/* LoggedIn Fellow Buttons */}
       {accountType === "Fellow" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
-          <Link href={"/profile"}>
+          <Link href={"/ams"}>
             <SiteButton aria="sign up" size="large" colorScheme="b1">
               manage your applications
             </SiteButton>

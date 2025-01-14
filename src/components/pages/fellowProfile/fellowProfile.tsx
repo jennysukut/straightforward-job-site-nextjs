@@ -3,26 +3,87 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useColors } from "@/contexts/ColorContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
+import { useJobListings } from "@/contexts/JobListingsContext";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { useModal } from "@/contexts/ModalContext";
+import {
+  OwnFellowTopButtons,
+  OwnFellowBottomButtons,
+  OwnFellowAppTopButtons,
+  OwnFellowAppBottomButtons,
+  OwnAppMessage,
+} from "../fellowProfile/ownProfileButtons";
+import {
+  AppFellowTopButtons,
+  AppFellowBottomButtons,
+  AppMessage,
+  AppFellowNotes,
+} from "./applicationProfileOptions";
 
-import InfoBox from "./infoBox";
-import SiteLabel from "./siteLabel";
-import SiteButton from "./siteButton";
-import Avatar from "./avatarComponent";
-import ShuffleIdealButtonPattern from "./shuffleIdealButtonPattern";
+import InfoBox from "../../informationDisplayComponents/infoBox";
+import SiteLabel from "../../buttonsAndLabels/siteLabel";
+import Avatar from "../../avatarComponent";
+import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
 
-export default function FellowProfile({ fellow }: any, isOwn: boolean) {
-  const { setFellow } = useFellow();
+interface FellowProfile {
+  hasId?: boolean;
+  id?: string;
+  self?: any;
+  isOwn?: boolean;
+  isApp?: boolean;
+  appId?: string;
+}
+
+const FellowProfile: React.FC<FellowProfile> = ({
+  hasId,
+  id,
+  self,
+  isOwn,
+  isApp,
+  appId,
+}) => {
+  const router = useRouter();
+
+  const { fellow, setFellow } = useFellow();
   const { setPageType, setAccountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
-  const { colorOption } = useColors();
-  const router = useRouter();
+  const { applications } = useApplications();
+  const { jobListings } = useJobListings();
+  const { showModal } = useModal();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
-
   const [canEdit, setCanEdit] = useState(false);
+
+  // define the current fellow
+  let currentFellow;
+  if (hasId) {
+    //if the fellow has an Id, it's being accessed by a business, so we'll need to take the id from the parameters and find the fellow who's information we're using
+    currentFellow = fellow;
+  } else {
+    //if it's just the currentFellow, we'll pass the fellow parameter through here?
+    currentFellow = self || fellow;
+  }
+
+  let currentApp: any;
+  let currentJob: any;
+  if (isApp) {
+    currentApp = applications?.find((app) => app.id === appId);
+    currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
+  }
+
+  let avatarDetails;
+  if (fellow) {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === fellow?.avatar,
+    );
+  }
+
+  const viewJobDetails = () => {
+    router.push(`/listing/${currentApp.jobId}`);
+  };
 
   const handleEditClick = (url: any) => {
     setFellow({ ...fellow, profileIsBeingEdited: true });
@@ -37,14 +98,11 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
   };
 
   useEffect(() => {
-    setAccountType("Fellow");
-    setPageType("Fellow");
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
 
-  console.log(fellow);
   return (
     <div
       className={`ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
@@ -52,29 +110,35 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
       {/* PROFILE DETAILS */}
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
-          {isOwn && (
-            <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
-                colorScheme="b6"
-                aria="edit"
-                addClasses="px-8"
-                onClick={() => setCanEdit(!canEdit)}
-                isSelected={canEdit}
-              >
-                edit details
-              </SiteButton>
-              <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
-                colorScheme="c4"
-                aria="edit"
-                addClasses="px-8"
-                onClick={addMoreInfo}
-              >
-                add more info
-              </SiteButton>
-            </div>
+          {/* TOP BUTTON OPTIONS */}
+          {isOwn && !isApp && (
+            <OwnFellowTopButtons
+              setCanEdit={setCanEdit}
+              canEdit={canEdit}
+              addMoreInfo={addMoreInfo}
+            />
           )}
+
+          {isOwn && isApp && (
+            <OwnFellowAppTopButtons
+              currentApp={currentApp}
+              currentJob={currentJob}
+            />
+          )}
+
+          {!isOwn && isApp && (
+            <AppFellowTopButtons
+              app={currentApp}
+              applicant={currentFellow.name}
+            />
+          )}
+
+          {/* Business Note On App */}
+          {!isOwn && isApp && currentApp.businessNote.length > 0 && (
+            <AppFellowNotes currentApp={currentApp} />
+          )}
+
+          {/* SKILLS DETAILS */}
           <InfoBox
             variant="hollow"
             aria="skills"
@@ -85,8 +149,8 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           >
             <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
             <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {fellow?.skills && fellow.skills.length > 0 ? (
-                fellow.skills.map((skill: any, index: number) => {
+              {currentFellow?.skills && currentFellow.skills.length > 0 ? (
+                currentFellow.skills.map((skill: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={skill}
@@ -105,7 +169,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               )}
             </div>
           </InfoBox>
-          {fellow?.education && (
+          {currentFellow?.education && (
             <InfoBox
               variant="hollow"
               aria="education"
@@ -118,7 +182,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`EducationList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.education.map((edu: any, index: number) => {
+                {currentFellow.education.map((edu: any, index: number) => {
                   return (
                     <li className="EducationItem" key={index}>
                       <p className="DegreeFOS">
@@ -137,7 +201,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.experience && (
+          {currentFellow?.experience && (
             <InfoBox
               variant="hollow"
               aria="experience"
@@ -150,7 +214,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.experience.map((exp: any, index: number) => {
+                {currentFellow.experience.map((exp: any, index: number) => {
                   return (
                     <li className="ExperienceItem" key={index}>
                       <p className="JobTitle pr-4">
@@ -179,7 +243,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.awards.length >= 1 && (
+          {currentFellow?.awards.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="awards"
@@ -192,7 +256,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`AwardsList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.awards.map((award: any, index: number) => {
+                {currentFellow.awards.map((award: any, index: number) => {
                   return (
                     <li className="AwardItem" key={index}>
                       <p className="AwardTitle pr-4">{award.awardTitle},</p>
@@ -210,7 +274,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.experienceLevels && (
+          {currentFellow?.experienceLevels && (
             <InfoBox
               variant="hollow"
               aria="expLevels"
@@ -223,26 +287,28 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.experienceLevels.map((exp: any, index: number) => {
-                  return (
-                    <li className="ExperienceLevelItem" key={index}>
-                      <p className="ExperienceLevelAndSkill pr-4">
-                        {exp.experienceLevel}: {exp.expLevelSkill}
-                      </p>
-                      {exp.skillYears && (
-                        <p
-                          className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
-                        >
-                          {exp.skillYears}
+                {currentFellow.experienceLevels.map(
+                  (exp: any, index: number) => {
+                    return (
+                      <li className="ExperienceLevelItem" key={index}>
+                        <p className="ExperienceLevelAndSkill pr-4">
+                          {exp.experienceLevel}: {exp.expLevelSkill}
                         </p>
-                      )}
-                    </li>
-                  );
-                })}
+                        {exp.skillYears && (
+                          <p
+                            className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
+                          >
+                            {exp.skillYears}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </InfoBox>
           )}
-          {fellow?.bookOrQuote && (
+          {currentFellow?.bookOrQuote && (
             <InfoBox
               variant="hollow"
               aria="bookOrQuote"
@@ -255,7 +321,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.bookOrQuote.map((bq: any, index: number) => {
+                {currentFellow.bookOrQuote.map((bq: any, index: number) => {
                   return (
                     <li className="BookOrQuoteItem" key={index}>
                       <p className="BookOrQuote">{bq.bookOrQuote}</p>
@@ -268,7 +334,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.petDetails && (
+          {currentFellow?.petDetails && (
             <InfoBox
               variant="hollow"
               aria="petInfo"
@@ -281,32 +347,31 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <p
                 className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}
               >
-                {fellow.petDetails}
+                {currentFellow.petDetails}
               </p>
             </InfoBox>
           )}
-          {isOwn && (
-            <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
-                colorScheme="b6"
-                aria="edit"
-                addClasses="px-8"
-                onClick={() => setCanEdit(!canEdit)}
-                isSelected={canEdit}
-              >
-                edit details
-              </SiteButton>
-              <SiteButton
-                variant={colorOption === "seasonal" ? "hollow" : "filled"}
-                colorScheme="c4"
-                aria="edit"
-                addClasses="px-8"
-                onClick={addMoreInfo}
-              >
-                add more info
-              </SiteButton>
-            </div>
+
+          {/* BOTTOM BUTTON OPTIONS */}
+          {isOwn && !isApp && (
+            <OwnFellowBottomButtons
+              setCanEdit={setCanEdit}
+              canEdit={canEdit}
+              addMoreInfo={addMoreInfo}
+            />
+          )}
+          {isOwn && isApp && (
+            <OwnFellowAppBottomButtons
+              avatarDetails={avatarDetails}
+              router={router}
+              viewJobDetails={viewJobDetails}
+            />
+          )}
+          {!isOwn && isApp && (
+            <AppFellowBottomButtons
+              app={currentApp}
+              applicant={currentFellow.name}
+            />
           )}
         </div>
         <div className="ProfileRightColumn flex flex-col gap-8">
@@ -320,17 +385,39 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               editClick={() => handleEditClick("/individual-signup/step1")}
             >
               <div className="NameBioAvatarContainer flex items-center gap-8">
-                <Avatar addClasses="self-start min-w-[60px]" />
+                {/* need to make option for the avatar to show a not-self avatar based off the person's avatar choice */}
+                <Avatar
+                  addClasses="self-start min-w-[60px]"
+                  avatarType="Fellow"
+                  fellow={currentFellow}
+                />
                 <div className="NameBioContainer">
-                  <h1 className="Name">{fellow?.name}</h1>
+                  <h1 className="Name">{currentFellow?.name}</h1>
                   <p className="SmallBio min-w-[20vw] pt-4 leading-6">
-                    {fellow?.smallBio ||
+                    {currentFellow?.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>
                 </div>
               </div>
             </InfoBox>
           </div>
+
+          {/* APP MESSAGE FOR REVIEW */}
+          {isApp && isOwn && (
+            <OwnAppMessage
+              avatarDetails={avatarDetails}
+              currentApp={currentApp}
+            />
+          )}
+
+          {/* APP MESSAGE TO BUSINESS */}
+          {isApp && !isOwn && (
+            <AppMessage
+              avatarDetails={avatarDetails}
+              currentFellow={currentFellow}
+              currentApp={currentApp}
+            />
+          )}
 
           <InfoBox
             variant="hollow"
@@ -342,7 +429,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           >
             <div className="LocationInfo flex flex-col gap-2">
               <p className={`Location ml-2 ${titleColor}`}>
-                Location: {fellow?.location}, {fellow?.country}
+                Location: {currentFellow?.location}, {currentFellow?.country}
               </p>
             </div>
           </InfoBox>
@@ -358,26 +445,28 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
             <div className="LocationTypesInfo flex flex-col gap-2">
               <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
               <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
-                {fellow?.locationOptions.map((opt: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      variant="display"
-                      aria="locationOption"
-                      key={index}
-                      size="medium"
-                      colorScheme={
-                        thirdColorArray[index % thirdColorArray.length]
-                      }
-                    >
-                      {opt}
-                    </SiteLabel>
-                  );
-                })}
+                {currentFellow?.locationOptions.map(
+                  (opt: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        variant="display"
+                        aria="locationOption"
+                        key={index}
+                        size="medium"
+                        colorScheme={
+                          thirdColorArray[index % thirdColorArray.length]
+                        }
+                      >
+                        {opt}
+                      </SiteLabel>
+                    );
+                  },
+                )}
               </div>
             </div>
           </InfoBox>
 
-          {fellow?.links && (
+          {currentFellow?.links && (
             <InfoBox
               variant="hollow"
               aria="links"
@@ -386,11 +475,11 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               canEdit={canEdit}
               editClick={() => handleEditClick("/individual-signup/step6")}
             >
-              <h2 className="LinksTitle mb-4 pl-2">{`${fellow.name}'s Links:`}</h2>
+              <h2 className="LinksTitle mb-4 pl-2">{`${currentFellow.name}'s Links:`}</h2>
               <div className="Links ml-8 flex flex-col gap-2">
-                {fellow?.links && (
+                {currentFellow?.links && (
                   <div className="LinksList mt-2 flex flex-col gap-2">
-                    {fellow.links.map((link: any, index: number) => {
+                    {currentFellow.links.map((link: any, index: number) => {
                       return (
                         <div className="Link" key={index}>
                           <p className={`Link ${titleColor}`}>
@@ -423,8 +512,9 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
           >
             <h2 className="JobTitlesTitle text-center">{`My Job Titles:`}</h2>
             <div className="JobTitlesContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {fellow?.jobTitles && fellow.jobTitles.length > 0 ? (
-                fellow.jobTitles.map((title: any, index: number) => {
+              {currentFellow?.jobTitles &&
+              currentFellow.jobTitles.length > 0 ? (
+                currentFellow.jobTitles.map((title: any, index: number) => {
                   return (
                     <SiteLabel
                       aria={title}
@@ -444,7 +534,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               )}
             </div>
           </InfoBox>
-          {fellow?.passions && (
+          {currentFellow?.passions && (
             <InfoBox
               variant="hollow"
               aria="passionateAbout"
@@ -457,11 +547,11 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 className={`PassionateAboutTitle mb-4 pl-2 ${titleColor}`}
               >{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
-                {fellow.passions}
+                {currentFellow.passions}
               </p>
             </InfoBox>
           )}
-          {fellow?.lookingFor && (
+          {currentFellow?.lookingFor && (
             <InfoBox
               variant="hollow"
               aria="lookingFor"
@@ -477,11 +567,11 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <p
                 className={`LookingFor text-md mt-4 px-6 font-medium ${secondaryTextColor}`}
               >
-                {fellow.lookingFor}
+                {currentFellow.lookingFor}
               </p>
             </InfoBox>
           )}
-          {fellow?.hobbies && (
+          {currentFellow?.hobbies && (
             <InfoBox
               variant="hollow"
               aria="hobbies"
@@ -494,7 +584,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.hobbies.map((hobby: any, index: number) => {
+                {currentFellow.hobbies.map((hobby: any, index: number) => {
                   return (
                     <li className={`HobbyItem ${textColor}`} key={index}>
                       <p className="Hobby">
@@ -512,7 +602,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               </ul>
             </InfoBox>
           )}
-          {fellow?.accomplishments.length >= 1 && (
+          {currentFellow?.accomplishments.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="accomplishments"
@@ -525,27 +615,29 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
               <ul
                 className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {fellow.accomplishments.map((acc: any, index: number) => {
-                  return (
-                    <li
-                      className={`AccomplishmentItem ${textColor}`}
-                      key={index}
-                    >
-                      <p className="Accomplishment">{acc.accTitle}</p>
-                      {acc.accDetails && (
-                        <p
-                          className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
-                        >
-                          {acc.accDetails}
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
+                {currentFellow.accomplishments.map(
+                  (acc: any, index: number) => {
+                    return (
+                      <li
+                        className={`AccomplishmentItem ${textColor}`}
+                        key={index}
+                      >
+                        <p className="Accomplishment">{acc.accTitle}</p>
+                        {acc.accDetails && (
+                          <p
+                            className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
+                          >
+                            {acc.accDetails}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  },
+                )}
               </ul>
             </InfoBox>
           )}
-          {fellow?.aboutMe && (
+          {currentFellow?.aboutMe && (
             <InfoBox
               variant="hollow"
               aria="moreAboutMe"
@@ -558,7 +650,7 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
                 className={`AboutMeTitle mb-4 pl-2 ${titleColor}`}
               >{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">
-                {fellow.aboutMe}
+                {currentFellow.aboutMe}
               </p>
             </InfoBox>
           )}
@@ -566,4 +658,6 @@ export default function FellowProfile({ fellow }: any, isOwn: boolean) {
       </div>
     </div>
   );
-}
+};
+
+export default FellowProfile;

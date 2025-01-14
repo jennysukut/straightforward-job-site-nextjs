@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import InfoBox from "./infoBox";
-import SiteButton from "./siteButton";
-import DeleteConfirmationModal from "./modals/deleteConfirmationModal";
-import { useRouter } from "next/navigation";
+import InfoBox from "../informationDisplayComponents/infoBox";
+import SiteButton from "../buttonsAndLabels/siteButton";
+import DeleteConfirmationModal from "../modals/deleteConfirmationModal";
 
-import { smallShadowColors } from "@/lib/stylingData/smallShadowColors";
+import { useRouter } from "next/navigation";
 import { useColors } from "@/contexts/ColorContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
@@ -44,6 +43,8 @@ const JobPost: React.FC<JobPostProps> = ({
   const viewDetails = () => {
     router.push(`/listing/${job.jobId}`);
   };
+
+  const appNumber = job?.job.applications?.length;
 
   const saveButton = (() => {
     switch (colorOption) {
@@ -87,7 +88,7 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {job.job?.numberOfApps}/{job.job?.applicationLimit} apps
+            {appNumber}/{job.job?.applicationLimit} apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
             {fellow?.savedJobs?.includes(job.jobId) ? (
@@ -105,17 +106,6 @@ const JobPost: React.FC<JobPostProps> = ({
               ></SiteButton>
             ) : (
               saveButton
-              // <SiteButton
-              //   aria="addJobsButton"
-              //   size="extraSmallCircle"
-              //   variant="filled"
-              //   onClick={saveClick}
-              //   colorScheme={
-              //     colorArray[index % colorArray.length] as ButtonColorOption
-              //   }
-              //   addClasses="bg-center"
-              //   addImage="bg-[url('/save-job-icon.svg')]"
-              // ></SiteButton>
             )}
           </div>
         </div>

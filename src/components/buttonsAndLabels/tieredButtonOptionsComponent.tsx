@@ -9,6 +9,7 @@ import ButtonOptionsComponent from "./buttonOptionsComponent";
 // Define the interface for button objects
 interface Button {
   title: any;
+  initialTitle?: string;
   type: string;
   array?: Array<any>;
   options: any[]; // You can specify a more specific type if known
@@ -29,6 +30,8 @@ interface TieredButtonOptionsComponent {
   flexOpt?: string;
   buttonSize?: any;
   setArray?: any;
+  horizontalSecondaryButtons?: boolean;
+  secondaryButtonClasses?: string;
 }
 
 const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
@@ -45,13 +48,14 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   flexOpt,
   setArray,
   buttonSize = "default",
+  horizontalSecondaryButtons,
+  secondaryButtonClasses,
 }) => {
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const { textColor, errorColor } = useColorOptions();
 
   const buttonClick = (button: string) => {
     if (selectedArray.includes(button)) {
-      console.log("already got that one - we need to delete it");
       handleDelete(type, button);
     } else {
       handleAdd(type, button);
@@ -63,20 +67,11 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
     secondaryButtons: any,
     currentButton: any,
   ) => {
-    // Update selectedArray to remove any matching topTierButton
-    //we need to be sure to delete the secondary ones as well, that'll remove details completely
-    console.log(
-      "removing top tier button:",
-      topTierButton,
-      "secondaryButtons:",
-      secondaryButtons,
-      "type:",
-      type,
-      "currentButton:",
-      currentButton,
-    );
     const updatedArray = selectedArray.filter(
-      (item: any) => item !== topTierButton && !secondaryButtons.includes(item),
+      (item: any) =>
+        item !== topTierButton &&
+        !secondaryButtons.includes(item) &&
+        !currentButton,
     );
     setArray(updatedArray);
     handleDelete(topTierButton, currentButton);
@@ -87,7 +82,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
   }, []);
 
   return (
-    <div className={`ButtonOptionsComponentContainer mt-2 ${addClasses}`}>
+    <div className={`ButtonOptionsComponentContainer ${addClasses}`}>
       <div
         className={`ButtonsContainer mb-4 flex justify-center gap-4 ${flexOpt}`}
       >
@@ -108,7 +103,7 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
           {buttons.map((button: Button, index: number) => {
             return (
               <div
-                className="ButtonAndOptions flex flex-col items-center"
+                className={`ButtonAndOptions flex flex-col ${horizontalSecondaryButtons ? "items-start" : "items-center"} `}
                 key={index}
               >
                 <SiteButton
@@ -130,7 +125,9 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                   {button.title}
                 </SiteButton>
                 {selectedArray.includes(button.title) && (
-                  <div className="SecondTierOptions -mb-10 flex flex-col items-center">
+                  <div
+                    className={`SecondTierOptions ${horizontalSecondaryButtons ? "ml-2 flex-row gap-1 align-middle" : "-mb-10 flex-col"} flex items-center`}
+                  >
                     <ButtonOptionsComponent
                       type={button.type}
                       buttons={button.options}
@@ -138,21 +135,33 @@ const TieredButtonOptionsComponent: React.FC<TieredButtonOptionsComponent> = ({
                       handleAdd={handleAdd}
                       handleDelete={handleDelete}
                       classesForButtons="px-6"
-                      flexOpt="flex-col gap-2"
-                      buttonContainerClasses="flex-col items-center gap-3 self-center"
+                      flexOpt={`${secondaryButtonClasses}`}
+                      buttonContainerClasses={`${horizontalSecondaryButtons ? "flex-row" : "flex-col items-center self-center"} ${secondaryButtonClasses} gap-3`}
                       addClasses="-mb-1"
-                    />
-                    <SiteButton
-                      aria="removeButton"
-                      variant="filled"
-                      size="smallCircle"
-                      colorScheme="f1"
-                      onClick={() =>
-                        removeTopTier(button.type, button.options, button.title)
+                      deleteButton
+                      deleteClick={() =>
+                        removeTopTier(
+                          button.type,
+                          button.options,
+                          button.initialTitle,
+                        )
                       }
-                    >
-                      X
-                    </SiteButton>
+                    />
+                    {/* <SiteButton
+                      aria="removeButton"
+                      size="smallCircle"
+                      variant="filled"
+                      colorScheme="d2"
+                      addImage="bg-[url('/top-tier-delete.svg')]"
+                      addClasses={`bg-center ${horizontalSecondaryButtons ? "mt-2 ml-1" : ""} `}
+                      onClick={() =>
+                        removeTopTier(
+                          button.type,
+                          button.options,
+                          button.initialTitle,
+                        )
+                      }
+                    /> */}
                   </div>
                 )}
               </div>

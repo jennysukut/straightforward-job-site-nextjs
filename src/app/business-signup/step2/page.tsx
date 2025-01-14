@@ -9,8 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import Avatar from "@/components/avatarComponent";
 
 const businessSchema = z.object({
@@ -56,7 +56,11 @@ export default function BusinessSignupPage2() {
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className="OptionalTitle text-lg">all about your business</h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <Avatar
+            addClasses="self-end -mt-14"
+            avatarType="Business"
+            business={business}
+          />
         </div>
 
         {/* business field input */}

@@ -9,27 +9,26 @@ import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
 
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
-import JobPost from "@/components/jobPostComponent";
-import InfoBox from "@/components/infoBox";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
-import TieredButtonOptionsComponent from "@/components/tieredButtonOptionsComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import SiteButton from "@/components/siteButton";
-import { filter } from "framer-motion/client";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import JobPost from "@/components/jobBoardComponents/jobPostComponent";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import LoginPromptModal from "@/components/modals/logInPromptModal";
 
 export default function JobBoard() {
-  const { accountType } = usePageContext();
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
   const { jobListings } = useJobListings();
-  const { hideModal } = useModal();
+  const { currentPage, setCurrentPage, isLoggedIn } = usePageContext();
+  const { hideModal, showModal } = useModal();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [filteredJobs, setFilteredJobs] = useState<JobListing[]>([]);
-
   const [filters, setFilters] = useState<string[]>([]);
   const [level, setLevel] = useState<string[]>([]);
   const [pay, setPay] = useState<string[]>([]);
@@ -39,11 +38,33 @@ export default function JobBoard() {
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
 
+  // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
   };
 
+  // save jobs to saved-jobs list/page
+  const saveClick = (jobId: any) => {
+    if (!isLoggedIn) {
+      showModal(<LoginPromptModal />);
+      return;
+    }
+    if (fellow?.savedJobs?.includes(jobId)) {
+      setFellow({
+        ...fellow,
+        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
+      });
+    } else {
+      setFellow({
+        ...fellow,
+        savedJobs: [...(fellow?.savedJobs || []), jobId],
+      });
+    }
+    hideModal();
+  };
+
+  // function for when you use our filtering buttons
   const filterSearch = (jobs: any) => {
     const filteredJobs = jobs.filter((job: any) => {
       const matchesExperience =
@@ -72,6 +93,7 @@ export default function JobBoard() {
     setFilteredJobs(filteredJobs);
   };
 
+  // whenever input or buttons change, it determines what kind of filtering we do
   useEffect(() => {
     if (inputValue.length >= 3) {
       // filter and make matches out of any card where the jobTitle matches the inputValue
@@ -167,6 +189,7 @@ export default function JobBoard() {
     });
   };
 
+  // rendering job listings depending on the input and filters
   const renderJobListings = () => {
     const activeJobListings = jobListings?.filter((job: any) => {
       return job.job?.numberOfApps !== job.job?.applicationLimit;
@@ -209,7 +232,6 @@ export default function JobBoard() {
         />
       ));
     } else if (filters.length > 0 && !viewPendingJobs) {
-      console.log("trying to show filtered jobs", filteredActiveJobListings);
       return filteredActiveJobListings?.map((job: any, index: number) => (
         <JobPost
           job={job}
@@ -252,23 +274,11 @@ export default function JobBoard() {
     }
   };
 
-  const saveClick = (jobId: any) => {
-    if (fellow?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
-      });
-    } else {
-      setFellow({
-        ...fellow,
-        savedJobs: [...(fellow?.savedJobs || []), jobId],
-      });
-    }
-    hideModal();
-  };
+  console.log(currentPage);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+    setCurrentPage("jobs");
   }, []);
 
   return (
@@ -301,18 +311,21 @@ export default function JobBoard() {
             buttons={[
               {
                 title: level.length > 1 ? level : "level",
+                initialTitle: "level",
                 type: "level",
                 array: level,
                 options: ["entry-level", "junior", "senior"],
               },
               {
                 title: locationType.length > 1 ? locationType : "location type",
+                initialTitle: "location type",
                 type: "locationType",
                 array: locationType,
                 options: ["remote", "on-site", "hybrid"],
               },
               {
                 title: positionType.length > 1 ? positionType : "position type",
+                initialTitle: "position type",
                 type: "positionType",
                 array: positionType,
                 options: ["full-time", "part-time", "contract"],
@@ -323,6 +336,7 @@ export default function JobBoard() {
             handleDelete={handleDelete}
             classesForButtons="px-6"
             setArray={setFilters}
+            addClasses="mt-2"
           />
 
           {/* country input */}
@@ -339,8 +353,6 @@ export default function JobBoard() {
               width="extraSmall"
               optionsContainerClasses="max-w-[20vw]"
             />
-            {/* add pay filters here */}
-            {/* add location filters here */}
           </div>
         </div>
       </div>
@@ -355,6 +367,8 @@ export default function JobBoard() {
           {viewPendingJobs === true ? "view open jobs" : "view pending jobs"}
         </SiteButton>
       </div>
+
+      {/* job listings */}
       <div className="JobListings flex flex-wrap justify-center gap-8">
         {renderJobListings()}
       </div>

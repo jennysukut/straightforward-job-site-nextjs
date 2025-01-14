@@ -5,19 +5,28 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
-export default function Avatar({ addClasses }: any) {
-  const { fellow } = useFellow();
-  const { business } = useBusiness();
-  const { accountType } = usePageContext();
+export default function Avatar({
+  addClasses,
+  fellow,
+  business,
+  avatarType,
+}: any) {
   const { colorOption } = useColors();
 
-  const avatarDetails = avatarOptions.find(
-    (option) => option.title === fellow?.avatar,
-  );
+  let avatarDetails;
+  if (avatarType === "Business") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === business?.avatar,
+    );
+  } else if (avatarType === "Fellow") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === fellow?.avatar,
+    );
+  }
 
   return (
     <div className="Avatar">
-      {accountType === "Fellow" && (
+      {avatarType === "Fellow" && (
         <Image
           className={`AvatarImage ${colorOption === "highContrast" ? avatarDetails?.dropShadow.highContrast : ""} ${colorOption === "standard" ? avatarDetails?.dropShadow.standard : ""} ${addClasses}`}
           src={
@@ -30,10 +39,14 @@ export default function Avatar({ addClasses }: any) {
           alt="avatar"
         />
       )}
-      {accountType === "Business" && (
+      {avatarType === "Business" && (
         <Image
-          className={`AvatarImage ${business?.shadow} ${addClasses}`}
-          src={business?.avatar}
+          className={`AvatarImage ${colorOption === "highContrast" ? avatarDetails?.dropShadow.highContrast : ""} ${colorOption === "standard" ? avatarDetails?.dropShadow.standard : ""} ${addClasses}`}
+          src={
+            colorOption === "highContrast"
+              ? avatarDetails?.url.highContrast || "/default-avatar.png"
+              : avatarDetails?.url.standard || "/default-avatar.png"
+          }
           width={60}
           height={60}
           alt="avatar"

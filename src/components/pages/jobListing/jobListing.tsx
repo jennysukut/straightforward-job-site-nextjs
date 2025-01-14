@@ -9,14 +9,23 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
+import { useApplication } from "@/contexts/ApplicationContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
-import InfoBox from "@/components/infoBox";
-import SiteLabel from "@/components/siteLabel";
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
-import SiteButton from "./siteButton";
-import ApplicationLimitModal from "./modals/postAJobModals/applicationLimitModal";
-import PaymentModal from "./modals/paymentModal";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import SiteButton from "../../buttonsAndLabels/siteButton";
 import Link from "next/link";
+
+import {
+  OwnListingTopButtons,
+  OwnJobBottomButtons,
+  ListingTopButtons,
+  ListingBottomButtons,
+  AppFellowNotes,
+  AmsTopButtons,
+} from "./jobListingButtons";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
@@ -25,28 +34,34 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
-export default function JobListing({ isOwn, hasId, id }: any) {
-  // const { business, setBusiness } = useBusiness();
+export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   const router = useRouter();
-  const [canEdit, setCanEdit] = useState(false);
+
   const { setPageType } = usePageContext();
-  const { showModal } = useModal();
-  const { fellow } = useFellow();
+  const { showModal, hideModal } = useModal();
+  const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
   const { jobListings } = useJobListings();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
+  const { application } = useApplication();
+  const { applications } = useApplications();
 
+  const [canEdit, setCanEdit] = useState(false);
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
+  const [jobSavedStatus, setJobSavedStatus] = useState(
+    fellow?.savedJobs?.includes(id),
+  );
 
-  const handleEditClick = (url: any) => {
-    setJob({ ...job, jobIsBeingEdited: true });
-    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
-    console.log("edit button was clicked, redirecting to: ", url);
-    router.push(url);
-  };
-
+  let currentApp;
+  if (inAms) {
+    // Filter applications for the current jobId
+    const currentApps = applications?.filter((app) => app.jobId === id);
+    console.log(currentApps);
+    // Find the application where the applicant matches the fellow's id
+    currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
+  }
   // define the current job
   let currentJob;
   if (hasId && jobListings) {
@@ -57,11 +72,18 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     currentJob = job;
   }
 
+  const appNumber = currentJob?.applications?.length;
+
+  const handleEditClick = (url: any) => {
+    setJob({ ...job, jobIsBeingEdited: true });
+    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
+    console.log("edit button was clicked, redirecting to: ", url);
+    router.push(url);
+  };
+
   const checkNonNegParamsMatch = () => {
     if (!currentJob?.nonNegParams || !fellow) return false;
-
     const { country, languages = [], skills = [] } = fellow;
-
     // Check if all non negotiable parameters have a match in country, languages, or skills
     return currentJob.nonNegParams.every(
       (param) =>
@@ -73,26 +95,55 @@ export default function JobListing({ isOwn, hasId, id }: any) {
 
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
+  const matchingIds =
+    currentJob?.applicants &&
+    !currentJob?.applicants?.some(
+      (applicant: any) => applicant.id === fellow?.id,
+    );
 
-  // if it matches parameters, hasn't met applicationLimit, and the dailyApplications
+  // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
   const canApply =
     currentJob?.numberOfApps !== currentJob?.applicationLimit &&
     hasMatchingNonNegParams === true &&
-    fellow?.dailyApplications !== "5";
+    fellow?.dailyApplications?.count !== 5 &&
+    matchingIds;
+
+  const saveClick = (jobId: any) => {
+    if (fellow?.savedJobs?.includes(jobId)) {
+      setFellow({
+        ...fellow,
+        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
+      });
+      setJobSavedStatus(false);
+    } else {
+      setFellow({
+        ...fellow,
+        savedJobs: [...(fellow?.savedJobs || []), jobId],
+      });
+      setJobSavedStatus(true);
+    }
+    hideModal();
+  };
 
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
-    if (job?.jobIsBeingEdited) {
-      setCanEdit(true);
-    }
+    // if (job?.jobIsBeingEdited) {
+    //   setCanEdit(true);
+    // }
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
 
-    setPageType("jobListing");
+    // setPageType("jobListing");
   }, []);
+
+  //I need to reload and update this page when the fellow applies to it, that way the buttons reflect the fact that they've applied.
+
+  // useEffect(() => {
+  //   window.location.reload();
+  // }, [application, 1]);
 
   return (
     <div
@@ -100,40 +151,28 @@ export default function JobListing({ isOwn, hasId, id }: any) {
     >
       <div className="ProfileDetails flex gap-8">
         <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
-          {/* business buttons */}
-          {isOwn && (
-            <div className="BusinessTopButtons -mb-2 -mt-10 flex flex-col items-end gap-2 self-end">
-              <Link href={"/job-board"}>
-                <SiteButton aria="job board" colorScheme="d5">
-                  go to job board
-                </SiteButton>
-              </Link>
-              <SiteButton
-                variant="filled"
-                aria="apps"
-                colorScheme="b1"
-                onClick={() => showModal(<ApplicationLimitModal />)}
-              >
-                application limit: {currentJob?.applicationLimit}
-              </SiteButton>
-            </div>
-          )}
+          {/* TOP BUTTONS */}
+
+          {/* business buttons - not ams */}
+          {isOwn && !inAms && <OwnListingTopButtons currentJob={currentJob} />}
+
+          {/* business buttons - in ams */}
+          {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
 
           {/* fellow buttons */}
           {!isOwn && (
-            <div className="FellowTopButtons -mb-2 -mt-14 flex flex-col items-end gap-1 self-end">
-              <SiteButton aria="saveJob" colorScheme="d3">
-                save job
-              </SiteButton>
-              <SiteLabel variant="display" aria="roundNumber" addClasses="mt-3">
-                round: {currentJob?.roundNumber || "1"}
-              </SiteLabel>
-              <SiteLabel variant="display" aria="appLimit">
-                applications: {currentJob?.numberOfApps}/
-                {currentJob?.applicationLimit}
-              </SiteLabel>
-            </div>
+            <ListingTopButtons
+              id={id}
+              saveClick={saveClick}
+              jobSavedStatus={jobSavedStatus}
+              matchingIds={matchingIds}
+              appNumber={appNumber}
+              currentJob={currentJob}
+              app={currentApp ? currentApp : "no current app here"}
+            />
           )}
+
+          {!isOwn && inAms && <AppFellowNotes currentApp={currentApp} />}
 
           {/* Non-Negotiable Parameters */}
           <InfoBox
@@ -232,68 +271,36 @@ export default function JobListing({ isOwn, hasId, id }: any) {
             </ul>
           </InfoBox>
 
-          {/* Edit Buttons */}
-          {isOwn && (
-            <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant="filled"
-                colorScheme="b6"
-                aria="edit"
-                addClasses="px-8"
-                onClick={() => setCanEdit(!canEdit)}
-                isSelected={canEdit}
-              >
-                {canEdit ? "finish editing" : "edit"}
+          {/* BOTTOM BUTTONS */}
+
+          {/* business buttons - not in ams */}
+          {isOwn && !inAms && (
+            <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
+          )}
+
+          {/* business buttons - in ams */}
+          {isOwn && inAms && (
+            <div className="ListingAmsBottomButtons flex flex-col items-end gap-3 self-end">
+              <SiteButton aria="closeListing" variant="filled" colorScheme="c1">
+                settings / history
               </SiteButton>
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="f1"
-                addClasses="px-8"
-                onClick={() =>
-                  showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-                }
-              >
-                publish
+              <SiteButton aria="closeListing" variant="filled" colorScheme="f1">
+                close listing
+              </SiteButton>
+              <SiteButton aria="closeListing" variant="filled" colorScheme="b3">
+                message us?
               </SiteButton>
             </div>
           )}
 
-          {/* Fellow / Apply Buttons */}
+          {/* fellow / apply buttons */}
           {!isOwn && (
-            <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
-              <SiteButton
-                variant="filled"
-                colorScheme="c4"
-                aria="edit"
-                addClasses="px-8"
-                // we'll use the company id here to route to their page
-                onClick={() => router.push(`/profile/1b23i`)}
-              >
-                view company details
-              </SiteButton>
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="f1"
-                addClasses="px-8"
-                // onClick={() =>
-                //   showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-                // }
-                disabled={canApply === false}
-              >
-                apply for this job
-              </SiteButton>
-              <SiteButton
-                aria="publish"
-                variant="filled"
-                colorScheme="e3"
-                addClasses="px-8"
-                onClick={() => console.log("report clicked")}
-              >
-                report
-              </SiteButton>
-            </div>
+            <ListingBottomButtons
+              matchingIds={matchingIds}
+              canApply={canApply}
+              currentJob={currentJob}
+              id={id}
+            />
           )}
         </div>
 
@@ -347,7 +354,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
                   <h2 className="LocationTypeTitle mb-4 pl-2">
                     {`Hybrid Details:`}
                   </h2>
-                  <div className="Details">
+                  <div className="Details -mt-2">
                     <p className="HybridDetails">
                       {currentJob?.hybridDetails?.daysInOffice}{" "}
                       {`days in office, `}
@@ -388,7 +395,7 @@ export default function JobListing({ isOwn, hasId, id }: any) {
           >
             {/* More About The Job */}
             <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
-            <p className={`AboutJob pl-8 pt-4 leading-8 ${textColor}`}>
+            <p className={`AboutJob pl-8 pt-4 italic leading-8 ${titleColor}`}>
               {currentJob?.moreAboutPosition}
             </p>
             {/* Responsibilities */}

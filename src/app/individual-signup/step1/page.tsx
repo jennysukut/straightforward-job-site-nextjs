@@ -12,13 +12,13 @@ import { skillsList } from "@/lib/skillsList";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
-import InputComponent from "@/components/inputComponent";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
 
 import { countries } from "@/lib/countriesList";
 import { languageOptions } from "@/lib/languageOptions";
