@@ -1,8 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
+
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useApplication } from "@/contexts/ApplicationContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
+import { today } from "@/utils/textUtils";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAMessageModal from "./addAMessageModal";
@@ -12,7 +14,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
-  const { setApplication } = useApplication();
+  const { applications, setApplications } = useApplications();
 
   const apply = () => {
     // send details to the database for the application - if it's successful, show the successfulApplicationModal
@@ -21,14 +23,21 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
     // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
 
     // if the application is successful, do these things:
-    setApplication({
-      id: "testapp",
-      applicant: fellow?.id,
-      jobId: jobId,
-      business: business,
-      dateOfApp: "12.20.2024",
-      appStatus: "submitted",
-    });
+    //perhaps we should have an "applications" context that's tied to the fellow/business?
+    // It might be easier/more efficient that way?
+    setApplications([
+      ...(applications || []),
+      {
+        id: "bleh", //we'll use an id set by the backend here
+        applicant: fellow?.id,
+        message: "test message to see if it causes a notification",
+        jobId: jobId,
+        business: business,
+        businessId: "flip",
+        dateOfApp: today,
+        appStatus: "submitted",
+      },
+    ]);
     setFellow({
       ...fellow,
       dailyApplications: {

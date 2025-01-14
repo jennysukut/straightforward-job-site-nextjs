@@ -10,7 +10,7 @@ export interface Applications {
   jobId?: string;
   business?: string;
   businessId?: string;
-  dateOfApp?: string;
+  dateOfApp?: any;
   appStatus?: string;
   businessNote?: Array<string>;
   fellowNote?: Array<string>;

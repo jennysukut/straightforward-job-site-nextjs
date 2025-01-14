@@ -21,6 +21,8 @@ interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
   setCurrentJob?: any;
   setSelectedColor?: any;
   viewCompanyDetails?: any;
+  appDate?: any;
+  currentJob?: any;
 }
 
 const Application: React.FC<ApplicationProps> = ({
@@ -35,6 +37,8 @@ const Application: React.FC<ApplicationProps> = ({
   setCurrentJob,
   setSelectedColor,
   viewCompanyDetails,
+  dateOfApp,
+  currentJob,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
@@ -86,7 +90,9 @@ const Application: React.FC<ApplicationProps> = ({
             <p className="TitleAndBusiness text-md">
               {`${selectedJob?.jobTitle} | ${selectedJob?.businessName}`}
             </p>
-            <p className="Details self-center text-sm">{`${appStatus}`}</p>
+            <p className="Details self-center text-sm">
+              {currentJob ? `${appStatus}` : `${dateOfApp} | ${appStatus}`}
+            </p>
           </div>
         </SiteButton>
       </div>

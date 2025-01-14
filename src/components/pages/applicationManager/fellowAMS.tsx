@@ -131,6 +131,7 @@ export default function FellowAMS() {
           appStatus={app.appStatus}
           selectedApps={selectedApps}
           setCurrentJob={setCurrentJob}
+          currentJob={currentJob}
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           setSelectedColor={setSelectedColor}
@@ -150,6 +151,7 @@ export default function FellowAMS() {
           selectedApps={selectedApps}
           setCurrentJob={setCurrentJob}
           handleAdd={handleAdd}
+          currentJob={currentJob}
           handleDelete={handleDelete}
           setSelectedColor={setSelectedColor}
           viewCompanyDetails={viewCompanyDetails}
@@ -263,7 +265,7 @@ export default function FellowAMS() {
                       type: "appStatus",
                       array: appStatus,
                       options: [
-                        "unopened",
+                        "submitted",
                         "viewed",
                         "stage 1",
                         "stage 2",
