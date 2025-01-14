@@ -45,7 +45,6 @@ const JobPost: React.FC<JobPostProps> = ({
   };
 
   const appNumber = job?.job.applications?.length;
-  console.log(job, appNumber);
 
   const saveButton = (() => {
     switch (colorOption) {

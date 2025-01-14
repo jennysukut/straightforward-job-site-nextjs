@@ -2,12 +2,16 @@
 
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
-
+import { useEffect } from "react";
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
 export default function Application({ params }: any) {
-  const { accountType } = usePageContext();
+  const { accountType, setCurrentPage } = usePageContext();
   const { fellow } = useFellow();
+
+  useEffect(() => {
+    setCurrentPage("application");
+  }, []);
 
   return (
     <div className="ProfilePage flex flex-grow flex-col items-center gap-8 md:pb-12">

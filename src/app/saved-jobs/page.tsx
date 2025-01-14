@@ -5,6 +5,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 import Link from "next/link";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -15,6 +16,7 @@ export default function SavedJobs() {
   const { textColor } = useColorOptions();
   const { jobListings } = useJobListings();
   const { hideModal } = useModal();
+  const { setCurrentPage } = usePageContext();
 
   const [colorArray, setColorArray] = useState<[]>([]);
 
@@ -35,6 +37,7 @@ export default function SavedJobs() {
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+    setCurrentPage("saved");
   }, []);
 
   return (

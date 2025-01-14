@@ -274,11 +274,12 @@ export default function JobBoard() {
     }
   };
 
+  console.log(currentPage);
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
-    setCurrentPage("jobBoard");
+    setCurrentPage("jobs");
   }, []);
-  console.log(currentPage);
 
   return (
     <div

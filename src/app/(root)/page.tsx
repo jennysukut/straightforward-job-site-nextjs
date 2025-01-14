@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     setCurrentPage("Home");
-  }, [setCurrentPage]);
+  }, []);
 
   return (
     <div className="HomePage flex flex-grow flex-col items-center gap-8 pt-14 md:pb-12 md:pt-20">

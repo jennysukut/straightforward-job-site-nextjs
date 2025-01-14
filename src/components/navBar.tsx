@@ -44,11 +44,7 @@ export default function NavBar() {
     );
   }
 
-  useEffect(() => {
-    if (currentPage === "jobBoard") {
-      setClickedButton("jobs");
-    }
-  }, [currentPage]);
+  console.log(currentPage);
 
   return (
     <div
@@ -126,9 +122,8 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="b4"
-                  // colorScheme="e5"
                   title="jobs"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/saved-jobs"}>
@@ -136,7 +131,7 @@ export default function NavBar() {
                   onClick={handleNavButtonClick}
                   colorScheme="d4"
                   title="saved"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/ams"}>
@@ -144,7 +139,7 @@ export default function NavBar() {
                   onClick={handleNavButtonClick}
                   colorScheme="f3"
                   title="application manager"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/settings"}>
@@ -152,15 +147,15 @@ export default function NavBar() {
                   onClick={handleNavButtonClick}
                   colorScheme="b6"
                   title="settings"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/profile"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
+                  title="profile"
+                  clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
                   addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
@@ -177,27 +172,27 @@ export default function NavBar() {
                   onClick={handleNavButtonClick}
                   colorScheme="b4"
                   title="calendar"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="d4"
                 title="mailbox"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <NavButton
                 onClick={() => showModal(<PostAJobModal />)}
                 colorScheme="e5"
                 title="post a job"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <Link href={"/ams"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="f3"
                   title="application manager"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/settings"}>
@@ -205,7 +200,7 @@ export default function NavBar() {
                   onClick={handleNavButtonClick}
                   colorScheme="b6"
                   title="settings"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/profile"}>
@@ -221,8 +216,8 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
+                  title="profile"
+                  clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
                   addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
@@ -238,27 +233,27 @@ export default function NavBar() {
                 onClick={handleNavButtonClick}
                 colorScheme="b4"
                 title="about"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <NavButton
                 onClick={() => showModal(<LoginModal />)}
                 colorScheme="e5"
                 title="login"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <Link href={"/pricing"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="d4"
                   title="pricing"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <NavButton
                 onClick={() => showModal(<SignupOptionsModal />)}
                 colorScheme="f3"
                 title="signup"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
             </div>
           );

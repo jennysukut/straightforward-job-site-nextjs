@@ -1,13 +1,17 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-
+import { useEffect } from "react";
 import React from "react";
 import FellowAMS from "@/components/pages/applicationManager/fellowAMS";
 import BusinessAMS from "@/components/pages/applicationManager/businessAMS";
 
 export default function AMS() {
-  const { accountType, isLoggedIn } = usePageContext();
+  const { accountType, isLoggedIn, setCurrentPage } = usePageContext();
+
+  useEffect(() => {
+    setCurrentPage("application manager");
+  }, []);
 
   return (
     <div

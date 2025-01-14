@@ -1,13 +1,18 @@
 "use client";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useEffect } from "react";
 
 import React from "react";
 import ApplicationManager from "@/components/pages/applicationManager/applicationManager";
 
 export default function AMSJobPage({ params }: any) {
-  const { accountType, isLoggedIn } = usePageContext();
+  const { accountType, isLoggedIn, setCurrentPage } = usePageContext();
   const { textColor } = useColorOptions();
+
+  useEffect(() => {
+    setCurrentPage("application manager");
+  }, []);
 
   // Here, we'll need to check to make sure the jobId listed is owned by the business that's currently logged in.
   // If it is, we'll show the AMS page for the job. If not, we can throw an error message.
