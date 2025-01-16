@@ -6,6 +6,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { JobAMSNotificationButton } from "../buttonsAndLabels/notificationButton";
+import { useState } from "react";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InfoBox from "../informationDisplayComponents/infoBox";
@@ -28,10 +29,11 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   const router = useRouter();
   const { jobListings } = useJobListings();
   const { applications } = useApplications();
-
+  const [isClicked, setIsClicked] = useState(false);
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const appNumbers = selectedJob?.applications?.length;
+  const previousNumberOfInterviews = 1;
   let viewedApplications: any = [];
   let notification;
   let numberOfInterviews;
@@ -51,11 +53,17 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
     const hasInterviews = (relevantApp?.appointments?.length || 0) > 0;
     if (hasInterviews) {
       numberOfInterviews = relevantApp?.appointments?.length;
+      // const difference = numberOfInterviews
+      //   ? -previousNumberOfInterviews
+      //   : true;
+      // if (difference !== -1) {
       notification = "new appointment";
+      // }
     }
   });
 
   const buttonClick = () => {
+    setIsClicked(!isClicked);
     router.push(`/ams/${jobId}`);
   };
 
@@ -114,6 +122,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
           }
           onClick={buttonClick}
           addClasses="px-8 py-3"
+          isSelected={isClicked}
         >
           view applications | manage listing
         </SiteButton>

@@ -14,6 +14,7 @@ import { BusinessListProvider } from "@/contexts/BusinessListContext";
 import { ApplicationProvider } from "@/contexts/ApplicationContext";
 import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
 import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
+import { FellowsProvider } from "@/contexts/FellowsContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
@@ -58,16 +59,18 @@ export default function RootLayout({
                       <JobListingsProvider>
                         <JobProvider>
                           <BusinessProvider>
-                            <FellowProvider>
-                              <ModalProvider>
-                                <NavBar />
-                                <main className="Main flex flex-1 flex-col">
-                                  {children}
-                                  {/* we could slip a fun background element in here? */}
-                                </main>
-                                <Footer />
-                              </ModalProvider>
-                            </FellowProvider>
+                            <FellowsProvider>
+                              <FellowProvider>
+                                <ModalProvider>
+                                  <NavBar />
+                                  <main className="Main flex flex-1 flex-col">
+                                    {children}
+                                    {/* we could slip a fun background element in here? */}
+                                  </main>
+                                  <Footer />
+                                </ModalProvider>
+                              </FellowProvider>
+                            </FellowsProvider>
                           </BusinessProvider>
                         </JobProvider>
                       </JobListingsProvider>

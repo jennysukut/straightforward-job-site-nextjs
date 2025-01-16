@@ -34,7 +34,7 @@ export default function Footer() {
         </SiteButton>
       </div>
       <div className="FooterInfo">
-        <p className={`Copywrite ${secondaryTextColor} text-xs`}>
+        <p className={`Copywrite ${secondaryTextColor} -mb-4 text-xs`}>
           ©2024, Straightforward Job Site
         </p>
       </div>

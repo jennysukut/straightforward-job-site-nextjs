@@ -22,6 +22,8 @@ export interface Applications {
     };
     interviewTime?: string;
   }>;
+  appIsBeingRejected?: string;
+  rejectionMessage?: any;
 }
 
 interface ApplicationsContextType {
@@ -56,6 +58,151 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "12:00pm",
         },
       ],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "flippin",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "bhcdaj",
+      applicant: "testid",
+      message: "test message to see if it causes a notification",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "12.20.2024",
+      appStatus: "viewed",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 5,
+          },
+          interviewTime: "12:00pm",
+        },
+      ],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "bjkd",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "bjefv",
+      applicant: "testid",
+      message: "test message to see if it causes a notification",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "12.20.2024",
+      appStatus: "viewed",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 5,
+          },
+          interviewTime: "12:00pm",
+        },
+      ],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "bacjefk",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "cbajkef",
+      applicant: "testid",
+      message: "test message to see if it causes a notification",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "12.20.2024",
+      appStatus: "viewed",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 5,
+          },
+          interviewTime: "12:00pm",
+        },
+      ],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "ecfbvjkg",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "dwnjekcfv",
+      applicant: "testid",
+      message: "test message to see if it causes a notification",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "12.20.2024",
+      appStatus: "viewed",
+      appointments: [
+        {
+          interviewStep: "1",
+          interviewDate: {
+            month: 0,
+            day: 5,
+          },
+          interviewTime: "12:00pm",
+        },
+      ],
+      appIsBeingRejected: "false",
+    },
+    {
+      id: "efuwog",
+      applicant: "kittyfritz",
+      message: "cats can haz jobs?",
+      jobId: "4",
+      business: "Insight Analytics Co.",
+      businessId: "1b23i",
+      dateOfApp: "1.13.2024",
+      appStatus: "submitted",
+      appointments: [],
+      appIsBeingRejected: "false",
     },
     {
       id: "dfkjb8",
@@ -77,6 +224,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "2:00pm",
         },
       ],
+      appIsBeingRejected: "false",
     },
     {
       id: "d87fhw",
@@ -103,6 +251,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "3:00pm",
         },
       ],
+      appIsBeingRejected: "false",
     },
     {
       id: "iuhec8",
@@ -112,6 +261,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "9",
       dateOfApp: "12.20.2024",
       appStatus: "offer",
+      appIsBeingRejected: "false",
     },
     {
       id: "fhuek4",
@@ -120,10 +270,11 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Insight Analytics Co.",
       dateOfApp: "12.20.2024",
       appStatus: "submitted",
+      appIsBeingRejected: "false",
     },
     {
       id: "dsfkv9",
-      applicant: "testid",
+      applicant: "blip",
       message: "What up, buttsnack?",
       business: "QuickAssist Corp",
       jobId: "6",
@@ -133,6 +284,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         "Here's a secondary little note, also for testing.",
       ],
       appStatus: "viewed",
+      appIsBeingRejected: "false",
     },
     {
       id: "cv9t4t",
@@ -141,6 +293,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Innovatech Manufacturing",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
+      appIsBeingRejected: "false",
     },
     {
       id: "hf7ve",
@@ -150,6 +303,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "9",
       dateOfApp: "12.20.2024",
       appStatus: "offer",
+      appIsBeingRejected: "false",
     },
   ]);
 

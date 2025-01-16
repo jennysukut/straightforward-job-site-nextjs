@@ -11,6 +11,7 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   job: any;
@@ -29,6 +30,7 @@ const JobPost: React.FC<JobPostProps> = ({
   const { colorOption } = useColors();
   const { fellow } = useFellow();
   const { showModal, hideModal } = useModal();
+  const { applications } = useApplications();
 
   const removeSavedJob = () => {
     showModal(
@@ -39,9 +41,23 @@ const JobPost: React.FC<JobPostProps> = ({
     );
   };
 
+  let thisApp: string;
+  const applied = job.job?.applicants?.includes(fellow?.id);
+  if (applied) {
+    const currentApp: any = applications?.find((app: any) => {
+      return app.jobId === job.jobId && app.applicant === fellow?.id;
+    });
+    console.log(currentApp);
+    if (currentApp) {
+      thisApp = currentApp.id;
+    }
+  }
+
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
-    router.push(`/listing/${job.jobId}`);
+    if (applied) {
+      router.push(`/application/${thisApp}`);
+    } else router.push(`/listing/${job.jobId}`);
   };
 
   const appNumber = job?.job.applications?.length;
@@ -156,7 +172,7 @@ const JobPost: React.FC<JobPostProps> = ({
           }
           onClick={viewDetails}
         >
-          view details
+          {applied ? "already applied - view application" : "view details"}
         </SiteButton>
       </div>
     </div>

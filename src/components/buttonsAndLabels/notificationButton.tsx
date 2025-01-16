@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import SiteLabel from "./siteLabel";
+import SiteButton from "./siteButton";
 
 interface NotificationProps extends React.HTMLAttributes<HTMLDivElement> {
   addClasses?: string;
@@ -13,29 +14,19 @@ const Notification: React.FC<NotificationProps> = ({
   message,
   ...props
 }) => {
-  const [onHover, setOnHover] = useState(false);
-
-  const hoverIn = () => {
-    setTimeout(() => {
-      setOnHover(true);
-    }, 300);
-  };
-
-  const hoverOut = () => {
-    setOnHover(false);
-  };
+  const [showDetails, setShowDetails] = useState(false);
 
   return (
     <div className="NotificationContainer flex flex-col">
-      <SiteLabel
-        variant="notification"
+      <SiteButton
+        variant="filled"
         colorScheme="f1"
-        size="notification"
         aria="notification"
-        onMouseEnter={hoverIn}
-        onMouseLeave={hoverOut}
+        size="extraSmallCircle"
+        onClick={() => setShowDetails(!showDetails)}
       />
-      {onHover && message && (
+
+      {showDetails && message && (
         <SiteLabel
           variant="display"
           aria="notificationDetails"

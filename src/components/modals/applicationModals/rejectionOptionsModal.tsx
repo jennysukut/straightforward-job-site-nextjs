@@ -2,18 +2,27 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { stageList } from "@/lib/stageList";
 import { rejectionOptions } from "@/lib/rejectionOptions";
-
+import { useRouter } from "next/navigation";
+import { useApplications } from "@/contexts/ApplicationsContext";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RejectionConfirmationModal from "./rejectConfirmationModal";
-import RejectionMessageModal from "./rejectionMessageModal";
 
-export default function RejectionOptionsModal() {
+export default function RejectionOptionsModal({ application }: any) {
   const { showModal, goBack, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
+  const router = useRouter();
 
   const setMessage = (title: any) => {
-    // code here after rejection is verified
-    // We'll need to go ahead and set the status of the application as closed and initiate the rejection messages
-    showModal(<RejectionMessageModal title={title} />);
+    if (applications) {
+      setApplications(
+        applications.map((app) =>
+          app.id === application.id
+            ? { ...app, appIsBeingRejected: title }
+            : app,
+        ),
+      );
+      hideModal();
+    }
   };
 
   return (

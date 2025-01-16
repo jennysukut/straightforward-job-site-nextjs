@@ -8,7 +8,6 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
 
 import Image from "next/image";
-import SiteButton from "./buttonsAndLabels/siteButton";
 import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
@@ -44,11 +43,13 @@ export default function NavBar() {
     );
   }
 
-  console.log(currentPage);
+  useEffect(() => {
+    setClickedButton(currentPage);
+  }, [currentPage]);
 
   return (
     <div
-      className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}
+      className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor}`}
     >
       <Link href={"/"}>
         {colorOption === "standard" && (
@@ -204,15 +205,6 @@ export default function NavBar() {
                 />
               </Link>
               <Link href={"/profile"}>
-                {/* <NavButton
-                  onClick={handleNavButtonClick}
-                  colorScheme={business?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
-                  variant="avatar"
-                  size="mediumCircle"
-                  addImage={business?.buttonImg}
-                /> */}
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}

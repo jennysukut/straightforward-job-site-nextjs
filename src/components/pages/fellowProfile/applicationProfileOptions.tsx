@@ -9,7 +9,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 
-const AppFellowTopButtons = ({ app, applicant }: any) => {
+const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
 
@@ -34,6 +34,8 @@ const AppFellowTopButtons = ({ app, applicant }: any) => {
         colorScheme="b5"
         aria="Contact"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
+
         //Open messenger, sending app Details to bring up the current conversation
         // or a new conversation pertaining to this app
         // onClick={() => setCanEdit(!canEdit)}
@@ -46,20 +48,26 @@ const AppFellowTopButtons = ({ app, applicant }: any) => {
         aria="edit"
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
+        disabled={app.appStatus === "closed"}
       >
-        {app.businessNote.length > 0 ? "add another note" : "add a note"}
+        {app.BusinessNote && app.businessNote.length > 0
+          ? "add another note"
+          : "add a note"}
       </SiteButton>
       <SiteButton
         variant="filled"
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
               appStatus={app.appStatus}
               applicant={applicant}
               updateStatus={updateStatus}
+              showRejectOptions={showRejectOptions}
+              application={app}
             />,
           )
         }
@@ -95,6 +103,7 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="c4"
         aria="Contact"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
@@ -113,18 +122,22 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="b6"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
-        {app.businessNote.length > 0 ? "add another note" : "add a note"}
+        {app.BusinessNote && app.businessNote.length > 0
+          ? "add another note"
+          : "add a note"}
       </SiteButton>
       <SiteButton
         variant="filled"
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() => showModal(<RejectAppModal applicant={applicant} />)}
       >
-        reject
+        {app.appStatus === "closed" ? "rejected" : "reject"}
       </SiteButton>
     </div>
   );

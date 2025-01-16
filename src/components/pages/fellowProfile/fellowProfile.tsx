@@ -7,6 +7,7 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
+import { useFellows } from "@/contexts/FellowsContext";
 import {
   OwnFellowTopButtons,
   OwnFellowBottomButtons,
@@ -51,27 +52,30 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { applications } = useApplications();
   const { jobListings } = useJobListings();
   const { showModal } = useModal();
+  const { fellows } = useFellows();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
   const [canEdit, setCanEdit] = useState(false);
 
-  // define the current fellow
-  let currentFellow;
-  if (hasId) {
-    //if the fellow has an Id, it's being accessed by a business, so we'll need to take the id from the parameters and find the fellow who's information we're using
-    currentFellow = fellow;
-  } else {
-    //if it's just the currentFellow, we'll pass the fellow parameter through here?
-    currentFellow = self || fellow;
-  }
-
   let currentApp: any;
   let currentJob: any;
   if (isApp) {
     currentApp = applications?.find((app) => app.id === appId);
     currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
+  }
+
+  // define the current fellow
+  let currentFellow;
+  if (hasId) {
+    //if the fellow has an Id, it's being accessed by a business, so we'll need to take the id from the parameters and find the fellow who's information we're using
+    currentFellow = fellows?.find((fellow: any) => {
+      return fellow.id === currentApp?.applicant;
+    });
+  } else {
+    //if it's just the currentFellow, we'll pass the fellow parameter through here?
+    currentFellow = self || fellow;
   }
 
   let avatarDetails;
@@ -134,9 +138,12 @@ const FellowProfile: React.FC<FellowProfile> = ({
           )}
 
           {/* Business Note On App */}
-          {!isOwn && isApp && currentApp.businessNote.length > 0 && (
-            <AppFellowNotes currentApp={currentApp} />
-          )}
+          {!isOwn &&
+            isApp &&
+            currentApp.businessNote &&
+            currentApp.businessNote.length > 0 && (
+              <AppFellowNotes currentApp={currentApp} />
+            )}
 
           {/* SKILLS DETAILS */}
           <InfoBox
@@ -201,7 +208,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {currentFellow?.experience && (
+          {currentFellow?.experience.length > 0 && (
             <InfoBox
               variant="hollow"
               aria="experience"
@@ -489,9 +496,12 @@ const FellowProfile: React.FC<FellowProfile> = ({
                             href={link.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className={`text-sm font-medium italic ${secondaryTextColor}`}
                           >
-                            {link.link}
+                            <p
+                              className={`Link text-sm font-medium italic ${secondaryTextColor} max-w-[400px] overflow-clip text-ellipsis text-nowrap`}
+                            >
+                              {link.link}
+                            </p>
                           </a>
                         </div>
                       );

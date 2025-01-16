@@ -192,19 +192,33 @@ export default function JobBoard() {
   // rendering job listings depending on the input and filters
   const renderJobListings = () => {
     const activeJobListings = jobListings?.filter((job: any) => {
-      return job.job?.numberOfApps !== job.job?.applicationLimit;
+      const activeJob =
+        job.job?.numberOfApps !== job.job?.applicationLimit &&
+        !job.job?.applicants?.includes(fellow?.id);
+      return activeJob;
     });
 
     const pendingJobListings = jobListings?.filter((job: any) => {
-      return job.job?.numberOfApps === job.job?.applicationLimit;
+      const pendingJob =
+        job.job?.numberOfApps === job.job?.applicationLimit ||
+        job.job?.applicants?.includes(fellow?.id);
+      return pendingJob;
     });
 
     const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
-      return job.job?.numberOfApps !== job.job?.applicationLimit;
+      const activeJob =
+        job.job?.numberOfApps !== job.job?.applicationLimit &&
+        !job.job?.applicants?.includes(fellow?.id);
+      return activeJob;
+      // return job.job?.numberOfApps !== job.job?.applicationLimit;
     });
 
     const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
-      return job.job?.numberOfApps === job.job?.applicationLimit;
+      const pendingJob =
+        job.job?.numberOfApps === job.job?.applicationLimit ||
+        job.job?.applicants?.includes(fellow?.id);
+      return pendingJob;
+      // return job.job?.numberOfApps === job.job?.applicationLimit;
     });
 
     if (inputValue.length < 3 && filters.length === 0 && !viewPendingJobs) {

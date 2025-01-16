@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { usePageContext } from "@/contexts/PageContext";
@@ -17,6 +17,19 @@ function HeaderSection() {
   const { setPageType, accountType, isLoggedIn, setCurrentPage } =
     usePageContext();
 
+  const [clickedButton, setClickedButton] = useState("");
+
+  const buttonClick = (title: any) => {
+    setClickedButton(clickedButton === title ? "" : title);
+    if (title === "postAJob") {
+      showModal(<PostAJobModal />);
+    } else if (title === "signup") {
+      showModal(<SignupOptionsModal />);
+    }
+  };
+
+  console.log(clickedButton);
+
   useEffect(() => {
     setPageType("main");
     setCurrentPage("main");
@@ -33,15 +46,30 @@ function HeaderSection() {
       {accountType === "Fellow" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
           <Link href={"/ams"}>
-            <SiteButton aria="sign up" size="large" colorScheme="b1">
+            <SiteButton
+              aria="sign up"
+              size="large"
+              colorScheme="b1"
+              onClick={() => buttonClick("ams")}
+            >
               manage your applications
             </SiteButton>
           </Link>
-          <SiteButton aria="support us" size="large" colorScheme="e5">
+          <SiteButton
+            aria="support us"
+            size="large"
+            colorScheme="e5"
+            onClick={() => buttonClick("mail")}
+          >
             check your mail
           </SiteButton>
           <Link href={"/job-board"}>
-            <SiteButton aria="support us" size="large" colorScheme="f1">
+            <SiteButton
+              aria="support us"
+              size="large"
+              colorScheme="f1"
+              onClick={() => buttonClick("jobs")}
+            >
               explore jobs
             </SiteButton>
           </Link>
@@ -51,19 +79,31 @@ function HeaderSection() {
       {/* LoggedIn Business Buttons */}
       {accountType === "Business" && isLoggedIn === true && (
         <ButtonContainer addClasses="justify-center flex items-end pr-6 sm:pr-0 flex-col sm:flex-row sm:justify-start">
-          <Link href={"/profile"}>
-            <SiteButton aria="sign up" size="large" colorScheme="b1">
+          <Link href={"/ams"}>
+            <SiteButton
+              aria="sign up"
+              size="large"
+              colorScheme="b1"
+              onClick={() => buttonClick("ams")}
+            >
               manage your listings
             </SiteButton>
           </Link>
-          <SiteButton aria="support us" size="large" colorScheme="e5">
-            check your mail
-          </SiteButton>
+          <Link href={"/messages"}>
+            <SiteButton
+              aria="support us"
+              size="large"
+              colorScheme="e5"
+              onClick={() => buttonClick("mail")}
+            >
+              check your mail
+            </SiteButton>
+          </Link>
           <SiteButton
             aria="support us"
             size="large"
             colorScheme="f1"
-            onClick={() => showModal(<PostAJobModal />)}
+            onClick={() => buttonClick("postAJob")}
           >
             post a job
           </SiteButton>
@@ -77,15 +117,25 @@ function HeaderSection() {
             aria="sign up"
             size="large"
             colorScheme="b1"
-            onClick={() => showModal(<SignupOptionsModal />)}
+            onClick={() => buttonClick("signup")}
           >
             sign up
           </SiteButton>
-          <SiteButton aria="support us" size="large" colorScheme="e5">
+          <SiteButton
+            aria="support us"
+            size="large"
+            colorScheme="e5"
+            onClick={() => buttonClick("learnMore")}
+          >
             learn more
           </SiteButton>
           <Link href={"/job-board"}>
-            <SiteButton aria="support us" size="large" colorScheme="f1">
+            <SiteButton
+              aria="support us"
+              size="large"
+              colorScheme="f1"
+              onClick={() => buttonClick("jobs")}
+            >
               explore jobs
             </SiteButton>
           </Link>

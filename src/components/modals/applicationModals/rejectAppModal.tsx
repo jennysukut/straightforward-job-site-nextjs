@@ -6,6 +6,7 @@ import RejectionConfirmationModal from "./rejectConfirmationModal";
 import RejectionStep1Modal from "./rejectionStep1Modal";
 
 export default function RejectAppModal({
+  application,
   applicant,
   appStatus,
   updateStatus,
@@ -46,7 +47,9 @@ export default function RejectAppModal({
           aria="reject"
           addClasses="py-2 px-8"
           // onClick={rejectClick}
-          onClick={() => showModal(<RejectionStep1Modal />)}
+          onClick={() =>
+            showModal(<RejectionStep1Modal application={application} />)
+          }
         >
           no, just reject
         </SiteButton>
