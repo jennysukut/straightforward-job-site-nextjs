@@ -39,6 +39,8 @@ const JobPost: React.FC<JobPostProps> = ({
     );
   };
 
+  const applied = job.job?.applicants?.includes(fellow?.id);
+
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
     router.push(`/listing/${job.jobId}`);
@@ -156,7 +158,8 @@ const JobPost: React.FC<JobPostProps> = ({
           }
           onClick={viewDetails}
         >
-          view details
+          {applied ? "already applied - view details" : "view details"}
+          {/* view details */}
         </SiteButton>
       </div>
     </div>

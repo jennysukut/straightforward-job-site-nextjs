@@ -172,7 +172,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
             />
           )}
 
-          {!isOwn && inAms && <AppFellowNotes currentApp={currentApp} />}
+          {!isOwn && <AppFellowNotes currentApp={currentApp} />}
 
           {/* Non-Negotiable Parameters */}
           <InfoBox
