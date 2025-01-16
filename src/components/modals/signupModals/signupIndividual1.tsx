@@ -10,6 +10,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import SiteButton from "../../buttonsAndLabels/siteButton";
+import { FELLOW_SIGNUP_MUTATION } from "@/graphql/mutations";
+import { useMutation } from "@apollo/client";
 import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
 const fellowSchema = z.object({
@@ -24,6 +26,9 @@ export default function SignupModalIndividual1() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
+  const [signupFellow, { loading, error }] = useMutation(
+    FELLOW_SIGNUP_MUTATION,
+  );
   const { titleColor, textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -42,6 +47,7 @@ export default function SignupModalIndividual1() {
       name: data.name,
       email: data.email,
     });
+    signupFellow({ variables: { requestBody: data } });
     router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();
