@@ -55,7 +55,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
   );
 
   let currentApp;
-  if (inAms) {
+  if (inAms || !isOwn) {
     // Filter applications for the current jobId
     const currentApps = applications?.filter((app) => app.jobId === id);
     console.log(currentApps);
@@ -138,12 +138,6 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
 
     // setPageType("jobListing");
   }, []);
-
-  //I need to reload and update this page when the fellow applies to it, that way the buttons reflect the fact that they've applied.
-
-  // useEffect(() => {
-  //   window.location.reload();
-  // }, [application, 1]);
 
   return (
     <div

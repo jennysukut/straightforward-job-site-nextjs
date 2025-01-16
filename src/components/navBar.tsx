@@ -49,7 +49,7 @@ export default function NavBar() {
 
   return (
     <div
-      className={`NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16 ${textColor}`}
+      className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor}`}
     >
       <Link href={"/"}>
         {colorOption === "standard" && (
