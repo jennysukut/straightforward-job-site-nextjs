@@ -6,10 +6,12 @@ import ApplicationLimitModal from "@/components/modals/postAJobModals/applicatio
 import PaymentModal from "@/components/modals/paymentModal";
 import ApplyModal from "@/components/modals/applicationModals/applyModal";
 import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
+import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
 
 import { useModal } from "@/contexts/ModalContext";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
@@ -119,9 +121,19 @@ const ListingBottomButtons = ({
   canApply,
   currentJob,
   id,
+  currentApp,
 }: any) => {
   const router = useRouter();
-  const { showModal } = useModal();
+  const { showModal, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
+  const continueRetract = () => {
+    console.log("trying to retract this application");
+    const updatedApplications = applications?.filter(
+      (app) => app.id !== currentApp?.id,
+    );
+    setApplications(updatedApplications || []);
+    hideModal();
+  };
 
   return (
     <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
@@ -173,6 +185,22 @@ const ListingBottomButtons = ({
             // onClick={}
           >
             view your application
+          </SiteButton>
+          <SiteButton
+            variant="filled"
+            colorScheme="f5"
+            aria="edit"
+            addClasses="px-8"
+            onClick={() =>
+              showModal(
+                <RetractionConfirmationModal
+                  jobTitle={currentJob?.jobTitle}
+                  continueRetract={continueRetract}
+                />,
+              )
+            }
+          >
+            retract
           </SiteButton>
         </div>
       )}

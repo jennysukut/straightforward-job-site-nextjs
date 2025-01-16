@@ -294,6 +294,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
               canApply={canApply}
               currentJob={currentJob}
               id={id}
+              currentApp={currentApp}
             />
           )}
         </div>
