@@ -37,6 +37,7 @@ export default function RejectionMessageOptionsComponent({
   const { textColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
   const [title, setTitle] = useState("kindGeneral" as RejectionOptionKey);
+  const [rejectionMessage, setRejectionMessage] = useState({});
   const [applicantInfo, setApplicantInfo] = useState({
     firstName: applicant,
     jobTitle: jobTitle,
@@ -50,71 +51,70 @@ export default function RejectionMessageOptionsComponent({
     handleSubmit,
     setValue,
     register,
-    clearErrors,
     setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(rejectionSchema),
   });
 
-  const message = rejectionOptions[title];
+  let placeholderText = "";
 
   useEffect(() => {
     setTitle(chosenMessage);
   }, [chosenMessage]);
 
-  let placeholderText = "";
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    if (title === "postInterview" && data.details) {
+    if (title === "kindGeneral") {
+      setRejectionMessage({ title: title, note: "" });
+    } else if (title === "postInterview" && data.details) {
       setApplicantInfo({ ...applicantInfo, qualityOrExp: data.details });
-    }
-    if (title === "promisingCandidate" && data.details) {
+      setRejectionMessage({ title: title, note: data.details });
+    } else if (title === "promisingCandidate" && data.details) {
       setApplicantInfo({ ...applicantInfo, skillOrExp: data.details });
-    }
-    if (title === "underqualifiedSuggestion" && data.details) {
+      setRejectionMessage({ title: title, note: data.details });
+    } else if (title === "underqualifiedSuggestion" && data.details) {
       setApplicantInfo({ ...applicantInfo, expArea: data.details });
+      setRejectionMessage({ title: title, note: data.details });
     }
     setValue("details", "");
   };
-
-  console.log(currentApp);
 
   const reject = () => {
     if (applications) {
       setApplications(
         applications.map((app) =>
           app.id === currentApp.id
-            ? { ...app, appStatus: "closed", appIsBeingRejected: "false" }
+            ? {
+                ...app,
+                appStatus: "closed",
+                appIsBeingRejected: "false",
+                rejectionMessage: rejectionMessage,
+              }
             : app,
         ),
       );
     }
   };
+
   const sendRejection = () => {
     if (title === "kindGeneral") {
-      console.log("Successfully Sending!");
       reject();
     } else if (
       title === "postInterview" &&
       applicantInfo.qualityOrExp !== "_____________"
     ) {
-      console.log("Successfully Sending!");
       reject();
     } else if (
       title === "promisingCandidate" &&
       applicantInfo.skillOrExp !== "___________"
     ) {
-      console.log("Successfully Sending!");
       reject();
     } else if (
       title === "underqualifiedSuggestion" &&
       applicantInfo.expArea !== "_______________"
     ) {
-      console.log("Successfully Sending!");
       reject();
     } else {
-      console.log("please fill out details to submit");
       setError("details", {
         type: "manual",
         message: "please fill out details to send.",
@@ -135,7 +135,7 @@ export default function RejectionMessageOptionsComponent({
       expArea: string;
     },
   ) => {
-    const option = rejectionOptions[title];
+    const option = rejectionOptions[optionKey];
     if (title === "kindGeneral") {
       return option.message({
         firstName: applicantInfo.firstName,

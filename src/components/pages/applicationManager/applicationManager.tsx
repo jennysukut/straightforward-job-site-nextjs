@@ -52,6 +52,10 @@ export default function ApplicationManager({ jobId }: any) {
     currentApplications.push(...relevantApps);
   }
 
+  const activeApps: any = currentApplications.filter((app: any) => {
+    return app.appStatus !== "closed";
+  });
+
   const currentAppointment = appointments?.find((app: any) => {
     return app.jobId === currentApp?.jobId;
   });
@@ -107,24 +111,19 @@ export default function ApplicationManager({ jobId }: any) {
         ?.slice()
         .reverse()
         .map((app: any, index: number) => (
-          <Application
+          <BusinessApplication
             key={app.id}
             id={app.id}
             colorArray={colorArray}
             index={index}
+            app={app}
             jobId={app.jobId}
             dateOfApp={app.dateOfApp}
             appStatus={app.appStatus}
-            selectedApps={selectedApps}
-            // setCurrentJob={setCurrentJob}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            setSelectedColor={setSelectedColor}
-            viewCompanyDetails={viewCompanyDetails}
           />
         ));
     } else {
-      return currentApplications
+      return activeApps
         ?.slice()
         .reverse()
         .map((app: any, index: number) => (
@@ -196,15 +195,13 @@ export default function ApplicationManager({ jobId }: any) {
 
   const [currentDate, setCurrentDate] = useState(new Date().toDateString());
 
-  console.log(currentApplications);
-
   return (
     <div
-      className={`ApplicationManagerPage w-[84%] self-center ${textColor} -mt-10 max-w-[1600px]`}
+      className={`ApplicationManagerPage w-[84%] self-center ${textColor} -mt-8 max-w-[1600px]`}
     >
       {
         <div className="AMSContainer flex">
-          <div className="AMSTabOptions -mt-6 max-w-[10%] gap-4">
+          <div className="AMSTabOptions -mt-2 max-w-[10%] gap-4">
             <ButtonOptionsComponent
               handleAdd={handleAdd}
               handleDelete={handleDelete}
@@ -242,8 +239,14 @@ export default function ApplicationManager({ jobId }: any) {
                     <h1 className="Title">{currentJob?.jobTitle}</h1>
                   </button>
                   <p className="Subtitle text-medium italic text-emerald">
-                    round {currentJob?.roundNumber || 1}:{" "}
-                    {currentJob?.applications?.length} applications
+                    Round {currentJob?.roundNumber || 1}:{" "}
+                    {currentJob?.applications?.length} Applications
+                  </p>
+                  <p className="activeClosedInfo mt-1 text-sm italic text-olive">
+                    {activeApps.length} active &{" "}
+                    {Number(currentJob?.applications?.length) -
+                      Number(activeApps.length)}{" "}
+                    closed
                   </p>
                 </div>
 
@@ -264,12 +267,13 @@ export default function ApplicationManager({ jobId }: any) {
                         type: "appStatus",
                         array: appStatus,
                         options: [
-                          "unopened",
+                          "submitted",
                           "viewed",
                           "stage 1",
                           "stage 2",
                           "stage 3",
                           "offer",
+                          "closed",
                         ],
                       },
                     ]}

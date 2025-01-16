@@ -23,6 +23,7 @@ export interface Applications {
     interviewTime?: string;
   }>;
   appIsBeingRejected?: string;
+  rejectionMessage?: any;
 }
 
 interface ApplicationsContextType {
