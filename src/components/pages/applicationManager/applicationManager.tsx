@@ -45,12 +45,12 @@ export default function ApplicationManager({ jobId }: any) {
   });
 
   let currentApplications: any = [];
-  const applicationList = currentJob?.applications?.map((app: any) => {
-    const relevantApp: any = applications?.find(
-      (application: any) => application.id === app,
-    );
-    currentApplications.push(relevantApp);
-  });
+  const relevantApps = applications?.filter(
+    (application: any) => application.jobId === jobId,
+  );
+  if (relevantApps) {
+    currentApplications.push(...relevantApps);
+  }
 
   const currentAppointment = appointments?.find((app: any) => {
     return app.jobId === currentApp?.jobId;
@@ -196,13 +196,15 @@ export default function ApplicationManager({ jobId }: any) {
 
   const [currentDate, setCurrentDate] = useState(new Date().toDateString());
 
+  console.log(currentApplications);
+
   return (
     <div
-      className={`FellowAMSPage w-[84%] self-center ${textColor} max-w-[1600px]`}
+      className={`ApplicationManagerPage w-[84%] self-center ${textColor} -mt-10 max-w-[1600px]`}
     >
       {
         <div className="AMSContainer flex">
-          <div className="AMSTabOptions max-w-[10%] gap-4">
+          <div className="AMSTabOptions -mt-6 max-w-[10%] gap-4">
             <ButtonOptionsComponent
               handleAdd={handleAdd}
               handleDelete={handleDelete}
@@ -279,7 +281,7 @@ export default function ApplicationManager({ jobId }: any) {
                 </div>
               </div>
               <div
-                className={`Applications ${currentJob ? "h-[25.5rem]" : "-mt-4 h-[26rem]"} ml-8 flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+                className={`Applications ml-8 flex h-[26rem] flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
               >
                 {renderApplications()}
               </div>

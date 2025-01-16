@@ -91,30 +91,33 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
-      <div className="MainAppButtons flex items-center gap-4">
-        <SiteButton
-          aria="JobApplication"
-          variant="hollow"
-          colorScheme={
-            colorArray[index % colorArray.length] as ButtonColorOption
-          }
-          size="wide"
-          addClasses="max-w-[77vw]"
-          onClick={() => setAppClicked(!appClicked)}
-          isSelected={appClicked}
-        >
-          <div className="AppInfo flex justify-between">
-            <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
-              {currentApplicant?.name} |
-              <p className="SmallBio max-w-[75%] overflow-hidden truncate">
-                {currentApplicant?.smallBio}
+      <div className="MainAppButtons flex items-center justify-start gap-4">
+        {/* {notification && <Notification message="new interview request" />} */}
+        <div className="Button justify-end">
+          <SiteButton
+            aria="JobApplication"
+            variant="hollow"
+            colorScheme={
+              colorArray[index % colorArray.length] as ButtonColorOption
+            }
+            size="wide"
+            addClasses="max-w-[77vw]"
+            onClick={() => setAppClicked(!appClicked)}
+            isSelected={appClicked}
+          >
+            <div className="AppInfo flex justify-between">
+              <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
+                {currentApplicant?.name} |
+                <p className="SmallBio max-w-[75%] overflow-hidden truncate">
+                  {currentApplicant?.smallBio}
+                </p>
               </p>
-            </p>
-            <p className="Details flex gap-2 self-center text-sm">
-              {app.dateOfApp} | {appStatus}
-            </p>
-          </div>
-        </SiteButton>
+              <p className="Details flex gap-2 self-center text-sm">
+                {app.dateOfApp} | {appStatus}
+              </p>
+            </div>
+          </SiteButton>
+        </div>
         {notification && <Notification message="new interview request" />}
       </div>
 
@@ -154,20 +157,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               highlight
             </SiteButton>
           </div>
-          {/* {showNote && (
-            <form action="" className="Note">
-              <InputComponent
-                addClasses="mb-2 self-center w-full"
-                type="text"
-                size="tall"
-                defaultValue={app.businessNote}
-                placeholderText="Add Your Note Here..."
-              ></InputComponent>
-              <SiteButton aria="test" colorScheme="f1" variant="filled">
-                testing
-              </SiteButton>
-            </form>
-          )} */}
         </div>
       )}
     </div>
