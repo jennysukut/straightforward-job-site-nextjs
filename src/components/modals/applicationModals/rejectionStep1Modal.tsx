@@ -5,7 +5,7 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RejectionConfirmationModal from "./rejectConfirmationModal";
 import RejectionOptionsModal from "./rejectionOptionsModal";
 
-export default function RejectionStep1Modal() {
+export default function RejectionStep1Modal({ application }: any) {
   const { showModal, goBack, hideModal } = useModal();
 
   const basicMessage = () => {
@@ -35,7 +35,9 @@ export default function RejectionStep1Modal() {
           colorScheme="c6"
           aria="options"
           addClasses="w-[250px]"
-          onClick={() => showModal(<RejectionOptionsModal />)}
+          onClick={() =>
+            showModal(<RejectionOptionsModal application={application} />)
+          }
         >
           look at options{" "}
         </SiteButton>

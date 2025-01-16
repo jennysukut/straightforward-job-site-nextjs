@@ -9,7 +9,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 
-const AppFellowTopButtons = ({ app, applicant }: any) => {
+const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
 
@@ -62,6 +62,8 @@ const AppFellowTopButtons = ({ app, applicant }: any) => {
               appStatus={app.appStatus}
               applicant={applicant}
               updateStatus={updateStatus}
+              showRejectOptions={showRejectOptions}
+              application={app}
             />,
           )
         }

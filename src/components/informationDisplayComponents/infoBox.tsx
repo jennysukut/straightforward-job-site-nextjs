@@ -153,15 +153,15 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         (size === "profile" || size === "thin" || size === "note") && (
           <button
             type="button"
-            className={`EditButton ${size === "note" ? "-mt-2" : "-mt-6"} absolute right-0 mr-4 opacity-50 hover:opacity-100`}
+            className={`EditButton ${size === "note" ? "-mt-3 mr-3" : "-mt-6 mr-4"} absolute right-0 opacity-50 hover:opacity-100`}
             onClick={editClick as React.MouseEventHandler<HTMLButtonElement>}
           >
             {colorOption === "highContrast" && (
               <Image
                 src="/hc-edit-icon.svg"
                 alt="editButton"
-                width={16}
-                height={16}
+                width={12}
+                height={12}
               ></Image>
             )}
             {colorOption === "standard" && (

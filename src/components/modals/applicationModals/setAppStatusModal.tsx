@@ -5,6 +5,7 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RejectAppModal from "./rejectAppModal";
 
 export default function SetAppStatusModal({
+  application,
   applicant,
   appStatus,
   updateStatus,
@@ -48,7 +49,14 @@ export default function SetAppStatusModal({
           colorScheme="b3"
           aria="go back"
           addClasses="w-[250px]"
-          onClick={() => showModal(<RejectAppModal applicant={applicant} />)}
+          onClick={() =>
+            showModal(
+              <RejectAppModal
+                applicant={applicant}
+                application={application}
+              />,
+            )
+          }
         >
           reject
         </SiteButton>

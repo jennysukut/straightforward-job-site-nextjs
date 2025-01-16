@@ -33,6 +33,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const appNumbers = selectedJob?.applications?.length;
+  const previousNumberOfInterviews = 1;
   let viewedApplications: any = [];
   let notification;
   let numberOfInterviews;
@@ -52,7 +53,12 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
     const hasInterviews = (relevantApp?.appointments?.length || 0) > 0;
     if (hasInterviews) {
       numberOfInterviews = relevantApp?.appointments?.length;
+      // const difference = numberOfInterviews
+      //   ? -previousNumberOfInterviews
+      //   : true;
+      // if (difference !== -1) {
       notification = "new appointment";
+      // }
     }
   });
 

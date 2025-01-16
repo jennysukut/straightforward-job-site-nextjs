@@ -25,7 +25,11 @@ const ApplicationNoteSchema = z.object({
 
 type FormData = z.infer<typeof ApplicationNoteSchema>;
 
-export default function ApplicationNoteModal({ app, note }: any) {
+export default function ApplicationNoteModal({
+  app,
+  note,
+  unclickButton,
+}: any) {
   const [disabledButton, setDisabledButton] = useState(false);
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -89,6 +93,9 @@ export default function ApplicationNoteModal({ app, note }: any) {
           } else {
             // If adding a new note, append it
             existingNotes.push(data.note);
+            if (unclickButton) {
+              unclickButton();
+            }
           }
           return {
             ...application,

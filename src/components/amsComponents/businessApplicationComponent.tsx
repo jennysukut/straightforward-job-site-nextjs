@@ -12,7 +12,7 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import ApplicationNoteModal from "../modals/applicationModals/applicationNoteModal";
-
+import ViewApplicationNoteModal from "../modals/applicationModals/viewAppNotesModal";
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
@@ -49,7 +49,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   });
 
   //here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
-  const notification = app.message ? true : false;
+  const notification = app.appStatus === "submitted" ? true : false;
 
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
@@ -75,8 +75,14 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   //  for showing notes, it might be best to have a modal or page that compiles them.
   const noteClick = () => {
-    setShowNote(!showNote);
-    showModal(<ApplicationNoteModal app={app} />);
+    if (app.businessNote && app.businessNote.length > 0) {
+      console.log(app.businessNote);
+      showModal(
+        <ViewApplicationNoteModal notes={app.businessNote} app={app} />,
+      );
+    } else {
+      showModal(<ApplicationNoteModal app={app} />);
+    }
   };
 
   useEffect(() => {
@@ -128,7 +134,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               variant="hollow"
               colorScheme={betterColorArray[1]}
               onClick={noteClick}
-              isSelected={showNote}
             >
               {app.businessNote ? "view your notes" : "add a note"}
             </SiteButton>

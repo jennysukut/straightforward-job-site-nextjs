@@ -78,22 +78,46 @@ const ButtonOptionsComponent: React.FC<ButtonOptionsComponent> = ({
         <div
           className={`Buttons flex ${buttonContainerClasses ? buttonContainerClasses : "justify-center gap-6"}`}
         >
-          {buttons.map((button: string, index: any) => {
-            return (
-              <SiteButton
-                variant="hollow"
-                key={button}
-                aria={button}
-                size={buttonSize || null}
-                colorScheme={betterColorArray[index % betterColorArray.length]}
-                onClick={() => buttonClick(button)}
-                addClasses={`text-nowrap ${classesForButtons || ""}`}
-                isSelected={selectedArray.includes(button)}
-              >
-                {button}
-              </SiteButton>
-            );
-          })}
+          {Array.isArray(buttons) &&
+            buttons.some((button) => typeof button === "object") &&
+            buttons.map((button: any, index: number) => {
+              return (
+                <SiteButton
+                  variant="hollow"
+                  key={button.tag}
+                  aria={button.tag}
+                  size={buttonSize || null}
+                  colorScheme={
+                    betterColorArray[index % betterColorArray.length]
+                  }
+                  onClick={() => buttonClick(button.tag)}
+                  addClasses={`text-nowrap ${classesForButtons || ""}`}
+                  isSelected={selectedArray.includes(button.tag)}
+                >
+                  {button.text}
+                </SiteButton>
+              );
+            })}
+          {Array.isArray(buttons) &&
+            buttons.some((button) => typeof button === "string") &&
+            buttons.map((button: string, index: any) => {
+              return (
+                <SiteButton
+                  variant="hollow"
+                  key={button}
+                  aria={button}
+                  size={buttonSize || null}
+                  colorScheme={
+                    betterColorArray[index % betterColorArray.length]
+                  }
+                  onClick={() => buttonClick(button)}
+                  addClasses={`text-nowrap ${classesForButtons || ""}`}
+                  isSelected={selectedArray.includes(button)}
+                >
+                  {button}
+                </SiteButton>
+              );
+            })}
           {deleteButton && (
             <SiteButton
               aria="removeButton"
