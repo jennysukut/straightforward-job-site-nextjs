@@ -34,6 +34,8 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         colorScheme="b5"
         aria="Contact"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
+
         //Open messenger, sending app Details to bring up the current conversation
         // or a new conversation pertaining to this app
         // onClick={() => setCanEdit(!canEdit)}
@@ -46,6 +48,7 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         aria="edit"
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
+        disabled={app.appStatus === "closed"}
       >
         {app.BusinessNote && app.businessNote.length > 0
           ? "add another note"
@@ -56,6 +59,7 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
@@ -99,6 +103,7 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="c4"
         aria="Contact"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
@@ -117,6 +122,7 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="b6"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
         {app.BusinessNote && app.businessNote.length > 0
@@ -128,9 +134,10 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
+        disabled={app.appStatus === "closed"}
         onClick={() => showModal(<RejectAppModal applicant={applicant} />)}
       >
-        reject
+        {app.appStatus === "closed" ? "rejected" : "reject"}
       </SiteButton>
     </div>
   );
