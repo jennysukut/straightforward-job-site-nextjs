@@ -35,7 +35,8 @@ export default function Footer() {
       </div>
       <div className="FooterInfo">
         <p className={`Copywrite ${secondaryTextColor} -mb-4 text-xs`}>
-          ©2024, Straightforward Job Site
+          ©2024, Straightforward Job Site - adding something to the footer so I
+          can merge?
         </p>
       </div>
     </div>
