@@ -1,34 +1,65 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
+import { useColors } from "@/contexts/ColorContext";
 
-export default function AvatarModal({ setAvatarOptions }: any) {
+export default function AvatarModal({ setAvatar }: any) {
   const { hideModal } = useModal();
+  const { colorOption } = useColors();
+
   const handleClick = (option: any) => {
-    setAvatarOptions({
-      url: option.url,
-      shadow: option.dropShadow,
+    setAvatar({
+      title: option.title,
+      url: {
+        standard: option.url.standard,
+        highContrast: option.url.highContrast,
+      },
+      dropShadow: {
+        standard: option.dropShadow.standard,
+        highContrast: option.dropShadow.highContrast,
+      },
+      shadow: {
+        standard: option.shadow.standard,
+        highContrast: option.shadow.highContrast,
+      },
+      img: {
+        standard: option.img.standard,
+        highContrast: option.img.highContrast,
+      },
       colorScheme: option.colorScheme,
-      buttonShadow: option.shadow,
-      buttonImg: option.img,
     });
     hideModal();
   };
 
   const renderAvatarOptions = () => {
-    return avatarOptions.map((option) => (
-      <SiteButton
-        key={option.title}
-        variant="avatar"
-        colorScheme="b1"
-        size="largeCircle"
-        aria={option.title}
-        addClasses={`${option.shadow}`}
-        addImage={`${option.img}`}
-        onClick={() => handleClick(option)}
-      />
-    ));
+    if (colorOption === "standard") {
+      return avatarOptions.map((option) => (
+        <SiteButton
+          key={option.title}
+          variant="avatar"
+          colorScheme="b1"
+          size="largeCircle"
+          aria={option.title}
+          addClasses={`${option.shadow.standard}`}
+          addImage={`${option.img.standard}`}
+          onClick={() => handleClick(option)}
+        />
+      ));
+    } else if (colorOption === "highContrast") {
+      return avatarOptions.map((option) => (
+        <SiteButton
+          key={option.title}
+          variant="avatar"
+          colorScheme="b1"
+          size="largeCircle"
+          aria={option.title}
+          addClasses={`${option.shadow.highContrast}`}
+          addImage={`${option.img.highContrast}`}
+          onClick={() => handleClick(option)}
+        />
+      ));
+    }
   };
 
   return (

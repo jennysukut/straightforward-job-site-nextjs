@@ -1,40 +1,82 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useColors } from "@/contexts/ColorContext";
 
 import Image from "next/image";
-import SiteButton from "./siteButton";
 import Link from "next/link";
 import LoginModal from "./modals/loginModal";
 import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
-import NavButton from "./navButton";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import NavButton from "./buttonsAndLabels/navButton";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
+import SiteLabel from "./buttonsAndLabels/siteLabel";
+
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export default function NavBar() {
   const { showModal } = useModal();
-  const { pageType, accountType } = usePageContext();
+  const { currentPage, pageType, accountType, isLoggedIn } = usePageContext();
   const { fellow } = useFellow();
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
+  const { colorOption } = useColors();
+  const { textColor } = useColorOptions();
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
+
+  let avatarDetails;
+  if (accountType === "Fellow") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === fellow?.avatar,
+    );
+  } else if (accountType === "Business") {
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === business?.avatar,
+    );
+  }
+
+  useEffect(() => {
+    setClickedButton(currentPage);
+  }, [currentPage]);
+
   return (
-    <div className="NavBar mx-auto flex h-fit w-[95vw] justify-between px-8 py-12 sm:w-[98vw] sm:px-16">
+    <div
+      className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor}`}
+    >
       <Link href={"/"}>
-        <Image
-          className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
-          src="/sfjs-logo.svg"
-          width={229}
-          height={75}
-          alt="Straightforward Job Site logo"
-        />
+        {colorOption === "standard" && (
+          <Image
+            className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
+            src="/sfjs-updated-logo.svg"
+            width={229}
+            height={75}
+            alt="Straightforward Job Site logo"
+          />
+        )}
+        {colorOption === "highContrast" && (
+          <Image
+            className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
+            src="/hc-sfjs-logo.svg"
+            width={229}
+            height={75}
+            alt="Straightforward Job Site logo"
+          />
+          // <Image
+          //   className="Logo max-w-44 cursor-pointer transition-transform duration-300 hover:scale-105"
+          //   src="/hollow-sfjs-logo.svg"
+          //   width={229}
+          //   height={75}
+          //   alt="Straightforward Job Site logo"
+          // />
+        )}
       </Link>
       {/* NavBar Button Options */}
       {(() => {
@@ -55,7 +97,7 @@ export default function NavBar() {
             </div>
           );
         } else if (pageType === "Business Signup") {
-          // INDIVIDUAL SIGNUP NAV BAR
+          // BUSINESS SIGNUP NAV BAR
           return (
             <div className="TellUsAboutYou">
               <p className="TellAboutYouTitle">
@@ -63,94 +105,114 @@ export default function NavBar() {
               </p>
             </div>
           );
-        } else if (pageType === "Individual") {
+        } else if (accountType === "Fellow" && isLoggedIn === true) {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              <NavButton
+              {/* I'm not sure if the daily apps should be the amount that have been submitted or if it should show the ones remaining for the day */}
+              <SiteLabel aria="dailyApps" variant="hollow" size="small">
+                daily apps: {fellow?.dailyApplications?.count}/5
+              </SiteLabel>
+              {/* <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"
                 title="mailbox"
                 clickedButton={clickedButton}
-              />
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="e5"
-                title="jobs"
-                clickedButton={clickedButton}
-              />
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="d4"
-                title="saved"
-                clickedButton={clickedButton}
-              />
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="f3"
-                title="applications"
-                clickedButton={clickedButton}
-              />
+              /> */}
+              <Link href={"/job-board"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="b4"
+                  title="jobs"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
+              <Link href={"/saved-jobs"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="d4"
+                  title="saved"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
+              <Link href={"/ams"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="f3"
+                  title="application manager"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="b6"
                   title="settings"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/profile"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme={fellow?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
+                  colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+                  title="profile"
+                  clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
-                  addImage={fellow?.buttonImg}
+                  addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
                 />
               </Link>
             </div>
           );
-        } else if (pageType === "Business") {
+        } else if (accountType === "Business" && isLoggedIn === true) {
           // BUSINESS NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+              <Link href="/calendar">
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="b4"
+                  title="calendar"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
               <NavButton
                 onClick={handleNavButtonClick}
-                colorScheme="b4"
+                colorScheme="d4"
                 title="mailbox"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <NavButton
                 onClick={() => showModal(<PostAJobModal />)}
                 colorScheme="e5"
                 title="post a job"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="f3"
-                title="ams"
-                clickedButton={clickedButton}
-              />
+              <Link href={"/ams"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="f3"
+                  title="application manager"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="b6"
                   title="settings"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/profile"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme={business?.colorScheme as ButtonColorOption}
-                  title="account"
-                  clickedButton={clickedButton}
+                  colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+                  title="profile"
+                  clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
-                  addImage={business?.buttonImg}
+                  addImage={`${colorOption === "standard" ? avatarDetails?.img.standard : avatarDetails?.img.highContrast}`}
                 />
               </Link>
             </div>
@@ -163,27 +225,27 @@ export default function NavBar() {
                 onClick={handleNavButtonClick}
                 colorScheme="b4"
                 title="about"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <NavButton
                 onClick={() => showModal(<LoginModal />)}
                 colorScheme="e5"
                 title="login"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
               <Link href={"/pricing"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="d4"
                   title="pricing"
-                  clickedButton={clickedButton}
+                  clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <NavButton
                 onClick={() => showModal(<SignupOptionsModal />)}
                 colorScheme="f3"
                 title="signup"
-                clickedButton={clickedButton}
+                clickedButton={clickedButton || currentPage}
               />
             </div>
           );

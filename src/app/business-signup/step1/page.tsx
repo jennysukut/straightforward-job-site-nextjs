@@ -8,23 +8,26 @@ import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
-import InputComponent from "@/components/inputComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import AddHandler from "@/components/addHandler";
-import ShuffleIdealButtonPattern from "@/components/shuffleIdealButtonPattern";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import AddHandler from "@/components/handlers/addHandler";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 
 import { countries } from "@/lib/countriesList";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 type CurrentSchemeType = ButtonColorOption;
 
 const businessSchema = z.object({
   smallBio: z
     .string()
     .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" }),
-  country: z.string().min(3, { message: "Your Country is Required" }),
+  country: z.string(),
   location: z
     .string()
     .min(3, { message: "Your Specific Location is Required" }),
@@ -37,16 +40,14 @@ export default function BusinessSignupPage1() {
   const router = useRouter();
   const { business, setBusiness } = useBusiness();
   const { showModal } = useModal();
-
+  const { textColor, titleColor } = useColorOptions();
+  const { colorOption } = useColors();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [avatarOptions, setAvatarOptions] = useState({
-    url: business?.avatar,
-    shadow: business?.shadow,
-    colorScheme: business?.colorScheme,
-    buttonShadow: business?.shadow,
-    buttonImg: business?.buttonImg,
-  });
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === business?.avatar,
+  );
+  const [avatar, setAvatar] = useState(avatarDetails);
 
   const {
     handleSubmit,
@@ -63,18 +64,14 @@ export default function BusinessSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-
+    console.log(data);
     setBusiness({
       ...business,
       country: data.country,
       location: data.location,
       smallBio: data.smallBio,
       website: data.website,
-      avatar: avatarOptions.url,
-      shadow: avatarOptions.shadow,
-      colorScheme: avatarOptions.colorScheme,
-      buttonShadow: avatarOptions.shadow,
-      buttonImg: avatarOptions.buttonImg,
+      avatar: avatar?.title,
       profileIsBeingEdited: false,
     });
     if (business?.profileIsBeingEdited) {
@@ -100,34 +97,32 @@ export default function BusinessSignupPage1() {
   }, []);
 
   return (
-    <div className="BusinessSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`BusinessSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center ${textColor} justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="BusinessSignupContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="NameAvatarContainer -mb-6 flex justify-between">
           <h1 className="BusinessName ml-8 self-end pb-4 tracking-superwide">
             {business?.businessName || "Test BusinessName"}
           </h1>
-          <div className="AvatarButtonContainer -mt-14 flex flex-col items-end self-end">
-            <div className="AvatarContainer self-end">
+          <div className="AvatarButtonContainer -mr-14 -mt-14 mb-2 flex flex-col items-end self-end">
+            <div className="AvatarContainer flex items-baseline gap-4 self-end">
+              <button
+                className="max-w-[45%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
+                onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
+              >
+                {`choose your avatar & colors`}
+              </button>
               <SiteButton
                 variant="avatar"
-                colorScheme={avatarOptions.colorScheme as ButtonColorOption}
+                colorScheme={avatar?.colorScheme as ButtonColorOption}
                 size="largeCircle"
                 aria="avatar"
-                addImage={`${avatarOptions.buttonImg}`}
+                addImage={`${colorOption === "standard" ? avatar?.img.standard : avatar?.img.highContrast}`}
                 addClasses="self-end"
-                onClick={() =>
-                  showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-                }
+                onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
               />
             </div>
-            <button
-              className="max-w-[60%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
-              onClick={() =>
-                showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-              }
-            >
-              {`choose your avatar & colors`}
-            </button>
           </div>
         </div>
         <form
@@ -145,6 +140,8 @@ export default function BusinessSignupPage1() {
             options
             defaultValue={business?.country}
             width="full"
+            register
+            registerValue="country"
             required
           />
 

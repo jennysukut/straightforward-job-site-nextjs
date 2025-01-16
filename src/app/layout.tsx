@@ -7,11 +7,18 @@ import { ModalProvider } from "@/contexts/ModalContext";
 import { Analytics } from "@vercel/analytics/react";
 import { FellowProvider } from "@/contexts/FellowContext";
 import { BusinessProvider } from "@/contexts/BusinessContext";
-import { JobsProvider } from "@/contexts/JobsContext";
+import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
+import { JobListingsProvider } from "@/contexts/JobListingsContext";
+import { BusinessListProvider } from "@/contexts/BusinessListContext";
+import { ApplicationProvider } from "@/contexts/ApplicationContext";
+import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
+import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
+import { FellowsProvider } from "@/contexts/FellowsContext";
 
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
+import Image from "next/image";
 
 const ApolloWrapper = dynamic(() => import("@/app/apolloClient"), {
   ssr: false,
@@ -45,20 +52,32 @@ export default function RootLayout({
         <PageProvider>
           <ColorProvider>
             <ApolloWrapper>
-              <JobsProvider>
-                <BusinessProvider>
-                  <FellowProvider>
-                    <ModalProvider>
-                      {/* find how to make this navBar change depending on the login status or current page - maybe set some kind of signal that we can update depending on the page to show different types of headers? */}
-                      <NavBar />
-                      <main className="Main flex flex-1 flex-col">
-                        {children}
-                      </main>
-                      <Footer />
-                    </ModalProvider>
-                  </FellowProvider>
-                </BusinessProvider>
-              </JobsProvider>
+              <BusinessListProvider>
+                <AppointmentsContextProvider>
+                  <ApplicationsProvider>
+                    <ApplicationProvider>
+                      <JobListingsProvider>
+                        <JobProvider>
+                          <BusinessProvider>
+                            <FellowsProvider>
+                              <FellowProvider>
+                                <ModalProvider>
+                                  <NavBar />
+                                  <main className="Main flex flex-1 flex-col">
+                                    {children}
+                                    {/* we could slip a fun background element in here? */}
+                                  </main>
+                                  <Footer />
+                                </ModalProvider>
+                              </FellowProvider>
+                            </FellowsProvider>
+                          </BusinessProvider>
+                        </JobProvider>
+                      </JobListingsProvider>
+                    </ApplicationProvider>
+                  </ApplicationsProvider>
+                </AppointmentsContextProvider>
+              </BusinessListProvider>
             </ApolloWrapper>
           </ColorProvider>
         </PageProvider>

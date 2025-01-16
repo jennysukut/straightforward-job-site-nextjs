@@ -6,30 +6,37 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 
-import FellowProfile from "@/components/fellowProfile";
-import BusinessProfile from "@/components/businessProfile";
+import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
+import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
-export default function Home() {
-  const { setCurrentPage, setPageType, accountType } = usePageContext();
+export default function Profile() {
+  const {
+    setCurrentPage,
+    setPageType,
+    accountType,
+    isLoggedIn,
+    setIsLoggedIn,
+  } = usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
 
-  // Set the page type to individual or business here and render different profiles based on this
+  // Set the page type to fellow or business here and render different profiles based on this
+  // Once we have signup and login working, we'll be able to grab data on
+  // who's logged in and use that to set these details
   useEffect(() => {
-    setCurrentPage("Profile");
+    setCurrentPage("profile");
     if (accountType === "Fellow") {
-      setPageType("Individual");
+      setPageType("Fellow");
     } else if (accountType === "Business") {
       setPageType("Business");
     }
   }, [setCurrentPage, setPageType, accountType]);
 
   return (
-    <div className="Profile flex flex-grow flex-col items-center gap-8 pt-14 md:pb-12 md:pt-6">
-      {accountType === "Fellow" && <FellowProfile fellow={fellow} isOwn />}
-      {accountType === "Business" && (
-        <BusinessProfile business={business} isOwn />
-      )}
+    <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
+      {/* here, we'll have to look to make sure the id of the current person is used to set their profile info */}
+      {accountType === "Fellow" && <FellowProfile self={fellow} isOwn />}
+      {accountType === "Business" && <BusinessProfile self={business} isOwn />}
     </div>
   );
 }

@@ -9,6 +9,8 @@ type PageContextType = {
   setPageType: (type: string) => void;
   accountType: string;
   setAccountType: (type: string) => void;
+  isLoggedIn: boolean;
+  setIsLoggedIn: (type: boolean) => void;
 };
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -16,9 +18,17 @@ const PageContext = createContext<PageContextType | undefined>(undefined);
 export const PageProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
+  // this is for setting particular pages for controlled states
   const [currentPage, setCurrentPage] = useState<string>("");
-  const [pageType, setPageType] = useState<string>("Business");
-  const [accountType, setAccountType] = useState<string>("Business");
+
+  // this is for setting categories of pages, like "Individual Signup"
+  const [pageType, setPageType] = useState<string>("");
+
+  // this is for setting account type - options are "Fellow" and "Business"
+  const [accountType, setAccountType] = useState<string>("Fellow");
+
+  // this is obvious - see if someone/a business is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
 
   return (
     <PageContext.Provider
@@ -29,6 +39,8 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
         setPageType,
         accountType,
         setAccountType,
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {children}

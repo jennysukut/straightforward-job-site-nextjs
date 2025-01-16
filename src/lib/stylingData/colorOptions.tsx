@@ -5,19 +5,80 @@ import { useColors } from "@/contexts/ColorContext";
 export const useColorOptions = () => {
   const { colorOption } = useColors();
 
-  const inputColors =
-    colorOption === "highContrast"
-      ? "text-cobalt placeholder:text-cobalt/50"
-      : "text-midnight placeholder:text-jade/50";
+  const inputColors = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine placeholder:text-pine/50 border-pine/50";
+      default:
+        return "text-midnight placeholder:text-jade/50 border-jade/50";
+    }
+  })();
 
-  const textColor =
-    colorOption === "highContrast" ? "text-cobalt" : "text-jade";
+  const inputClasses = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine placeholder:text-pine/50 border-pine/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
+      default:
+        return "text-midnight placeholder:text-jade/50 border-jade/50 text-md mb-0 border-b-2 bg-transparent pb-2 pt-0 focus:outline-none";
+    }
+  })();
 
-  const secondaryTextColor =
-    colorOption === "highContrast" ? "text-azure" : "text-olive";
+  const textColor = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine";
+      default:
+        return "text-jade";
+    }
+  })();
 
-  const errorColor =
-    colorOption === "highContrast" ? "text-violet" : "text-orange";
+  const titleColor = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine";
+      default:
+        return "text-midnight";
+    }
+  })();
 
-  return { inputColors, textColor, secondaryTextColor, errorColor };
+  const secondaryTextColor = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-forest";
+      // case "seasonal":
+      //   return "text-forest";
+      default:
+        return "text-olive";
+    }
+  })();
+
+  const errorColor = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine";
+      // case "seasonal":
+      //   return "text-pine";
+      default:
+        return "text-orange";
+    }
+  })();
+
+  const modalColors = (() => {
+    switch (colorOption) {
+      case "highContrast":
+        return "text-pine drop-shadow-pine border-pine";
+      default:
+        return "text-jade drop-shadow-jade border-jade";
+    }
+  })();
+
+  return {
+    inputColors,
+    inputClasses,
+    textColor,
+    secondaryTextColor,
+    errorColor,
+    titleColor,
+    modalColors,
+  };
 };

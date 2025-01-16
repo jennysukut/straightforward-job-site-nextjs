@@ -7,19 +7,18 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { skillsList } from "@/lib/skillsList";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
 
 const jobSchema = z.object({
-  experienceLevel: z.array(z.string()).min(1, {
-    message: "Experience Level Required",
-  }),
+  experienceLevel: z.string(),
   preferredSkills: z
     .array(z.string())
     .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
@@ -31,7 +30,8 @@ const jobSchema = z.object({
 type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep3() {
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
+  const { textColor, titleColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -62,6 +62,10 @@ export default function PostAJobStep3() {
       },
       setValue,
       clearErrors,
+      oneChoice: {
+        experienceLevel: true,
+        preferredSkills: false,
+      },
     });
   };
 
@@ -86,11 +90,16 @@ export default function PostAJobStep3() {
 
     setJob({
       ...job,
-      experienceLevel: data.experienceLevel,
+      experienceLevel: experienceLevel,
       preferredSkills: preferredSkills,
       moreAboutPosition: data.moreAboutPosition,
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step4");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step4");
+    }
   };
 
   useEffect(() => {
@@ -101,13 +110,15 @@ export default function PostAJobStep3() {
       Array.isArray(job?.experienceLevel) ? job?.experienceLevel : [],
     );
     setValue("preferredSkills", job?.preferredSkills || []);
-    setValue("experienceLevel", job?.experienceLevel || []);
+    setValue("experienceLevel", job?.experienceLevel?.[0] || "");
   }, []);
 
   return (
-    <div className="PostAJobPage2 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`PostAJobPage2 flex w-[95vw] max-w-[1600px] ${textColor} flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
-        <h1 className="JobName pl-8 tracking-superwide text-midnight">
+        <h1 className={`JobName pl-8 tracking-superwide ${titleColor}`}>
           {job?.jobTitle || "Test Job Title"}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
@@ -173,6 +184,7 @@ export default function PostAJobStep3() {
                   : disabledButton && job?.jobIsBeingEdited === false
                     ? "Saving Information.."
                     : "continue"}
+              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

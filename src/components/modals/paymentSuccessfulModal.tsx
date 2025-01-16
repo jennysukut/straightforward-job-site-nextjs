@@ -1,8 +1,8 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import SiteButton from "../siteButton";
+import SiteButton from "../buttonsAndLabels/siteButton";
 import { useModal } from "@/contexts/ModalContext";
 
-export default function PaymentSuccessfulModal() {
+export default function PaymentSuccessfulModal(isJobPost: any) {
   const { hideModal } = useModal();
   return (
     <div className="SignupOptionsModal flex max-w-[35rem] flex-col items-center gap-4">
@@ -20,7 +20,7 @@ export default function PaymentSuccessfulModal() {
         size="large"
         onClick={() => hideModal()}
       >
-        continue to your profile
+        {isJobPost ? "view your listing" : "continue to your profile"}
       </SiteButton>
     </div>
   );

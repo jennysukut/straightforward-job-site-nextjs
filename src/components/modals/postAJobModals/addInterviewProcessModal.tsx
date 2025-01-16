@@ -7,9 +7,10 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import FormInputComponent from "@/components/formInputComponent";
-import FormSubmissionButton from "@/components/formSubmissionButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const InterviewProcessSchema = z.object({
@@ -29,6 +30,7 @@ export default function AddInterviewProcessModal({
   id,
 }: any) {
   const { showModal, hideModal } = useModal();
+  const { textColor } = useColorOptions();
   const [disabledButton, setDisabledButton] = useState(false);
   const type = "interviewProcess";
   const stageNumber = id;
@@ -82,7 +84,9 @@ export default function AddInterviewProcessModal({
   }, []);
 
   return (
-    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title mb-4 max-w-[450px] self-center text-center text-xl font-bold">
         interview stage {stageNumber}:
       </Dialog.Title>

@@ -1,10 +1,17 @@
 "use client";
 
-import React, { createContext, useContext, useRef, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useRef,
+  ReactNode,
+  useState,
+} from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_FELLOW_PROFILE, SAVE_PROFILE_MUTATION } from "@/graphql/mutations";
 
 export interface Fellow {
+  id?: string;
   name?: string;
   email?: string;
   smallBio?: string;
@@ -25,15 +32,17 @@ export interface Fellow {
   links?: Array<any>;
   aboutMe?: string;
   avatar?: any;
-  shadow?: string;
+  shadow?: any;
   locationOptions?: Array<string>;
   colorScheme?: string;
   languages?: Array<string>;
-  buttonShadow?: string;
+  buttonShadow?: any;
   buttonImg?: any;
   profileIsBeingEdited?: boolean;
   addMoreInfo?: boolean;
   subscriptionAmount?: any;
+  savedJobs?: Array<any>;
+  dailyApplications?: Record<string, any>;
 }
 
 interface FellowContextType {
@@ -41,7 +50,33 @@ interface FellowContextType {
   loading: boolean;
   error: any;
   setFellow: (fellow: Fellow) => void;
+  dailyLimit: DailyLimit | null;
+  setDailyLimit: (type: any) => void;
 }
+
+//DATA FOR HANDLING DAILY APPLICATION LIMIT
+interface DailyLimit {
+  count: number;
+  lastReset: string;
+}
+
+const shouldResetDaily = (lastResetDate: string): boolean => {
+  const lastReset = new Date(lastResetDate);
+  const now = new Date();
+  // Reset if it's a different day
+  return lastReset.toDateString() !== now.toDateString();
+};
+
+const handleDailyLimit = (currentLimit: DailyLimit): DailyLimit => {
+  if (shouldResetDaily(currentLimit.lastReset)) {
+    // It's a new day, reset the count
+    return {
+      count: 0,
+      lastReset: new Date().toISOString(),
+    };
+  }
+  return currentLimit;
+};
 
 const FellowContext = createContext<FellowContextType | undefined>(undefined);
 
@@ -50,8 +85,17 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const localFellowRef = useRef<Fellow | null>(null);
 
+  const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
+    count: 0,
+    lastReset: new Date().toISOString(),
+  });
+
   // Fetch fellow data using Apollo's useQuery hook
-  const { data: queryData, loading: queryLoading, error: queryError } = useQuery(GET_FELLOW_PROFILE, {
+  const {
+    data: queryData,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_FELLOW_PROFILE, {
     onCompleted: (data) => {
       localFellowRef.current = data.fellowProfile;
       console.log(JSON.stringify(localFellowRef.current));
@@ -59,12 +103,15 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   // Mutation for updating fellow data
-  const [updateFellow, { data: mutationData, loading: mutationLoading, error: mutationError }] = useMutation(SAVE_PROFILE_MUTATION, {
+  const [
+    updateFellow,
+    { data: mutationData, loading: mutationLoading, error: mutationError },
+  ] = useMutation(SAVE_PROFILE_MUTATION, {
     onCompleted: (data) => {
       localFellowRef.current = data.saveProfile;
       console.log(JSON.stringify(localFellowRef.current));
     },
-    ignoreResults: false
+    ignoreResults: false,
   });
 
   // Set fellow function to trigger mutation
@@ -81,21 +128,27 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
-    const getFellow = () => localFellowRef.current || mutationData?.saveProfile || queryData?.fellowProfile || null;
+  const getFellow = () =>
+    localFellowRef.current ||
+    mutationData?.saveProfile ||
+    queryData?.fellowProfile ||
+    null;
 
-    return (
-      <FellowContext.Provider
-        value={{
-          fellow: getFellow(),
-          loading: mutationLoading || queryLoading,
-          error: mutationError || queryError,
-          setFellow
-        }}
-      >
-        {children}
-      </FellowContext.Provider>
-    );
-    };
+  return (
+    <FellowContext.Provider
+      value={{
+        fellow: getFellow(),
+        loading: mutationLoading || queryLoading,
+        error: mutationError || queryError,
+        setFellow,
+        dailyLimit,
+        setDailyLimit,
+      }}
+    >
+      {children}
+    </FellowContext.Provider>
+  );
+};
 
 export const useFellow = () => {
   const context = useContext(FellowContext);

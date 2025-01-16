@@ -7,14 +7,16 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "../../siteButton";
+import SiteButton from "../../buttonsAndLabels/siteButton";
 import { FELLOW_SIGNUP_MUTATION } from "@/graphql/mutations";
 import { useMutation } from "@apollo/client";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
 const fellowSchema = z.object({
   name: z.string().min(2, { message: "Required" }),
-  email: z.string().email(),
+  email: z.string().email({ message: "Email Required" }),
   password: z.string().min(6, { message: "Required" }),
 });
 
@@ -24,7 +26,10 @@ export default function SignupModalIndividual1() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
-  const [signupFellow, { loading, error }] = useMutation(FELLOW_SIGNUP_MUTATION);
+  const [signupFellow, { loading, error }] = useMutation(
+    FELLOW_SIGNUP_MUTATION,
+  );
+  const { titleColor, textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const {
@@ -41,11 +46,8 @@ export default function SignupModalIndividual1() {
       ...fellow,
       name: data.name,
       email: data.email,
-      avatar: "/avatars/peach.svg",
-      shadow: "drop-shadow-lime",
-      colorScheme: "b6",
     });
-    signupFellow({variables: {requestBody: data}});
+    signupFellow({ variables: { requestBody: data } });
     router.push("/individual-signup/step1");
     setTimeout(() => {
       hideModal();
@@ -53,60 +55,50 @@ export default function SignupModalIndividual1() {
   };
 
   return (
-    <div className="SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
-      <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
+    <div
+      className={`SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
+      <Dialog.Title
+        className={`Title max-w-[450px] self-center text-center text-xl font-bold ${titleColor}`}
+      >
         sign up
       </Dialog.Title>
       <form
-        className="IndividualSignupForm xs:pt-8 flex flex-col gap-2"
+        className="IndividualSignupForm xs:pt-8 flex flex-col gap-6"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {/* first name input */}
-        <label htmlFor="name">your name*</label>
-        <input
-          type="firstName"
-          placeholder="first & last name"
-          className="text-md mb-0 border-b-2 border-jade/50 bg-transparent pb-2 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("name")}
+        {/* name input */}
+        <FormInputComponent
+          type="name"
+          title="your name*"
+          placeholderText="first & last name"
+          register={register}
+          registerValue="name"
+          errors={errors.name}
         />
-        {errors.name?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.name.message.toString()}
-          </p>
-        )}
 
         {/* email input */}
-        <label htmlFor="email" className="mt-4">
-          your email*
-        </label>
-        <input
+        <FormInputComponent
           type="email"
-          placeholder="fantasticemail@emailexample.com"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("email", { required: "Email Address is required" })}
+          title="your email*"
+          placeholderText="fantasticemail@emailexample.com"
+          register={register}
+          registerValue="email"
+          errors={errors.email}
         />
-        {errors.email?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.email.message.toString()}
-          </p>
-        )}
+
         {/* password input */}
-        <label htmlFor="password" className="mt-4">
-          your password*
-        </label>
-        <input
+        <FormInputComponent
           type="password"
-          placeholder="secret password here"
-          className="text-md border-b-2 border-jade/50 bg-transparent pb-3 pt-0 text-jade placeholder:text-jade/50 focus:border-jade focus:outline-none"
-          {...register("password", { required: "Email Address is required" })}
+          title="your password*"
+          placeholderText="**********"
+          register={register}
+          registerValue="password"
+          errors={errors.password}
         />
-        {errors.password?.message && (
-          <p className="m-0 p-0 text-xs font-medium text-orange">
-            {errors.password.message.toString()}
-          </p>
-        )}
+
         {/* form submission button */}
-        <div className="ButtonContainer -mb-6 mt-6 flex justify-end">
+        <div className="ButtonContainer -mb-6 flex justify-end">
           <SiteButton
             variant="hollow"
             colorScheme="f1"

@@ -2,14 +2,15 @@
 
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
+import React, { useState } from "react";
 
 import { useModal } from "@/contexts/ModalContext";
-import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import FormInputComponent from "@/components/formInputComponent";
-import FormSubmissionButton from "@/components/formSubmissionButton";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
+import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const AccomplishmentSchema = z.object({
@@ -27,6 +28,7 @@ export default function AddAccomplishmentModal({
   handleUpdate,
 }: any) {
   const { showModal, hideModal } = useModal();
+  const { textColor } = useColorOptions();
   const [disabledButton, setDisabledButton] = useState(false);
   const type = "accomplishment";
   const {
@@ -73,7 +75,9 @@ export default function AddAccomplishmentModal({
   };
 
   return (
-    <div className="AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`AddExperienceModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title mb-8 max-w-[450px] self-center text-center text-xl font-bold">
         additional accomplishments
       </Dialog.Title>

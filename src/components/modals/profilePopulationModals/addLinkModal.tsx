@@ -8,9 +8,10 @@ import { useModal } from "@/contexts/ModalContext";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import Image from "next/image";
-import SiteButton from "../../siteButton";
+import SiteButton from "../../buttonsAndLabels/siteButton";
 import ErrorModal from "../errorModal";
 
 import DeleteConfirmationModal from "../deleteConfirmationModal";
@@ -31,6 +32,7 @@ export default function AddLinkModal({
 }: any) {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
+  const { textColor } = useColorOptions();
   const [disabledButton, setDisabledButton] = useState(false);
   const [linkType, setLinkType] = useState("");
   const [link, setLink] = useState("");
@@ -92,7 +94,9 @@ export default function AddLinkModal({
   }, []);
 
   return (
-    <div className="AddHobbyModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`AddHobbyModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
         attach link
       </Dialog.Title>

@@ -4,14 +4,15 @@ import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
-import FormInputComponent from "../formInputComponent";
-import FormSubmissionButton from "../formSubmissionButton";
+import FormInputComponent from "../inputComponents/formInputComponent";
+import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
 
 import { useState } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@apollo/client";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
 import { LOGIN } from "@/graphql/mutations";
 import ErrorModal from "./errorModal";
@@ -26,6 +27,7 @@ type FormData = z.infer<typeof LoginSchema>;
 export default function LoginModal() {
   const { replaceModalStack, showModal } = useModal();
   const [disabledButton, setDisabledButton] = useState(false);
+  const { textColor } = useColorOptions();
 
   const {
     register,
@@ -57,8 +59,12 @@ export default function LoginModal() {
   };
 
   return (
-    <div className="LoginModal flex flex-col items-center gap-10">
-      <Dialog.Title className="Title -mb-2 max-w-[450px] self-center text-center text-xl font-bold">
+    <div
+      className={`LoginModal flex flex-col items-center gap-10 ${textColor}`}
+    >
+      <Dialog.Title
+        className={`Title -mb-2 max-w-[450px] self-center text-center text-xl font-bold ${textColor}`}
+      >
         login
       </Dialog.Title>
       <form

@@ -6,9 +6,10 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import InfoBox from "@/components/infoBox";
-import SiteButton from "@/components/siteButton";
+import InfoBox from "@/components/informationDisplayComponents/infoBox";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SubscriptionModal from "@/components/modals/subscriptionModal";
 
 export default function Settings() {
@@ -16,28 +17,62 @@ export default function Settings() {
   const { fellow, setFellow } = useFellow();
   const { showModal, hideModal } = useModal();
   const { business } = useBusiness();
+  const { textColor } = useColorOptions();
 
   useEffect(() => {
-    setCurrentPage("Profile");
+    setCurrentPage("settings");
     if (accountType === "Fellow") {
-      setPageType("Individual");
+      setPageType("Fellow");
     } else if (accountType === "Business") {
       setPageType("Business");
     }
-  }, [setCurrentPage, setPageType]);
+  }, []);
 
   // WE NEED TO MAKE AN OPTION TO CLOSE YOUR ACCOUNT ? HOW ABOUT OPTIONS TO RETRACT APPLICATIONS ?
   // if the current subscription gets changed from 0 to an amount, we'll need to initiate a payment due on that day of the month
 
   return (
-    <div className="SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-20">
+    <div
+      className={`SettingsPage flex flex-grow flex-col items-center gap-8 pt-6 md:pb-20 ${textColor}`}
+    >
       <div className="SettingsContainer flex w-[84%] max-w-[1600px] flex-col gap-20 sm:gap-32 md:w-[75%]">
         {accountType === "Fellow" && (
-          <h1 className="SettingsTitle self-end pr-14">{`My Profile: Details & Subscription`}</h1>
+          <h1
+            className={`SettingsTitle self-end pr-14 ${textColor}`}
+          >{`My Profile: Details & Subscription`}</h1>
         )}
         {accountType === "Business" && (
-          <h1 className="SettingsTitle self-end pr-14">{`Business Profile: Details & Payments`}</h1>
+          <h1
+            className={`SettingsTitle self-end pr-14 ${textColor}`}
+          >{`Business Profile: Details & Payments`}</h1>
         )}
+
+        {accountType === "Business" && !business?.hasActiveJobs && (
+          <div className="NameEmailDetails flex flex-col items-end gap-6 self-end pr-14">
+            <InfoBox
+              aria="aboutInfo"
+              variant="hollow"
+              size="profile"
+              width="medium"
+              addClasses="-mt-20"
+            >
+              <div className="NameAndEmail ml-2 flex flex-col gap-8">
+                <h2 className="Name">Business: {business?.businessName}</h2>
+
+                <h2 className="Name leading-6">Email: {business?.email}</h2>
+              </div>
+            </InfoBox>
+            <SiteButton
+              aria="editNameEmail"
+              variant="hollow"
+              colorScheme="b1"
+              addClasses="px-8"
+            >
+              edit
+            </SiteButton>
+          </div>
+        )}
+
         <div className="NameAndSubscriptionContainer flex items-start justify-between align-top">
           {accountType === "Fellow" && (
             <div className="NameEmailDetails flex flex-col items-end gap-6">
@@ -64,7 +99,7 @@ export default function Settings() {
             </div>
           )}
 
-          {accountType === "Business" && (
+          {accountType === "Business" && business?.hasActiveJobs && (
             <div className="NameEmailDetails flex flex-col items-end gap-6">
               <InfoBox
                 aria="aboutInfo"
@@ -101,7 +136,7 @@ export default function Settings() {
               >
                 <div className="NameAndEmail flex flex-col gap-8">
                   <h2 className="Name">Your Current Subscription:</h2>
-                  <h2 className="Name -mt-4 text-2xl text-jade">
+                  <h2 className="Name -mt-4 text-2xl">
                     ${fellow?.subscriptionAmount}
                   </h2>
                   <p className="Amount -mt-6 text-sm font-medium italic">
@@ -134,7 +169,7 @@ export default function Settings() {
               >
                 <div className="PaymentDetails flex flex-col gap-8">
                   <h2 className="Payment">Your Next Payment:</h2>
-                  <h2 className="Name -mt-4 text-2xl text-jade">
+                  <h2 className="Name -mt-4 text-2xl">
                     ${business?.amountDue}
                   </h2>
                   <p className="Amount -mt-6 text-sm font-medium italic">
@@ -168,7 +203,7 @@ export default function Settings() {
             >
               <div className="BillingDetails flex flex-col gap-4">
                 <h2 className="Name">Your Billing Details:</h2>
-                <p className="Name -mt-2 italic text-jade">
+                <p className="Name -mt-2 italic">
                   payments processed using card ending in 0000
                 </p>
               </div>
@@ -195,10 +230,8 @@ export default function Settings() {
               <div className="BillingDetails flex flex-col gap-4">
                 <h2 className="Name">Your Billing Details:</h2>
                 {/* I don't know if we should have this section? */}
-                <p className="Name text-jade">monthly payments on the 14th</p>
-                <p className="Name -mt-2 italic text-jade">
-                  with card ending in 0000
-                </p>
+                <p className="Name">monthly payments on the 14th</p>
+                <p className="Name -mt-2 italic">with card ending in 0000</p>
               </div>
             </InfoBox>
             <SiteButton

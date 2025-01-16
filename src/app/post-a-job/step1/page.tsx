@@ -6,18 +6,16 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useBusiness } from "@/contexts/BusinessContext";
-import { skillsList } from "@/lib/skillsList";
 import { ParamsList } from "@/lib/paramsList";
-import { useJobs } from "@/contexts/JobsContext";
-import { useColors } from "@/contexts/ColorContext";
+import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useBusiness } from "@/contexts/BusinessContext";
 
-import SiteButton from "@/components/siteButton";
-import InputComponent from "@/components/inputComponent";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 
@@ -34,9 +32,8 @@ type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep1() {
   const router = useRouter();
-  const { business, setBusiness } = useBusiness();
-  const { job, setJob } = useJobs();
-  const { colorOption, setColorOption } = useColors();
+  const { job, setJob } = useJob();
+  const { business } = useBusiness();
   const { textColor } = useColorOptions();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -55,26 +52,20 @@ export default function PostAJobStep1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    // setBusiness({
-    //   ...business,
-    //   activeJobs:
-    //     business?.activeJobs.map((job: any, index: number) => {
-    //       if (index === business.activeJobs.length - 1) {
-    //         return {
-    //           ...job,
-    //           positionSummary: data.positionSummary,
-    //           nonNegParams: nonNegParams,
-    //         };
-    //       }
-    //       return job;
-    //     }) || [],
-    // });
     setJob({
       ...job,
       positionSummary: data.positionSummary,
       nonNegParams: nonNegParams,
+      location: business?.location,
+      businessName: business?.businessName,
+      country: business?.country,
+      // jobIsBeingEdited: false,
     });
-    router.push("/post-a-job/step2");
+    if (job?.jobIsBeingEdited) {
+      router.push("/listing");
+    } else {
+      router.push("/post-a-job/step2");
+    }
   };
 
   // handlers for adding, updating, and deleting information tied to States
@@ -102,22 +93,14 @@ export default function PostAJobStep1() {
     });
   };
 
-  const latestArrayIndex = business?.activeJobs.length
-    ? business.activeJobs.length - 1
-    : -1;
-
   useEffect(() => {
-    // setNonNegParams(
-    //   Array.isArray(business?.activeJobs[latestArrayIndex].nonNegParams)
-    //     ? business?.activeJobs[latestArrayIndex].nonNegParams
-    //     : [],
-    // );
     setNonNegParams(Array.isArray(job?.nonNegParams) ? job?.nonNegParams : []);
-    setColorOption("highContrast");
   }, []);
 
   return (
-    <div className="PostAJobPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`PostAJobPage flex w-[95vw] ${textColor} max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
+    >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${textColor}`}>
           {job?.jobTitle || "Test Job Title"}
@@ -175,8 +158,9 @@ export default function PostAJobStep1() {
               : !disabledButton && job?.jobIsBeingEdited === true
                 ? "update"
                 : disabledButton && job?.jobIsBeingEdited === false
-                  ? "Saving Information.."
+                  ? "Saving Information..."
                   : "continue"}{" "}
+            {/* {disabledButton ? "Saving Information..." : "continue"} */}
           </SiteButton>
         </div>
       </div>

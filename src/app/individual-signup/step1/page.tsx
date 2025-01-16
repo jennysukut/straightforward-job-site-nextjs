@@ -9,19 +9,22 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useColors } from "@/contexts/ColorContext";
 
-import SiteButton from "@/components/siteButton";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
-import InputComponent from "@/components/inputComponent";
-import LabelGeneratorAndDisplayComp from "@/components/labelGenAndDisplayComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponentWithLabelOptions";
-import AddHandler from "@/components/addHandler";
-import DeleteHandler from "@/components/deleteHandler";
+import InputComponent from "@/components/inputComponents/inputComponent";
+import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGenAndDisplayComponent";
+import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
+import AddHandler from "@/components/handlers/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
 
 import { countries } from "@/lib/countriesList";
 import { languageOptions } from "@/lib/languageOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { getRandomColorArray } from "@/utils/getRandomColorScheme";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 type CurrentSchemeType = ButtonColorOption;
 
 const fellowSchema = z.object({
@@ -49,19 +52,17 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { showModal } = useModal();
-
+  const { titleColor, textColor } = useColorOptions();
+  const { colorOption } = useColors();
+  const avatarDetails = avatarOptions.find(
+    (option) => option.title === fellow?.avatar,
+  );
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const [avatarOptions, setAvatarOptions] = useState({
-    url: fellow?.avatar,
-    shadow: fellow?.shadow,
-    colorScheme: fellow?.colorScheme,
-    buttonShadow: fellow?.shadow,
-    buttonImg: fellow?.buttonImg,
-  });
+  const [avatar, setAvatar] = useState(avatarDetails);
 
   const {
     handleSubmit,
@@ -89,11 +90,7 @@ export default function IndividualSignupPage1() {
       location: data.location,
       skills: skills,
       jobTitles: jobTitles,
-      avatar: avatarOptions.url,
-      shadow: avatarOptions.shadow,
-      colorScheme: avatarOptions.colorScheme,
-      buttonShadow: avatarOptions.shadow,
-      buttonImg: avatarOptions.buttonImg,
+      avatar: avatar?.title,
       languages: languages,
       profileIsBeingEdited: false,
     });
@@ -163,7 +160,9 @@ export default function IndividualSignupPage1() {
             className="IndividualSignupForm xs:pt-8 flex flex-col gap-8"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <h1 className="FellowName -mb-4 ml-8 tracking-superwide">
+            <h1
+              className={`FellowName -mb-4 ml-8 tracking-superwide ${titleColor}`}
+            >
               {fellow?.name || "Test Name"}
             </h1>
 
@@ -222,20 +221,16 @@ export default function IndividualSignupPage1() {
           <div className="AvatarButtonContainer -mt-14 items-end self-end">
             <SiteButton
               variant="avatar"
-              colorScheme={avatarOptions.colorScheme as ButtonColorOption}
+              colorScheme={avatar?.colorScheme as ButtonColorOption}
               size="largeCircle"
               aria="avatar"
-              addImage={`${avatarOptions.buttonImg}`}
-              onClick={() =>
-                showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-              }
+              addImage={`${colorOption === "standard" ? avatar?.img.standard : avatar?.img.highContrast}`}
+              onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
             />
           </div>
           <button
-            className="max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100"
-            onClick={() =>
-              showModal(<AvatarModal setAvatarOptions={setAvatarOptions} />)
-            }
+            className={`max-w-[30%] self-end py-4 text-right text-xs opacity-80 hover:opacity-100 ${textColor}`}
+            onClick={() => showModal(<AvatarModal setAvatar={setAvatar} />)}
           >
             {`choose your avatar & colors`}
           </button>

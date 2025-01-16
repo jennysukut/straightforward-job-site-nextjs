@@ -7,14 +7,15 @@ import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { useJobs } from "@/contexts/JobsContext";
+import { useJob } from "@/contexts/JobContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
-import FormInputComponent from "@/components/formInputComponent";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
+import FormInputComponent from "@/components/inputComponents/formInputComponent";
 
-import DeleteHandler from "@/components/deleteHandler";
-import AddHandler from "@/components/addHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
 
 const jobSchema = z.object({
   jobTitle: z.string().min(2, { message: "Job Title Required" }),
@@ -27,7 +28,8 @@ export default function PostAJobModal() {
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { business, setBusiness } = useBusiness();
-  const { job, setJob } = useJobs();
+  const { job, setJob } = useJob();
+  const { textColor } = useColorOptions();
 
   const [positionType, setPositionType] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
@@ -51,7 +53,7 @@ export default function PostAJobModal() {
       },
       setValue,
       clearErrors,
-      oneChoice: true,
+      oneChoice: { positionType: true },
     });
   };
 
@@ -68,21 +70,10 @@ export default function PostAJobModal() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     setJob({
-      jobNumber: 1,
       jobTitle: data.jobTitle,
       positionType: data.positionType,
     });
-    // setBusiness({
-    //   ...business,
-    //   activeJobs: [
-    //     ...(business?.activeJobs || ""),
-    //     {
-    //       jobNumber: 1,
-    //       jobTitle: data.jobTitle,
-    //       positionType: data.positionType,
-    //     },
-    //   ],
-    // });
+
     router.push("/post-a-job/step1");
     setTimeout(() => {
       hideModal();
@@ -90,7 +81,9 @@ export default function PostAJobModal() {
   };
 
   return (
-    <div className="SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 text-jade">
+    <div
+      className={`SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
+    >
       <Dialog.Title className="Title max-w-[450px] self-center text-center text-xl font-bold">
         post a job
       </Dialog.Title>
@@ -116,7 +109,7 @@ export default function PostAJobModal() {
           handleAdd={handleAdd}
           handleDelete={handleDelete}
           buttons={["full-time", "part-time", "contract"]}
-          classesForButtons="px-8 py-3"
+          classesForButtons="px-8 py-3 mt-4"
           errors={errors.positionType}
           flexOpt="flex-col"
         />

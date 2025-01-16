@@ -8,17 +8,18 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddHobbyModal from "@/components/modals/profilePopulationModals/addHobbyModal";
 import AddBookOrQuoteModal from "@/components/modals/profilePopulationModals/addBookOrQuoteModal";
-import InputComponent from "@/components/inputComponent";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import Avatar from "@/components/avatarComponent";
-import DeleteHandler from "@/components/deleteHandler";
-import UpdateHandler from "@/components/updateHandler";
-import AddHandler from "@/components/addHandler";
-import ButtonOptionsComponent from "@/components/buttonOptionsComponent";
+import DeleteHandler from "@/components/handlers/deleteHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 
 const fellowSchema = z.object({
   hobbies: z.array(z.string()).optional(),
@@ -30,6 +31,7 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage5() {
   const { fellow, setFellow } = useFellow();
+  const { textColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -43,6 +45,7 @@ export default function IndividualSignupPage5() {
     handleSubmit,
     setValue,
     register,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -58,7 +61,7 @@ export default function IndividualSignupPage5() {
         hobby: setHobbies,
         bookOrQuote: setBookOrQuote,
       },
-      hasId: true,
+      hasId: { hobby: true, bookOrQuote: true },
       counterFunctions: {
         hobby: setHobbyCounter,
         bookOrQuote: setBookOrQuoteCounter,
@@ -67,6 +70,8 @@ export default function IndividualSignupPage5() {
         hobby: hobbyCounter,
         bookOrQuote: bookOrQuoteCounter,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -94,7 +99,7 @@ export default function IndividualSignupPage5() {
         hobby: setHobbies,
         bookOrQuote: setBookOrQuote,
       },
-      hasId: true,
+      hasId: { hobby: true, bookOrQuote: true },
     });
   };
 
@@ -123,13 +128,19 @@ export default function IndividualSignupPage5() {
   }, []);
 
   return (
-    <div className="IndividualSignupPage4 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`IndividualSignupPage4 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8 ${textColor}`}
+    >
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
-          <h2 className="OptionalTitle text-lg text-jade">
-            optional: human details
-          </h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <h2 className="OptionalTitle text-lg">optional: human details</h2>
+          <div className="AvatarContainer self-end pr-6">
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
+          </div>
         </div>
 
         {/* Add + Display Hobbies */}

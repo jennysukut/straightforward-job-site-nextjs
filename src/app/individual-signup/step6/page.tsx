@@ -8,15 +8,17 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useModal } from "@/contexts/ModalContext";
+import { usePageContext } from "@/contexts/PageContext";
+import { useColorOptions } from "@/lib/stylingData/colorOptions";
 
-import SiteButton from "@/components/siteButton";
-import PopulateDisplayField from "@/components/populateDisplayField";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
 import AddLinkModal from "@/components/modals/profilePopulationModals/addLinkModal";
-import InputComponent from "@/components/inputComponent";
+import InputComponent from "@/components/inputComponents/inputComponent";
 import Avatar from "@/components/avatarComponent";
-import AddHandler from "@/components/addHandler";
-import UpdateHandler from "@/components/updateHandler";
-import DeleteHandler from "@/components/deleteHandler";
+import AddHandler from "@/components/handlers/addHandler";
+import UpdateHandler from "@/components/handlers/updateHandler";
+import DeleteHandler from "@/components/handlers/deleteHandler";
 import SubscriptionModal from "@/components/modals/subscriptionModal";
 
 const fellowSchema = z.object({
@@ -28,7 +30,9 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage6() {
   const { fellow, setFellow } = useFellow();
+  const { setAccountType, setIsLoggedIn } = usePageContext();
   const { showModal } = useModal();
+  const { textColor } = useColorOptions();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -39,6 +43,8 @@ export default function IndividualSignupPage6() {
   const {
     handleSubmit,
     register,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(fellowSchema),
@@ -52,13 +58,15 @@ export default function IndividualSignupPage6() {
       setFunctions: {
         link: setLinks,
       },
-      hasId: true,
+      hasId: { link: true },
       counterFunctions: {
         link: setLinkCounter,
       },
       counterDetails: {
         link: linkCounter,
       },
+      setValue,
+      clearErrors,
     });
   };
 
@@ -86,11 +94,10 @@ export default function IndividualSignupPage6() {
       setFunctions: {
         link: setLinks,
       },
-      hasId: true,
+      hasId: { link: true },
     });
   };
 
-  console.log(fellow?.profileIsBeingEdited, fellow?.addMoreInfo);
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     if (
@@ -99,6 +106,8 @@ export default function IndividualSignupPage6() {
     ) {
       showModal(<SubscriptionModal />);
     }
+    setAccountType("Fellow");
+    setIsLoggedIn(true);
     setFellow({
       ...fellow,
       links: links,
@@ -116,13 +125,21 @@ export default function IndividualSignupPage6() {
   }, []);
 
   return (
-    <div className="IndividualSignupPage5 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
+    <div
+      className={`IndividualSignupPage5 flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8 ${textColor}`}
+    >
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
-          <h2 className="OptionalTitle text-lg text-jade">
+          <h2 className="OptionalTitle text-lg">
             optional: links + more about you
           </h2>
-          <Avatar addClasses="self-end -mt-14" />
+          <div className="AvatarContainer self-end pr-6">
+            <Avatar
+              addClasses="self-end -mt-14"
+              avatarType="Fellow"
+              fellow={fellow}
+            />
+          </div>
         </div>
 
         {/* Add + Display Links */}

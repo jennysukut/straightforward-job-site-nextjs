@@ -1,273 +1,503 @@
 export const avatarOptions = [
   {
     title: "ant",
-    img: "bg-[url('/avatars/ant.svg')]",
-    url: "/avatars/ant.svg",
-    shadow: "bg-orange",
-    dropShadow: "drop-shadow-orange",
+    img: {
+      standard: "bg-[url('/avatars/ant.svg')]",
+      highContrast: "bg-[url('/avatars/hc-ant.svg')]",
+    },
+    url: {
+      standard: "/avatars/ant.svg",
+      highContrast: "/avatars/hc-ant.svg",
+    },
+    shadow: {
+      standard: "bg-orange",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-orange",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "a1",
   },
   {
     title: "app",
-    img: "bg-[url('/avatars/app.svg')]",
-    url: "/avatars/app.svg",
-    shadow: "bg-lilac",
-    dropShadow: "drop-shadow-lilac",
+    img: {
+      standard: "bg-[url('/avatars/app.svg')]",
+      highContrast: "bg-[url('/avatars/hc-app.svg')]",
+    },
+    url: {
+      standard: "/avatars/app.svg",
+      highContrast: "/avatars/hc-app.svg",
+    },
+    shadow: {
+      standard: "bg-lilac",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lilac",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "d5",
   },
-  {
-    title: "orange",
-    img: "bg-[url('/avatars/orange.svg')]",
-    url: "/avatars/orange.svg",
-    shadow: "bg-sky",
-    dropShadow: "drop-shadow-sky",
-    colorScheme: "f1",
-  },
+
   {
     title: "backpack",
-    img: "bg-[url('/avatars/backpack.svg')]",
-    url: "/avatars/backpack.svg",
-    shadow: "bg-apricot",
-    dropShadow: "drop-shadow-apricot",
+    img: {
+      standard: "bg-[url('/avatars/backpack.svg')]",
+      highContrast: "bg-[url('/avatars/hc-backpack.svg')]",
+    },
+    url: {
+      standard: "/avatars/backpack.svg",
+      highContrast: "/avatars/hc-backpack.svg",
+    },
+    shadow: {
+      standard: "bg-apricot",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-apricot",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "f5",
   },
   {
     title: "bird",
-    img: "bg-[url('/avatars/bird.svg')]",
-    url: "/avatars/bird.svg",
-    shadow: "bg-orange",
-    dropShadow: "drop-shadow-orange",
+    img: {
+      standard: "bg-[url('/avatars/bird.svg')]",
+      highContrast: "bg-[url('/avatars/hc-bird.svg')]",
+    },
+    url: {
+      standard: "/avatars/bird.svg",
+      highContrast: "/avatars/hc-bird.svg",
+    },
+    shadow: {
+      standard: "bg-orange",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-orange",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "a2",
   },
   {
     title: "books",
-    img: "bg-[url('/avatars/books.svg')]",
-    url: "/avatars/books.svg",
-    shadow: "bg-sky",
-    dropShadow: "drop-shadow-sky",
+    img: {
+      standard: "bg-[url('/avatars/books.svg')]",
+      highContrast: "bg-[url('/avatars/hc-books.svg')]",
+    },
+    url: {
+      standard: "/avatars/books.svg",
+      highContrast: "/avatars/hc-books.svg",
+    },
+    shadow: {
+      standard: "bg-sky",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-sky",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "f1",
   },
   {
-    title: "peach",
-    img: "bg-[url('/avatars/peach.svg')]",
-    url: "/avatars/peach.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
-    colorScheme: "b6",
-  },
-  {
     title: "chess",
-    img: "bg-[url('/avatars/chess.svg')]",
-    url: "/avatars/chess.svg",
-    shadow: "bg-watermelon",
-    dropShadow: "drop-shadow-watermelon",
+    img: {
+      standard: "bg-[url('/avatars/chess.svg')]",
+      highContrast: "bg-[url('/avatars/hc-chess.svg')]",
+    },
+    url: {
+      standard: "/avatars/chess.svg",
+      highContrast: "/avatars/hc-chess.svg",
+    },
+    shadow: {
+      standard: "bg-watermelon",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-watermelon",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "c1",
   },
   {
     title: "checks",
-    img: "bg-[url('/avatars/checks.svg')]",
-    url: "/avatars/checks.svg",
-    shadow: "bg-magenta",
-    dropShadow: "drop-shadow-magenta",
+    img: {
+      standard: "bg-[url('/avatars/checks.svg')]",
+      highContrast: "bg-[url('/avatars/hc-checks.svg')]",
+    },
+    url: {
+      standard: "/avatars/checks.svg",
+      highContrast: "/avatars/hc-checks.svg",
+    },
+    shadow: {
+      standard: "bg-magenta",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-magenta",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "a5",
   },
   {
     title: "wave",
-    img: "bg-[url('/avatars/wave.svg')]",
-    url: "/avatars/wave.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/wave.svg')]",
+      highContrast: "bg-[url('/avatars/hc-wave.svg')]",
+    },
+    url: {
+      standard: "/avatars/wave.svg",
+      highContrast: "/avatars/hc-wave.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "b1",
   },
   {
-    title: "purple",
-    img: "bg-[url('/avatars/purple.svg')]",
-    url: "/avatars/purple.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
-    colorScheme: "b3",
-  },
-  {
     title: "code",
-    img: "bg-[url('/avatars/code.svg')]",
-    url: "/avatars/code.svg",
-    shadow: "bg-lilac",
-    dropShadow: "drop-shadow-lilac",
+    img: {
+      standard: "bg-[url('/avatars/code.svg')]",
+      highContrast: "bg-[url('/avatars/hc-code.svg')]",
+    },
+    url: {
+      standard: "/avatars/code.svg",
+      highContrast: "/avatars/hc-code.svg",
+    },
+    shadow: {
+      standard: "bg-lilac",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lilac",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "d1",
   },
   {
     title: "mushrooms",
-    img: "bg-[url('/avatars/mushrooms.svg')]",
-    url: "./avatars/mushrooms.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/mushrooms.svg')]",
+      highContrast: "bg-[url('/avatars/hc-mushrooms.svg')]",
+    },
+    url: {
+      standard: "./avatars/mushrooms.svg",
+      highContrast: "./avatars/hc-mushrooms.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "b6",
   },
   {
     title: "dice",
-    img: "bg-[url('/avatars/dice.svg')]",
-    url: "/avatars/dice.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/dice.svg')]",
+      highContrast: "bg-[url('/avatars/hc-dice.svg')]",
+    },
+    url: {
+      standard: "/avatars/dice.svg",
+      highContrast: "/avatars/hc-dice.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "b4",
   },
   {
-    title: "watermelon",
-    img: "bg-[url('/avatars/watermelon.svg')]",
-    url: "/avatars/watermelon.svg",
-    shadow: "bg-jade",
-    dropShadow: "drop-shadow-jade",
-    colorScheme: "e5",
-  },
-  {
     title: "dino",
-    img: "bg-[url('/avatars/dino.svg')]",
-    url: "/avatars/dino.svg",
-    shadow: "bg-sky",
-    dropShadow: "drop-shadow-sky",
+    img: {
+      standard: "bg-[url('/avatars/dino.svg')]",
+      highContrast: "bg-[url('/avatars/hc-dino.svg')]",
+    },
+    url: {
+      standard: "/avatars/dino.svg",
+      highContrast: "/avatars/hc-dino.svg",
+    },
+    shadow: {
+      standard: "bg-sky",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-sky",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "f1",
-  },
-
-  {
-    title: "emerald",
-    img: "bg-[url('/avatars/emerald.svg')]",
-    url: "/avatars/emerald.svg",
-    shadow: "bg-lilac",
-    dropShadow: "drop-shadow-lilac",
-    colorScheme: "d1",
   },
   {
     title: "fish",
-    img: "bg-[url('/avatars/fish.svg')]",
-    url: "/avatars/fish.svg",
-    shadow: "bg-peach",
-    dropShadow: "drop-shadow-peach",
+    img: {
+      standard: "bg-[url('/avatars/fish.svg')]",
+      highContrast: "bg-[url('/avatars/hc-fish.svg')]",
+    },
+    url: {
+      standard: "/avatars/fish.svg",
+      highContrast: "/avatars/hc-fish.svg",
+    },
+    shadow: {
+      standard: "bg-peach",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-peach",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "c6",
   },
-
   {
     title: "football",
-    img: "bg-[url('/avatars/football.svg')]",
-    url: "/avatars/football.svg",
-    shadow: "bg-sky",
-    dropShadow: "drop-shadow-sky",
+    img: {
+      standard: "bg-[url('/avatars/football.svg')]",
+      highContrast: "bg-[url('/avatars/hc-football.svg')]",
+    },
+    url: {
+      standard: "/avatars/football.svg",
+      highContrast: "/avatars/hc-football.svg",
+    },
+    shadow: {
+      standard: "bg-sky",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-sky",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "f3",
   },
   {
     title: "flower",
-    img: "bg-[url('/avatars/flower.svg')]",
-    url: "/avatars/flower.svg",
-    shadow: "bg-watermelon",
-    dropShadow: "drop-shadow-watermelon",
+    img: {
+      standard: "bg-[url('/avatars/flower.svg')]",
+      highContrast: "bg-[url('/avatars/hc-flower.svg')]",
+    },
+    url: {
+      standard: "/avatars/flower.svg",
+      highContrast: "/avatars/hc-flower.svg",
+    },
+    shadow: {
+      standard: "bg-watermelon",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-watermelon",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "c4",
   },
   {
     title: "medicine",
-    img: "bg-[url('/avatars/medicine.svg')]",
-    url: "/avatars/medicine.svg",
-    shadow: "bg-olive",
-    dropShadow: "drop-shadow-olive",
+    img: {
+      standard: "bg-[url('/avatars/medicine.svg')]",
+      highContrast: "bg-[url('/avatars/hc-medicine.svg')]",
+    },
+    url: {
+      standard: "/avatars/medicine.svg",
+      highContrast: "/avatars/hc-medicine.svg",
+    },
+    shadow: {
+      standard: "bg-olive",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-olive",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "f5",
   },
   {
     title: "groovy",
-    img: "bg-[url('/avatars/groovy.svg')]",
-    url: "/avatars/groovy.svg",
-    shadow: "bg-orange",
-    dropShadow: "drop-shadow-orange",
+    img: {
+      standard: "bg-[url('/avatars/groovy.svg')]",
+      highContrast: "bg-[url('/avatars/hc-groovy.svg')]",
+    },
+    url: {
+      standard: "/avatars/groovy.svg",
+      highContrast: "/avatars/hc-groovy.svg",
+    },
+    shadow: {
+      standard: "bg-orange",
+      highContrast: "bg-almond",
+    },
+    dropShadow: {
+      standard: "drop-shadow-orange",
+      highContrast: "drop-shadow-almond",
+    },
     colorScheme: "a4",
   },
-
   {
     title: "ivy",
-    img: "bg-[url('/avatars/ivy.svg')]",
-    url: "/avatars/ivy.svg",
-    shadow: "bg-jade",
-    dropShadow: "drop-shadow-jade",
+    img: {
+      standard: "bg-[url('/avatars/ivy.svg')]",
+      highContrast: "bg-[url('/avatars/hc-ivy.svg')]",
+    },
+    url: {
+      standard: "/avatars/ivy.svg",
+      highContrast: "/avatars/hc-ivy.svg",
+    },
+    shadow: {
+      standard: "bg-jade",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-jade",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "e5",
   },
   {
-    title: "jade",
-    img: "bg-[url('/avatars/jade.svg')]",
-    url: "/avatars/jade.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
-    colorScheme: "b1",
-  },
-  {
     title: "growth",
-    img: "bg-[url('/avatars/growth.svg')]",
-    url: "/avatars/growth.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/growth.svg')]",
+      highContrast: "bg-[url('/avatars/hc-growth.svg')]",
+    },
+    url: {
+      standard: "/avatars/growth.svg",
+      highContrast: "/avatars/hc-growth.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "b5",
   },
-
   {
     title: "mug",
-    img: "bg-[url('/avatars/mug.svg')]",
-    url: "/avatars/mug.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/mug.svg')]",
+      highContrast: "bg-[url('/avatars/hc-mug.svg')]",
+    },
+    url: {
+      standard: "/avatars/mug.svg",
+      highContrast: "/avatars/hc-mug.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "b3",
   },
   {
-    title: "magenta",
-    img: "bg-[url('/avatars/magenta.svg')]",
-    url: "/avatars/magenta.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
-    colorScheme: "b4",
-  },
-  {
     title: "orange-floral",
-    img: "bg-[url('/avatars/orange-floral.svg')]",
-    url: "/avatars/orange-floral.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/orange-floral.svg')]",
+      highContrast: "bg-[url('/avatars/hc-orange-floral.svg')]",
+    },
+    url: {
+      standard: "/avatars/orange-floral.svg",
+      highContrast: "/avatars/hc-orange-floral.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "b5",
   },
-
   {
     title: "music",
-    img: "bg-[url('/avatars/music.svg')]",
-    url: "/avatars/music.svg",
-    shadow: "bg-jade",
-    dropShadow: "drop-shadow-jade",
+    img: {
+      standard: "bg-[url('/avatars/music.svg')]",
+      highContrast: "bg-[url('/avatars/hc-music.svg')]",
+    },
+    url: {
+      standard: "/avatars/music.svg",
+      highContrast: "/avatars/hc-music.svg",
+    },
+    shadow: {
+      standard: "bg-jade",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-jade",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "e6",
   },
-
   {
     title: "shades",
-    img: "bg-[url('/avatars/shades.svg')]",
-    url: "/avatars/shades.svg",
-    shadow: "bg-magenta",
-    dropShadow: "drop-shadow-magenta",
+    img: {
+      standard: "bg-[url('/avatars/shades.svg')]",
+      highContrast: "bg-[url('/avatars/hc-shades.svg')]",
+    },
+    url: {
+      standard: "/avatars/shades.svg",
+      highContrast: "/avatars/hc-shades.svg",
+    },
+    shadow: {
+      standard: "bg-magenta",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-magenta",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "a6",
-  },
-
-  {
-    title: "olive",
-    img: "bg-[url('/avatars/olive.svg')]",
-    url: "/avatars/olive.svg",
-    shadow: "bg-sky",
-    dropShadow: "drop-shadow-sky",
-    colorScheme: "f3",
   },
   {
     title: "plant",
-    img: "bg-[url('/avatars/plant.svg')]",
-    url: "/avatars/plant.svg",
-    shadow: "bg-lime",
-    dropShadow: "drop-shadow-lime",
+    img: {
+      standard: "bg-[url('/avatars/plant.svg')]",
+      highContrast: "bg-[url('/avatars/hc-plant.svg')]",
+    },
+    url: {
+      standard: "/avatars/plant.svg",
+      highContrast: "/avatars/hc-plant.svg",
+    },
+    shadow: {
+      standard: "bg-lime",
+      highContrast: "bg-forest",
+    },
+    dropShadow: {
+      standard: "drop-shadow-lime",
+      highContrast: "drop-shadow-forest",
+    },
     colorScheme: "b6",
   },
   {
     title: "weights",
-    img: "bg-[url('/avatars/weights.svg')]",
-    url: "/avatars/weights.svg",
-    shadow: "bg-apricot",
-    dropShadow: "drop-shadow-apricot",
+    img: {
+      standard: "bg-[url('/avatars/weights.svg')]",
+      highContrast: "bg-[url('/avatars/hc-weights.svg')]",
+    },
+    url: {
+      standard: "/avatars/weights.svg",
+      highContrast: "/avatars/hc-weights.svg",
+    },
+    shadow: {
+      standard: "bg-apricot",
+      highContrast: "bg-pine",
+    },
+    dropShadow: {
+      standard: "drop-shadow-apricot",
+      highContrast: "drop-shadow-pine",
+    },
     colorScheme: "c6",
   },
 ];

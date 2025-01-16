@@ -1,18 +1,17 @@
 "use client";
 
-import React from "react";
 import { useEffect } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 
+import React from "react";
 import HeaderSection from "./headerSection";
 
 export default function Home() {
-  const { setCurrentPage, setPageType } = usePageContext();
+  const { setCurrentPage } = usePageContext();
 
   useEffect(() => {
     setCurrentPage("Home");
-    setPageType("Main");
-  }, [setCurrentPage, setPageType]);
+  }, []);
 
   return (
     <div className="HomePage flex flex-grow flex-col items-center gap-8 pt-14 md:pb-12 md:pt-20">
