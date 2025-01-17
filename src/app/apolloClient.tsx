@@ -7,9 +7,9 @@ import {
   createHttpLink,
 } from "@apollo/client";
 
-import { SchemaLink } from '@apollo/client/link/schema';
-import { addMocksToSchema, MockList } from '@graphql-tools/mock';
-import { makeExecutableSchema } from '@graphql-tools/schema';
+import { SchemaLink } from "@apollo/client/link/schema";
+import { addMocksToSchema, MockList } from "@graphql-tools/mock";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 // Define your GraphQL schema
 const typeDefs = `
@@ -229,7 +229,7 @@ input ProfileInput {
   objectId: ID
   name: String
   email: String
-  avatar: String
+  avatar: Avatar
   buttonShadow: String
   colorScheme: String
   profileIsBeingEdited: Boolean
@@ -355,6 +355,7 @@ input AccomplishmentInput {
 
 type Profile {
   objectId: ID
+  avatar: Avatar
   smallBio: String
   country: String
   location: String
@@ -499,30 +500,42 @@ input JobApplicationNoteInput {
   businessNote: Boolean
   fellowNote: Boolean
 }
+
+type Avatar {
+avatar: Avatar
+}
 `;
 
 // Create a schema with mocks
 const schema = makeExecutableSchema({ typeDefs });
 
 const mocks = {
-  Url: () => 'https://example.com',
+  Url: () => "https://example.com",
+  String: () => "String Here",
   // Add other custom mocks here if needed
+  CustomType: () => ({
+    // Mock implementation for the custom type
+    id: "1",
+    name: "Custom Name",
+    description: "This is a custom description.",
+  }),
+  Avatar: () => "checks",
 };
 
-const schemaWithMocks = addMocksToSchema({ 
+const schemaWithMocks = addMocksToSchema({
   schema,
   mocks,
-  preserveResolvers: true
+  preserveResolvers: true,
 });
 
-const mockLink = new SchemaLink({ schema: schemaWithMocks })
+const mockLink = new SchemaLink({ schema: schemaWithMocks });
 
 const httpLink = createHttpLink({
-  uri: "/api/graphql"
+  uri: "/api/graphql",
 });
 
 // Use mockLink for local testing, productionLink for production
-const link = process.env.NODE_ENV === 'development' ? mockLink : httpLink;
+const link = process.env.NODE_ENV === "development" ? mockLink : httpLink;
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -534,7 +547,5 @@ export default function ApolloWrapper({
 }: {
   children: React.ReactNode;
 }) {
-
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
-

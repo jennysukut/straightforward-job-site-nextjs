@@ -54,6 +54,8 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
+  console.log(inAms);
+
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId

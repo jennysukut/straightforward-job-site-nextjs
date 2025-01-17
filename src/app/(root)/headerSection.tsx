@@ -28,12 +28,11 @@ function HeaderSection() {
     }
   };
 
-  console.log(clickedButton);
-
   useEffect(() => {
     setPageType("main");
     setCurrentPage("main");
   }, []);
+
   return (
     <section className="HeaderSection items-left flex w-full flex-grow flex-col gap-4">
       <h1

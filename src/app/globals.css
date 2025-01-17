@@ -17,6 +17,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "petrona";
+  src: url("/fonts/Petrona-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 400 600 900;
+  font-style: normal;
+}
+
 .radix-themes {
   --default-font-family: "satoshi", sans-serif;
   --heading-font-family: "satoshi", sans-serif;

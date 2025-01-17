@@ -83,7 +83,7 @@ const FellowContext = createContext<FellowContextType | undefined>(undefined);
 export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const localFellowRef = useRef<Fellow | null>(null);
+  const localFellowRef = useRef<Fellow | null>({});
 
   const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
     count: 0,

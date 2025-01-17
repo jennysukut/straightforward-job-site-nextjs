@@ -85,6 +85,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
     );
   }
 
+  console.log(currentFellow);
+
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.jobId}`);
   };
@@ -176,7 +178,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               )}
             </div>
           </InfoBox>
-          {currentFellow?.education && (
+          {currentFellow?.education && currentFellow?.education.length > 0 && (
             <InfoBox
               variant="hollow"
               aria="education"
@@ -208,49 +210,50 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {currentFellow?.experience.length > 0 && (
-            <InfoBox
-              variant="hollow"
-              aria="experience"
-              size="profile"
-              width="small"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step2")}
-            >
-              <h2 className="ExperienceTitle mb-4 pl-2">{`My Experience:`}</h2>
-              <ul
-                className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.experience &&
+            currentFellow?.experience.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="experience"
+                size="profile"
+                width="small"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step2")}
               >
-                {currentFellow.experience.map((exp: any, index: number) => {
-                  return (
-                    <li className="ExperienceItem" key={index}>
-                      <p className="JobTitle pr-4">
-                        {exp.title},
-                        <span className="Company italic">
-                          {` `}
-                          {exp.companyName}
-                        </span>
-                        {exp.yearDetails && (
-                          <span className={`Years italic ${textColor}`}>
-                            {` - `}
-                            {exp.yearDetails}
+                <h2 className="ExperienceTitle mb-4 pl-2">{`My Experience:`}</h2>
+                <ul
+                  className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.experience.map((exp: any, index: number) => {
+                    return (
+                      <li className="ExperienceItem" key={index}>
+                        <p className="JobTitle pr-4">
+                          {exp.title},
+                          <span className="Company italic">
+                            {` `}
+                            {exp.companyName}
                           </span>
-                        )}
-                      </p>
-                      {exp.details && (
-                        <p
-                          className={`Details mt-2 text-sm font-medium ${secondaryTextColor}`}
-                        >
-                          {exp.details}
+                          {exp.yearDetails && (
+                            <span className={`Years italic ${textColor}`}>
+                              {` - `}
+                              {exp.yearDetails}
+                            </span>
+                          )}
                         </p>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </InfoBox>
-          )}
-          {currentFellow?.awards.length >= 1 && (
+                        {exp.details && (
+                          <p
+                            className={`Details mt-2 text-sm font-medium ${secondaryTextColor}`}
+                          >
+                            {exp.details}
+                          </p>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </InfoBox>
+            )}
+          {currentFellow?.awards && currentFellow?.awards.length >= 1 && (
             <InfoBox
               variant="hollow"
               aria="awards"
@@ -281,66 +284,68 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {currentFellow?.experienceLevels && (
-            <InfoBox
-              variant="hollow"
-              aria="expLevels"
-              size="profile"
-              width="small"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step3")}
-            >
-              <h2 className="ExperienceLevelTitle mb-4 pl-2">{`Experience Levels:`}</h2>
-              <ul
-                className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.experienceLevels &&
+            currentFellow?.experienceLevels.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="expLevels"
+                size="profile"
+                width="small"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step3")}
               >
-                {currentFellow.experienceLevels.map(
-                  (exp: any, index: number) => {
-                    return (
-                      <li className="ExperienceLevelItem" key={index}>
-                        <p className="ExperienceLevelAndSkill pr-4">
-                          {exp.experienceLevel}: {exp.expLevelSkill}
-                        </p>
-                        {exp.skillYears && (
-                          <p
-                            className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
-                          >
-                            {exp.skillYears}
+                <h2 className="ExperienceLevelTitle mb-4 pl-2">{`Experience Levels:`}</h2>
+                <ul
+                  className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.experienceLevels.map(
+                    (exp: any, index: number) => {
+                      return (
+                        <li className="ExperienceLevelItem" key={index}>
+                          <p className="ExperienceLevelAndSkill pr-4">
+                            {exp.experienceLevel}: {exp.expLevelSkill}
                           </p>
-                        )}
+                          {exp.skillYears && (
+                            <p
+                              className={`Details mt-2 font-medium italic ${secondaryTextColor}`}
+                            >
+                              {exp.skillYears}
+                            </p>
+                          )}
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </InfoBox>
+            )}
+          {currentFellow?.bookOrQuote &&
+            currentFellow?.bookOrQuote.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="bookOrQuote"
+                size="profile"
+                width="small"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step5")}
+              >
+                <h2 className="BookOrQuoteTitle mb-4 pl-2">{`Books / Quotes I Enjoy:`}</h2>
+                <ul
+                  className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.bookOrQuote.map((bq: any, index: number) => {
+                    return (
+                      <li className="BookOrQuoteItem" key={index}>
+                        <p className="BookOrQuote">{bq.bookOrQuote}</p>
+                        <p className={`Author italic ${textColor}`}>
+                          - {bq.author}
+                        </p>
                       </li>
                     );
-                  },
-                )}
-              </ul>
-            </InfoBox>
-          )}
-          {currentFellow?.bookOrQuote && (
-            <InfoBox
-              variant="hollow"
-              aria="bookOrQuote"
-              size="profile"
-              width="small"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step5")}
-            >
-              <h2 className="BookOrQuoteTitle mb-4 pl-2">{`Books / Quotes I Enjoy:`}</h2>
-              <ul
-                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
-              >
-                {currentFellow.bookOrQuote.map((bq: any, index: number) => {
-                  return (
-                    <li className="BookOrQuoteItem" key={index}>
-                      <p className="BookOrQuote">{bq.bookOrQuote}</p>
-                      <p className={`Author italic ${textColor}`}>
-                        - {bq.author}
-                      </p>
-                    </li>
-                  );
-                })}
-              </ul>
-            </InfoBox>
-          )}
+                  })}
+                </ul>
+              </InfoBox>
+            )}
           {currentFellow?.petDetails && (
             <InfoBox
               variant="hollow"
@@ -452,28 +457,29 @@ const FellowProfile: React.FC<FellowProfile> = ({
             <div className="LocationTypesInfo flex flex-col gap-2">
               <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
               <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
-                {currentFellow?.locationOptions.map(
-                  (opt: any, index: number) => {
-                    return (
-                      <SiteLabel
-                        variant="display"
-                        aria="locationOption"
-                        key={index}
-                        size="medium"
-                        colorScheme={
-                          thirdColorArray[index % thirdColorArray.length]
-                        }
-                      >
-                        {opt}
-                      </SiteLabel>
-                    );
-                  },
-                )}
+                {currentFellow.locationOptions &&
+                  currentFellow?.locationOptions.map(
+                    (opt: any, index: number) => {
+                      return (
+                        <SiteLabel
+                          variant="display"
+                          aria="locationOption"
+                          key={index}
+                          size="medium"
+                          colorScheme={
+                            thirdColorArray[index % thirdColorArray.length]
+                          }
+                        >
+                          {opt}
+                        </SiteLabel>
+                      );
+                    },
+                  )}
               </div>
             </div>
           </InfoBox>
 
-          {currentFellow?.links && (
+          {currentFellow?.links && currentFellow?.links.length > 0 && (
             <InfoBox
               variant="hollow"
               aria="links"
@@ -581,7 +587,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </p>
             </InfoBox>
           )}
-          {currentFellow?.hobbies && (
+          {currentFellow?.hobbies && currentFellow?.hobbies.length > 0 && (
             <InfoBox
               variant="hollow"
               aria="hobbies"
@@ -612,41 +618,42 @@ const FellowProfile: React.FC<FellowProfile> = ({
               </ul>
             </InfoBox>
           )}
-          {currentFellow?.accomplishments.length >= 1 && (
-            <InfoBox
-              variant="hollow"
-              aria="accomplishments"
-              size="profile"
-              width="medium"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step3")}
-            >
-              <h2 className="AccomplishmentsTitle mb-4 pl-2">{`Other Accomplishments:`}</h2>
-              <ul
-                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.accomplishments &&
+            currentFellow?.accomplishments.length >= 1 && (
+              <InfoBox
+                variant="hollow"
+                aria="accomplishments"
+                size="profile"
+                width="medium"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step3")}
               >
-                {currentFellow.accomplishments.map(
-                  (acc: any, index: number) => {
-                    return (
-                      <li
-                        className={`AccomplishmentItem ${textColor}`}
-                        key={index}
-                      >
-                        <p className="Accomplishment">{acc.accTitle}</p>
-                        {acc.accDetails && (
-                          <p
-                            className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
-                          >
-                            {acc.accDetails}
-                          </p>
-                        )}
-                      </li>
-                    );
-                  },
-                )}
-              </ul>
-            </InfoBox>
-          )}
+                <h2 className="AccomplishmentsTitle mb-4 pl-2">{`Other Accomplishments:`}</h2>
+                <ul
+                  className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.accomplishments.map(
+                    (acc: any, index: number) => {
+                      return (
+                        <li
+                          className={`AccomplishmentItem ${textColor}`}
+                          key={index}
+                        >
+                          <p className="Accomplishment">{acc.accTitle}</p>
+                          {acc.accDetails && (
+                            <p
+                              className={`AccomplishmentDetails mt-2 font-medium italic ${secondaryTextColor}`}
+                            >
+                              {acc.accDetails}
+                            </p>
+                          )}
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </InfoBox>
+            )}
           {currentFellow?.aboutMe && (
             <InfoBox
               variant="hollow"

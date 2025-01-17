@@ -224,79 +224,87 @@ export default function FellowAMS() {
     <div
       className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
-      <div className="AMSContainer flex w-full">
-        <div className="AMSTabOptions max-w-[10%] gap-6">
-          <ButtonOptionsComponent
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            type="altViewChoice"
-            selectedArray={altViewChoice}
-            classesForButtons="-rotate-90"
-            buttons={["calendar", "messages"]}
-            buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
-          />
-        </div>
-        {altViewChoice === "calendar" && (
-          <CalendarComp
-            size={currentJob ? "small" : ""}
-            addClasses={currentJob ? "pr-0" : ""}
-          />
-        )}
-        {altViewChoice === "messages" && (
-          <div className="Messages">Messages Here</div>
-          // for these messages, you can filter if there is a currentApp.id
-        )}
-
-        {(altViewChoice === "" || altViewChoice.length == 0) && (
-          <div className="ApplicationList flex w-full flex-col gap-4">
-            <div className="ButtonsAndTitle flex w-full flex-col justify-between">
-              <h1 className="AMSTitle -mb-8 mr-8 text-right">
-                Your Applications
-              </h1>
-
-              {/* application status filter */}
-              <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
-                <TieredButtonOptionsComponent
-                  type="filters"
-                  selectedArray={filters}
-                  setArray={setFilters}
-                  addClasses="flex-wrap mb-2"
-                  buttons={[
-                    {
-                      title:
-                        appStatus.length > 1
-                          ? `status: ${appStatus}`
-                          : "application status",
-                      initialTitle: "application status",
-                      type: "appStatus",
-                      array: appStatus,
-                      options: [
-                        "submitted",
-                        "viewed",
-                        "stage 1",
-                        "stage 2",
-                        "stage 3",
-                        "offer",
-                      ],
-                    },
-                  ]}
-                  horizontalSecondaryButtons
-                  handleAdd={handleAdd}
-                  handleDelete={handleDelete}
-                  secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
-                />
-              </div>
-            </div>
-            <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
-              <div
-                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-visible p-4`}
-              >
-                {renderApplications()}
-              </div>
-            </div>
+      {applications?.length === 0 ? (
+        <p className="ApplyPrompt mt-[20vh] max-w-[50vw] text-center align-middle italic text-olive">
+          {`It looks like you don't have any active applications. Take a look
+          through our Job Board and see if there's a position you'd like to
+          apply for!`}
+        </p>
+      ) : (
+        <div className="AMSContainer flex w-full">
+          <div className="AMSTabOptions max-w-[10%] gap-6">
+            <ButtonOptionsComponent
+              handleAdd={handleAdd}
+              handleDelete={handleDelete}
+              type="altViewChoice"
+              selectedArray={altViewChoice}
+              classesForButtons="-rotate-90"
+              buttons={["calendar", "messages"]}
+              buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
+            />
           </div>
-        )}
-      </div>
+          {altViewChoice === "calendar" && (
+            <CalendarComp
+              size={currentJob ? "small" : ""}
+              addClasses={currentJob ? "pr-0" : ""}
+            />
+          )}
+          {altViewChoice === "messages" && (
+            <div className="Messages">Messages Here</div>
+            // for these messages, you can filter if there is a currentApp.id
+          )}
+
+          {(altViewChoice === "" || altViewChoice.length == 0) && (
+            <div className="ApplicationList flex w-full flex-col gap-4">
+              <div className="ButtonsAndTitle flex w-full flex-col justify-between">
+                <h1 className="AMSTitle -mb-8 mr-8 text-right">
+                  Your Applications
+                </h1>
+
+                {/* application status filter */}
+                <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
+                  <TieredButtonOptionsComponent
+                    type="filters"
+                    selectedArray={filters}
+                    setArray={setFilters}
+                    addClasses="flex-wrap mb-2"
+                    buttons={[
+                      {
+                        title:
+                          appStatus.length > 1
+                            ? `status: ${appStatus}`
+                            : "application status",
+                        initialTitle: "application status",
+                        type: "appStatus",
+                        array: appStatus,
+                        options: [
+                          "submitted",
+                          "viewed",
+                          "stage 1",
+                          "stage 2",
+                          "stage 3",
+                          "offer",
+                        ],
+                      },
+                    ]}
+                    horizontalSecondaryButtons
+                    handleAdd={handleAdd}
+                    handleDelete={handleDelete}
+                    secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
+                  />
+                </div>
+              </div>
+              <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
+                <div
+                  className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-visible p-4`}
+                >
+                  {renderApplications()}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {currentJob && (
         <div className="ApplicationInfo">
