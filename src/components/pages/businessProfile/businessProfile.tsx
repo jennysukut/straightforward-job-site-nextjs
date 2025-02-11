@@ -92,7 +92,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             editClick={() => handleEditClick("/business-signup/step2")}
           >
             <h2 className="MissionVisionTitle mb-4 pl-2">{`Mission & Vision:`}</h2>
-            <p className="MissionVision ml-4 font-medium italic">
+            <p className="MissionVision ml-4 font-medium italic text-emerald">
               {thisBusiness.missionVision}
             </p>
           </InfoBox>
@@ -157,7 +157,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                 />
                 <div className="NameBioContainer">
                   <h1 className="BusinessName">{thisBusiness?.businessName}</h1>
-                  <p className="SmallBio pt-4 leading-6">
+                  <p className="SmallBio pt-4 leading-6 text-emerald">
                     {thisBusiness?.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>

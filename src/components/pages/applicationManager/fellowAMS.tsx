@@ -54,6 +54,10 @@ export default function FellowAMS() {
     (job: any) => job.jobId === currentApp?.jobId,
   )?.job;
 
+  const activeApps = applications?.filter((app: any) => {
+    return app.appStatus !== "closed";
+  });
+
   const retract = () => {
     showModal(
       <RetractionConfirmationModal
@@ -142,7 +146,7 @@ export default function FellowAMS() {
           />
         ));
     } else {
-      return applications
+      return activeApps
         ?.slice()
         .reverse()
         .map((app: any, index: number) => (
@@ -257,9 +261,10 @@ export default function FellowAMS() {
           {(altViewChoice === "" || altViewChoice.length == 0) && (
             <div className="ApplicationList flex w-full flex-col gap-4">
               <div className="ButtonsAndTitle flex w-full flex-col justify-between">
-                <h1 className="AMSTitle -mb-8 mr-8 text-right">
-                  Your Applications
-                </h1>
+                <h1 className="AMSTitle mr-8 text-right">Your Applications</h1>
+                <p className="Subtitle -mb-8 mr-8 text-right italic text-olive">
+                  {activeApps?.length} active | {applications?.length} total
+                </p>
 
                 {/* application status filter */}
                 <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
@@ -284,6 +289,7 @@ export default function FellowAMS() {
                           "stage 2",
                           "stage 3",
                           "offer",
+                          "closed",
                         ],
                       },
                     ]}

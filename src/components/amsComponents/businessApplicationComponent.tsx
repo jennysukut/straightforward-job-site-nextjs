@@ -101,14 +101,14 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               colorArray[index % colorArray.length] as ButtonColorOption
             }
             size="wide"
-            addClasses="max-w-[77vw]"
+            addClasses="w-[77vw]"
             onClick={() => setAppClicked(!appClicked)}
             isSelected={appClicked}
           >
             <div className="AppInfo flex justify-between">
               <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
                 {currentApplicant?.name} |
-                <p className="SmallBio max-w-[75%] overflow-hidden truncate">
+                <p className="SmallBio max-w-[65%] overflow-hidden truncate">
                   {currentApplicant?.smallBio}
                 </p>
               </p>

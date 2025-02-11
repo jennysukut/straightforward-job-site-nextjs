@@ -240,11 +240,11 @@ export default function ApplicationManager({ jobId }: any) {
                   </button>
                   <p className="Subtitle text-medium italic text-emerald">
                     Round {currentJob?.roundNumber || 1}:{" "}
-                    {currentJob?.applications?.length} Applications
+                    {currentApplications.length} Applications
                   </p>
                   <p className="activeClosedInfo mt-1 text-sm italic text-olive">
                     {activeApps.length} active &{" "}
-                    {Number(currentJob?.applications?.length) -
+                    {Number(currentApplications.length) -
                       Number(activeApps.length)}{" "}
                     closed
                   </p>

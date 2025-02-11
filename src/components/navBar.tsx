@@ -27,7 +27,7 @@ export default function NavBar() {
   const { business } = useBusiness();
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
-
+  const { dailyLimit } = useFellow();
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
@@ -46,6 +46,8 @@ export default function NavBar() {
   useEffect(() => {
     setClickedButton(currentPage);
   }, [currentPage]);
+
+  console.log(dailyLimit);
 
   return (
     <div
@@ -111,7 +113,8 @@ export default function NavBar() {
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
               {/* I'm not sure if the daily apps should be the amount that have been submitted or if it should show the ones remaining for the day */}
               <SiteLabel aria="dailyApps" variant="hollow" size="small">
-                daily apps: {fellow?.dailyApplications?.count}/5
+                daily apps: 2/5
+                {/* {dailyLimit?.count} */}
               </SiteLabel>
               {/* <NavButton
                 onClick={handleNavButtonClick}

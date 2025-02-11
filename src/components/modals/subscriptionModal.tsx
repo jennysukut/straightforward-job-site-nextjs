@@ -54,7 +54,7 @@ export default function SubscriptionModal(isBeingUpdated: any) {
         type="range"
         min="0"
         max="50"
-        step="5"
+        step="2"
         value={selectedAmount}
         className={`ScaleInput custom-range w-[85%] ${colorOption === "highContrast" ? "highContrast" : ""}`}
         onChange={(e) => setSelectedAmount(e.target.value)}

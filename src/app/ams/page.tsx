@@ -21,7 +21,10 @@ export default function AMS() {
       {accountType === "Business" && isLoggedIn && <BusinessAMS />}
       {!isLoggedIn && (
         <div className="LogInPrompt max-w-[40vw] text-center">
-          <p className="prompt text-olive">{`It looks like you're not logged in. Be sure to set up an account and log in to keep track of your applications with our fantastical application management system!`}</p>
+          <p className="prompt text-olive">
+            {`It looks like you're not logged in.`}{" "}
+          </p>
+          <p className="prompt text-olive">{`Be sure to set up an account and log in to keep track of your applications with our fantastical application management system!`}</p>
         </div>
       )}
     </div>
