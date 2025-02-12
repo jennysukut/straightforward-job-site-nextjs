@@ -26,7 +26,7 @@ export default function Settings() {
     } else if (accountType === "Business") {
       setPageType("Business");
     }
-  }, []);
+  }, [, accountType, setCurrentPage, setPageType]);
 
   // WE NEED TO MAKE AN OPTION TO CLOSE YOUR ACCOUNT ? HOW ABOUT OPTIONS TO RETRACT APPLICATIONS ?
   // if the current subscription gets changed from 0 to an amount, we'll need to initiate a payment due on that day of the month

@@ -81,7 +81,7 @@ export default function AddInterviewProcessModal({
 
   useEffect(() => {
     setValue("stage", stage);
-  }, []);
+  }, [setValue, stage]);
 
   return (
     <div

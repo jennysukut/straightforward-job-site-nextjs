@@ -40,7 +40,7 @@ export default function SubscriptionModal(isBeingUpdated: any) {
     if (fellow?.subscriptionAmount) {
       setSelectedAmount(fellow.subscriptionAmount);
     }
-  }, []);
+  }, [fellow?.subscriptionAmount]);
 
   return (
     <div className="SubscriptionModal flex flex-col items-center gap-10">

@@ -135,12 +135,12 @@ export default function PostAJobStep5() {
       Array.isArray(job?.interviewProcess) ? job?.interviewProcess : [],
     );
     setValue("interviewProcess", job?.interviewProcess || []);
-  }, []);
+  }, [job?.interviewProcess, setValue]);
 
   useEffect(() => {
     setValue("interviewProcess", interviewProcess);
     clearErrors("interviewProcess");
-  }, [interviewProcess]);
+  }, [interviewProcess, setValue, clearErrors]);
 
   return (
     <div

@@ -41,7 +41,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
 
   useEffect(() => {
     setPageType("Business");
-  }, []);
+  }, [setPageType]);
 
   let thisBusiness;
   if (hasId) {

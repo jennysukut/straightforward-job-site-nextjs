@@ -5,7 +5,7 @@ import SiteButton from "./siteButton";
 import { useColors } from "@/contexts/ColorContext";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: "large" | "mediumCircle";
+  size?: "large" | "mediumCircle" | "smallCircle";
   variant?: "hollow" | "filled" | "avatar";
   colorScheme: ButtonColorOption;
   clickedButton: any;
@@ -27,7 +27,6 @@ const NavButton: React.FC<ButtonProps> = ({
 
   return (
     <SiteButton
-      // variant={variant}
       variant={buttonVar}
       colorScheme={colorScheme}
       size={size}

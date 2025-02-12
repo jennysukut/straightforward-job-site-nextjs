@@ -13,6 +13,14 @@ export interface Applications {
   dateOfApp?: any;
   appStatus?: string;
   businessNote?: Array<string>;
+  mail?: Array<{
+    id: number;
+    text: string;
+    sender: string;
+    date: string;
+    timestamp: string;
+    edited: boolean;
+  }>;
   fellowNote?: Array<string>;
   appointments?: Array<{
     interviewStep?: string;
@@ -48,6 +56,24 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       businessId: "1b23i",
       dateOfApp: "12.20.2024",
       appStatus: "viewed",
+      mail: [
+        {
+          id: 1,
+          text: "Hello! I am a business testing out this messaging center.",
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+        },
+        {
+          id: 2,
+          text: "Sweet! I'm testing it out too! How exciting!",
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+        },
+      ],
       appointments: [
         {
           interviewStep: "1",

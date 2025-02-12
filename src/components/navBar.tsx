@@ -122,6 +122,7 @@ export default function NavBar() {
                 title="mailbox"
                 clickedButton={clickedButton}
               /> */}
+
               <Link href={"/job-board"}>
                 <NavButton
                   onClick={handleNavButtonClick}
@@ -138,18 +139,35 @@ export default function NavBar() {
                   clickedButton={clickedButton || currentPage}
                 />
               </Link>
+
               <Link href={"/ams"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="f3"
-                  title="application manager"
+                  title="applications"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
+              <Link href={"/messages"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="c4"
+                  title="mail"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
+              <Link href={"/calendar"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="b3"
+                  title="calendar"
                   clickedButton={clickedButton || currentPage}
                 />
               </Link>
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme="b6"
+                  colorScheme="d1"
                   title="settings"
                   clickedButton={clickedButton || currentPage}
                 />

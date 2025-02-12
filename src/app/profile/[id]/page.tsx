@@ -9,7 +9,7 @@ export default function ListingPage({ params }: any) {
 
   useEffect(() => {
     setCurrentPage("profile");
-  }, []);
+  }, [setCurrentPage]);
 
   return (
     <div className="ProfilePage flex flex-grow flex-col items-center gap-8 md:pb-12">

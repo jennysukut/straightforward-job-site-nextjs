@@ -9,7 +9,6 @@ export const idealButtonPattern = [
   "f3",
   "c3",
   "b3",
-  "c3",
   "f5",
   "d1",
   "b1",

@@ -91,7 +91,7 @@ export default function AddLinkModal({
       setValue("linkType", itemInfo.linkType);
       setValue("link", itemInfo.link);
     }
-  }, []);
+  }, [canDelete, itemInfo, setValue]);
 
   return (
     <div

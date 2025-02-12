@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InfoBox from "../informationDisplayComponents/infoBox";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InputComponent from "../inputComponents/inputComponent";
@@ -7,13 +7,12 @@ import EditMessageModal from "../modals/messagingModals/editMessageModal";
 import { useModal } from "@/contexts/ModalContext";
 import { timeLog } from "console";
 import Image from "next/image";
-const MessageCenter = () => {
+const MessageCenter = ({ app, activeMessages }: any) => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
 
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
-
   const [messages, setMessages] = useState([
     {
       id: 1,
@@ -33,6 +32,11 @@ const MessageCenter = () => {
     },
   ]);
 
+  if (app) {
+    // if there's an app, we'll need to grab the messages associated with the appId
+    // maybe we'll do this in a useEffect?
+  }
+
   const handleSendMessage = (e: any) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
@@ -48,8 +52,9 @@ const MessageCenter = () => {
       })}`,
       edited: false,
     };
-
-    setMessages([...messages, message]);
+    if (messages) {
+      // setMessages([...messages, message]);
+    }
     setNewMessage("");
   };
 
@@ -87,6 +92,13 @@ const MessageCenter = () => {
       setEditingMessage(null);
     }, 2000);
   };
+
+  useEffect(() => {
+    if (activeMessages) {
+      console.log(activeMessages);
+      setMessages(activeMessages);
+    }
+  }, [activeMessages]);
 
   return (
     <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">

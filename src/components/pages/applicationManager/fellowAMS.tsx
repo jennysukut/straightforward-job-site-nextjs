@@ -115,6 +115,10 @@ export default function FellowAMS() {
     router.push(`/messages/${currentApp?.id}`);
   };
 
+  const goToCalendar = () => {
+    router.push(`/calendar`);
+  };
+
   const calendarClick = () => {
     if (altViewChoice === "calendar") {
       setAltViewChoice("");
@@ -221,7 +225,7 @@ export default function FellowAMS() {
       setSelectedApps([]);
       setCurrentJob(undefined);
     }
-  }, [filters, appStatus]);
+  }, [applications, filters, appStatus, filterApps]);
 
   const [currentDate, setCurrentDate] = useState(new Date().toDateString());
 
@@ -237,7 +241,7 @@ export default function FellowAMS() {
         </p>
       ) : (
         <div className="AMSContainer flex w-full">
-          <div className="AMSTabOptions max-w-[10%] gap-6">
+          {/* <div className="AMSTabOptions max-w-[10%] gap-6">
             <ButtonOptionsComponent
               handleAdd={handleAdd}
               handleDelete={handleDelete}
@@ -258,7 +262,7 @@ export default function FellowAMS() {
             <div className="MessageCenter h-[80vh] max-h-[120vh] w-full justify-items-center overflow-y-auto px-8">
               <MessageCenter />
             </div>
-          )}
+          )} */}
 
           {(altViewChoice === "" || altViewChoice.length == 0) && (
             <div className="ApplicationList flex w-full flex-col gap-4">
@@ -405,12 +409,10 @@ export default function FellowAMS() {
               variant="hollow"
               colorScheme="b3"
               aria="calendar"
-              onClick={calendarClick}
+              onClick={goToCalendar}
               isSelected={altViewChoice === "calendar"}
             >
-              {altViewChoice === "calendar"
-                ? "close calendar"
-                : "view calendar"}
+              go to calendar
             </SiteButton>
             <SiteButton
               variant="hollow"

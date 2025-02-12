@@ -38,7 +38,7 @@ export default function SavedJobs() {
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
     setCurrentPage("saved");
-  }, []);
+  }, [setCurrentPage]);
 
   return (
     <div

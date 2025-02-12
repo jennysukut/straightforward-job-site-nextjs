@@ -191,7 +191,7 @@ export default function ApplicationManager({ jobId }: any) {
       setSelectedApps([]);
       // setCurrentJob(undefined);
     }
-  }, [filters, appStatus, applications]);
+  }, [filterApps, filters, appStatus, applications]);
 
   const [currentDate, setCurrentDate] = useState(new Date().toDateString());
 

@@ -31,7 +31,7 @@ export default function ApplicationLimitModal(isBeingUpdated: any) {
 
   useEffect(() => {
     setPageType("Business");
-  }, []);
+  }, [setPageType]);
 
   return (
     <div

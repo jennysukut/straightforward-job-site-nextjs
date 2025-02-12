@@ -177,7 +177,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
             className="opacity-50 hover:opacity-80"
           />
         </button>
-        <h2 className="MonthName">
+        <h2 className="MonthName uppercase">
           {new Date(currentYear, currentMonth).toLocaleString("default", {
             month: "long",
             year: "numeric",
