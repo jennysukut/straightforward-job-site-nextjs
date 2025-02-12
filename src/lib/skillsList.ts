@@ -48,6 +48,8 @@ export const skillsList = [
   "Interior Design",
   "Veterinary Care",
   "Robotics Engineering",
+  "Technical Troubleshooting",
+  "IT Support",
 
   // More Specific Skills
   // Software Development and Engineering

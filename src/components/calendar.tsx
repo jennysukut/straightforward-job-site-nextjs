@@ -61,7 +61,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
         >
           <div
             onClick={() => console.log(currentMonth, i)}
-            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-1 -mt-1 flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden overflow-y-visible p-1`}
+            className={`CalendarInfo ${currentDay === i && currentMonth === actualMonth ? "bg-peach bg-opacity-20" : ""} -ml-[0.1rem] -mt-[0.1rem] flex ${size === "small" ? "max-h-[5rem] max-w-[7rem]" : "max-h-[8rem] max-w-[10rem]"} h-[104%] w-[104%] flex-col items-center justify-between overflow-hidden overflow-y-visible p-1`}
           >
             <p className="Date self-start px-2 pt-1">{i}</p>
             <div className="Appointment flex flex-col items-center justify-center gap-0 text-center">

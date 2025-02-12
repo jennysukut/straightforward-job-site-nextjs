@@ -23,6 +23,7 @@ import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsC
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
+import MessageCenter from "../messagingCenter";
 
 export default function FellowAMS() {
   const router = useRouter();
@@ -226,7 +227,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} -mt-6 w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       {applications?.length === 0 ? (
         <p className="ApplyPrompt mt-[20vh] max-w-[50vw] text-center align-middle italic text-olive">
@@ -254,8 +255,7 @@ export default function FellowAMS() {
             />
           )}
           {altViewChoice === "messages" && (
-            <div className="Messages">Messages Here</div>
-            // for these messages, you can filter if there is a currentApp.id
+            <MessageCenter /> // for these messages, you can filter if there is a currentApp.id
           )}
 
           {(altViewChoice === "" || altViewChoice.length == 0) && (
@@ -313,7 +313,7 @@ export default function FellowAMS() {
       )}
 
       {currentJob && (
-        <div className="ApplicationInfo">
+        <div className="ApplicationInfo flex flex-col justify-center">
           <InfoBox
             aria="amsAppInfo"
             variant={currentJob ? "filled" : "hollow"}

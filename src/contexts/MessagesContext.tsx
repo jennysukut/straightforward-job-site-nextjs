@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 import { string } from "zod";
 
-export interface Applications {
+export interface Messages {
   id?: string;
   message?: string;
   applicant?: string;
@@ -26,19 +26,19 @@ export interface Applications {
   rejectionMessage?: any;
 }
 
-interface ApplicationsContextType {
-  applications: Applications[] | null;
-  setApplications: (applications: Applications[]) => void;
+interface MessagesContextType {
+  messages: Messages[] | null;
+  setMessages: (messages: Messages[]) => void;
 }
 
-const ApplicationsContext = createContext<ApplicationsContextType | undefined>(
+const MessagesContext = createContext<MessagesContextType | undefined>(
   undefined,
 );
 
-export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
+export const MessagesProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [applications, setApplications] = useState<Applications[] | null>([
+  const [messages, setMessages] = useState<Messages[] | null>([
     {
       id: "chwit7",
       applicant: "testid",
@@ -233,18 +233,16 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
   ]);
 
   return (
-    <ApplicationsContext.Provider value={{ applications, setApplications }}>
+    <MessagesContext.Provider value={{ messages, setMessages }}>
       {children}
-    </ApplicationsContext.Provider>
+    </MessagesContext.Provider>
   );
 };
 
-export const useApplications = () => {
-  const context = useContext(ApplicationsContext);
+export const useMessages = () => {
+  const context = useContext(MessagesContext);
   if (!context) {
-    throw new Error(
-      "useApplications must be used within a ApplicationsProvider",
-    );
+    throw new Error("useApplications must be used within a MessagesProvider");
   }
   return context;
 };

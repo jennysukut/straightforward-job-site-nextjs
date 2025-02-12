@@ -707,8 +707,8 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
 
         applicationLimit: "25",
         numberOfApps: "24",
-        locationOption: "on-site",
-        experienceLevel: ["entry-level"],
+        locationOption: "remote",
+        experienceLevel: ["junior-level"],
         payDetails: {
           payscaleMin: 20,
           payscaleMax: 25,
@@ -718,30 +718,39 @@ export const JobListingsProvider: React.FC<{ children: ReactNode }> = ({
         country: "Canada",
         location: "Ottawa",
         positionSummary:
-          "We are looking for a versatile Front-End Engineer + Graphic Designer to join our team. This hybrid role combines technical expertise in web development with a strong eye for aesthetics and design. You will be responsible for designing and implementing user interfaces that are visually appealing, responsive, and user-friendly.",
-        nonNegParams: ["Graphic Design", "Web Development"],
+          "We are seeking a skilled IT Support Specialist to provide technical assistance and support to our employees and clients. The ideal candidate will be responsible for troubleshooting hardware and software issues, maintaining IT systems, and ensuring smooth day-to-day operations. This role requires excellent problem-solving skills, a customer-focused attitude, and the ability to work both independently and as part of a team.",
+        nonNegParams: [
+          "Customer Service",
+          "Technical Troubleshooting",
+          "English",
+        ],
         idealCandidate:
           "Our ideal candidate is someone passionate about design and quick on their feet with front-end coding.",
         hybridDetails: {},
         preferredSkills: [
-          "Content Writing",
-          "Graphic Design",
-          "Web Development",
-          "Graphic Illustration",
+          "Technical Troubleshooting",
+          "Hardware and Software Installation",
+          "Customer Service",
+          "Network Configuration and Maintenance",
+          "Operating Systems",
+          "Ticketing Systems",
         ],
         moreAboutPosition:
           "We are seeking a talented Front-End Engineer + Graphic Designer to join our remote team. In this hybrid role, you will combine your technical skills in web development with creative expertise in graphic design to craft engaging, user-friendly digital experiences. Working remotely, you’ll have the flexibility to manage your workflow while collaborating effectively across distributed teams using modern communication tools.",
         responsibilities: [
           {
-            responsibility: "Collaborating with managers and content creators",
+            responsibility:
+              "Provide technical support for hardware, software, and network issues.",
             id: 1,
           },
           {
-            responsibility: "Design & Development",
+            responsibility:
+              "Install, configure, and maintain computer systems, applications, and peripherals.",
             id: 2,
           },
           {
-            responsibility: "Producing high-quality designs",
+            responsibility:
+              "Troubleshoot and resolve IT-related problems in a timely manner.",
             id: 3,
           },
         ],

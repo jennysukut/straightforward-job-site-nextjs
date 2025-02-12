@@ -16,6 +16,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     | "extraSmallCircle"
     | "smallCircle"
     | "mediumCircle"
+    | "medium"
     | "large"
     | "extraLarge"
     | "largeCircle"
@@ -72,6 +73,7 @@ const SiteButton: React.FC<ButtonProps> = ({
       "h-6 w-6": size === "smallCircle",
       "h-4 w-4": size === "extraSmallCircle",
       "px-4 py-2 text-xs min-w-[65px]": size === "default",
+      "px-8 py-3 text-[0.85rem] min-w-[65px] rounded-full": size === "medium",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:py-4 md:text-sm":
         size === "extraLarge",
       "px-6 py-3 text-sm w-[100%]": size === "wide",
@@ -149,6 +151,8 @@ const SiteButton: React.FC<ButtonProps> = ({
 
       "px-4 py-2 text-xs min-w-[65px] -right-1.5 top-1.5  left-1.5":
         size === "default",
+      "px-8 py-3 text-[0.85rem] min-w-[65px] -right-1.5 top-1.5  left-1.5 rounded-full":
+        size === "medium",
       "px-12 py-6 text-[0.85rem] sm:py-6 md:px-10 md:text-sm md:py-4 left-2 -right-2 top-2":
         size === "extraLarge",
       "px-6 py-3 text-sm w-[100%] -right-1.5 top-1.5  left-1.5":

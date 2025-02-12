@@ -70,6 +70,7 @@ const ListingTopButtons = ({
   matchingIds,
   appNumber,
   currentJob,
+  canApply,
   app,
 }: any) => {
   const { showModal } = useModal();
@@ -81,13 +82,15 @@ const ListingTopButtons = ({
         colorScheme="d3"
         onClick={() => saveClick(id)}
         isSelected={jobSavedStatus || matchingIds}
-        disabled={matchingIds}
+        disabled={matchingIds || !canApply}
       >
         {jobSavedStatus === true
           ? "job saved"
           : matchingIds
             ? "applied"
-            : "save job"}
+            : !canApply
+              ? "applied"
+              : "save job"}
       </SiteButton>
       <SiteLabel
         variant="display"
@@ -98,7 +101,7 @@ const ListingTopButtons = ({
         applications: {appNumber}/{currentJob?.applicationLimit}
       </SiteLabel>
 
-      <SiteLabel variant="display" aria="roundNumber">
+      <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
       {matchingIds && (
