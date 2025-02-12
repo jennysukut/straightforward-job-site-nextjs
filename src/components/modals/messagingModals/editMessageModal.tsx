@@ -18,7 +18,7 @@ import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionBu
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const EditMessageSchema = z.object({
-  note: z
+  message: z
     .string()
     .min(2, { message: "Message must be more than 2 characters long." }),
 });
@@ -26,10 +26,9 @@ const EditMessageSchema = z.object({
 type FormData = z.infer<typeof EditMessageSchema>;
 
 export default function EditMessageModal({
-  app,
-  note,
-  unclickButton,
   message,
+  setMessages,
+  messages,
 }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
@@ -45,120 +44,43 @@ export default function EditMessageModal({
     resolver: zodResolver(EditMessageSchema),
   });
 
-  const clickDelete = (event: any) => {
-    event.preventDefault();
-    showModal(
-      <DeleteConfirmationModal
-        item="this note"
-        continueDelete={confirmDelete}
-      />,
-    );
-  };
-
-  const confirmDelete = () => {
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        if (accountType === "Fellow") {
-          return {
-            ...application,
-            fellowNote: application.fellowNote?.filter((n) => n !== note) || [],
-          };
-        } else if (accountType === "Business") {
-          return {
-            ...application,
-            businessNote:
-              application.businessNote?.filter((n) => n !== note) || [],
-          };
-        }
-      }
-      return application;
-    });
-
-    setApplications(updatedApplications || []);
-    hideModal();
-  };
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        if (accountType === "Fellow") {
-          const existingNotes = [...(application.fellowNote || [])];
-          if (note) {
-            // If editing an existing note, find and update it
-            const noteIndex = existingNotes.indexOf(note);
-            if (noteIndex !== -1) {
-              existingNotes[noteIndex] = data.note;
-            }
-          } else {
-            // If adding a new note, append it
-            existingNotes.push(data.note);
-            if (unclickButton) {
-              unclickButton();
-            }
-          }
-          return {
-            ...application,
-            fellowNote: existingNotes,
-          };
-        } else if (accountType === "Business") {
-          const existingNotes = [...(application.businessNote || [])];
-          if (note) {
-            // If editing an existing note, find and update it
-            const noteIndex = existingNotes.indexOf(note);
-            if (noteIndex !== -1) {
-              existingNotes[noteIndex] = data.note;
-            }
-          } else {
-            // If adding a new note, append it
-            existingNotes.push(data.note);
-          }
-          return {
-            ...application,
-            businessNote: existingNotes,
-          };
-        }
-      }
-      return application;
-    });
-
-    setApplications(updatedApplications || []);
+    const updatedMessages = messages.map((msg: any) =>
+      msg.id === message.id ? { ...msg, text: data.message } : msg,
+    );
+    console.log(updatedMessages);
+    setMessages(updatedMessages);
     hideModal();
-    setDisabledButton(true);
   };
 
   useEffect(() => {
-    // if (accountType === "Business" && note) {
-    //   setValue("note", note);
-    // } else if (accountType === "Fellow" && note) {
-    //   setValue("note", note);
-    // }
-    setValue("note", message);
+    setValue("message", message.text);
   });
 
   return (
     <div
       className={`ApplicationNoteModal flex w-[40vw] flex-col items-center gap-4 ${textColor}`}
     >
-      <Dialog.Title className="Title w-full text-center text-xl font-bold">
-        {`Your Note:`}
+      <Dialog.Title className="Title -my-2 w-full text-center text-xl font-bold">
+        {`Edit Your Message:`}
       </Dialog.Title>
-      <form onSubmit={handleSubmit(onSubmit)} className="ApplicationNoteForm">
+      <form onSubmit={handleSubmit(onSubmit)} className="MessageEditingForm">
         <InputComponent
           type="text"
-          placeholderText="Your Note Here..."
+          placeholderText="Your Message Here..."
           size="tall"
           width="medium"
           addClasses="mt-6"
           register={register}
-          registerValue="note"
-          errors={errors.note}
+          registerValue="message"
+          errors={errors.message}
         ></InputComponent>
         <div className="SubmitButton mt-8 self-end">
           <FormSubmissionButton
-            canDelete={note}
-            clickDelete={clickDelete}
+            // canDelete={message}
+            // clickDelete={clickDelete}
             disabledButton={disabledButton}
-            addText="save"
+            addText="update"
             addingText="Saving..."
             handleSubmit={handleSubmit(onSubmit)}
           />

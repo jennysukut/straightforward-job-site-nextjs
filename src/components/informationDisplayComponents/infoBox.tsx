@@ -29,7 +29,8 @@ interface InfoBoxProps extends React.HTMLAttributes<HTMLDivElement> {
     | "jobPost"
     | "thin"
     | "note"
-    | "jobListing";
+    | "jobListing"
+    | "message";
   width?:
     | "extraSmall"
     | "small"
@@ -129,6 +130,8 @@ const InfoBox: React.FC<InfoBoxProps> = ({
         size === "thin",
       "py-3 px-3 sm:py-4 sm:px-4 md:py-6 md:px-6 rounded-2xl sm:rounded-3xl":
         size === "note",
+      "py-2 px-2 sm:py-3 sm:px-3 md:py-[1.25rem] md:px-[1.25rem] rounded-2xl sm:rounded-2xl":
+        size === "message",
 
       "py-6 px-4 sm:py-10 sm:px-8 md:py-10 md:px-8 rounded-2xl sm:rounded-3xl w-[300px] max-h-[450px]":
         size === "jobPost",

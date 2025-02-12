@@ -6,6 +6,7 @@ import { usePageContext } from "@/contexts/PageContext";
 import EditMessageModal from "../modals/messagingModals/editMessageModal";
 import { useModal } from "@/contexts/ModalContext";
 import { timeLog } from "console";
+import Image from "next/image";
 const MessageCenter = () => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -49,6 +50,7 @@ const MessageCenter = () => {
     setNewMessage("");
   };
 
+  // Group Messages Into Dates
   const groupedMessages = messages.reduce(
     (acc: { [key: string]: typeof messages }, message) => {
       const date = message.date;
@@ -61,7 +63,7 @@ const MessageCenter = () => {
     {},
   );
 
-  // Sort the dates
+  // Sort Message Dates
   const sortedDates = Object.keys(groupedMessages).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
@@ -70,16 +72,18 @@ const MessageCenter = () => {
     setEditingMessage(id);
     const currentMessage = messages.find((message) => {
       return message.id === id;
-    })?.text;
-    showModal(<EditMessageModal message={currentMessage} />);
-    console.log(id);
-
+    });
+    showModal(
+      <EditMessageModal
+        message={currentMessage}
+        messages={messages}
+        setMessages={setMessages}
+      />,
+    );
     setTimeout(() => {
       setEditingMessage(null);
-    }, 3000);
+    }, 2000);
   };
-
-  console.log(accountType);
 
   return (
     <div className="MessagingCenter flex h-[100%] w-[80%] max-w-[1600px] flex-col justify-center">
@@ -94,42 +98,45 @@ const MessageCenter = () => {
               <div className="flex-grow border-t-2 border-jade border-opacity-20"></div>
             </div>
             {groupedMessages[date].map((message) => {
+              const isOwn =
+                (message.sender === "fellow" && accountType === "Fellow") ||
+                (message.sender === "business" && accountType === "Business");
               return (
                 <div
                   key={message.id}
-                  className={`Message ${message.sender === "fellow" ? "self-end" : "self-start"} flex flex-col gap-4`}
+                  className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
                 >
-                  {accountType === "Fellow" && message.sender === "fellow" && (
-                    <div className="EditButton -mb-8 -mr-6 -mt-4 self-end">
-                      <SiteButton
-                        size="extraSmallCircle"
-                        variant="filled"
-                        aria="edit"
-                        colorScheme="b3"
-                        addClasses="bg-center"
-                        addImage="bg-[url('/settings-button.svg')]"
-                        isSelected={editingMessage === message.id}
-                        onClick={() => editMessage(message.id)}
-                      />
-                    </div>
-                  )}
                   <InfoBox
                     colorScheme="b3"
-                    variant={message.sender === "fellow" ? "filled" : "hollow"}
+                    variant={isOwn ? "filled" : "hollow"}
                     aria={message.text}
-                    size="note"
+                    size="message"
                   >
                     <p
-                      className={`MessageText ${message.text.length > 40 ? "py-2 pl-3 pr-2 indent-8" : "-py-1"} ${message.sender === "business" ? "text-midnight" : ""} text-sm`}
+                      className={`MessageText ${message.text.length > 100 ? "py-2 pl-3 pr-2 indent-4" : "-py-2"} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
                     >
                       {message.text}
                     </p>
                   </InfoBox>
-                  <p
-                    className={`Timestamp ${message.sender === "fellow" ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
+                  <div
+                    className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
                   >
-                    {message.timestamp}
-                  </p>
+                    <p
+                      className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
+                    >
+                      {message.timestamp}
+                    </p>
+                    {isOwn && (
+                      <Image
+                        src="/edit-pencil.svg"
+                        alt="edit"
+                        width={12}
+                        height={12}
+                        className="opacity-50 hover:opacity-80"
+                        onClick={() => editMessage(message.id)}
+                      />
+                    )}
+                  </div>
                 </div>
               );
             })}
@@ -140,7 +147,7 @@ const MessageCenter = () => {
       {/* Message Input */}
       <form
         onSubmit={handleSendMessage}
-        className="MessageInput mt-10 flex justify-center gap-4 border-t-2 border-olive border-opacity-50 p-4"
+        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-olive border-opacity-30 p-4"
       >
         <input
           type="text"
@@ -155,7 +162,7 @@ const MessageCenter = () => {
           colorScheme="b1"
           aria="send"
           size="medium"
-          addClasses="px-8 py-3"
+          addClasses="px-8 py-[.6rem]"
         >
           send
         </SiteButton>
