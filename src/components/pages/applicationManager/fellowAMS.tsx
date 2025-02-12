@@ -227,7 +227,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "flex-col items-center" : ""} -mt-6 w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "flex-col" : ""} -mt-6 w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       {applications?.length === 0 ? (
         <p className="ApplyPrompt mt-[20vh] max-w-[50vw] text-center align-middle italic text-olive">
@@ -255,7 +255,9 @@ export default function FellowAMS() {
             />
           )}
           {altViewChoice === "messages" && (
-            <MessageCenter /> // for these messages, you can filter if there is a currentApp.id
+            <div className="MessageCenter h-[80vh] max-h-[120vh] w-full justify-items-center overflow-y-auto px-8">
+              <MessageCenter />
+            </div>
           )}
 
           {(altViewChoice === "" || altViewChoice.length == 0) && (

@@ -89,10 +89,10 @@ const MessageCenter = () => {
   };
 
   return (
-    <div className="MessagingCenter flex h-[100%] w-[80%] max-w-[1600px] flex-col justify-center">
-      <h1 className="text-xl font-bold">Your Messages:</h1>
+    <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">
+      <div className="Messages mt-8 flex w-[100%] flex-col self-center align-top">
+        <h1 className="text-xl font-bold">Your Messages:</h1>
 
-      <div className="Messages mt-8 flex w-[100%] flex-col self-center">
         {sortedDates.map((date) => (
           <div key={date} className="flex w-[100%] flex-col gap-3">
             <div className="Divider mb-2 flex items-center">
@@ -160,7 +160,7 @@ const MessageCenter = () => {
       {/* Message Input */}
       <form
         onSubmit={handleSendMessage}
-        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-olive border-opacity-30 p-4"
+        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-olive border-opacity-30 p-4 align-baseline"
       >
         <input
           type="text"
