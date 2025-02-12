@@ -46,7 +46,9 @@ export default function EditMessageModal({
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const updatedMessages = messages.map((msg: any) =>
-      msg.id === message.id ? { ...msg, text: data.message } : msg,
+      msg.id === message.id
+        ? { ...msg, text: data.message, edited: true }
+        : msg,
     );
     console.log(updatedMessages);
     setMessages(updatedMessages);

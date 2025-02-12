@@ -21,6 +21,7 @@ const MessageCenter = () => {
       sender: "business",
       date: "February 10",
       timestamp: "10:00 AM",
+      edited: true,
     },
     {
       id: 2,
@@ -28,6 +29,7 @@ const MessageCenter = () => {
       sender: "fellow",
       date: "February 10",
       timestamp: "10:01 AM",
+      edited: false,
     },
   ]);
 
@@ -44,6 +46,7 @@ const MessageCenter = () => {
         hour: "2-digit",
         minute: "2-digit",
       })}`,
+      edited: false,
     };
 
     setMessages([...messages, message]);
@@ -93,9 +96,9 @@ const MessageCenter = () => {
         {sortedDates.map((date) => (
           <div key={date} className="flex w-[100%] flex-col gap-3">
             <div className="Divider mb-2 flex items-center">
-              <div className="flex-grow border-t-2 border-jade border-opacity-20"></div>
-              <p className="mx-3 text-center text-sm">{date}</p>
-              <div className="flex-grow border-t-2 border-jade border-opacity-20"></div>
+              <div className="flex-grow border-t-2 border-olive border-opacity-20"></div>
+              <p className="mx-3 text-center text-sm text-olive">{date}</p>
+              <div className="flex-grow border-t-2 border-olive border-opacity-20"></div>
             </div>
             {groupedMessages[date].map((message) => {
               const isOwn =
@@ -121,6 +124,11 @@ const MessageCenter = () => {
                   <div
                     className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
                   >
+                    {isOwn && message.edited && (
+                      <p className="EditedNotification text-xs text-olive opacity-50">
+                        edited |
+                      </p>
+                    )}
                     <p
                       className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
                     >
@@ -135,6 +143,11 @@ const MessageCenter = () => {
                         className="opacity-50 hover:opacity-80"
                         onClick={() => editMessage(message.id)}
                       />
+                    )}
+                    {!isOwn && message.edited && (
+                      <p className="EditedNotification text-xs text-jade opacity-50">
+                        | edited
+                      </p>
                     )}
                   </div>
                 </div>
@@ -154,7 +167,7 @@ const MessageCenter = () => {
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Your message..."
-          className="w-[90%] rounded-full border-2 border-jade bg-cream px-6 py-3 text-emerald drop-shadow-smJade placeholder:text-jade focus:outline-none"
+          className="w-[90%] rounded-full border-2 border-jade bg-cream px-4 py-[.6rem] text-emerald drop-shadow-smJade placeholder:text-jade focus:outline-none"
         />
         <SiteButton
           type="submit"
