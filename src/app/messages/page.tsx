@@ -64,19 +64,22 @@ export default function Messages() {
   useEffect(() => {
     const colors = getRandomColorArray(36);
     setColorArray(colors);
+    // perhaps it'd be better to use the idealButtonColors array at a random number starting point?
   }, []);
 
   return (
-    <div className="MessagePage flex gap-8 text-jade md:pb-12">
+    <div className="MessagePage flex w-[90%] justify-items-start gap-8 self-center text-jade md:pb-12">
       {/* For this main-messaging page, we'll have be able to pass appIds into the "messageCenter" component to display messages associated with a particular app */}
       {/* we'll need to find all the apps that have message Arrays with an item in it, and display those */}
-      <div className="MailList">
+      <div className="MailList flex flex-col gap-4">
         {currentApps?.map((app: any, index: any) => {
           return (
             <SiteButton
               variant="filled"
+              size="medium"
               aria="mail item"
               key={index}
+              addClasses="w-[20vw]"
               colorScheme={
                 colorArray[index % colorArray.length] as ButtonColorOption
               }

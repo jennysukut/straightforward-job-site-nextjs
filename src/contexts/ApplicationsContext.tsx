@@ -163,6 +163,32 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "6",
       dateOfApp: "12.20.2024",
       appStatus: "viewed",
+      mail: [
+        {
+          id: 1,
+          text: "testing, testing, 123, testing and testing alot!",
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+        },
+        {
+          id: 2,
+          text: "what are you testing? And why are you testing so much?",
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+        },
+        {
+          id: 1,
+          text: "I'm testing my sanity.",
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:00 AM",
+          edited: false,
+        },
+      ],
       appointments: [
         {
           interviewStep: "1",
@@ -182,6 +208,40 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Innovatech Manufacturing",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
+      mail: [
+        {
+          id: 1,
+          text: "Zeth SunSun Vilano Wore White on the day he was to kill a king.",
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+        },
+        {
+          id: 2,
+          text: "I know that excerpt. Where is it from?",
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+        },
+        {
+          id: 2,
+          text: "Wait. Is it from Brandy Sandy's Way Of Kings?",
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+        },
+        {
+          id: 1,
+          text: "It is indeed, young padawan.",
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:00 AM",
+          edited: false,
+        },
+      ],
       appointments: [
         {
           interviewStep: "1",

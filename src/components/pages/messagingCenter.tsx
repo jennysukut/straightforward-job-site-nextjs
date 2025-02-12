@@ -102,7 +102,7 @@ const MessageCenter = ({ app, activeMessages }: any) => {
 
   return (
     <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">
-      <div className="Messages mt-8 flex w-[100%] flex-col self-center align-top">
+      <div className="Messages flex w-[100%] flex-col self-center align-top">
         <h1 className="text-xl font-bold">Your Messages:</h1>
 
         {sortedDates.map((date) => (
