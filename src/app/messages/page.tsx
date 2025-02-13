@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
-import MessageCenter from "@/components/pages/messagingCenter";
 import { useFellow } from "@/contexts/FellowContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import { getRandomColorArray } from "@/utils/getRandomColorScheme";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useJob } from "@/contexts/JobContext";
+
+import MessageCenter from "@/components/pages/messagingCenter";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
+
 type CurrentSchemeType = ButtonColorOption;
 
 export default function Messages() {
@@ -89,30 +92,37 @@ export default function Messages() {
         <h2 className="Title text-center">Your Messages:</h2>
         {currentApps?.map((app: any, index: any) => {
           return (
-            <SiteButton
-              variant="filled"
-              size="medium"
-              aria="mail item"
-              key={index}
-              addClasses="w-[20vw] overflow-hidden truncate"
-              colorScheme={
-                colorArray[index % colorArray.length] as ButtonColorOption
-              }
-              onClick={() => showMessages(app.id)}
-              isSelected={activeApp === app.id}
-            >
-              {app.business}
-            </SiteButton>
+            <div key={index} className="MessageGroup flex gap-2">
+              <SiteButton
+                variant="filled"
+                size="medium"
+                aria="mail item"
+                addClasses="w-[20vw] overflow-hidden truncate"
+                colorScheme={
+                  colorArray[index % colorArray.length] as ButtonColorOption
+                }
+                onClick={() => showMessages(app.id)}
+                isSelected={activeApp === app.id}
+              >
+                {app.business}
+              </SiteButton>
+              {/* trying to make a good notification button */}
+              {/* {app.mail.length > 3 && (
+                <SiteLabel
+                  variant="notification"
+                  size="notification"
+                  aria="notification"
+                  colorScheme={
+                    colorArray[index % colorArray.length] as ButtonColorOption
+                  }
+                  addClasses="mt-4"
+                />
+              )} */}
+            </div>
           );
         })}
       </div>
       <div className="MessageCenter w-[80vw] pl-2 pr-10">
-        {/* <h2 className="text-right text-emerald">
-          Your Conversation with {correspondingListing?.job?.businessName}
-        </h2>
-        <p className="Subtitle mb-4 mr-2 text-right font-medium lowercase italic text-olive">
-          regarding the {correspondingListing?.job?.jobTitle} position
-        </p> */}
         <MessageCenter
           activeMessages={activeMessages}
           activeApp={activeApp}

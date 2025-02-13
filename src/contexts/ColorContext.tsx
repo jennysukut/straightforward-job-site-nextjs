@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export interface Colors {
   colorOption: "highContrast" | "standard" | "seasonal";
@@ -9,6 +10,8 @@ export interface Colors {
 interface ColorContextType {
   colorOption: Colors | string;
   setColorOption: (colors: Colors | string) => void;
+  currentColorScheme: ButtonColorOption | string;
+  setCurrentColorScheme: (colorScheme: ButtonColorOption | string) => void;
 }
 
 const ColorContext = createContext<ColorContextType | undefined>(undefined);
@@ -19,9 +22,19 @@ export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   // We'll need to set a colorOption to the account of each person & business on the site
   // Options here: "standard" || "highContrast"
   const [colorOption, setColorOption] = useState<Colors | string>("standard");
+  const [currentColorScheme, setCurrentColorScheme] = useState("");
+
+  console.log(currentColorScheme);
 
   return (
-    <ColorContext.Provider value={{ colorOption, setColorOption }}>
+    <ColorContext.Provider
+      value={{
+        colorOption,
+        setColorOption,
+        currentColorScheme,
+        setCurrentColorScheme,
+      }}
+    >
       {children}
     </ColorContext.Provider>
   );

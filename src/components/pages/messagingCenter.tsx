@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { usePageContext } from "@/contexts/PageContext";
+import { useModal } from "@/contexts/ModalContext";
+import { timeLog } from "console";
+import { useJobListings } from "@/contexts/JobListingsContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
+import { useColors } from "@/contexts/ColorContext";
+
+import React from "react";
+import Image from "next/image";
+import EditMessageModal from "../modals/messagingModals/editMessageModal";
 import InfoBox from "../informationDisplayComponents/infoBox";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InputComponent from "../inputComponents/inputComponent";
-import { usePageContext } from "@/contexts/PageContext";
-import EditMessageModal from "../modals/messagingModals/editMessageModal";
-import { useModal } from "@/contexts/ModalContext";
-import { timeLog } from "console";
-import Image from "next/image";
-import { useJobListings } from "@/contexts/JobListingsContext";
-import { useApplications } from "@/contexts/ApplicationsContext";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 const MessageCenter = ({
   app,
@@ -20,6 +24,7 @@ const MessageCenter = ({
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
+  const { currentColorScheme } = useColors();
 
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -41,14 +46,6 @@ const MessageCenter = ({
       edited: false,
     },
   ]);
-
-  // const correspondingApp = applications?.find((app: any) => {
-  //   return app.id === activeApp;
-  // });
-
-  // const correspondingListing = jobListings?.find((jl: any) => {
-  //   return jl.jobId === correspondingApp?.jobId;
-  // });
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -125,6 +122,8 @@ const MessageCenter = ({
         setMessages={setMessages}
       />,
     );
+    // We need to make a way for edited messages to get reflected in the database - this might be easier to do in integration, since it'll be easier to work with the data then.
+    // we can find the specific message via it's id and update it pretty simply.
     setTimeout(() => {
       setEditingMessage(null);
     }, 2000);
@@ -134,8 +133,6 @@ const MessageCenter = ({
     const selectedApp: any = applications?.find((app: any) => {
       return app.id === activeApp;
     });
-
-    console.log(selectedApp);
     setMessages(selectedApp.mail);
   };
 
@@ -143,7 +140,7 @@ const MessageCenter = ({
     if (activeApp) {
       updateMessages();
     }
-  }, [setApplications, activeApp, applications]);
+  }, [updateMessages, setApplications, activeApp, applications]);
 
   return (
     <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">
@@ -172,7 +169,9 @@ const MessageCenter = ({
                   className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
                 >
                   <InfoBox
-                    colorScheme="b3"
+                    colorScheme={
+                      (currentColorScheme || "b3") as ButtonColorOption
+                    }
                     variant={isOwn ? "filled" : "hollow"}
                     aria={message.text}
                     size="message"
