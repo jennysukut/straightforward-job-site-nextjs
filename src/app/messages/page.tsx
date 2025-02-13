@@ -45,13 +45,13 @@ export default function Messages() {
       return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
     });
 
-  const correspondingApp = applications?.find((app: any) => {
-    return app.id === activeApp;
-  });
+  // const correspondingApp = applications?.find((app: any) => {
+  //   return app.id === activeApp;
+  // });
 
-  const correspondingListing = jobListings?.find((jl: any) => {
-    return jl.jobId === correspondingApp?.jobId;
-  });
+  // const correspondingListing = jobListings?.find((jl: any) => {
+  //   return jl.jobId === correspondingApp?.jobId;
+  // });
 
   const showMessages = (id: any) => {
     if (activeApp === id) {
@@ -70,7 +70,7 @@ export default function Messages() {
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
       <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
         <div className="MessageListGroup flex flex-col gap-4">
-          <h2 className="Title text-center">Your Messages:</h2>
+          <h2 className="Title text-center text-emerald">your messages:</h2>
           {currentApps?.map((app: any, index: any) => {
             return (
               <div key={index} className="MessageGroup flex gap-2">
@@ -110,16 +110,12 @@ export default function Messages() {
               height={140}
               alt="decor"
               src="/lime-flower.svg"
-              className="-mb-4 -ml-20 self-baseline"
+              className="-mb-6 -ml-20 self-baseline"
             ></Image>
           ))}
       </div>
       <div className="MessageCenter w-[80vw] pl-2 pr-10">
-        <MessageCenter
-          activeApp={activeApp}
-          correspondingApp={correspondingApp}
-          correspondingListing={correspondingListing}
-        />
+        <MessageCenter activeApp={activeApp} />
       </div>
     </div>
   );

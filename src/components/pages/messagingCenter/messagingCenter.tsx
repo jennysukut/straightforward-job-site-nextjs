@@ -25,11 +25,7 @@ export interface Messages {
   edited: boolean;
 }
 
-const MessageCenter = ({
-  activeApp,
-  correspondingApp,
-  correspondingListing,
-}: any) => {
+const MessageCenter = ({ activeApp }: any): JSX.Element => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
@@ -49,9 +45,13 @@ const MessageCenter = ({
     return option.title === fellow?.avatar;
   })?.colorScheme;
 
-  useEffect(() => {
-    setCurrentColorScheme(currentAvatarChoice || "b2");
-  }, [currentAvatarChoice]);
+  const correspondingApp = applications?.find((app: any) => {
+    return app.id === activeApp;
+  });
+
+  const correspondingListing = jobListings?.find((jl: any) => {
+    return jl.jobId === correspondingApp?.jobId;
+  });
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -99,18 +99,23 @@ const MessageCenter = ({
     setNewMessage("");
   };
 
+  // Declare groupedMessages in a broader scope
+  let groupedMessages: { [key: string]: typeof messages } = {};
+
   // Group Messages Into Dates
-  const groupedMessages = messages.reduce(
-    (acc: { [key: string]: typeof messages }, message: any) => {
-      const date = message.date;
-      if (!acc[date]) {
-        acc[date] = [];
-      }
-      acc[date].push(message);
-      return acc;
-    },
-    {},
-  );
+  if (messages && messages.length > 0) {
+    groupedMessages = messages.reduce(
+      (acc: { [key: string]: typeof messages }, message: any) => {
+        const date = message.date;
+        if (!acc[date]) {
+          acc[date] = [];
+        }
+        acc[date].push(message);
+        return acc;
+      },
+      {},
+    );
+  }
 
   // Sort Message Dates
   const sortedDates = Object.keys(groupedMessages).sort(
@@ -150,80 +155,85 @@ const MessageCenter = ({
     }
   }, [updateMessages, setApplications, activeApp, applications]);
 
+  useEffect(() => {
+    setCurrentColorScheme(currentAvatarChoice || "b2");
+  }, [currentAvatarChoice]);
+
   return (
-    <div className="MessagingCenter -mb-4 flex h-full w-full max-w-[1600px] flex-col justify-between">
+    <div className="MessagingCenter -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between">
       <div className="Messages flex w-[100%] flex-col self-center align-top">
         <h2 className="text-right text-emerald">
           Your Conversation with {correspondingListing?.job?.businessName}
         </h2>
-        <p className="Subtitle mb-4 mr-2 text-right font-medium lowercase italic text-jade">
+        <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
           regarding the {correspondingListing?.job?.jobTitle} position
         </p>
-
-        {sortedDates.map((date) => (
-          <div key={date} className="flex w-[100%] flex-col gap-3">
-            <div className="Divider mb-2 flex items-center">
-              <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
-              <p className="mx-3 text-center text-sm text-olive">{date}</p>
-              <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
-            </div>
-            {groupedMessages[date].map((message) => {
-              const isOwn =
-                (message.sender === "fellow" && accountType === "Fellow") ||
-                (message.sender === "business" && accountType === "Business");
-              return (
-                <div
-                  key={message.id}
-                  className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
-                >
-                  <InfoBox
-                    colorScheme={
-                      (currentColorScheme || "b3") as ButtonColorOption
-                    }
-                    variant={isOwn ? "filled" : "hollow"}
-                    aria={message.text}
-                    size="message"
-                  >
-                    <p
-                      className={`MessageText ${message.text.length > 100 ? "py-2 pl-3 pr-2 indent-4" : "-py-2"} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
-                    >
-                      {message.text}
-                    </p>
-                  </InfoBox>
+        <div className="Messages">
+          {sortedDates.map((date) => (
+            <div key={date} className="flex w-[100%] flex-col gap-3">
+              <div className="Divider mb-2 flex items-center">
+                <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
+                <p className="mx-3 text-center text-sm text-olive">{date}</p>
+                <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
+              </div>
+              {groupedMessages[date].map((message) => {
+                const isOwn =
+                  (message.sender === "fellow" && accountType === "Fellow") ||
+                  (message.sender === "business" && accountType === "Business");
+                return (
                   <div
-                    className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
+                    key={message.id}
+                    className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
                   >
-                    {isOwn && message.edited && (
-                      <p className="EditedNotification text-xs text-olive opacity-50">
-                        edited |
-                      </p>
-                    )}
-                    <p
-                      className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
+                    <InfoBox
+                      colorScheme={
+                        (currentColorScheme || "b3") as ButtonColorOption
+                      }
+                      variant={isOwn ? "filled" : "hollow"}
+                      aria={message.text}
+                      size="message"
                     >
-                      {message.timestamp}
-                    </p>
-                    {isOwn && (
-                      <Image
-                        src="/edit-pencil.svg"
-                        alt="edit"
-                        width={12}
-                        height={12}
-                        className="opacity-50 hover:opacity-80"
-                        onClick={() => editMessage(message.id)}
-                      />
-                    )}
-                    {!isOwn && message.edited && (
-                      <p className="EditedNotification text-xs text-jade opacity-50">
-                        | edited
+                      <p
+                        className={`MessageText ${message.text.length > 100 ? "py-2 pl-3 pr-2 indent-4" : "-py-2"} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
+                      >
+                        {message.text}
                       </p>
-                    )}
+                    </InfoBox>
+                    <div
+                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
+                    >
+                      {isOwn && message.edited && (
+                        <p className="EditedNotification text-xs text-olive opacity-50">
+                          edited |
+                        </p>
+                      )}
+                      <p
+                        className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
+                      >
+                        {message.timestamp}
+                      </p>
+                      {isOwn && (
+                        <Image
+                          src="/edit-pencil.svg"
+                          alt="edit"
+                          width={12}
+                          height={12}
+                          className="opacity-50 hover:opacity-80"
+                          onClick={() => editMessage(message.id)}
+                        />
+                      )}
+                      {!isOwn && message.edited && (
+                        <p className="EditedNotification text-xs text-jade opacity-50">
+                          | edited
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
-        ))}
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Message Input */}
@@ -241,7 +251,7 @@ const MessageCenter = ({
         <SiteButton
           type="submit"
           variant="filled"
-          colorScheme="b1"
+          colorScheme="c5"
           aria="send"
           size="medium"
           addClasses="px-8 py-[.6rem]"
