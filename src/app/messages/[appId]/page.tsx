@@ -1,7 +1,7 @@
 "use client";
 
 import { usePageContext } from "@/contexts/PageContext";
-import MessageCenter from "@/components/pages/messagingCenter";
+import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 export default function AppMessages({ params }: any) {
   const { accountType } = usePageContext();
   //you'll get an appId sent into this param

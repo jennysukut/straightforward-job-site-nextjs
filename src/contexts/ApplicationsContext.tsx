@@ -58,7 +58,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "viewed",
       mail: [
         {
-          id: 1,
+          id: 1325096,
           text: "Hello! I am a business testing out this messaging center.",
           sender: "business",
           date: "February 10",
@@ -66,7 +66,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           edited: true,
         },
         {
-          id: 2,
+          id: 2237859,
           text: "Sweet! I'm testing it out too! How exciting!",
           sender: "fellow",
           date: "February 10",
@@ -165,7 +165,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "viewed",
       mail: [
         {
-          id: 1,
+          id: 325981,
           text: "testing, testing, 123, testing and testing alot!",
           sender: "business",
           date: "February 10",
@@ -173,7 +173,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           edited: true,
         },
         {
-          id: 2,
+          id: 245492,
           text: "what are you testing? And why are you testing so much?",
           sender: "fellow",
           date: "February 10",
@@ -210,7 +210,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "stage 2",
       mail: [
         {
-          id: 1,
+          id: 1738259,
           text: "Zeth SunSun Vilano Wore White on the day he was to kill a king.",
           sender: "business",
           date: "February 10",
@@ -218,7 +218,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           edited: true,
         },
         {
-          id: 2,
+          id: 2273895,
           text: "I know that excerpt. Where is it from?",
           sender: "fellow",
           date: "February 10",
@@ -226,7 +226,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           edited: false,
         },
         {
-          id: 2,
+          id: 223507,
           text: "Wait. Is it from Brandy Sandy's Way Of Kings?",
           sender: "fellow",
           date: "February 10",
@@ -234,7 +234,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           edited: false,
         },
         {
-          id: 1,
+          id: 2618591,
           text: "It is indeed, young padawan.",
           sender: "business",
           date: "February 10",

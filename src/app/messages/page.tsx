@@ -10,7 +10,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useJob } from "@/contexts/JobContext";
 import { Applications } from "@/contexts/ApplicationsContext";
 
-import MessageCenter from "@/components/pages/messagingCenter";
+import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";

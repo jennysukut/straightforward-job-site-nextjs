@@ -23,7 +23,7 @@ import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsC
 import CalendarComp from "@/components/calendar";
 import ApplicationDetailsModal from "@/components/modals/appointmentModals/appointmentDetailsModal";
 import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
-import MessageCenter from "../messagingCenter";
+import MessageCenter from "../messagingCenter/messagingCenter";
 
 export default function FellowAMS() {
   const router = useRouter();

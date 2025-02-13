@@ -25,11 +25,7 @@ const EditMessageSchema = z.object({
 
 type FormData = z.infer<typeof EditMessageSchema>;
 
-export default function EditMessageModal({
-  message,
-  setMessages,
-  messages,
-}: any) {
+export default function EditMessageModal({ message, app }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -45,13 +41,21 @@ export default function EditMessageModal({
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const updatedMessages = messages.map((msg: any) =>
-      msg.id === message.id
-        ? { ...msg, text: data.message, edited: true }
-        : msg,
-    );
-    console.log(updatedMessages);
-    setMessages(updatedMessages);
+    const updatedApplications = applications?.map((application) => {
+      if (application.id === app.id) {
+        return {
+          ...application,
+          mail: application.mail?.map((msg: any) =>
+            msg.id === message.id
+              ? { ...msg, text: data.message, edited: true }
+              : msg,
+          ),
+        };
+      }
+      return application;
+    });
+    // console.log(updatedApplications);
+    setApplications(updatedApplications || []);
     hideModal();
   };
 

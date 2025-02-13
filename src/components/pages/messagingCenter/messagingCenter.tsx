@@ -8,10 +8,10 @@ import { useColors } from "@/contexts/ColorContext";
 
 import React from "react";
 import Image from "next/image";
-import EditMessageModal from "../modals/messagingModals/editMessageModal";
-import InfoBox from "../informationDisplayComponents/infoBox";
-import SiteButton from "../buttonsAndLabels/siteButton";
-import InputComponent from "../inputComponents/inputComponent";
+import EditMessageModal from "../../modals/messagingModals/editMessageModal";
+import InfoBox from "../../informationDisplayComponents/infoBox";
+import SiteButton from "../../buttonsAndLabels/siteButton";
+import InputComponent from "../../inputComponents/inputComponent";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export interface Messages {
@@ -37,6 +37,8 @@ const MessageCenter = ({
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([] as Messages[]);
+  const [updatedMessages, setUpdatedMessages] = useState([] as Messages[]);
+  const [selectedApp, setSelectedApp] = useState({});
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -80,6 +82,7 @@ const MessageCenter = ({
       setApplications(updatedApplications);
       updateMessages();
     }
+    console.log(applications);
     setNewMessage("");
   };
 
@@ -106,13 +109,7 @@ const MessageCenter = ({
     const currentMessage = messages.find((message) => {
       return message.id === id;
     });
-    showModal(
-      <EditMessageModal
-        message={currentMessage}
-        messages={messages}
-        setMessages={setMessages}
-      />,
-    );
+    showModal(<EditMessageModal message={currentMessage} app={selectedApp} />);
     // We need to make a way for edited messages to get reflected in the database - this might be easier to do in integration, since it'll be easier to work with the data then.
     // we can find the specific message via it's id and update it pretty simply.
     setTimeout(() => {
@@ -125,13 +122,17 @@ const MessageCenter = ({
       const selectedApp: any = applications?.find((app: any) => {
         return app.id === activeApp;
       });
+      setSelectedApp(selectedApp);
       setMessages(selectedApp.mail);
       // console.log(selectedApp);
     }
   };
 
   useEffect(() => {
-    if (activeApp) {
+    if (updatedMessages.length > 0) {
+      setMessages(updatedMessages);
+      setUpdatedMessages([]);
+    } else if (activeApp) {
       updateMessages();
     }
   }, [updateMessages, setApplications, activeApp, applications]);
