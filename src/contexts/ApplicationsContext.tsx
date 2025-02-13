@@ -185,7 +185,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           text: "I'm testing my sanity.",
           sender: "business",
           date: "February 10",
-          timestamp: "11:00 AM",
+          timestamp: "11:30 AM",
           edited: false,
         },
       ],

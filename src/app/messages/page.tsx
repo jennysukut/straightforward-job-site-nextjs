@@ -8,6 +8,7 @@ import { getRandomColorArray } from "@/utils/getRandomColorScheme";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useJob } from "@/contexts/JobContext";
+import { Applications } from "@/contexts/ApplicationsContext";
 
 import MessageCenter from "@/components/pages/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -23,31 +24,25 @@ export default function Messages() {
   const { applications } = useApplications();
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [activeApp, setActiveApp] = useState("");
-  const [activeMessages, setActiveMessages] = useState([
-    {
-      id: 1,
-      text: "Testing Setting Active Messages.",
-      sender: "business",
-      date: "February 10",
-      timestamp: "10:00 AM",
-      edited: true,
-    },
-    {
-      id: 2,
-      text: "Sounds good!",
-      sender: "fellow",
-      date: "February 10",
-      timestamp: "10:01 AM",
-      edited: false,
-    },
-  ]);
 
-  // get the fellow's applications
-  // we'll test it out with our faux ID: testid
+  // Make a Display if their currentApps length is 0 and display some kind of error instead, telling them they don't currently have any messages
 
-  const currentApps = applications?.filter((app: any) => {
-    return app.applicant === "testid" && app.mail;
-  });
+  // Find the current Applications and sort them via the date of their latest messages, so the most recent messages are displayed at the top
+  const currentApps = applications
+    ?.filter((app: any) => app.applicant === fellow?.id && app.mail)
+    .sort((a, b) => {
+      const mostRecentA = a.mail?.reduce((latest, message) => {
+        const messageDate = new Date(`${message.date} ${message.timestamp}`);
+        return messageDate > latest ? messageDate : latest;
+      }, new Date(0));
+
+      const mostRecentB = b.mail?.reduce((latest, message) => {
+        const messageDate = new Date(`${message.date} ${message.timestamp}`);
+        return messageDate > latest ? messageDate : latest;
+      }, new Date(0));
+
+      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
+    });
 
   const correspondingApp = applications?.find((app: any) => {
     return app.id === activeApp;
@@ -57,44 +52,28 @@ export default function Messages() {
     return jl.jobId === correspondingApp?.jobId;
   });
 
-  // make something so we show the latest messages initially in the messenger.
-  // also, make sure we can have a way to expand the conversation, opening it in the appId page?
   const showMessages = (id: any) => {
     if (activeApp === id) {
-      setActiveApp("");
-      setActiveMessages([]);
+      setActiveApp(currentApps?.[0]?.id || "");
     } else {
       setActiveApp(id);
-      const selectedApp: any = currentApps?.find((app: any) => {
-        return app.id === id;
-      });
-      if (selectedApp?.mail) {
-        setActiveMessages(selectedApp.mail);
-      }
     }
   };
 
-  // useEffect(() => {
-  //   const colors = getRandomColorArray(36);
-  //   setColorArray(colors);
-  //   // perhaps it'd be better to use the idealButtonColors array at a random number starting point?
-  // }, []);
-
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+    setActiveApp(currentApps?.[0]?.id || "");
   }, []);
 
   return (
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
-      {/* For this main-messaging page, we'll have be able to pass appIds into the "messageCenter" component to display messages associated with a particular app */}
-      {/* we'll need to find all the apps that have message Arrays with an item in it, and display those */}
       <div className="MailList flex h-[75vh] flex-col gap-4 border-r-2 border-olive border-opacity-25 pr-8">
         <h2 className="Title text-center">Your Messages:</h2>
         {currentApps?.map((app: any, index: any) => {
           return (
             <div key={index} className="MessageGroup flex gap-2">
               <SiteButton
-                variant="filled"
+                variant="hollow"
                 size="medium"
                 aria="mail item"
                 addClasses="w-[20vw] overflow-hidden truncate"
@@ -124,7 +103,6 @@ export default function Messages() {
       </div>
       <div className="MessageCenter w-[80vw] pl-2 pr-10">
         <MessageCenter
-          activeMessages={activeMessages}
           activeApp={activeApp}
           correspondingApp={correspondingApp}
           correspondingListing={correspondingListing}

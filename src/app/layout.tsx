@@ -50,18 +50,18 @@ export default function RootLayout({
       <Analytics />
       <body className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-cream">
         <PageProvider>
-          <ColorProvider>
-            <ApolloWrapper>
-              <BusinessListProvider>
-                <AppointmentsContextProvider>
-                  <MessagesProvider>
-                    <ApplicationsProvider>
-                      <ApplicationProvider>
-                        <JobListingsProvider>
-                          <JobProvider>
-                            <BusinessProvider>
-                              <FellowsProvider>
-                                <FellowProvider>
+          <ApolloWrapper>
+            <BusinessListProvider>
+              <AppointmentsContextProvider>
+                <MessagesProvider>
+                  <ApplicationsProvider>
+                    <ApplicationProvider>
+                      <JobListingsProvider>
+                        <JobProvider>
+                          <BusinessProvider>
+                            <FellowsProvider>
+                              <FellowProvider>
+                                <ColorProvider>
                                   <ModalProvider>
                                     <NavBar />
                                     <main className="Main flex flex-1 flex-col">
@@ -70,18 +70,18 @@ export default function RootLayout({
                                     </main>
                                     <Footer />
                                   </ModalProvider>
-                                </FellowProvider>
-                              </FellowsProvider>
-                            </BusinessProvider>
-                          </JobProvider>
-                        </JobListingsProvider>
-                      </ApplicationProvider>
-                    </ApplicationsProvider>
-                  </MessagesProvider>
-                </AppointmentsContextProvider>
-              </BusinessListProvider>
-            </ApolloWrapper>
-          </ColorProvider>
+                                </ColorProvider>
+                              </FellowProvider>
+                            </FellowsProvider>
+                          </BusinessProvider>
+                        </JobProvider>
+                      </JobListingsProvider>
+                    </ApplicationProvider>
+                  </ApplicationsProvider>
+                </MessagesProvider>
+              </AppointmentsContextProvider>
+            </BusinessListProvider>
+          </ApolloWrapper>
         </PageProvider>
       </body>
     </html>

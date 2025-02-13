@@ -1,7 +1,15 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { useFellow } from "./FellowContext";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
 export interface Colors {
   colorOption: "highContrast" | "standard" | "seasonal";
@@ -23,8 +31,14 @@ export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   // Options here: "standard" || "highContrast"
   const [colorOption, setColorOption] = useState<Colors | string>("standard");
   const [currentColorScheme, setCurrentColorScheme] = useState("");
+  const { fellow } = useFellow();
 
-  console.log(currentColorScheme);
+  useEffect(() => {
+    const currentScheme = avatarOptions.find((avatar: any) => {
+      avatar.title === fellow?.avatar;
+    })?.colorScheme;
+    setCurrentColorScheme(currentScheme || "b3");
+  }, []);
 
   return (
     <ColorContext.Provider

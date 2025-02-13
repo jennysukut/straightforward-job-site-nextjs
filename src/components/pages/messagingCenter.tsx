@@ -14,8 +14,16 @@ import SiteButton from "../buttonsAndLabels/siteButton";
 import InputComponent from "../inputComponents/inputComponent";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
+export interface Messages {
+  id: number;
+  text: string;
+  sender: string;
+  date: string;
+  timestamp: string;
+  edited: boolean;
+}
+
 const MessageCenter = ({
-  app,
   activeApp,
   correspondingApp,
   correspondingListing,
@@ -28,24 +36,7 @@ const MessageCenter = ({
 
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hello! How can I help you today?",
-      sender: "business",
-      date: "February 10",
-      timestamp: "10:00 AM",
-      edited: true,
-    },
-    {
-      id: 2,
-      text: "I have a question about my account",
-      sender: "fellow",
-      date: "February 10",
-      timestamp: "10:01 AM",
-      edited: false,
-    },
-  ]);
+  const [messages, setMessages] = useState([] as Messages[]);
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -94,7 +85,7 @@ const MessageCenter = ({
 
   // Group Messages Into Dates
   const groupedMessages = messages.reduce(
-    (acc: { [key: string]: typeof messages }, message) => {
+    (acc: { [key: string]: typeof messages }, message: any) => {
       const date = message.date;
       if (!acc[date]) {
         acc[date] = [];
@@ -130,10 +121,13 @@ const MessageCenter = ({
   };
 
   const updateMessages = () => {
-    const selectedApp: any = applications?.find((app: any) => {
-      return app.id === activeApp;
-    });
-    setMessages(selectedApp.mail);
+    if (activeApp) {
+      const selectedApp: any = applications?.find((app: any) => {
+        return app.id === activeApp;
+      });
+      setMessages(selectedApp.mail);
+      // console.log(selectedApp);
+    }
   };
 
   useEffect(() => {

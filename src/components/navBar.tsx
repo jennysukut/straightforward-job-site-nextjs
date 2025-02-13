@@ -47,8 +47,6 @@ export default function NavBar() {
     setClickedButton(currentPage);
   }, [currentPage]);
 
-  console.log(dailyLimit);
-
   return (
     <div
       className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor}`}
