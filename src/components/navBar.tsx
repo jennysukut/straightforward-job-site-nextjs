@@ -28,6 +28,7 @@ export default function NavBar() {
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
   const { dailyLimit } = useFellow();
+
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }

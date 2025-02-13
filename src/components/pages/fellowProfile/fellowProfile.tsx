@@ -84,9 +84,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
       (option) => option.title === fellow?.avatar,
     );
   }
-
-  console.log(currentFellow);
-
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.jobId}`);
   };

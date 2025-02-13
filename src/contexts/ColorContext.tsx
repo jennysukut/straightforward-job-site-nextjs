@@ -33,12 +33,15 @@ export const ColorProvider: React.FC<{ children: ReactNode }> = ({
   const [currentColorScheme, setCurrentColorScheme] = useState("");
   const { fellow } = useFellow();
 
-  useEffect(() => {
-    const currentScheme = avatarOptions.find((avatar: any) => {
-      avatar.title === fellow?.avatar;
-    })?.colorScheme;
-    setCurrentColorScheme(currentScheme || "b3");
-  }, []);
+  console.log(currentColorScheme);
+  // useEffect(() => {
+  //   const currentScheme = avatarOptions.find((avatar: any) => {
+  //     avatar.title === fellow?.avatar;
+  //   })?.colorScheme;
+  //   if (currentScheme) {
+  //     setCurrentColorScheme(currentScheme);
+  //   }
+  // }, []);
 
   return (
     <ColorContext.Provider

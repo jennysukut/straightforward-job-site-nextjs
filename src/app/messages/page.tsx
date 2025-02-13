@@ -14,6 +14,7 @@ import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
+import Image from "next/image";
 
 type CurrentSchemeType = ButtonColorOption;
 
@@ -67,26 +68,27 @@ export default function Messages() {
 
   return (
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
-      <div className="MailList flex h-[75vh] flex-col gap-4 border-r-2 border-olive border-opacity-25 pr-8">
-        <h2 className="Title text-center">Your Messages:</h2>
-        {currentApps?.map((app: any, index: any) => {
-          return (
-            <div key={index} className="MessageGroup flex gap-2">
-              <SiteButton
-                variant="hollow"
-                size="medium"
-                aria="mail item"
-                addClasses="w-[20vw] overflow-hidden truncate"
-                colorScheme={
-                  colorArray[index % colorArray.length] as ButtonColorOption
-                }
-                onClick={() => showMessages(app.id)}
-                isSelected={activeApp === app.id}
-              >
-                {app.business}
-              </SiteButton>
-              {/* trying to make a good notification button */}
-              {/* {app.mail.length > 3 && (
+      <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
+        <div className="MessageListGroup flex flex-col gap-4">
+          <h2 className="Title text-center">Your Messages:</h2>
+          {currentApps?.map((app: any, index: any) => {
+            return (
+              <div key={index} className="MessageGroup flex gap-2">
+                <SiteButton
+                  variant="hollow"
+                  size="medium"
+                  aria="mail item"
+                  addClasses="w-[20vw] overflow-hidden truncate"
+                  colorScheme={
+                    colorArray[index % colorArray.length] as ButtonColorOption
+                  }
+                  onClick={() => showMessages(app.id)}
+                  isSelected={activeApp === app.id}
+                >
+                  {app.business}
+                </SiteButton>
+                {/* trying to make a good notification button */}
+                {/* {app.mail.length > 3 && (
                 <SiteLabel
                   variant="notification"
                   size="notification"
@@ -97,9 +99,20 @@ export default function Messages() {
                   addClasses="mt-4"
                 />
               )} */}
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
+        {!currentApps ||
+          (currentApps?.length < 9 && (
+            <Image
+              width={140}
+              height={140}
+              alt="decor"
+              src="/lime-flower.svg"
+              className="-mb-4 -ml-20 self-baseline"
+            ></Image>
+          ))}
       </div>
       <div className="MessageCenter w-[80vw] pl-2 pr-10">
         <MessageCenter

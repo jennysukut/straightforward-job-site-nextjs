@@ -5,6 +5,9 @@ import { timeLog } from "console";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useColors } from "@/contexts/ColorContext";
+import { useFellow } from "@/contexts/FellowContext";
+import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
 import React from "react";
 import Image from "next/image";
@@ -12,7 +15,6 @@ import EditMessageModal from "../../modals/messagingModals/editMessageModal";
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import InputComponent from "../../inputComponents/inputComponent";
-import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
 export interface Messages {
   id: number;
@@ -33,12 +35,23 @@ const MessageCenter = ({
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
   const { currentColorScheme } = useColors();
+  const { fellow } = useFellow();
 
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([] as Messages[]);
   const [updatedMessages, setUpdatedMessages] = useState([] as Messages[]);
   const [selectedApp, setSelectedApp] = useState({});
+
+  const { setCurrentColorScheme } = useColors();
+
+  const currentAvatarChoice = avatarOptions.find((option: any) => {
+    return option.title === fellow?.avatar;
+  })?.colorScheme;
+
+  useEffect(() => {
+    setCurrentColorScheme(currentAvatarChoice || "b2");
+  }, [currentAvatarChoice]);
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -138,12 +151,12 @@ const MessageCenter = ({
   }, [updateMessages, setApplications, activeApp, applications]);
 
   return (
-    <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">
+    <div className="MessagingCenter -mb-4 flex h-full w-full max-w-[1600px] flex-col justify-between">
       <div className="Messages flex w-[100%] flex-col self-center align-top">
         <h2 className="text-right text-emerald">
           Your Conversation with {correspondingListing?.job?.businessName}
         </h2>
-        <p className="Subtitle mb-4 mr-2 text-right font-medium lowercase italic text-olive">
+        <p className="Subtitle mb-4 mr-2 text-right font-medium lowercase italic text-jade">
           regarding the {correspondingListing?.job?.jobTitle} position
         </p>
 
@@ -223,7 +236,7 @@ const MessageCenter = ({
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Your message..."
-          className="w-[90%] rounded-full border-2 border-jade bg-cream px-4 py-[.6rem] text-emerald drop-shadow-smJade placeholder:text-jade focus:outline-none"
+          className="w-[90%] rounded-full border-2 border-jade bg-cream px-4 py-[.6rem] text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
         />
         <SiteButton
           type="submit"
