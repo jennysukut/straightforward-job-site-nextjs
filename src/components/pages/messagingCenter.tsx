@@ -7,9 +7,19 @@ import EditMessageModal from "../modals/messagingModals/editMessageModal";
 import { useModal } from "@/contexts/ModalContext";
 import { timeLog } from "console";
 import Image from "next/image";
-const MessageCenter = ({ app, activeMessages }: any) => {
+import { useJobListings } from "@/contexts/JobListingsContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
+
+const MessageCenter = ({
+  app,
+  activeApp,
+  correspondingApp,
+  correspondingListing,
+}: any) => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
+  const { jobListings } = useJobListings();
+  const { applications, setApplications } = useApplications();
 
   const [editingMessage, setEditingMessage] = useState(null);
   const [newMessage, setNewMessage] = useState("");
@@ -32,10 +42,13 @@ const MessageCenter = ({ app, activeMessages }: any) => {
     },
   ]);
 
-  if (app) {
-    // if there's an app, we'll need to grab the messages associated with the appId
-    // maybe we'll do this in a useEffect?
-  }
+  // const correspondingApp = applications?.find((app: any) => {
+  //   return app.id === activeApp;
+  // });
+
+  // const correspondingListing = jobListings?.find((jl: any) => {
+  //   return jl.jobId === correspondingApp?.jobId;
+  // });
 
   const handleSendMessage = (e: any) => {
     e.preventDefault();
@@ -52,8 +65,32 @@ const MessageCenter = ({ app, activeMessages }: any) => {
       })}`,
       edited: false,
     };
-    if (messages) {
-      // setMessages([...messages, message]);
+
+    const index: number =
+      applications?.findIndex((app: any) => app.id === correspondingApp?.id) ??
+      -1;
+    if (index !== -1) {
+      const updatedApp = {
+        ...(applications?.[index] as {
+          mail?: {
+            id: number;
+            text: string;
+            sender: string;
+            date: string;
+            timestamp: string;
+            edited: boolean;
+          }[];
+        }),
+        mail: [...(applications?.[index]?.mail || []), message],
+      };
+      console.log(updatedApp);
+      const updatedApplications = [
+        ...(applications ?? []).slice(0, index),
+        updatedApp,
+        ...(applications ?? []).slice(index + 1),
+      ];
+      setApplications(updatedApplications);
+      updateMessages();
     }
     setNewMessage("");
   };
@@ -93,24 +130,37 @@ const MessageCenter = ({ app, activeMessages }: any) => {
     }, 2000);
   };
 
+  const updateMessages = () => {
+    const selectedApp: any = applications?.find((app: any) => {
+      return app.id === activeApp;
+    });
+
+    console.log(selectedApp);
+    setMessages(selectedApp.mail);
+  };
+
   useEffect(() => {
-    if (activeMessages) {
-      console.log(activeMessages);
-      setMessages(activeMessages);
+    if (activeApp) {
+      updateMessages();
     }
-  }, [activeMessages]);
+  }, [setApplications, activeApp, applications]);
 
   return (
     <div className="MessagingCenter -mb-8 flex h-full w-full max-w-[1600px] flex-col justify-between">
       <div className="Messages flex w-[100%] flex-col self-center align-top">
-        <h1 className="text-xl font-bold">Your Messages:</h1>
+        <h2 className="text-right text-emerald">
+          Your Conversation with {correspondingListing?.job?.businessName}
+        </h2>
+        <p className="Subtitle mb-4 mr-2 text-right font-medium lowercase italic text-olive">
+          regarding the {correspondingListing?.job?.jobTitle} position
+        </p>
 
         {sortedDates.map((date) => (
           <div key={date} className="flex w-[100%] flex-col gap-3">
             <div className="Divider mb-2 flex items-center">
-              <div className="flex-grow border-t-2 border-olive border-opacity-20"></div>
+              <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
               <p className="mx-3 text-center text-sm text-olive">{date}</p>
-              <div className="flex-grow border-t-2 border-olive border-opacity-20"></div>
+              <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
             </div>
             {groupedMessages[date].map((message) => {
               const isOwn =
@@ -172,7 +222,7 @@ const MessageCenter = ({ app, activeMessages }: any) => {
       {/* Message Input */}
       <form
         onSubmit={handleSendMessage}
-        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-olive border-opacity-30 p-4 align-baseline"
+        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
       >
         <input
           type="text"
