@@ -115,6 +115,8 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
       },
       {},
     );
+    // Now you can access groupedMessages here
+    // return groupedMessages;
   }
 
   // Sort Message Dates
@@ -241,12 +243,19 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
         onSubmit={handleSendMessage}
         className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
       >
-        <input
+        {/* <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Your message..."
           className="w-[90%] rounded-full border-2 border-jade bg-cream px-4 py-[.6rem] text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
+        /> */}
+        <textarea
+          // type="text"
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Your message..."
+          className="w-[90%] rounded-3xl border-2 border-jade bg-cream px-4 py-[.6rem] pr-6 text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
         />
         <SiteButton
           type="submit"
