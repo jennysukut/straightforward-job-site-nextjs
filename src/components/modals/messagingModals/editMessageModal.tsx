@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import * as z from "zod";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
@@ -12,56 +12,37 @@ import { useAppointments } from "@/contexts/AppointmentsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 
+import TextareaAutosize from "react-textarea-autosize";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
 import FormSubmissionButton from "@/components/buttonsAndLabels/formSubmissionButton";
 import DeleteConfirmationModal from "../deleteConfirmationModal";
 
-const EditMessageSchema = z.object({
-  message: z
-    .string()
-    .min(2, { message: "Message must be more than 2 characters long." }),
-});
+interface MessageEditProps {
+  paragraphs: string[];
+  onSave: (newParagraphs: string[], editId: any) => void;
+  onCancel: () => void;
+  editId: any;
+}
 
-type FormData = z.infer<typeof EditMessageSchema>;
-
-export default function EditMessageModal({ message, app }: any) {
+export default function EditMessageModal({
+  paragraphs,
+  onSave,
+  onCancel,
+  editId,
+}: MessageEditProps) {
   const [disabledButton, setDisabledButton] = useState(false);
+  const [text, setText] = useState(paragraphs);
+  const textRefs = useRef<(HTMLTextAreaElement | null)[]>([]);
+
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { accountType } = usePageContext();
   const { applications, setApplications } = useApplications();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(EditMessageSchema),
-  });
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        return {
-          ...application,
-          mail: application.mail?.map((msg: any) =>
-            msg.id === message.id
-              ? { ...msg, text: data.message, edited: true }
-              : msg,
-          ),
-        };
-      }
-      return application;
-    });
-    // console.log(updatedApplications);
-    setApplications(updatedApplications || []);
-    hideModal();
+  const handleSave = () => {
+    onSave(text, editId);
   };
-
-  useEffect(() => {
-    setValue("message", message.text);
-  });
 
   return (
     <div
@@ -70,28 +51,54 @@ export default function EditMessageModal({ message, app }: any) {
       <Dialog.Title className="Title -my-2 w-full text-center text-xl font-bold">
         {`Edit Your Message:`}
       </Dialog.Title>
-      <form onSubmit={handleSubmit(onSubmit)} className="MessageEditingForm">
-        <InputComponent
-          type="text"
-          placeholderText="Your Message Here..."
-          size="tall"
-          width="medium"
-          addClasses="mt-6"
-          register={register}
-          registerValue="message"
-          errors={errors.message}
-        ></InputComponent>
-        <div className="SubmitButton mt-8 self-end">
-          <FormSubmissionButton
-            // canDelete={message}
-            // clickDelete={clickDelete}
-            disabledButton={disabledButton}
-            addText="update"
-            addingText="Saving..."
-            handleSubmit={handleSubmit(onSubmit)}
+
+      <div className="Message mt-4 flex max-h-[50vh] w-full flex-col gap-2 overflow-y-auto rounded-2xl border-2 border-jade bg-cream p-4">
+        {text.map((paragraph, index) => (
+          <TextareaAutosize
+            key={index}
+            ref={(el) => {
+              textRefs.current[index] = el;
+            }}
+            value={paragraph}
+            onChange={(e) => {
+              const newText = [...text];
+              newText[index] = e.target.value;
+              setText(newText);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                const newText = [...text, ""];
+                setText(newText);
+                setTimeout(() => {
+                  textRefs.current[newText.length - 1]?.focus();
+                }, 0);
+              }
+            }}
+            className="EditedMessageText h-auto w-full resize-none overflow-y-auto bg-cream pr-2 focus:outline-none"
           />
-        </div>
-      </form>
+        ))}
+      </div>
+
+      <div className="ButtonOptions -mb-4 mt-2 flex w-full justify-between gap-2">
+        <SiteButton
+          variant="hollow"
+          colorScheme="c5"
+          aria="cancel"
+          onClick={onCancel}
+        >
+          cancel
+        </SiteButton>
+        <SiteButton
+          variant="filled"
+          colorScheme="d4"
+          aria="save"
+          onClick={handleSave}
+          size="medium"
+        >
+          save
+        </SiteButton>
+      </div>
     </div>
   );
 }

@@ -18,7 +18,7 @@ import InputComponent from "../../inputComponents/inputComponent";
 
 export interface Messages {
   id: number;
-  text: string;
+  text: Array<string>;
   sender: string;
   date: string;
   timestamp: string;
@@ -30,16 +30,16 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
-  const { currentColorScheme } = useColors();
+  const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
 
-  const [editingMessage, setEditingMessage] = useState(null);
-  const [newMessage, setNewMessage] = useState("");
+  // const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([] as Messages[]);
-  const [updatedMessages, setUpdatedMessages] = useState([] as Messages[]);
+  // const [updatedMessages, setUpdatedMessages] = useState([] as Messages[]);
   const [selectedApp, setSelectedApp] = useState({});
-
-  const { setCurrentColorScheme } = useColors();
+  const [editingMessage, setEditingMessage] = useState(null);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [isBeingEdited, setIsBeingEdited] = useState(null);
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     return option.title === fellow?.avatar;
@@ -53,51 +53,121 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
     return jl.jobId === correspondingApp?.jobId;
   });
 
+  const updateMessages = () => {
+    if (activeApp) {
+      const selectedApp: any = applications?.find((app: any) => {
+        return app.id === activeApp;
+      });
+      setSelectedApp(selectedApp);
+      setMessages(selectedApp.mail);
+      // console.log(selectedApp);
+    }
+  };
+
+  // const handleSendMessage = (e: any) => {
+  //   e.preventDefault();
+  //   if (!newMessage.trim()) return;
+
+  //   const message = {
+  //     id: messages.length + 1,
+  //     text: newMessage,
+  //     sender: "fellow",
+  //     date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
+  //     timestamp: `${new Date().toLocaleTimeString([], {
+  //       hour: "2-digit",
+  //       minute: "2-digit",
+  //     })}`,
+  //     edited: false,
+  //   };
+
+  //   const index: number =
+  //     applications?.findIndex((app: any) => app.id === correspondingApp?.id) ??
+  //     -1;
+  //   if (index !== -1) {
+  //     const updatedApp = {
+  //       ...(applications?.[index] as {
+  //         mail?: {
+  //           id: number;
+  //           text: string;
+  //           sender: string;
+  //           date: string;
+  //           timestamp: string;
+  //           edited: boolean;
+  //         }[];
+  //       }),
+  //       mail: [...(applications?.[index]?.mail || []), message],
+  //     };
+  //     console.log(updatedApp);
+  //     const updatedApplications = [
+  //       ...(applications ?? []).slice(0, index),
+  //       updatedApp,
+  //       ...(applications ?? []).slice(index + 1),
+  //     ];
+  //     setApplications(updatedApplications);
+  //     updateMessages();
+  //   }
+  //   console.log(applications);
+  //   setNewMessage("");
+  // };
+
+  // was called handleSubmit
   const handleSendMessage = (e: any) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
 
-    const message = {
-      id: messages.length + 1,
-      text: newMessage,
-      sender: "fellow",
-      date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
-      timestamp: `${new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`,
-      edited: false,
-    };
+    if (currentMessage.trim()) {
+      // Split the message into paragraphs based on newlines
+      const paragraphs = currentMessage
+        .split("\n")
+        .map((para) => para.trim())
+        .filter((para) => para.length > 0);
 
-    const index: number =
-      applications?.findIndex((app: any) => app.id === correspondingApp?.id) ??
-      -1;
-    if (index !== -1) {
-      const updatedApp = {
-        ...(applications?.[index] as {
-          mail?: {
-            id: number;
-            text: string;
-            sender: string;
-            date: string;
-            timestamp: string;
-            edited: boolean;
-          }[];
-        }),
-        mail: [...(applications?.[index]?.mail || []), message],
+      const message = {
+        id: messages.length + 1,
+        text: paragraphs,
+        sender: "fellow",
+        date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
+        timestamp: `${new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}`,
+        edited: false,
       };
-      console.log(updatedApp);
-      const updatedApplications = [
-        ...(applications ?? []).slice(0, index),
-        updatedApp,
-        ...(applications ?? []).slice(index + 1),
-      ];
-      setApplications(updatedApplications);
-      updateMessages();
+
+      const index: number =
+        applications?.findIndex(
+          (app: any) => app.id === correspondingApp?.id,
+        ) ?? -1;
+      if (index !== -1) {
+        const updatedApp = {
+          ...(applications?.[index] as {
+            mail?: {
+              id: number;
+              text: string;
+              sender: string;
+              date: string;
+              timestamp: string;
+              edited: boolean;
+            }[];
+          }),
+          mail: [...(applications?.[index]?.mail || []), message],
+        };
+        console.log(updatedApp);
+        const updatedApplications = [
+          ...(applications ?? []).slice(0, index),
+          updatedApp,
+          ...(applications ?? []).slice(index + 1),
+        ];
+        setApplications(updatedApplications);
+        // update messages?
+        updateMessages();
+      }
+
+      setMessages([...messages, message]);
+      setCurrentMessage("");
     }
-    console.log(applications);
-    setNewMessage("");
   };
+
+  console.log(messages, correspondingApp);
 
   // Declare groupedMessages in a broader scope
   let groupedMessages: { [key: string]: typeof messages } = {};
@@ -124,37 +194,57 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
 
+  // const editMessage = (id: any) => {
+  //   setEditingMessage(id);
+  //   const currentMessage = messages.find((message) => {
+  //     return message.id === id;
+  //   });
+  //   // showModal(<EditMessageModal message={currentMessage} app={selectedApp} />);
+  //   // We need to make a way for edited messages to get reflected in the database - this might be easier to do in integration, since it'll be easier to work with the data then.
+  //   // we can find the specific message via it's id and update it pretty simply.
+  //   setTimeout(() => {
+  //     setEditingMessage(null);
+  //   }, 2000);
+  // };
+
+  // editMessage
   const editMessage = (id: any) => {
-    setEditingMessage(id);
     const currentMessage = messages.find((message) => {
       return message.id === id;
     });
-    showModal(<EditMessageModal message={currentMessage} app={selectedApp} />);
-    // We need to make a way for edited messages to get reflected in the database - this might be easier to do in integration, since it'll be easier to work with the data then.
-    // we can find the specific message via it's id and update it pretty simply.
-    setTimeout(() => {
-      setEditingMessage(null);
-    }, 2000);
+    setIsBeingEdited(id);
+    showModal(
+      <EditMessageModal
+        paragraphs={currentMessage?.text || []}
+        onCancel={() => {
+          hideModal();
+          setIsBeingEdited(null);
+        }}
+        onSave={updateMessage}
+        editId={id}
+      />,
+    );
   };
 
-  const updateMessages = () => {
-    if (activeApp) {
-      const selectedApp: any = applications?.find((app: any) => {
-        return app.id === activeApp;
-      });
-      setSelectedApp(selectedApp);
-      setMessages(selectedApp.mail);
-      // console.log(selectedApp);
-    }
+  const updateMessage = (message: any, editId: any) => {
+    setMessages((prevMessages) =>
+      prevMessages.map(
+        (msg) =>
+          msg.id === editId
+            ? { ...msg, text: message, edited: true } // Update the text and set edited to true
+            : msg, // Keep the existing message
+      ),
+    );
+    hideModal();
   };
 
   useEffect(() => {
-    if (updatedMessages.length > 0) {
-      setMessages(updatedMessages);
-      setUpdatedMessages([]);
-    } else if (activeApp) {
-      updateMessages();
-    }
+    // if (updatedMessages.length > 0) {
+    //   setMessages(updatedMessages);
+    //   setUpdatedMessages([]);
+    // } else if (activeApp) {
+    updateMessages();
+    // }
   }, [updateMessages, setApplications, activeApp, applications]);
 
   useEffect(() => {
@@ -178,7 +268,7 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
                 <p className="mx-3 text-center text-sm text-olive">{date}</p>
                 <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
               </div>
-              {groupedMessages[date].map((message) => {
+              {groupedMessages[date].map((message, messageIndex) => {
                 const isOwn =
                   (message.sender === "fellow" && accountType === "Fellow") ||
                   (message.sender === "business" && accountType === "Business");
@@ -192,14 +282,26 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
                         (currentColorScheme || "b3") as ButtonColorOption
                       }
                       variant={isOwn ? "filled" : "hollow"}
-                      aria={message.text}
+                      aria={message.text[0]}
                       size="message"
                     >
-                      <p
+                      {/* <p
                         className={`MessageText ${message.text.length > 100 ? "py-2 pl-3 pr-2 indent-4" : "-py-2"} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
                       >
                         {message.text}
-                      </p>
+                      </p> */}
+                      <div
+                        className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
+                      >
+                        {message.text.map((paragraph, paraIndex) => (
+                          <p
+                            key={`${messageIndex}-${paraIndex}`}
+                            className={`MessageText px-1 pl-1 focus:outline-none ${paraIndex < message.text.length - 1 ? "mb-2" : ""} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
+                          >
+                            {paragraph}
+                          </p>
+                        ))}
+                      </div>
                     </InfoBox>
                     <div
                       className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
@@ -252,10 +354,13 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
         /> */}
         <textarea
           // type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          // value={newMessage}
+          // onChange={(e) => setNewMessage(e.target.value)}
+          value={currentMessage}
+          onChange={(e) => setCurrentMessage(e.target.value)}
           placeholder="Your message..."
-          className="w-[90%] rounded-3xl border-2 border-jade bg-cream px-4 py-[.6rem] pr-6 text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
+          // className="w-[90%] rounded-3xl border-2 border-jade bg-cream px-4 py-[.6rem] pr-6 text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
+          className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
         />
         <SiteButton
           type="submit"

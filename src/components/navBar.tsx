@@ -150,7 +150,7 @@ export default function NavBar() {
               <Link href={"/messages"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme="c4"
+                  colorScheme="d1"
                   title="mail"
                   clickedButton={clickedButton || currentPage}
                 />
@@ -166,7 +166,7 @@ export default function NavBar() {
               <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}
-                  colorScheme="d1"
+                  colorScheme="c4"
                   title="settings"
                   clickedButton={clickedButton || currentPage}
                 />

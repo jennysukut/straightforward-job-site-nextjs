@@ -15,7 +15,7 @@ export interface Applications {
   businessNote?: Array<string>;
   mail?: Array<{
     id: number;
-    text: string;
+    text: Array<string>;
     sender: string;
     date: string;
     timestamp: string;
@@ -59,7 +59,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [
         {
           id: 1325096,
-          text: "Hello! I am a business testing out this messaging center.",
+          text: ["Hello! I am a business testing out this messaging center."],
           sender: "business",
           date: "February 10",
           timestamp: "10:00 AM",
@@ -67,7 +67,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 2237859,
-          text: "Sweet! I'm testing it out too! How exciting!",
+          text: ["Sweet! I'm testing it out too! How exciting!"],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
@@ -166,7 +166,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [
         {
           id: 325981,
-          text: "testing, testing, 123, testing and testing alot!",
+          text: ["testing, testing, 123, testing and testing alot!"],
           sender: "business",
           date: "February 10",
           timestamp: "10:00 AM",
@@ -174,7 +174,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 245492,
-          text: "what are you testing? And why are you testing so much?",
+          text: ["what are you testing? And why are you testing so much?"],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
@@ -182,7 +182,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 1,
-          text: "I'm testing my sanity.",
+          text: ["I'm testing my sanity."],
           sender: "business",
           date: "February 10",
           timestamp: "11:30 AM",
@@ -211,7 +211,9 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [
         {
           id: 1738259,
-          text: "Zeth SunSun Vilano Wore White on the day he was to kill a king.",
+          text: [
+            "Zeth SunSun Vilano Wore White on the day he was to kill a king.",
+          ],
           sender: "business",
           date: "February 10",
           timestamp: "10:00 AM",
@@ -219,7 +221,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 2273895,
-          text: "I know that excerpt. Where is it from?",
+          text: ["I know that excerpt. Where is it from?"],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
@@ -227,7 +229,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 223507,
-          text: "Wait. Is it from Brandy Sandy's Way Of Kings?",
+          text: ["Wait. Is it from Brandy Sandy's Way Of Kings?"],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
@@ -235,7 +237,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
         {
           id: 2618591,
-          text: "It is indeed, young padawan.",
+          text: ["It is indeed, young padawan."],
           sender: "business",
           date: "February 10",
           timestamp: "11:00 AM",
