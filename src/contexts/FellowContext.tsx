@@ -251,7 +251,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",
     smallBio:
-      "A Tiny Bit Longer Of A Small Bio - Let's see what happens when the small bio is even bigger. Since there's new formatting, it might make things look different.",
+      "I'm a color-oriented graphic designer + web developer + serial entrepreneur. I like to learn new things and make things as beautiful and efficient and wonderful as possible!",
     country: "United States",
     location: "Montana",
     skills: ["Graphic Design", "React.js", "Web Development"],

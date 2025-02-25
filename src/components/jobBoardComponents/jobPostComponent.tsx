@@ -5,6 +5,7 @@ import InfoBox from "../informationDisplayComponents/infoBox";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import DeleteConfirmationModal from "../modals/deleteConfirmationModal";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useColors } from "@/contexts/ColorContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
@@ -31,7 +32,7 @@ const JobPost: React.FC<JobPostProps> = ({
   const { fellow } = useFellow();
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
-
+  const [viewMoreClicked, setViewMoreClicked] = useState(false);
   const removeSavedJob = () => {
     showModal(
       <DeleteConfirmationModal
@@ -55,6 +56,7 @@ const JobPost: React.FC<JobPostProps> = ({
 
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
+    setViewMoreClicked(true);
     if (applied) {
       router.push(`/application/${thisApp}`);
     } else router.push(`/listing/${job.jobId}`);
@@ -171,6 +173,7 @@ const JobPost: React.FC<JobPostProps> = ({
             colorArray[index % colorArray.length] as ButtonColorOption
           }
           onClick={viewDetails}
+          isSelected={viewMoreClicked}
         >
           {applied ? "already applied - view application" : "view details"}
         </SiteButton>

@@ -43,6 +43,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
   const [showNote, setShowNote] = useState(false);
+  const [buttonClicked, setButtonClicked] = useState("");
 
   const currentApplicant = fellows?.find((fellow: any) => {
     return fellow.id === app?.applicant;
@@ -55,6 +56,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
 
   const viewApplication = () => {
+    setButtonClicked("viewApplication");
     const relevantApp = applications?.find(
       (application: any) => application.id === app.id,
     );
@@ -83,6 +85,11 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
     } else {
       showModal(<ApplicationNoteModal app={app} />);
     }
+  };
+
+  const goToMessages = () => {
+    setButtonClicked("goToMessages");
+    router.push(`/messages/${app.id}`);
   };
 
   useEffect(() => {
@@ -129,6 +136,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               variant="hollow"
               colorScheme={betterColorArray[0]}
               onClick={viewApplication}
+              isSelected={buttonClicked === "viewApplication"}
             >
               view this application
             </SiteButton>
@@ -144,7 +152,8 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               aria="viewDetails"
               variant="hollow"
               colorScheme={betterColorArray[2]}
-              onClick={viewApplication}
+              onClick={goToMessages}
+              isSelected={buttonClicked === "goToMessages"}
             >
               messages
             </SiteButton>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
 import { timeLog } from "console";
@@ -8,6 +8,7 @@ import { useColors } from "@/contexts/ColorContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { useFellows } from "@/contexts/FellowsContext";
 
 import React from "react";
 import Image from "next/image";
@@ -15,6 +16,7 @@ import EditMessageModal from "../../modals/messagingModals/editMessageModal";
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import InputComponent from "../../inputComponents/inputComponent";
+import { createRoot } from "react-dom/client";
 
 export interface Messages {
   id: number;
@@ -23,19 +25,26 @@ export interface Messages {
   date: string;
   timestamp: string;
   edited: boolean;
+  read: boolean;
 }
 
-const MessageCenter = ({ activeApp }: any): JSX.Element => {
+// We need to make the message center display something about initial contact is the message array doesn't have anything in it.
+
+const MessageCenter = ({
+  activeApp,
+  addClasses,
+  messageHeight,
+  singleThread,
+}: any): JSX.Element => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
+  const { fellows } = useFellows();
 
-  // const [newMessage, setNewMessage] = useState("");
   const [messages, setMessages] = useState([] as Messages[]);
-  // const [updatedMessages, setUpdatedMessages] = useState([] as Messages[]);
   const [selectedApp, setSelectedApp] = useState({});
   const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -53,64 +62,31 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
     return jl.jobId === correspondingApp?.jobId;
   });
 
-  const updateMessages = () => {
+  const renderMessages = useCallback(() => {
     if (activeApp) {
       const selectedApp: any = applications?.find((app: any) => {
         return app.id === activeApp;
       });
       setSelectedApp(selectedApp);
       setMessages(selectedApp.mail);
-      // console.log(selectedApp);
+    }
+  }, [activeApp, applications]);
+
+  const scrollToBottom = () => {
+    const messageContainer = document.getElementById("Messages"); // Replace with your actual container ID
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   };
 
-  // const handleSendMessage = (e: any) => {
-  //   e.preventDefault();
-  //   if (!newMessage.trim()) return;
+  const scrollToPageBottom = () => {
+    const messagePageContainer = document.getElementById("MessageInput"); // Replace with your actual container ID
+    if (messagePageContainer) {
+      messagePageContainer.scrollTop = messagePageContainer.scrollHeight;
+    }
+  };
 
-  //   const message = {
-  //     id: messages.length + 1,
-  //     text: newMessage,
-  //     sender: "fellow",
-  //     date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
-  //     timestamp: `${new Date().toLocaleTimeString([], {
-  //       hour: "2-digit",
-  //       minute: "2-digit",
-  //     })}`,
-  //     edited: false,
-  //   };
-
-  //   const index: number =
-  //     applications?.findIndex((app: any) => app.id === correspondingApp?.id) ??
-  //     -1;
-  //   if (index !== -1) {
-  //     const updatedApp = {
-  //       ...(applications?.[index] as {
-  //         mail?: {
-  //           id: number;
-  //           text: string;
-  //           sender: string;
-  //           date: string;
-  //           timestamp: string;
-  //           edited: boolean;
-  //         }[];
-  //       }),
-  //       mail: [...(applications?.[index]?.mail || []), message],
-  //     };
-  //     console.log(updatedApp);
-  //     const updatedApplications = [
-  //       ...(applications ?? []).slice(0, index),
-  //       updatedApp,
-  //       ...(applications ?? []).slice(index + 1),
-  //     ];
-  //     setApplications(updatedApplications);
-  //     updateMessages();
-  //   }
-  //   console.log(applications);
-  //   setNewMessage("");
-  // };
-
-  // was called handleSubmit
+  // Send A Message!
   const handleSendMessage = (e: any) => {
     e.preventDefault();
 
@@ -131,6 +107,7 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
           minute: "2-digit",
         })}`,
         edited: false,
+        read: false,
       };
 
       const index: number =
@@ -147,6 +124,7 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
               date: string;
               timestamp: string;
               edited: boolean;
+              read: boolean;
             }[];
           }),
           mail: [...(applications?.[index]?.mail || []), message],
@@ -158,18 +136,15 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
           ...(applications ?? []).slice(index + 1),
         ];
         setApplications(updatedApplications);
-        // update messages?
-        updateMessages();
+        setMessages([...messages, message]);
       }
 
-      setMessages([...messages, message]);
       setCurrentMessage("");
+      renderMessages();
     }
   };
 
-  console.log(messages, correspondingApp);
-
-  // Declare groupedMessages in a broader scope
+  // Group Messages Together
   let groupedMessages: { [key: string]: typeof messages } = {};
 
   // Group Messages Into Dates
@@ -185,29 +160,14 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
       },
       {},
     );
-    // Now you can access groupedMessages here
-    // return groupedMessages;
   }
 
-  // Sort Message Dates
+  // Sort Messages By Dates
   const sortedDates = Object.keys(groupedMessages).sort(
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
 
-  // const editMessage = (id: any) => {
-  //   setEditingMessage(id);
-  //   const currentMessage = messages.find((message) => {
-  //     return message.id === id;
-  //   });
-  //   // showModal(<EditMessageModal message={currentMessage} app={selectedApp} />);
-  //   // We need to make a way for edited messages to get reflected in the database - this might be easier to do in integration, since it'll be easier to work with the data then.
-  //   // we can find the specific message via it's id and update it pretty simply.
-  //   setTimeout(() => {
-  //     setEditingMessage(null);
-  //   }, 2000);
-  // };
-
-  // editMessage
+  // Edit Message Function
   const editMessage = (id: any) => {
     const currentMessage = messages.find((message) => {
       return message.id === id;
@@ -227,40 +187,72 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
   };
 
   const updateMessage = (message: any, editId: any) => {
+    console.log("updated text:", message);
+
+    // Update the messages state by mapping through the existing messages
     setMessages((prevMessages) =>
       prevMessages.map(
         (msg) =>
           msg.id === editId
-            ? { ...msg, text: message, edited: true } // Update the text and set edited to true
+            ? { ...msg, text: message } // Update the text array for the matching message
             : msg, // Keep the existing message
       ),
     );
+
+    // update the message using a server call to update the messages, then rerender
+    renderMessages();
+    scrollToBottom();
     hideModal();
   };
 
+  const findApplicantName: any = (id: any) => {
+    const applicant = fellows?.find((fellow) => fellow.id === id);
+    return applicant ? applicant.name : "Unknown";
+  };
+
+  // render messages and scroll to the bottom of the current list of messages
   useEffect(() => {
-    // if (updatedMessages.length > 0) {
-    //   setMessages(updatedMessages);
-    //   setUpdatedMessages([]);
-    // } else if (activeApp) {
-    updateMessages();
+    renderMessages();
+    // scrollToPageBottom();
+    if (currentMessage === "") {
+      scrollToBottom();
+    }
+    // if (singleThread === true) {
+    //   console.log(singleThread);
+    //   //scroll to the bottom of the page
+    //   scrollToPageBottom();
     // }
-  }, [updateMessages, setApplications, activeApp, applications]);
+  }, [
+    currentMessage,
+    renderMessages,
+    setApplications,
+    activeApp,
+    applications,
+  ]);
 
   useEffect(() => {
     setCurrentColorScheme(currentAvatarChoice || "b2");
-  }, [currentAvatarChoice]);
+  }, [currentAvatarChoice, setCurrentColorScheme]);
 
   return (
-    <div className="MessagingCenter -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between">
+    <div
+      className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between self-center`}
+      id="messagingCenter"
+    >
       <div className="Messages flex w-[100%] flex-col self-center align-top">
         <h2 className="text-right text-emerald">
-          Your Conversation with {correspondingListing?.job?.businessName}
+          Your Conversation with{" "}
+          {accountType === "Fellow"
+            ? correspondingListing?.job?.businessName
+            : findApplicantName(correspondingApp?.applicant)}
         </h2>
         <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
           regarding the {correspondingListing?.job?.jobTitle} position
         </p>
-        <div className="Messages">
+        <div
+          className={`Messages -mr-6 ${messageHeight} overflow-y-auto pr-6`}
+          id="Messages"
+        >
           {sortedDates.map((date) => (
             <div key={date} className="flex w-[100%] flex-col gap-3">
               <div className="Divider mb-2 flex items-center">
@@ -285,11 +277,6 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
                       aria={message.text[0]}
                       size="message"
                     >
-                      {/* <p
-                        className={`MessageText ${message.text.length > 100 ? "py-2 pl-3 pr-2 indent-4" : "-py-2"} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
-                      >
-                        {message.text}
-                      </p> */}
                       <div
                         className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
                       >
@@ -303,13 +290,42 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
                         ))}
                       </div>
                     </InfoBox>
+
                     <div
-                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""}`}
+                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""} items-center`}
                     >
+                      {/* {isOwn && message.read === true && (
+                        <div className="ReadDetails flex gap-1">
+                          <Image
+                            src="/message-read.svg"
+                            alt="read"
+                            width={17}
+                            height={14}
+                            className="mr-1 mt-[0.1rem] opacity-80"
+                          />
+                          <p className="ReadNotification text-xs text-olive opacity-50">
+                            |{" "}
+                          </p>
+                        </div>
+                      )} */}
                       {isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-olive opacity-50">
                           edited |
                         </p>
+                      )}
+                      {isOwn && message.read === true && (
+                        <div className="ReadDetails flex gap-1">
+                          <Image
+                            src="/message-read.svg"
+                            alt="read"
+                            width={16}
+                            height={13}
+                            className="mr-1 mt-[0.1rem] opacity-80"
+                          />
+                          <p className="ReadNotification text-xs text-olive opacity-50">
+                            |{" "}
+                          </p>
+                        </div>
                       )}
                       <p
                         className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
@@ -331,6 +347,20 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
                           | edited
                         </p>
                       )}
+                      {!isOwn && message.read === true && (
+                        <div className="ReadDetails flex gap-1">
+                          <p className="ReadNotification text-xs text-jade opacity-50">
+                            |{" "}
+                          </p>
+                          <Image
+                            src="/message-read-other.svg"
+                            alt="read"
+                            width={16}
+                            height={13}
+                            className="ml-1 mt-[0.1rem] opacity-80"
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -344,23 +374,13 @@ const MessageCenter = ({ activeApp }: any): JSX.Element => {
       <form
         onSubmit={handleSendMessage}
         className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
+        id="MessageInput"
       >
-        {/* <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Your message..."
-          className="w-[90%] rounded-full border-2 border-jade bg-cream px-4 py-[.6rem] text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
-        /> */}
         <textarea
-          // type="text"
-          // value={newMessage}
-          // onChange={(e) => setNewMessage(e.target.value)}
           value={currentMessage}
           onChange={(e) => setCurrentMessage(e.target.value)}
           placeholder="Your message..."
-          // className="w-[90%] rounded-3xl border-2 border-jade bg-cream px-4 py-[.6rem] pr-6 text-emerald drop-shadow-jade placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
-          className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
+          className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 pl-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
         />
         <SiteButton
           type="submit"

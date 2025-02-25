@@ -398,7 +398,7 @@ export const FellowsProvider: React.FC<{ children: ReactNode }> = ({
       subscriptionAmount: "0",
     },
     {
-      avatar: "mushrooms",
+      avatar: "dice",
       id: "567",
       name: "Hiroshi Tanaka",
       email: "hiroshi.tanaka@example.com",

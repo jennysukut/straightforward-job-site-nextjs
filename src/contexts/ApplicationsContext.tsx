@@ -20,6 +20,7 @@ export interface Applications {
     date: string;
     timestamp: string;
     edited: boolean;
+    read: boolean;
   }>;
   fellowNote?: Array<string>;
   appointments?: Array<{
@@ -64,6 +65,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:00 AM",
           edited: true,
+          read: true,
         },
         {
           id: 2237859,
@@ -72,6 +74,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
+          read: true,
         },
       ],
       appointments: [
@@ -95,6 +98,8 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "1.13.2024",
       appStatus: "closed",
       appointments: [],
+      mail: [],
+
       appIsBeingRejected: "false",
     },
     {
@@ -106,6 +111,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "1.13.2024",
       appStatus: "submitted",
       appointments: [],
+      mail: [],
       appIsBeingRejected: "false",
     },
     {
@@ -117,6 +123,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "1.13.2024",
       appStatus: "submitted",
       appointments: [],
+      mail: [],
       appIsBeingRejected: "false",
     },
     {
@@ -128,6 +135,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "1.13.2024",
       appStatus: "submitted",
       appointments: [],
+      mail: [],
       appIsBeingRejected: "false",
     },
     {
@@ -136,6 +144,35 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "4",
       business: "Insight Analytics Co.",
       businessId: "1b23i",
+      mail: [
+        {
+          id: 325981,
+          text: ["testing, testing, 123, testing and testing alot!"],
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+          read: true,
+        },
+        {
+          id: 245492,
+          text: ["what are you testing? And why are you testing so much?"],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 1,
+          text: ["I'm testing my sanity."],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:30 AM",
+          edited: false,
+          read: true,
+        },
+      ],
       dateOfApp: "1.13.2024",
       appStatus: "submitted",
       appointments: [],
@@ -148,6 +185,72 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Insight Analytics Co.",
       businessId: "1b23i",
       dateOfApp: "1.13.2024",
+      mail: [
+        {
+          id: 1738259,
+          text: [
+            "Tootsie roll fruitcake halvah cupcake tootsie roll wafer. Gummies liquorice biscuit jujubes sweet chupa chups candy. Chocolate cake shortbread ice cream bonbon jujubes pudding lollipop macaroon jelly-o. ",
+          ],
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+          read: false,
+        },
+        {
+          id: 2273895,
+          text: [
+            "Candy tart dragée shortbread cake bear claw. Shortbread cookie donut biscuit jelly candy canes tart topping. ",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+          read: false,
+        },
+        {
+          id: 223507,
+          text: [
+            "Shortbread bear claw donut candy sweet roll biscuit sweet roll. Croissant chocolate cake chupa chups icing. Gingerbread cotton candy cake sesame snaps cheesecake.",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 78293961,
+          text: [
+            "Sesame snaps dragée pie liquorice wafer chocolate chupa chups. Dessert cotton candy donut ice cream sesame snaps cupcake. Sweet roll jelly brownie chupa chups oat cake marshmallow. Soufflé donut soufflé candy fruitcake tiramisu biscuit jujubes. Bonbon ice cream donut sesame snaps sweet roll cake marshmallow brownie jelly-o. Croissant ice cream danish candy bonbon apple pie.",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:02 AM",
+          edited: true,
+          read: true,
+        },
+        {
+          id: 9821579,
+          text: [
+            "Jujubes pastry lollipop pie marshmallow chocolate bar oat cake. Candy gummi bears topping dragée chocolate bar chocolate lemon drops croissant sweet. Chocolate bar candy croissant ice cream soufflé candy canes marzipan cake cupcake. Halvah sweet roll biscuit oat cake sesame snaps ice cream apple pie. Jujubes macaroon powder donut marzipan pudding oat cake bonbon. Lollipop fruitcake cake biscuit pastry tiramisu. Bonbon jujubes jelly jujubes candy canes chocolate bar muffin sesame snaps.",
+          ],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:00 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 2618591,
+          text: ["Sounds delicious!"],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:20 AM",
+          edited: false,
+          read: true,
+        },
+      ],
       appStatus: "submitted",
       appointments: [],
       appIsBeingRejected: "false",
@@ -171,6 +274,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:00 AM",
           edited: true,
+          read: true,
         },
         {
           id: 245492,
@@ -179,6 +283,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
+          read: true,
         },
         {
           id: 1,
@@ -187,6 +292,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "11:30 AM",
           edited: false,
+          read: true,
         },
       ],
       appointments: [
@@ -212,36 +318,66 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         {
           id: 1738259,
           text: [
-            "Zeth SunSun Vilano Wore White on the day he was to kill a king.",
+            "Tootsie roll fruitcake halvah cupcake tootsie roll wafer. Gummies liquorice biscuit jujubes sweet chupa chups candy. Chocolate cake shortbread ice cream bonbon jujubes pudding lollipop macaroon jelly-o. ",
           ],
           sender: "business",
           date: "February 10",
           timestamp: "10:00 AM",
           edited: true,
+          read: true,
         },
         {
           id: 2273895,
-          text: ["I know that excerpt. Where is it from?"],
+          text: [
+            "Candy tart dragée shortbread cake bear claw. Shortbread cookie donut biscuit jelly candy canes tart topping. ",
+          ],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
+          read: true,
         },
         {
           id: 223507,
-          text: ["Wait. Is it from Brandy Sandy's Way Of Kings?"],
+          text: [
+            "Shortbread bear claw donut candy sweet roll biscuit sweet roll. Croissant chocolate cake chupa chups icing. Gingerbread cotton candy cake sesame snaps cheesecake.",
+          ],
           sender: "fellow",
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
+          read: true,
         },
         {
-          id: 2618591,
-          text: ["It is indeed, young padawan."],
+          id: 78293961,
+          text: [
+            "Sesame snaps dragée pie liquorice wafer chocolate chupa chups. Dessert cotton candy donut ice cream sesame snaps cupcake. Sweet roll jelly brownie chupa chups oat cake marshmallow. Soufflé donut soufflé candy fruitcake tiramisu biscuit jujubes. Bonbon ice cream donut sesame snaps sweet roll cake marshmallow brownie jelly-o. Croissant ice cream danish candy bonbon apple pie.",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:02 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 9821579,
+          text: [
+            "Jujubes pastry lollipop pie marshmallow chocolate bar oat cake. Candy gummi bears topping dragée chocolate bar chocolate lemon drops croissant sweet. Chocolate bar candy croissant ice cream soufflé candy canes marzipan cake cupcake. Halvah sweet roll biscuit oat cake sesame snaps ice cream apple pie. Jujubes macaroon powder donut marzipan pudding oat cake bonbon. Lollipop fruitcake cake biscuit pastry tiramisu. Bonbon jujubes jelly jujubes candy canes chocolate bar muffin sesame snaps.",
+          ],
           sender: "business",
           date: "February 10",
           timestamp: "11:00 AM",
           edited: false,
+          read: true,
+        },
+        {
+          id: 2618591,
+          text: ["Sounds delicious!"],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:20 AM",
+          edited: false,
+          read: true,
         },
       ],
       appointments: [
@@ -270,6 +406,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       message: "Have you tried turning it off and on again?",
       business: "NetSecure Systems",
       jobId: "9",
+      mail: [],
       dateOfApp: "12.20.2024",
       appStatus: "offer",
       appIsBeingRejected: "false",
@@ -286,6 +423,8 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         "Here's a note I have about this application / applicant. I think we could use a lot of words to see if our thoughts overflow and make the relevant icon box too big for it's parameters inside the ams page",
         "Here's a secondary little note, also for testing.",
       ],
+      mail: [],
+
       appStatus: "viewed",
       appIsBeingRejected: "false",
     },
@@ -296,6 +435,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       business: "Innovatech Manufacturing",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
+      mail: [],
       appIsBeingRejected: "false",
     },
     {
@@ -306,6 +446,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       jobId: "9",
       dateOfApp: "12.20.2024",
       appStatus: "offer",
+      mail: [],
       appIsBeingRejected: "false",
       appointments: [
         {

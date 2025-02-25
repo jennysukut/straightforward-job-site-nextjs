@@ -4,19 +4,23 @@ import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-import { getRandomColorArray } from "@/utils/getRandomColorScheme";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import { useJob } from "@/contexts/JobContext";
-import { Applications } from "@/contexts/ApplicationsContext";
-
+import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
-import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import Image from "next/image";
+import { RenderFellowMessageList } from "@/components/pages/messagingCenter/fellowMessagingComponents";
+import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/businessMessagingComponents";
+import { color } from "framer-motion";
 
 type CurrentSchemeType = ButtonColorOption;
+
+// TO-DO:
+// Make a Display if their currentApps length is 0 and display some kind of error instead, telling them they don't currently have any messages
+// Check to see if the account is a fellow or business, and display the info differently for each.
+// Figure out if we want to have a "read" / "unopened" / "new" label on the mailList - we'd need to have a field in the mail details that updates that. I think this might be better to try after MVP.
 
 export default function Messages() {
   const { accountType } = usePageContext();
@@ -25,97 +29,65 @@ export default function Messages() {
   const { applications } = useApplications();
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [activeApp, setActiveApp] = useState("");
-
-  // Make a Display if their currentApps length is 0 and display some kind of error instead, telling them they don't currently have any messages
+  const [currentMessages, setCurrentMessages] = useState(Array<any>);
 
   // Find the current Applications and sort them via the date of their latest messages, so the most recent messages are displayed at the top
-  const currentApps = applications
-    ?.filter((app: any) => app.applicant === fellow?.id && app.mail)
-    .sort((a, b) => {
-      const mostRecentA = a.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
-
-      const mostRecentB = b.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
-
-      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
-    });
-
-  // const correspondingApp = applications?.find((app: any) => {
-  //   return app.id === activeApp;
-  // });
-
-  // const correspondingListing = jobListings?.find((jl: any) => {
-  //   return jl.jobId === correspondingApp?.jobId;
-  // });
 
   const showMessages = (id: any) => {
     if (activeApp === id) {
-      setActiveApp(currentApps?.[0]?.id || "");
+      setActiveApp(currentMessages?.[0]?.id || "");
     } else {
       setActiveApp(id);
     }
   };
 
+  const showJobMessages = (id: any) => {
+    console.log("showing applicants for this job:", id);
+  };
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
-    setActiveApp(currentApps?.[0]?.id || "");
-  }, []);
+    setActiveApp(currentMessages?.[0]?.id || "");
+  }, [currentMessages]);
 
   return (
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
       <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
         <div className="MessageListGroup flex flex-col gap-4">
-          <h2 className="Title text-center text-emerald">your messages:</h2>
-          {currentApps?.map((app: any, index: any) => {
-            return (
-              <div key={index} className="MessageGroup flex gap-2">
-                <SiteButton
-                  variant="hollow"
-                  size="medium"
-                  aria="mail item"
-                  addClasses="w-[20vw] overflow-hidden truncate"
-                  colorScheme={
-                    colorArray[index % colorArray.length] as ButtonColorOption
-                  }
-                  onClick={() => showMessages(app.id)}
-                  isSelected={activeApp === app.id}
-                >
-                  {app.business}
-                </SiteButton>
-                {/* trying to make a good notification button */}
-                {/* {app.mail.length > 3 && (
-                <SiteLabel
-                  variant="notification"
-                  size="notification"
-                  aria="notification"
-                  colorScheme={
-                    colorArray[index % colorArray.length] as ButtonColorOption
-                  }
-                  addClasses="mt-4"
-                />
-              )} */}
-              </div>
-            );
-          })}
+          {/* message list for fellows */}
+
+          {accountType === "Fellow" && (
+            <RenderFellowMessageList
+              colorArray={colorArray}
+              activeApp={activeApp}
+              showMessages={showMessages}
+              setCurrentMessages={setCurrentMessages}
+            />
+          )}
+
+          {accountType === "Business" && (
+            <RenderBusinessMessageList
+              colorArray={colorArray}
+              activeApp={activeApp}
+              showMessages={showMessages}
+              setCurrentMessages={setCurrentMessages}
+            />
+          )}
         </div>
-        {!currentApps ||
-          (currentApps?.length < 9 && (
-            <Image
-              width={140}
-              height={140}
-              alt="decor"
-              src="/lime-flower.svg"
-              className="-mb-6 -ml-20 self-baseline"
-            ></Image>
-          ))}
+
+        {/* {!currentMessages ||
+          (currentMessages?.length < 9 && ( */}
+        <Image
+          width={140}
+          height={140}
+          alt="decor"
+          src="/lime-flower.svg"
+          className="-mb-6 -ml-20 self-baseline"
+        ></Image>
+        {/* // ))} */}
       </div>
-      <div className="MessageCenter w-[80vw] pl-2 pr-10">
-        <MessageCenter activeApp={activeApp} />
+      <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
+        <MessageCenter activeApp={activeApp} messageHeight=" max-h-[65vh]" />
       </div>
     </div>
   );
