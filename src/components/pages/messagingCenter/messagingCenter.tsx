@@ -320,7 +320,7 @@ const MessageCenter = ({
                             alt="read"
                             width={16}
                             height={13}
-                            className="mr-1 mt-[0.1rem] opacity-80"
+                            className="mr-1 mt-[0.1rem] w-auto opacity-80"
                           />
                           <p className="ReadNotification text-xs text-olive opacity-50">
                             |{" "}
@@ -357,7 +357,7 @@ const MessageCenter = ({
                             alt="read"
                             width={16}
                             height={13}
-                            className="ml-1 mt-[0.1rem] opacity-80"
+                            className="ml-1 mt-[0.1rem] w-auto opacity-80"
                           />
                         </div>
                       )}

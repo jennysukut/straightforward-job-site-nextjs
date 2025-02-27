@@ -107,7 +107,7 @@ const RenderBusinessMessageList = ({
   useEffect(() => {
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     setCurrentMessages(currentApps);
-  }, [currentApps, setCurrentMessages]);
+  }, []);
 
   return (
     <div className="MessageListGroup flex flex-col gap-4">

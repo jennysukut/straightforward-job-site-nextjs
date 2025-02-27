@@ -48,7 +48,7 @@ export default function Messages() {
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
     setActiveApp(currentMessages?.[0]?.id || "");
-  }, [currentMessages]);
+  }, []);
 
   return (
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
