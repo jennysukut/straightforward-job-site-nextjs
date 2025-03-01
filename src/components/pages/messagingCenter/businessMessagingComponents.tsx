@@ -33,6 +33,10 @@ const RenderBusinessMessageList = ({
     (listing) => listing?.job?.businessId === business?.id,
   );
 
+  // find the job listing related to activeApp??
+  useEffect(() => {}, []);
+  console.log(selectedListing, activeApp);
+
   const currentApps = applications
     ?.filter(
       (app: any) =>
@@ -56,8 +60,6 @@ const RenderBusinessMessageList = ({
     (app) => app.mail && app.mail.length > 0,
   );
 
-  console.log(appAppsWithMail);
-
   const findApplicantName: any = (id: any) => {
     const applicant = fellows?.find((fellow) => fellow.id === id);
     return applicant ? applicant.name : "Unknown";
@@ -70,11 +72,6 @@ const RenderBusinessMessageList = ({
       setSelectedListing(id);
     }
   };
-
-  // const findAppMailNumber = (id: any) => {
-  //   const currentApp = currentApps?.find((app) => app.jobId === id);
-  //   console.log(currentApp?.mail?.length);
-  // };
 
   const renderRelevantMessages = () => {
     const selectedApps = currentApps?.filter(
@@ -106,12 +103,19 @@ const RenderBusinessMessageList = ({
             <p className="ApplicantName w-[50%] overflow-hidden truncate text-left text-[0.8rem]">
               {findApplicantName(app.applicant)}
             </p>
+            {/* TODO: Find relevant mail numbers */}
+            {/* Probably just set this to "read" or "unread"?? */}
             <p className="Details"> {app.mail.length || 0} total | 1 new</p>
           </SiteButton>
         </div>
       );
     });
   };
+  console.log(selectedListing, activeApp);
+
+  useEffect(() => {
+    // setSelectedListing("4");
+  }, []);
 
   useEffect(() => {
     setCurrentMessages(currentApps);

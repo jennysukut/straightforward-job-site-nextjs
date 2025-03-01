@@ -28,6 +28,9 @@ export interface Messages {
 
 // We need to make the message center display something about initial contact is the message array doesn't have anything in it.
 
+//TODO: Find the most recent messages, and open the jobListing category with that set of messages
+// {they're already being displayed in the messageCenter} and show which app is open via highlight - this might already be active?
+
 const MessageCenter = ({
   activeApp,
   addClasses,
@@ -126,7 +129,6 @@ const MessageCenter = ({
           }),
           mail: [...(applications?.[index]?.mail || []), message],
         };
-        console.log(updatedApp);
         const updatedApplications = [
           ...(applications ?? []).slice(0, index),
           updatedApp,
@@ -451,7 +453,7 @@ const MessageCenter = ({
           className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
         >
           <div
-            className={`ButtonGroup ${!specificMessages ? "items-end justify-end self-end" : "justify-start"} flex w-[100%] gap-4`}
+            className={`ButtonGroup ${!specificMessages ? "justify-center" : "justify-start"} flex w-[100%] gap-4`}
           >
             <SiteButton
               aria="report"

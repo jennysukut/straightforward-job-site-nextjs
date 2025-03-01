@@ -197,12 +197,14 @@ export default function NavBar() {
                   clickedButton={clickedButton || currentPage}
                 />
               </Link>
-              <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="d4"
-                title="mailbox"
-                clickedButton={clickedButton || currentPage}
-              />
+              <Link href={"/messages"}>
+                <NavButton
+                  onClick={handleNavButtonClick}
+                  colorScheme="d4"
+                  title="mailbox"
+                  clickedButton={clickedButton || currentPage}
+                />
+              </Link>
               <NavButton
                 onClick={() => showModal(<PostAJobModal />)}
                 colorScheme="e5"
