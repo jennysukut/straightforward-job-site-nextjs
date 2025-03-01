@@ -5,13 +5,22 @@ import ApplicationNoteModal from "@/components/modals/applicationModals/applicat
 import SetAppStatusModal from "@/components/modals/applicationModals/setAppStatusModal";
 import RejectAppModal from "@/components/modals/applicationModals/rejectAppModal";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 
 const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
+  const [clickedButton, setClickedButton] = useState("");
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
+  const router = useRouter();
+
+  const goToMessages = () => {
+    setClickedButton("goToMessages");
+    router.push(`/messages/${app.id}`);
+  };
 
   const updateStatus = (status: any) => {
     const updatedApplications = applications?.map((application) => {
@@ -35,12 +44,10 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         aria="Contact"
         addClasses="px-8"
         disabled={app.appStatus === "closed"}
-
-        //Open messenger, sending app Details to bring up the current conversation
-        // or a new conversation pertaining to this app
-        // onClick={() => setCanEdit(!canEdit)}
+        onClick={goToMessages}
+        isSelected={clickedButton === "goToMessages"}
       >
-        message
+        {clickedButton === "goToMessages" ? "loading..." : "message"}
       </SiteButton>
       <SiteButton
         variant="filled"

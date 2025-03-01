@@ -85,6 +85,7 @@ const MessageCenter = ({
   // Send A Message!
   const handleSendMessage = (e: any) => {
     e.preventDefault();
+    const sender = accountType === "Fellow" ? "fellow" : "business";
 
     if (currentMessage.trim()) {
       // Split the message into paragraphs based on newlines
@@ -96,7 +97,7 @@ const MessageCenter = ({
       const message = {
         id: messages.length + 1,
         text: paragraphs,
-        sender: "fellow",
+        sender: sender,
         date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
         timestamp: `${new Date().toLocaleTimeString([], {
           hour: "2-digit",
@@ -236,8 +237,11 @@ const MessageCenter = ({
 
   useEffect(() => {
     renderMessages();
-    if (currentMessage === "") {
+    if (currentMessage === "" && messages.length !== 0) {
       scrollToBottom();
+      console.log(
+        "there isn't a currentMessage and there are more than no messages here",
+      );
     }
   }, [currentMessage, activeApp, groupedMessages]);
 
@@ -303,6 +307,17 @@ const MessageCenter = ({
           className={`Messages -mr-6 ${messageHeight} overflow-y-auto pr-6`}
           id="Messages"
         >
+          {messages.length < 1 && (
+            <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
+              <p className="NoMessagesText text-center italic text-olive">
+                There are no messages with{" "}
+                {accountType === "Fellow"
+                  ? correspondingListing?.job?.businessName
+                  : findApplicantName(correspondingApp?.applicant)}{" "}
+                yet.
+              </p>
+            </div>
+          )}
           {sortedDates.map((date) => (
             <div key={date} className="flex w-[100%] flex-col gap-3">
               <div className="Divider mb-2 flex items-center">

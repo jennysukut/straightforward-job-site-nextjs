@@ -69,7 +69,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   const noteClick = () => {
     if (app.businessNote && app.businessNote.length > 0) {
-      console.log(app.businessNote);
       showModal(
         <ViewApplicationNoteModal notes={app.businessNote} app={app} />,
       );
@@ -148,9 +147,9 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               colorScheme={betterColorArray[1]}
               onClick={noteClick}
             >
-              {app.businessNote.length === 1
+              {app.businessNote && app.businessNote.length === 1
                 ? "view your note"
-                : app.businessNote.length > 1
+                : app.businessNote && app.businessNote.length > 1
                   ? "view your notes"
                   : "add a note"}
             </SiteButton>

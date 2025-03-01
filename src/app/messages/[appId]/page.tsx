@@ -1,10 +1,16 @@
 "use client";
 
+import { useApplications } from "@/contexts/ApplicationsContext";
 import { useEffect, useRef } from "react";
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 
 export default function AppMessages({ params }: any) {
+  const { applications } = useApplications();
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+
+  const correspondingApp = applications?.find((app: any) => {
+    return app.id === params.appId;
+  });
 
   const scrollToPageBottom = () => {
     const offset = 0; // Adjust this value as needed
@@ -19,10 +25,13 @@ export default function AppMessages({ params }: any) {
     }
   };
 
+  // This is how we scroll to the bottom of messages
   useEffect(() => {
-    setTimeout(() => {
-      scrollToPageBottom();
-    }, 500);
+    if (correspondingApp?.mail && correspondingApp?.mail.length > 0) {
+      setTimeout(() => {
+        scrollToPageBottom();
+      }, 500);
+    }
   }, []);
 
   return (
@@ -35,7 +44,7 @@ export default function AppMessages({ params }: any) {
       <MessageCenter
         activeApp={params.appId}
         specificMessages
-        messageHeight="h-full"
+        messageHeight="h-[90vh]"
       />
     </div>
   );
