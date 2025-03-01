@@ -33,6 +33,7 @@ export interface Applications {
   }>;
   appIsBeingRejected?: string;
   rejectionMessage?: any;
+  highlighted?: boolean;
 }
 
 interface ApplicationsContextType {
@@ -88,6 +89,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
       ],
       appIsBeingRejected: "false",
+      highlighted: true,
     },
     {
       id: "efuwog",
@@ -101,6 +103,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [],
 
       appIsBeingRejected: "false",
+      highlighted: false,
     },
     {
       id: "feuhviw",
@@ -113,6 +116,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appointments: [],
       mail: [],
       appIsBeingRejected: "false",
+      highlighted: false,
     },
     {
       id: "ehcvieef",
@@ -125,6 +129,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appointments: [],
       mail: [],
       appIsBeingRejected: "false",
+      highlighted: false,
     },
     {
       id: "fvijobe",
@@ -137,6 +142,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appointments: [],
       mail: [],
       appIsBeingRejected: "false",
+      highlighted: true,
     },
     {
       id: "ehvtwku",
@@ -177,6 +183,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       appIsBeingRejected: "false",
+      highlighted: true,
     },
     {
       id: "vgnibvo",
@@ -254,6 +261,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       appIsBeingRejected: "false",
+      highlighted: false,
     },
 
     {
@@ -306,6 +314,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
       ],
       appIsBeingRejected: "false",
+      highlighted: false,
     },
     {
       id: "d87fhw",
@@ -399,6 +408,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
       ],
       appIsBeingRejected: "false",
+      highlighted: false,
     },
     {
       id: "iuhec8",
@@ -448,6 +458,8 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "offer",
       mail: [],
       appIsBeingRejected: "false",
+      highlighted: false,
+
       appointments: [
         {
           interviewStep: "1",

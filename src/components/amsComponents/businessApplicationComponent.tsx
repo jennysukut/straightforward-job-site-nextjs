@@ -9,6 +9,8 @@ import { Notification } from "../buttonsAndLabels/notificationButton";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellows } from "@/contexts/FellowsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import Image from "next/image";
+
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import ApplicationNoteModal from "../modals/applicationModals/applicationNoteModal";
@@ -22,6 +24,7 @@ interface BusinessApplicationProps
   dateOfApp?: any;
   appStatus?: string;
   app?: any;
+  highlighted?: boolean;
 }
 
 const BusinessApplication: React.FC<BusinessApplicationProps> = ({
@@ -55,7 +58,13 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   //TODO: figure out what to do with highlighting?
   const highlight = () => {
-    console.log("highlighting app");
+    setButtonClicked("highlight");
+    // add and remove highlights directly with the server
+    if (app.highlighted === true) {
+      app.highlighted === false;
+    } else {
+      app.highlighted === true;
+    }
   };
 
   const noteClick = () => {
@@ -82,6 +91,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons flex items-center justify-start gap-4">
         <div className="NotificationSpace w-4">
+          {/* TODO: Set Types of Notifications and plug them in here */}
           {notification && <Notification message="new interview request" />}
         </div>
         <div className="Application justify-end">
@@ -109,14 +119,22 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             </div>
           </SiteButton>
         </div>
-        {/* {notification && <Notification message="new interview request" />} */}
+        {app.highlighted === true && (
+          <Image
+            src="/highlight-star-peach.svg"
+            alt="highlight"
+            width={15}
+            height={15}
+            className="-ml-3 -mt-8"
+          />
+        )}
       </div>
 
       {appClicked && (
         <div className="DetailsAndOptions ml-1 mr-10 flex flex-col gap-4">
           <div className="SecondaryButtons mb-1 mt-1 flex justify-end gap-4 align-top">
             <SiteButton
-              aria="viewDetails"
+              aria="view application"
               variant="hollow"
               colorScheme={betterColorArray[0]}
               onClick={viewApplication}
@@ -125,15 +143,19 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               view this application
             </SiteButton>
             <SiteButton
-              aria="viewDetails"
+              aria="view notes"
               variant="hollow"
               colorScheme={betterColorArray[1]}
               onClick={noteClick}
             >
-              {app.businessNote ? "view your notes" : "add a note"}
+              {app.businessNote.length === 1
+                ? "view your note"
+                : app.businessNote.length > 1
+                  ? "view your notes"
+                  : "add a note"}
             </SiteButton>
             <SiteButton
-              aria="viewDetails"
+              aria="go to messages"
               variant="hollow"
               colorScheme={betterColorArray[2]}
               onClick={goToMessages}
@@ -142,12 +164,13 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               messages
             </SiteButton>
             <SiteButton
-              aria="viewDetails"
+              aria="highlight"
               variant="hollow"
               colorScheme={betterColorArray[3]}
               onClick={highlight}
+              // isSelected={buttonClicked === "highlight"}
             >
-              highlight
+              {app.highlighted === true ? "remove highlight" : "highlight"}
             </SiteButton>
           </div>
         </div>
