@@ -44,7 +44,7 @@ export default function AppMessages({ params }: any) {
       <MessageCenter
         activeApp={params.appId}
         specificMessages
-        messageHeight="h-[90vh]"
+        messageHeight="h-full"
       />
     </div>
   );
