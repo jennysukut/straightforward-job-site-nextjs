@@ -25,11 +25,12 @@ export default function Profile() {
   // Once we have signup and login working, we'll be able to grab data on
   // who's logged in and use that to set these details
   useEffect(() => {
-    setCurrentPage("profile");
     if (accountType === "Fellow") {
       setPageType("Fellow");
+      setCurrentPage("fellowProfile");
     } else if (accountType === "Business") {
       setPageType("Business");
+      setCurrentPage("businessProfile");
     }
   }, [setCurrentPage, setPageType, accountType]);
 

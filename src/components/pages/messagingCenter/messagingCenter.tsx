@@ -44,9 +44,10 @@ const MessageCenter = ({
 
   const router = useRouter();
 
+  const [buttonClicked, setButtonClicked] = useState("");
   const [messages, setMessages] = useState([] as Messages[]);
   const [selectedApp, setSelectedApp] = useState({});
-  const [editingMessage, setEditingMessage] = useState(null);
+  // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
 
@@ -206,6 +207,7 @@ const MessageCenter = ({
   };
 
   const viewRelevantProfile = () => {
+    setButtonClicked("viewRelevantProfile");
     if (accountType === "Fellow") {
       console.log(
         "need to go to the profile for: ",
@@ -220,7 +222,13 @@ const MessageCenter = ({
   };
 
   const fileReport = () => {
+    setButtonClicked("fileReport");
     console.log("need to file a report");
+  };
+
+  const viewListing = () => {
+    setButtonClicked("viewListing");
+    router.push(`/listing/${correspondingApp?.id}`);
   };
 
   useEffect(() => {
@@ -432,6 +440,7 @@ const MessageCenter = ({
               variant="filled"
               colorScheme="e3"
               onClick={fileReport}
+              isSelected={buttonClicked === "fileReport"}
             >
               report
             </SiteButton>
@@ -440,6 +449,7 @@ const MessageCenter = ({
               variant="filled"
               colorScheme="a5"
               onClick={viewRelevantProfile}
+              isSelected={buttonClicked === "viewRelevantProfile"}
             >
               {accountType === "Business"
                 ? "view applicant's profile"
@@ -449,9 +459,10 @@ const MessageCenter = ({
               aria="view listing"
               variant="filled"
               colorScheme="c1"
-              onClick={viewRelevantProfile}
+              onClick={viewListing}
+              isSelected={buttonClicked === "viewListing"}
             >
-              {accountType === "Business" ? "manage listing" : "go to"}
+              {accountType === "Business" ? "manage listing" : "go to listing"}
             </SiteButton>
             <SiteButton aria="report" variant="filled" colorScheme="b3">
               set an appointment?

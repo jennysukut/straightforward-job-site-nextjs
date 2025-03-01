@@ -47,7 +47,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const router = useRouter();
 
   const { fellow, setFellow } = useFellow();
-  const { setPageType, setAccountType } = usePageContext();
+  const { setPageType, setAccountType, setCurrentPage } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { applications } = useApplications();
   const { jobListings } = useJobListings();
@@ -104,6 +104,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
+    // setCurrentPage("fellowProfile");
   }, []);
 
   return (

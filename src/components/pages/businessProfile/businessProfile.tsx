@@ -26,7 +26,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
 }) => {
   const { setBusiness } = useBusiness();
   const { businessList } = useBusinessList();
-  const { setPageType } = usePageContext();
+  const { setPageType, setCurrentPage } = usePageContext();
   const { showModal } = useModal();
   const { textColor, titleColor, secondaryTextColor } = useColorOptions();
   const router = useRouter();
@@ -41,6 +41,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
 
   useEffect(() => {
     setPageType("Business");
+    // setCurrentPage("businessProfile");
   }, [setPageType]);
 
   let thisBusiness;

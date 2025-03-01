@@ -45,6 +45,7 @@ export default function NavBar() {
   }
 
   useEffect(() => {
+    // if (currentPage === "profile" && )
     setClickedButton(currentPage);
   }, [currentPage]);
 
@@ -175,7 +176,7 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-                  title="profile"
+                  title="fellowProfile"
                   clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
@@ -228,7 +229,7 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-                  title="profile"
+                  title="businessProfile"
                   clickedButton={clickedButton || currentPage}
                   variant="avatar"
                   size="mediumCircle"
