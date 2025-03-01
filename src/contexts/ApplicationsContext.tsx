@@ -74,7 +74,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
-          read: true,
+          read: false,
         },
       ],
       appointments: [
@@ -228,7 +228,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:02 AM",
           edited: true,
-          read: true,
+          read: false,
         },
         {
           id: 9821579,
@@ -239,7 +239,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "11:00 AM",
           edited: false,
-          read: true,
+          read: false,
         },
         {
           id: 2618591,
@@ -248,7 +248,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "11:20 AM",
           edited: false,
-          read: true,
+          read: false,
         },
       ],
       appStatus: "submitted",
@@ -283,7 +283,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
-          read: true,
+          read: false,
         },
         {
           id: 1,
@@ -292,7 +292,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "11:30 AM",
           edited: false,
-          read: true,
+          read: false,
         },
       ],
       appointments: [
@@ -357,7 +357,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:02 AM",
           edited: false,
-          read: true,
+          read: false,
         },
         {
           id: 9821579,
@@ -377,7 +377,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "11:20 AM",
           edited: false,
-          read: true,
+          read: false,
         },
       ],
       appointments: [

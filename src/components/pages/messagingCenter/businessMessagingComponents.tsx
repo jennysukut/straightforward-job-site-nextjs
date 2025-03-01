@@ -34,7 +34,10 @@ const RenderBusinessMessageList = ({
   );
 
   const currentApps = applications
-    ?.filter((app: any) => app.businessId === business?.id && app.mail)
+    ?.filter(
+      (app: any) =>
+        app.businessId === business?.id && app.mail && app.mail.length > 0,
+    )
     .sort((a, b) => {
       const mostRecentA = a.mail?.reduce((latest, message) => {
         const messageDate = new Date(`${message.date} ${message.timestamp}`);
@@ -48,6 +51,12 @@ const RenderBusinessMessageList = ({
 
       return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
     });
+
+  const appAppsWithMail = currentApps?.filter(
+    (app) => app.mail && app.mail.length > 0,
+  );
+
+  console.log(appAppsWithMail);
 
   const findApplicantName: any = (id: any) => {
     const applicant = fellows?.find((fellow) => fellow.id === id);
@@ -105,39 +114,47 @@ const RenderBusinessMessageList = ({
   };
 
   useEffect(() => {
-    ShuffleIdealButtonPattern(setSecondaryColorArray);
     setCurrentMessages(currentApps);
   }, []);
 
-  return (
-    <div className="MessageListGroup flex flex-col gap-4">
-      {currentListings?.map((job: any, index: any) => {
-        const currentApp = currentApps?.find((app) => app.jobId === job.jobId);
-        return (
-          <div key={index} className="ListingGroup flex flex-col gap-3">
-            <SiteButton
-              variant="hollow"
-              // size="medium"
-              aria="current job listings with mail"
-              addClasses="w-[30vw] flex justify-between py-3"
-              colorScheme={
-                colorArray[index % colorArray.length] as ButtonColorOption
-              }
-              onClick={() => expandListingMessages(job.jobId)}
-              isSelected={selectedListing === job.jobId}
-            >
-              <p className="Title w-[50%] overflow-hidden truncate text-left text-[.9rem]">
-                {job.job.jobTitle}
-              </p>
+  useEffect(() => {
+    ShuffleIdealButtonPattern(setSecondaryColorArray);
+  }, []);
 
-              <p className="Details">
-                | {currentApp?.mail?.length || 0} active messages
-              </p>
-            </SiteButton>
-            {selectedListing === job.jobId && renderRelevantMessages()}
-          </div>
-        );
-      })}
+  return (
+    <div className="MessageListGroup flex max-h-[90vh] flex-col gap-4 overflow-y-auto overflow-x-visible p-3">
+      {currentListings
+        ?.filter((job) =>
+          appAppsWithMail?.some((app) => app.jobId === job.jobId),
+        )
+        .map((job: any, index: any) => {
+          const currentApp = appAppsWithMail?.find(
+            (app) => app.jobId === job.jobId,
+          );
+          return (
+            <div key={index} className="ListingGroup flex flex-col gap-3">
+              <SiteButton
+                variant="hollow"
+                aria="current job listings with mail"
+                addClasses="w-[30vw] flex justify-between py-3"
+                colorScheme={
+                  colorArray[index % colorArray.length] as ButtonColorOption
+                }
+                onClick={() => expandListingMessages(job.jobId)}
+                isSelected={selectedListing === job.jobId}
+              >
+                <p className="Title w-[50%] overflow-hidden truncate text-left text-[.9rem]">
+                  {job.job.jobTitle}
+                </p>
+
+                <p className="Details">
+                  | {currentApp?.mail?.length || 0} active messages
+                </p>
+              </SiteButton>
+              {selectedListing === job.jobId && renderRelevantMessages()}
+            </div>
+          );
+        })}
     </div>
   );
 };

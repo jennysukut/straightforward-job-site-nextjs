@@ -6,14 +6,12 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
-import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
-import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
-import SiteButton from "@/components/buttonsAndLabels/siteButton";
-import Image from "next/image";
 import { RenderFellowMessageList } from "@/components/pages/messagingCenter/fellowMessagingComponents";
 import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/businessMessagingComponents";
-import { color } from "framer-motion";
+
+import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
+import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
+import Image from "next/image";
 
 type CurrentSchemeType = ButtonColorOption;
 
@@ -41,14 +39,19 @@ export default function Messages() {
     }
   };
 
-  const showJobMessages = (id: any) => {
-    console.log("showing applicants for this job:", id);
-  };
+  // const showJobMessages = (id: any) => {
+  //   console.log("showing applicants for this job:", id);
+  // };
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
-    setActiveApp(currentMessages?.[0]?.id || "");
   }, []);
+
+  useEffect(() => {
+    if (currentMessages) {
+      setActiveApp(currentMessages?.[0]?.id || "");
+    }
+  }, [currentMessages]);
 
   return (
     <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
@@ -74,9 +77,6 @@ export default function Messages() {
             />
           )}
         </div>
-
-        {/* {!currentMessages ||
-          (currentMessages?.length < 9 && ( */}
         <Image
           width={140}
           height={140}
@@ -84,10 +84,12 @@ export default function Messages() {
           src="/lime-flower.svg"
           className="-mb-6 -ml-20 self-baseline"
         ></Image>
-        {/* // ))} */}
       </div>
       <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
-        <MessageCenter activeApp={activeApp} messageHeight=" max-h-[65vh]" />
+        <MessageCenter
+          activeApp={activeApp}
+          messageHeight="max-h-[65vh] min-h-[55vh]"
+        />
       </div>
     </div>
   );

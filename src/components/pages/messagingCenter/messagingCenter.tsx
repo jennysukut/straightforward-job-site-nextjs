@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
-import { timeLog } from "console";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useColors } from "@/contexts/ColorContext";
@@ -15,8 +14,7 @@ import Image from "next/image";
 import EditMessageModal from "../../modals/messagingModals/editMessageModal";
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
-import InputComponent from "../../inputComponents/inputComponent";
-import { createRoot } from "react-dom/client";
+import { useRouter } from "next/navigation";
 
 export interface Messages {
   id: number;
@@ -34,7 +32,7 @@ const MessageCenter = ({
   activeApp,
   addClasses,
   messageHeight,
-  singleThread,
+  specificMessages,
 }: any): JSX.Element => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -43,6 +41,8 @@ const MessageCenter = ({
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
   const { fellows } = useFellows();
+
+  const router = useRouter();
 
   const [messages, setMessages] = useState([] as Messages[]);
   const [selectedApp, setSelectedApp] = useState({});
@@ -62,6 +62,13 @@ const MessageCenter = ({
     return jl.jobId === correspondingApp?.jobId;
   });
 
+  const scrollToBottom = () => {
+    const messageContainer = document.getElementById("Messages");
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  };
+
   const renderMessages = useCallback(() => {
     if (activeApp) {
       const selectedApp: any = applications?.find((app: any) => {
@@ -69,22 +76,10 @@ const MessageCenter = ({
       });
       setSelectedApp(selectedApp);
       setMessages(selectedApp.mail);
+    } else {
+      // do I need to have an else statement?
     }
   }, [activeApp, applications]);
-
-  const scrollToBottom = () => {
-    const messageContainer = document.getElementById("Messages"); // Replace with your actual container ID
-    if (messageContainer) {
-      messageContainer.scrollTop = messageContainer.scrollHeight;
-    }
-  };
-
-  const scrollToPageBottom = () => {
-    const messagePageContainer = document.getElementById("MessageInput"); // Replace with your actual container ID
-    if (messagePageContainer) {
-      messagePageContainer.scrollTop = messagePageContainer.scrollHeight;
-    }
-  };
 
   // Send A Message!
   const handleSendMessage = (e: any) => {
@@ -210,29 +205,54 @@ const MessageCenter = ({
     return applicant ? applicant.name : "Unknown";
   };
 
-  // render messages and scroll to the bottom of the current list of messages
+  const viewRelevantProfile = () => {
+    if (accountType === "Fellow") {
+      console.log(
+        "need to go to the profile for: ",
+        correspondingApp?.businessId,
+      );
+      console.log(correspondingApp);
+
+      router.push(`/profile/${correspondingApp?.businessId}`);
+    } else if (accountType === "Business") {
+      router.push(`/profile/${correspondingApp?.applicant}`);
+    }
+  };
+
+  const fileReport = () => {
+    console.log("need to file a report");
+  };
+
   useEffect(() => {
     renderMessages();
-    // scrollToPageBottom();
     if (currentMessage === "") {
       scrollToBottom();
     }
-    // if (singleThread === true) {
-    //   console.log(singleThread);
-    //   //scroll to the bottom of the page
-    //   scrollToPageBottom();
-    // }
-  }, [
-    currentMessage,
-    renderMessages,
-    setApplications,
-    activeApp,
-    applications,
-  ]);
+  }, [currentMessage, activeApp, groupedMessages]);
 
   useEffect(() => {
     setCurrentColorScheme(currentAvatarChoice || "b2");
   }, [currentAvatarChoice, setCurrentColorScheme]);
+
+  const readMesssages = () => {
+    const updatedMessages = messages.map((message) => {
+      const isOwn =
+        (message.sender === "fellow" && accountType === "Fellow") ||
+        (message.sender === "business" && accountType === "Business");
+      if (!isOwn) {
+        return { ...message, read: true }; // Mark as read if it's not the user's message
+      }
+      return message; // Keep the existing message
+    });
+    console.log(updatedMessages);
+    // setMessages(updatedMessages);
+  };
+
+  // useEffect to mark messages from other person as "read" - we should do this directly with the server
+  useEffect(() => {
+    // make sure this gets updated each time the specific messages get changed.
+    readMesssages();
+  }, []);
 
   return (
     <div
@@ -240,15 +260,34 @@ const MessageCenter = ({
       id="messagingCenter"
     >
       <div className="Messages flex w-[100%] flex-col self-center align-top">
-        <h2 className="text-right text-emerald">
-          Your Conversation with{" "}
-          {accountType === "Fellow"
-            ? correspondingListing?.job?.businessName
-            : findApplicantName(correspondingApp?.applicant)}
-        </h2>
-        <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
-          regarding the {correspondingListing?.job?.jobTitle} position
-        </p>
+        <div
+          className={`TitleArea flex ${specificMessages ? "justify-between" : "self-end"} align-middle`}
+        >
+          {specificMessages && (
+            <SiteButton
+              variant="hollow"
+              aria="go to mail"
+              colorScheme="b4"
+              addClasses="mt-4"
+              onClick={() => router.push(`/messages`)}
+            >
+              go to mailbox
+            </SiteButton>
+          )}
+          <div className="Title flex flex-col">
+            <h2 className="text-right text-emerald">
+              Your Conversation with{" "}
+              {accountType === "Fellow"
+                ? correspondingListing?.job?.businessName
+                : findApplicantName(correspondingApp?.applicant)}
+            </h2>
+            <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
+              regarding the {correspondingListing?.job?.jobTitle} position
+            </p>
+          </div>
+        </div>
+
+        {/* Messages */}
         <div
           className={`Messages -mr-6 ${messageHeight} overflow-y-auto pr-6`}
           id="Messages"
@@ -292,22 +331,8 @@ const MessageCenter = ({
                     </InfoBox>
 
                     <div
-                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : ""} items-center`}
+                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : "self-start"} items-center`}
                     >
-                      {/* {isOwn && message.read === true && (
-                        <div className="ReadDetails flex gap-1">
-                          <Image
-                            src="/message-read.svg"
-                            alt="read"
-                            width={17}
-                            height={14}
-                            className="mr-1 mt-[0.1rem] opacity-80"
-                          />
-                          <p className="ReadNotification text-xs text-olive opacity-50">
-                            |{" "}
-                          </p>
-                        </div>
-                      )} */}
                       {isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-olive opacity-50">
                           edited |
@@ -370,29 +395,81 @@ const MessageCenter = ({
         </div>
       </div>
 
-      {/* Message Input */}
-      <form
-        onSubmit={handleSendMessage}
-        className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
-        id="MessageInput"
-      >
-        <textarea
-          value={currentMessage}
-          onChange={(e) => setCurrentMessage(e.target.value)}
-          placeholder="Your message..."
-          className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 pl-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
-        />
-        <SiteButton
-          type="submit"
-          variant="filled"
-          colorScheme="c5"
-          aria="send"
-          size="medium"
-          addClasses="px-8 py-[.6rem]"
+      <div className="InputAndButtons">
+        {/* Message Input */}
+        <form
+          onSubmit={handleSendMessage}
+          className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
+          id="MessageInput"
         >
-          send
-        </SiteButton>
-      </form>
+          <textarea
+            value={currentMessage}
+            onChange={(e) => setCurrentMessage(e.target.value)}
+            placeholder="Your message..."
+            className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 pl-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
+          />
+          <SiteButton
+            type="submit"
+            variant="filled"
+            colorScheme="c5"
+            aria="send"
+            size="medium"
+            addClasses="px-8 py-[.6rem]"
+          >
+            send
+          </SiteButton>
+        </form>
+
+        {/* Button Options After Messages */}
+        <div
+          className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
+        >
+          <div
+            className={`ButtonGroup ${!specificMessages ? "items-end justify-end self-end" : "justify-start"} flex w-[100%] gap-4`}
+          >
+            <SiteButton
+              aria="report"
+              variant="filled"
+              colorScheme="e3"
+              onClick={fileReport}
+            >
+              report
+            </SiteButton>
+            <SiteButton
+              aria="view profile"
+              variant="filled"
+              colorScheme="a5"
+              onClick={viewRelevantProfile}
+            >
+              {accountType === "Business"
+                ? "view applicant's profile"
+                : "view business profile"}
+            </SiteButton>
+            <SiteButton
+              aria="view listing"
+              variant="filled"
+              colorScheme="c1"
+              onClick={viewRelevantProfile}
+            >
+              {accountType === "Business" ? "manage listing" : "go to"}
+            </SiteButton>
+            <SiteButton aria="report" variant="filled" colorScheme="b3">
+              set an appointment?
+            </SiteButton>
+          </div>
+
+          {specificMessages && (
+            <SiteButton
+              aria="mail"
+              variant="filled"
+              colorScheme="b6"
+              onClick={() => router.push(`/messages`)}
+            >
+              back to mailbox
+            </SiteButton>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

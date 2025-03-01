@@ -19,7 +19,7 @@ const RenderFellowMessageList = ({
   const { fellow } = useFellow();
 
   const currentApps = applications
-    ?.filter((app: any) => app.applicant === fellow?.id && app.mail)
+    ?.filter((app: any) => app.applicant === fellow?.id && app.mail.length > 0)
     .sort((a, b) => {
       const mostRecentA = a.mail?.reduce((latest, message) => {
         const messageDate = new Date(`${message.date} ${message.timestamp}`);
@@ -34,9 +34,10 @@ const RenderFellowMessageList = ({
       return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
     });
 
+  //lint wants me to include currentApps in the dependency array for this useEffect, but it rerenders endlessly if I do that...
   useEffect(() => {
     setCurrentMessages(currentApps);
-  }, [currentApps, setCurrentMessages]);
+  }, []);
 
   return (
     <div className="MessageListGroup flex flex-col gap-4">
