@@ -13,12 +13,8 @@ import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdea
 import AddHandler from "@/components/handlers/addHandler";
 import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
-import Application from "@/components/amsComponents/applicationComponent";
-import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
-import CalendarComp from "@/components/calendar";
 import BusinessApplication from "@/components/amsComponents/businessApplicationComponent";
 import JobListing from "../jobListing/jobListing";
-import RejectionMessageOptionsComponent from "@/components/amsComponents/rejectionMessageOptions";
 
 export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
@@ -28,17 +24,15 @@ export default function ApplicationManager({ jobId }: any) {
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
   const { appointments } = useAppointments();
-  const { business } = useBusiness();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
   const [appStatus, setAppStatus] = useState<string[]>([]);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
-  const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredApps, setFilteredApps] = useState<string[]>([]);
-  const [appIsBeingDeleted, setAppIsBeingDeleted] = useState(true);
 
+  // define relevant details
   const currentJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
@@ -56,20 +50,7 @@ export default function ApplicationManager({ jobId }: any) {
     return app.appStatus !== "closed";
   });
 
-  const currentAppointment = appointments?.find((app: any) => {
-    return app.jobId === currentApp?.jobId;
-  });
-
-  const retract = () => {
-    if (selectedApps.length > 0) {
-      console.log("need to retract these applications:", selectedApps);
-      // remove the selectedApps from the applications list and retract the applications
-      // we can only do this after a confirmation modal has been successful
-    } else {
-      return;
-    }
-  };
-
+  // filtering and rendering functions
   const filterApps = (applications: any) => {
     const filteredApps = applications.filter((app: any) => {
       const matchesStatus =
@@ -79,30 +60,6 @@ export default function ApplicationManager({ jobId }: any) {
     });
 
     setFilteredApps(filteredApps);
-  };
-
-  const getMonthName = (month: any) => {
-    const d = new Date();
-    d.setMonth(month);
-    const monthName = d.toLocaleString("default", { month: "long" });
-    return monthName;
-  };
-
-  const closeJobDetails = () => {
-    // setCurrentJob(undefined);
-    setSelectedApps([]);
-  };
-
-  const viewCompanyDetails = () => {
-    router.push(`/profile/${currentApp?.businessId}`);
-  };
-
-  const calendarClick = () => {
-    if (altViewChoice === "calendar") {
-      setAltViewChoice("");
-    } else {
-      setAltViewChoice("calendar");
-    }
   };
 
   const renderApplications = () => {
@@ -117,8 +74,6 @@ export default function ApplicationManager({ jobId }: any) {
             colorArray={colorArray}
             index={index}
             app={app}
-            jobId={app.jobId}
-            dateOfApp={app.dateOfApp}
             appStatus={app.appStatus}
           />
         ));
@@ -133,8 +88,6 @@ export default function ApplicationManager({ jobId }: any) {
             colorArray={colorArray}
             index={index}
             app={app}
-            jobId={app.jobId}
-            dateOfApp={app.dateOfApp}
             appStatus={app.appStatus}
           />
         ));
@@ -180,6 +133,8 @@ export default function ApplicationManager({ jobId }: any) {
     });
   };
 
+  // useEffects for filters and setting colors
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
@@ -193,42 +148,26 @@ export default function ApplicationManager({ jobId }: any) {
     }
   }, [filterApps, filters, appStatus, applications]);
 
-  const [currentDate, setCurrentDate] = useState(new Date().toDateString());
-
   return (
     <div
       className={`ApplicationManagerPage w-[84%] self-center ${textColor} -mt-8 max-w-[1600px]`}
     >
       {
         <div className="AMSContainer flex">
-          <div className="AMSTabOptions -mt-2 max-w-[10%] gap-4">
-            <ButtonOptionsComponent
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-              type="altViewChoice"
-              selectedArray={altViewChoice}
-              classesForButtons="-rotate-90"
-              buttons={
-                altViewChoice === "details"
-                  ? ["calendar", "messages", "details", "ams"]
-                  : ["calendar", "messages", "details"]
-              }
-              buttonContainerClasses="flex-col gap-28 -mx-14 mt-24"
-              buttonSize="horizontal"
-            />
-          </div>
-          {altViewChoice === "calendar" && <CalendarComp addClasses="ml-10" />}
-          {altViewChoice === "messages" && (
-            <div className="Messages">Messages Here</div>
-          )}
+          {" "}
           {altViewChoice === "details" && (
             <div className="Details flex w-full flex-col items-center gap-4">
               <div className="JobDetails">
-                <JobListing isOwn hasId id={jobId} inAms />
+                <JobListing
+                  isOwn
+                  hasId
+                  id={jobId}
+                  inAms
+                  setAltViewChoice={setAltViewChoice}
+                />
               </div>
             </div>
           )}
-
           {(altViewChoice === "" ||
             altViewChoice.length == 0 ||
             altViewChoice === "ams") && (
@@ -285,7 +224,8 @@ export default function ApplicationManager({ jobId }: any) {
                 </div>
               </div>
               <div
-                className={`Applications ml-8 flex h-[26rem] flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+                className={`Applications flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+                // h-[26rem]
               >
                 {renderApplications()}
               </div>

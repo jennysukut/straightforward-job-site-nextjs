@@ -42,8 +42,11 @@ export default function BusinessAMS() {
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+  }, []);
+
+  useEffect(() => {
     filterJobs(jobListings);
-  }, [setColorArray, jobListings, filterJobs]);
+  }, []);
 
   return (
     <div

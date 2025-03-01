@@ -34,7 +34,13 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
-export default function JobListing({ isOwn, hasId, id, inAms }: any) {
+export default function JobListing({
+  isOwn,
+  hasId,
+  id,
+  inAms,
+  setAltViewChoice,
+}: any) {
   const router = useRouter();
 
   const { setPageType } = usePageContext();
@@ -54,8 +60,6 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     fellow?.savedJobs?.includes(id),
   );
 
-  console.log(fellow);
-
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
@@ -64,6 +68,7 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
     // Find the application where the applicant matches the fellow's id
     currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
   }
+
   // define the current job
   let currentJob;
   if (hasId && jobListings) {
@@ -314,12 +319,26 @@ export default function JobListing({ isOwn, hasId, id, inAms }: any) {
             editClick={() => handleEditClick("/post-a-job/step1")}
           >
             <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
-              <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
-              <Link href={"/profile"}>
-                <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
-                  {currentJob?.businessName}
-                </p>
-              </Link>
+              <div className="TitleBusinessButtonContainer flex justify-between">
+                <div className="TitleBusiness flex flex-col gap-4">
+                  <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
+                  <Link href={"/profile"}>
+                    <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
+                      {currentJob?.businessName}
+                    </p>
+                  </Link>
+                </div>
+                {isOwn && inAms && (
+                  <SiteButton
+                    variant="hollow"
+                    aria="back to apps"
+                    colorScheme="b3"
+                    onClick={() => setAltViewChoice("")}
+                  >
+                    back to apps
+                  </SiteButton>
+                )}
+              </div>
               <p
                 className={`PositionSummary pl-2 pt-4 leading-7 ${secondaryTextColor}`}
               >

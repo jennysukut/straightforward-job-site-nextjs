@@ -47,9 +47,9 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const router = useRouter();
 
   const { fellow, setFellow } = useFellow();
-  const { setPageType, setAccountType, setCurrentPage } = usePageContext();
+  const { setPageType, accountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
-  const { applications } = useApplications();
+  const { applications, setApplications } = useApplications();
   const { jobListings } = useJobListings();
   const { showModal } = useModal();
   const { fellows } = useFellows();
@@ -65,6 +65,24 @@ const FellowProfile: React.FC<FellowProfile> = ({
     currentApp = applications?.find((app) => app.id === appId);
     currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
   }
+
+  useEffect(() => {
+    if (
+      accountType === "Business" &&
+      currentApp &&
+      currentApp.appStatus === "submitted"
+    ) {
+      console.log(currentApp, "being marked as viewed");
+      // currentApp.appStatus === "viewed";
+
+      const updatedApplications = (applications || []).map((app) =>
+        app.id === currentApp.id ? { ...app, appStatus: "viewed" } : app,
+      );
+
+      setApplications(updatedApplications);
+      //update the app appStatus from "submitted" to viewed - if it's in "submitted"
+    }
+  }, []);
 
   // define the current fellow
   let currentFellow;
@@ -104,7 +122,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
-    // setCurrentPage("fellowProfile");
   }, []);
 
   return (

@@ -213,11 +213,10 @@ const MessageCenter = ({
         "need to go to the profile for: ",
         correspondingApp?.businessId,
       );
-      console.log(correspondingApp);
-
       router.push(`/profile/${correspondingApp?.businessId}`);
     } else if (accountType === "Business") {
-      router.push(`/profile/${correspondingApp?.applicant}`);
+      router.push(`/application/${correspondingApp?.id}`);
+      // router.push(`/profile/${correspondingApp?.applicant}`);
     }
   };
 
@@ -228,7 +227,11 @@ const MessageCenter = ({
 
   const viewListing = () => {
     setButtonClicked("viewListing");
-    router.push(`/listing/${correspondingApp?.id}`);
+    if (accountType === "Fellow") {
+      router.push(`/listing/${correspondingApp?.id}`);
+    } else if (accountType === "Business") {
+      router.push(`/ams/${correspondingApp?.jobId}`);
+    }
   };
 
   useEffect(() => {
@@ -452,7 +455,7 @@ const MessageCenter = ({
               isSelected={buttonClicked === "viewRelevantProfile"}
             >
               {accountType === "Business"
-                ? "view applicant's profile"
+                ? "view application"
                 : "view business profile"}
             </SiteButton>
             <SiteButton
@@ -462,7 +465,9 @@ const MessageCenter = ({
               onClick={viewListing}
               isSelected={buttonClicked === "viewListing"}
             >
-              {accountType === "Business" ? "manage listing" : "go to listing"}
+              {accountType === "Business"
+                ? "manage applications"
+                : "go to listing"}
             </SiteButton>
             <SiteButton aria="report" variant="filled" colorScheme="b3">
               set an appointment?
@@ -476,7 +481,7 @@ const MessageCenter = ({
               colorScheme="b6"
               onClick={() => router.push(`/messages`)}
             >
-              back to mailbox
+              mailbox
             </SiteButton>
           )}
         </div>

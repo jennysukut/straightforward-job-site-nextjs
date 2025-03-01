@@ -288,8 +288,6 @@ export default function JobBoard() {
     }
   };
 
-  console.log(currentPage);
-
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
     setCurrentPage("jobs");

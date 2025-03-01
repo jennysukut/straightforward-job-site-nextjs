@@ -28,54 +28,36 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   id,
   colorArray,
   index,
-  jobId,
-  dateOfApp,
   appStatus,
   app,
 }) => {
   const router = useRouter();
   const { fellows } = useFellows();
-  const { jobListings } = useJobListings();
-  const { fellow } = useFellow();
   const { showModal } = useModal();
-  const { applications, setApplications } = useApplications();
 
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
-  const [showNote, setShowNote] = useState(false);
   const [buttonClicked, setButtonClicked] = useState("");
 
+  // defining relevant data
   const currentApplicant = fellows?.find((fellow: any) => {
     return fellow.id === app?.applicant;
   });
 
-  //here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
+  //TODO: Here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
   const notification = app.appStatus === "submitted" ? true : false;
 
-  // search through the jobListings to find the job with the matching jobId
-  const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
-
+  // functions
   const viewApplication = () => {
     setButtonClicked("viewApplication");
-    const relevantApp = applications?.find(
-      (application: any) => application.id === app.id,
-    );
-
-    if (relevantApp && applications) {
-      if (relevantApp.appStatus === "submitted") {
-        relevantApp.appStatus = "viewed";
-      }
-      setApplications([...applications]);
-    }
     router.push(`/application/${id}`);
   };
 
-  // figure out what to do with highlighting?
+  //TODO: figure out what to do with highlighting?
   const highlight = () => {
     console.log("highlighting app");
   };
 
-  //  for showing notes, it might be best to have a modal or page that compiles them.
   const noteClick = () => {
     if (app.businessNote && app.businessNote.length > 0) {
       console.log(app.businessNote);
@@ -99,8 +81,10 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons flex items-center justify-start gap-4">
-        {/* {notification && <Notification message="new interview request" />} */}
-        <div className="Button justify-end">
+        <div className="NotificationSpace w-4">
+          {notification && <Notification message="new interview request" />}
+        </div>
+        <div className="Application justify-end">
           <SiteButton
             aria="JobApplication"
             variant="hollow"
@@ -115,9 +99,9 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             <div className="AppInfo flex justify-between">
               <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
                 {currentApplicant?.name} |
-                <p className="SmallBio max-w-[65%] overflow-hidden truncate">
+                <span className="SmallBio max-w-[65%] overflow-hidden truncate">
                   {currentApplicant?.smallBio}
-                </p>
+                </span>
               </p>
               <p className="Details flex gap-2 self-center text-sm">
                 {app.dateOfApp} | {appStatus}
@@ -125,7 +109,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             </div>
           </SiteButton>
         </div>
-        {notification && <Notification message="new interview request" />}
+        {/* {notification && <Notification message="new interview request" />} */}
       </div>
 
       {appClicked && (
