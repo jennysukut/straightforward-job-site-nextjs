@@ -246,7 +246,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
       count: dailyLimit.count,
       lastReset: dailyLimit.lastReset,
     },
-    avatar: "checks",
+    avatar: "ant",
     id: "testid",
     name: "Jenny Sukut",
     email: "jennysukut@gmail.com",

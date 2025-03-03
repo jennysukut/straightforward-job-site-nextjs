@@ -58,7 +58,7 @@ export const avatarOptions = [
       standard: "drop-shadow-apricot",
       highContrast: "drop-shadow-pine",
     },
-    colorScheme: "f5",
+    colorScheme: "f3",
   },
   {
     title: "bird",

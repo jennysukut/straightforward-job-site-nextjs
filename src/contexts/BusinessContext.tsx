@@ -41,7 +41,7 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
     billingDetails: true,
     hasActiveJobs: true,
     businessName: "Straightforward Job Site ",
-    avatar: "app",
+    avatar: "backpack",
     email: "jenny@straightforwardjobsite.com",
     password: "daehfjkgrnhtjelngr",
     country: "United States",

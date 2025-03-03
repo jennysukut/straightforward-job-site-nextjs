@@ -8,6 +8,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useFellows } from "@/contexts/FellowsContext";
+import { useRouter } from "next/navigation";
+import { useBusiness } from "@/contexts/BusinessContext";
 
 import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
@@ -15,7 +17,6 @@ import Image from "next/image";
 import EditMessageModal from "../../modals/messagingModals/editMessageModal";
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
-import { useRouter } from "next/navigation";
 
 export interface Messages {
   id: number;
@@ -45,6 +46,7 @@ const MessageCenter = ({
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
   const { fellows } = useFellows();
+  const { business } = useBusiness();
 
   const router = useRouter();
 
@@ -56,7 +58,11 @@ const MessageCenter = ({
   const [isBeingEdited, setIsBeingEdited] = useState(null);
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
-    return option.title === fellow?.avatar;
+    if (accountType === "Fellow") {
+      return option.title === fellow?.avatar;
+    } else if (accountType === "Business") {
+      return option.title === business?.avatar;
+    }
   })?.colorScheme;
 
   const correspondingApp = applications?.find((app: any) => {
@@ -225,6 +231,11 @@ const MessageCenter = ({
     }
   };
 
+  const expandClick = () => {
+    setButtonClicked("expandClick");
+    router.push(`/messages/${correspondingApp?.id}`);
+  };
+
   const fileReport = () => {
     if (accountType === "Business") {
       const reportee = correspondingApp?.applicant;
@@ -244,7 +255,6 @@ const MessageCenter = ({
       );
     }
     setButtonClicked("fileReport");
-    // showModal(<ReportModal />);
     console.log("need to file a report");
   };
 
@@ -256,17 +266,6 @@ const MessageCenter = ({
       router.push(`/ams/${correspondingApp?.jobId}`);
     }
   };
-
-  useEffect(() => {
-    renderMessages();
-    if (currentMessage === "" && messages.length !== 0) {
-      scrollToBottom();
-    }
-  }, [currentMessage, activeApp, groupedMessages]);
-
-  useEffect(() => {
-    setCurrentColorScheme(currentAvatarChoice || "b2");
-  }, [currentAvatarChoice, setCurrentColorScheme]);
 
   const readMesssages = () => {
     const updatedMessages = messages.map((message) => {
@@ -282,11 +281,24 @@ const MessageCenter = ({
     // setMessages(updatedMessages);
   };
 
+  useEffect(() => {
+    renderMessages();
+    if (currentMessage === "" && messages.length !== 0) {
+      scrollToBottom();
+    }
+  }, [currentMessage, activeApp, groupedMessages]);
+
+  useEffect(() => {
+    setCurrentColorScheme(currentAvatarChoice || "b2");
+  }, [currentAvatarChoice, setCurrentColorScheme]);
+
   // useEffect to mark messages from other person as "read" - we should do this directly with the server
   useEffect(() => {
     // make sure this gets updated each time the specific messages get changed.
     readMesssages();
   }, []);
+
+  console.log(currentColorScheme);
 
   return (
     <div
@@ -294,9 +306,27 @@ const MessageCenter = ({
       id="messagingCenter"
     >
       <div className="Messages flex w-[100%] flex-col self-center align-top">
-        <div
-          className={`TitleArea flex ${specificMessages ? "justify-between" : "self-end"} align-middle`}
-        >
+        <div className={`TitleArea flex justify-between align-middle`}>
+          {!specificMessages && (
+            <div className="ExpandOption flex gap-2 self-start align-middle">
+              <SiteButton
+                aria="expandButton"
+                size="smallCircle"
+                variant="filled"
+                colorScheme={(currentColorScheme as ButtonColorOption) || "b3"}
+                // colorScheme="f3"
+                addImage="bg-[url('/expand-icon.svg')] bg-center bg-no-repeat"
+                addClasses={`mt-2 -ml-6`}
+                onClick={expandClick}
+                isSelected={buttonClicked === "expandClick"}
+              />
+              {/* {buttonClicked === "expandClick" && (
+                <p className="RedirectingMessage text-sm text-olive">
+                  redirecting...
+                </p>
+              )} */}
+            </div>
+          )}
           {specificMessages && (
             <SiteButton
               variant="hollow"
@@ -504,7 +534,9 @@ const MessageCenter = ({
                 : "go to listing"}
             </SiteButton>
             <SiteButton aria="report" variant="filled" colorScheme="b3">
-              set an appointment?
+              {accountType === "Business"
+                ? "set an appointment"
+                : "view appointments"}
             </SiteButton>
           </div>
 

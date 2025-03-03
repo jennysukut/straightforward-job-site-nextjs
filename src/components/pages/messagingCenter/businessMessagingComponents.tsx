@@ -85,7 +85,21 @@ const RenderBusinessMessageList = ({
       (app) => app.mail && app.mail.length > 0 && app.appStatus !== "closed",
     );
 
-    return activeAppsWithMail?.map((app: any, index: number) => {
+    const sortedMessages = activeAppsWithMail?.sort((a, b) => {
+      const mostRecentA = a.mail?.reduce((latest, message) => {
+        const messageDate = new Date(`${message.date} ${message.timestamp}`);
+        return messageDate > latest ? messageDate : latest;
+      }, new Date(0));
+
+      const mostRecentB = b.mail?.reduce((latest, message) => {
+        const messageDate = new Date(`${message.date} ${message.timestamp}`);
+        return messageDate > latest ? messageDate : latest;
+      }, new Date(0));
+
+      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
+    });
+
+    return sortedMessages?.map((app: any, index: number) => {
       const recentMessages = app.mail?.filter(
         (message: any) => message.sender === "fellow",
       );
@@ -94,6 +108,8 @@ const RenderBusinessMessageList = ({
           ? "read"
           : "new"
         : "no messages";
+
+      // TODO: sort messages by most recent message
 
       return (
         <div
