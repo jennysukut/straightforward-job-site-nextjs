@@ -470,7 +470,7 @@ const MessageCenter = ({
           className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
         >
           <div
-            className={`ButtonGroup ${!specificMessages ? "justify-center" : "justify-start"} flex w-[100%] gap-4`}
+            className={`ButtonGroup ${!specificMessages ? "justify-end" : "justify-start"} flex w-[100%] gap-4`}
           >
             <SiteButton
               aria="report"

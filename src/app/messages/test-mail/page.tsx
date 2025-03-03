@@ -1,5 +1,3 @@
-"use client";
-
 export default function TestMail() {
-  return <div>test mail</div>;
+  return <div className="testing">Test Mail</div>;
 }
