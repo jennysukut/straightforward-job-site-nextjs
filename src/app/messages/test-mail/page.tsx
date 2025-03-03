@@ -1,18 +1,5 @@
 "use client";
 
-import { usePageContext } from "@/contexts/PageContext";
-import MessagingCenter from "@/components/pages/messagingCenter/testMessagingComp";
-
-export default function AppMessages({ params }: any) {
-  const { accountType } = usePageContext();
-  //you'll get an appId sent into this param
-
-  return (
-    <div className="MessagePage flex min-h-[75vh] w-[80%] flex-grow items-center gap-8 self-center text-jade md:pb-12">
-      {/* MESSAGING PAGE HERE FOR SPECIFIC APPLICATION: {params.appId} */}
-      {/* since this conversation is accessed through the AMS, relating to a specific app, we'll keep it focused on the conversation at hand with a button to go back to the general messaging center */}
-      {/* this'll help with the mobile version as well */}
-      <MessagingCenter />
-    </div>
-  );
+export default function TestMail() {
+  return <div>test mail</div>;
 }

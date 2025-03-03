@@ -75,7 +75,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           date: "February 10",
           timestamp: "10:01 AM",
           edited: false,
-          read: false,
+          read: true,
         },
       ],
       appointments: [
@@ -180,7 +180,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
         },
       ],
       dateOfApp: "1.13.2024",
-      appStatus: "submitted",
+      appStatus: "closed",
       appointments: [],
       appIsBeingRejected: "false",
       highlighted: true,
@@ -266,14 +266,13 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
 
     {
       id: "dfkjb8",
-      applicant: "testid",
       message:
         "I'd like to be a customer service representative! Here are some things I think would be helpful if I mentioned: Things and Stuff.",
       business: "QuickAssist Corp",
       businessNote: ["Business Note Testing Here", "Another Business Note"],
       jobId: "6",
       dateOfApp: "12.20.2024",
-      appStatus: "viewed",
+      appStatus: "closed",
       mail: [
         {
           id: 325981,
@@ -321,6 +320,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       applicant: "testid",
       jobId: "7",
       business: "Innovatech Manufacturing",
+      businessId: "1b23i",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
       mail: [
@@ -443,9 +443,75 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       applicant: "testid",
       jobId: "7",
       business: "Innovatech Manufacturing",
+      businessId: "1b23i",
       dateOfApp: "12.20.2024",
       appStatus: "stage 2",
-      mail: [],
+      mail: [
+        {
+          id: 1738259,
+          text: [
+            "Tootsie roll fruitcake halvah cupcake tootsie roll wafer. Gummies liquorice biscuit jujubes sweet chupa chups candy. Chocolate cake shortbread ice cream bonbon jujubes pudding lollipop macaroon jelly-o. ",
+          ],
+          sender: "business",
+          date: "February 10",
+          timestamp: "10:00 AM",
+          edited: true,
+          read: true,
+        },
+        {
+          id: 2273895,
+          text: [
+            "Candy tart dragée shortbread cake bear claw. Shortbread cookie donut biscuit jelly candy canes tart topping. ",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 223507,
+          text: [
+            "Shortbread bear claw donut candy sweet roll biscuit sweet roll. Croissant chocolate cake chupa chups icing. Gingerbread cotton candy cake sesame snaps cheesecake.",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:01 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 78293961,
+          text: [
+            "Sesame snaps dragée pie liquorice wafer chocolate chupa chups. Dessert cotton candy donut ice cream sesame snaps cupcake. Sweet roll jelly brownie chupa chups oat cake marshmallow. Soufflé donut soufflé candy fruitcake tiramisu biscuit jujubes. Bonbon ice cream donut sesame snaps sweet roll cake marshmallow brownie jelly-o. Croissant ice cream danish candy bonbon apple pie.",
+          ],
+          sender: "fellow",
+          date: "February 10",
+          timestamp: "10:02 AM",
+          edited: false,
+          read: false,
+        },
+        {
+          id: 9821579,
+          text: [
+            "Jujubes pastry lollipop pie marshmallow chocolate bar oat cake. Candy gummi bears topping dragée chocolate bar chocolate lemon drops croissant sweet. Chocolate bar candy croissant ice cream soufflé candy canes marzipan cake cupcake. Halvah sweet roll biscuit oat cake sesame snaps ice cream apple pie. Jujubes macaroon powder donut marzipan pudding oat cake bonbon. Lollipop fruitcake cake biscuit pastry tiramisu. Bonbon jujubes jelly jujubes candy canes chocolate bar muffin sesame snaps.",
+          ],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:00 AM",
+          edited: false,
+          read: true,
+        },
+        {
+          id: 2618591,
+          text: ["Sounds delicious!"],
+          sender: "business",
+          date: "February 10",
+          timestamp: "11:20 AM",
+          edited: false,
+          read: false,
+        },
+      ],
       appIsBeingRejected: "false",
     },
     {

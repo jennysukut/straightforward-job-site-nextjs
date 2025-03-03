@@ -16,6 +16,7 @@ import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
 import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
 import { FellowsProvider } from "@/contexts/FellowsContext";
 import { MessagesProvider } from "@/contexts/MessagesContext";
+import { ReportsProvider } from "@/contexts/ReportsContext";
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -54,30 +55,32 @@ export default function RootLayout({
             <BusinessListProvider>
               <AppointmentsContextProvider>
                 <MessagesProvider>
-                  <ApplicationsProvider>
-                    <ApplicationProvider>
-                      <JobListingsProvider>
-                        <JobProvider>
-                          <BusinessProvider>
-                            <FellowsProvider>
-                              <FellowProvider>
-                                <ColorProvider>
-                                  <ModalProvider>
-                                    <NavBar />
-                                    <main className="Main flex flex-1 flex-col">
-                                      {children}
-                                      {/* we could slip a fun background element in here? */}
-                                    </main>
-                                    <Footer />
-                                  </ModalProvider>
-                                </ColorProvider>
-                              </FellowProvider>
-                            </FellowsProvider>
-                          </BusinessProvider>
-                        </JobProvider>
-                      </JobListingsProvider>
-                    </ApplicationProvider>
-                  </ApplicationsProvider>
+                  <ReportsProvider>
+                    <ApplicationsProvider>
+                      <ApplicationProvider>
+                        <JobListingsProvider>
+                          <JobProvider>
+                            <BusinessProvider>
+                              <FellowsProvider>
+                                <FellowProvider>
+                                  <ColorProvider>
+                                    <ModalProvider>
+                                      <NavBar />
+                                      <main className="Main flex flex-1 flex-col">
+                                        {children}
+                                        {/* we could slip a fun background element in here? */}
+                                      </main>
+                                      <Footer />
+                                    </ModalProvider>
+                                  </ColorProvider>
+                                </FellowProvider>
+                              </FellowsProvider>
+                            </BusinessProvider>
+                          </JobProvider>
+                        </JobListingsProvider>
+                      </ApplicationProvider>
+                    </ApplicationsProvider>
+                  </ReportsProvider>
                 </MessagesProvider>
               </AppointmentsContextProvider>
             </BusinessListProvider>

@@ -9,6 +9,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useFellows } from "@/contexts/FellowsContext";
 
+import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
 import Image from "next/image";
 import EditMessageModal from "../../modals/messagingModals/editMessageModal";
@@ -82,6 +83,7 @@ const MessageCenter = ({
       setMessages(selectedApp.mail);
     } else {
       // do I need to have an else statement?
+      //what if there isn't an active app?
     }
   }, [activeApp, applications]);
 
@@ -224,7 +226,25 @@ const MessageCenter = ({
   };
 
   const fileReport = () => {
+    if (accountType === "Business") {
+      const reportee = correspondingApp?.applicant;
+      showModal(
+        <ReportModal
+          id={reportee}
+          nameForReport={findApplicantName(correspondingApp?.applicant)}
+        />,
+      );
+    } else if (accountType === "Fellow") {
+      const reportee = correspondingListing?.job?.businessId;
+      showModal(
+        <ReportModal
+          id={reportee}
+          nameForReport={correspondingListing?.job?.businessName}
+        />,
+      );
+    }
     setButtonClicked("fileReport");
+    // showModal(<ReportModal />);
     console.log("need to file a report");
   };
 
@@ -241,9 +261,6 @@ const MessageCenter = ({
     renderMessages();
     if (currentMessage === "" && messages.length !== 0) {
       scrollToBottom();
-      console.log(
-        "there isn't a currentMessage and there are more than no messages here",
-      );
     }
   }, [currentMessage, activeApp, groupedMessages]);
 

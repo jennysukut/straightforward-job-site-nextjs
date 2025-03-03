@@ -20,6 +20,10 @@ type CurrentSchemeType = ButtonColorOption;
 // Check to see if the account is a fellow or business, and display the info differently for each.
 // Figure out if we want to have a "read" / "unopened" / "new" label on the mailList - we'd need to have a field in the mail details that updates that. I think this might be better to try after MVP.
 
+// PAGE RUNDOWN: The Messages page's main job is to hold the activeApp State,
+// activeApp is informed by the currentMessages, controlled from the Components: RenderBusinessMessageList and RenderFellowMessageList
+// activeApp is then passed into the MessageCenter, which will display the active Messages related to the activeApp application.
+
 export default function Messages() {
   const { accountType } = usePageContext();
   const { fellow } = useFellow();

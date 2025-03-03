@@ -4,6 +4,10 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { useEffect, useRef } from "react";
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 
+// PAGE RUNDOWN: AppMessages Page is passed an appId to use in displaying messages. It displays only the messages from that application.
+// It finds the application via the Id and passes it into the MessageCenter.
+// It's also tasked with scrolling to the bottom of the page - once we're connected to the database, we might just render the messages backwards instead?
+
 export default function AppMessages({ params }: any) {
   const { applications } = useApplications();
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
