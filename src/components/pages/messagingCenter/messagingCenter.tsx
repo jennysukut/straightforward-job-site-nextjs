@@ -212,6 +212,13 @@ const MessageCenter = ({
     hideModal();
   };
 
+  useEffect(() => {
+    if (correspondingApp?.appIsBeingRejected) {
+      console.log(correspondingApp.rejectionMessage);
+      setCurrentMessage(correspondingApp.rejectionMessage);
+    }
+  }, []);
+
   const findApplicantName: any = (id: any) => {
     const applicant = fellows?.find((fellow) => fellow.id === id);
     return applicant ? applicant.name : "Unknown";
@@ -297,8 +304,6 @@ const MessageCenter = ({
     // make sure this gets updated each time the specific messages get changed.
     readMesssages();
   }, []);
-
-  console.log(currentColorScheme);
 
   return (
     <div

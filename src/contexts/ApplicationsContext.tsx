@@ -58,6 +58,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       businessId: "1b23i",
       dateOfApp: "12.20.2024",
       appStatus: "viewed",
+      rejectionMessage: "I reject you.",
       mail: [
         {
           id: 1325096,
@@ -88,7 +89,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "12:00pm",
         },
       ],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: "true",
       highlighted: true,
     },
     {
@@ -101,8 +102,9 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "closed",
       appointments: [],
       mail: [],
-
       appIsBeingRejected: "false",
+      rejectionMessage: "",
+
       highlighted: false,
     },
     {

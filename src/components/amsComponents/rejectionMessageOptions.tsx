@@ -9,6 +9,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { useRouter } from "next/navigation";
 
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 import AddHandler from "@/components/handlers/addHandler";
@@ -16,6 +17,7 @@ import DeleteHandler from "@/components/handlers/deleteHandler";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import InputComponent from "@/components/inputComponents/inputComponent";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import MessageCenter from "../pages/messagingCenter/messagingCenter";
 
 type RejectionOptionKey = keyof typeof rejectionOptions;
 const rejectionSchema = z.object({
@@ -34,6 +36,7 @@ export default function RejectionMessageOptionsComponent({
   chosenMessage,
   currentApp,
 }: any) {
+  const router = useRouter();
   const { textColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
   const [title, setTitle] = useState("kindGeneral" as RejectionOptionKey);
@@ -60,6 +63,19 @@ export default function RejectionMessageOptionsComponent({
   let placeholderText = "";
 
   useEffect(() => {
+    if (
+      title === "kindGeneral" ||
+      title === "postInterview" ||
+      title === "promisingCandidate" ||
+      title === "underqualifiedSuggestion"
+    ) {
+      // No action needed, title is valid
+    } else {
+      setTitle("kindGeneral" as RejectionOptionKey);
+    }
+  }, [title]);
+
+  useEffect(() => {
     setTitle(chosenMessage);
   }, [chosenMessage]);
 
@@ -80,20 +96,21 @@ export default function RejectionMessageOptionsComponent({
   };
 
   const reject = () => {
-    if (applications) {
-      setApplications(
-        applications.map((app) =>
-          app.id === currentApp.id
-            ? {
-                ...app,
-                appStatus: "closed",
-                appIsBeingRejected: "false",
-                rejectionMessage: rejectionMessage,
-              }
-            : app,
-        ),
-      );
-    }
+    router.push(`/messages/${currentApp.id}`);
+    // if (applications) {
+    //   setApplications(
+    //     applications.map((app) =>
+    //       app.id === currentApp.id
+    //         ? {
+    //             ...app,
+    //             appStatus: "closed",
+    //             appIsBeingRejected: "false",
+    //             rejectionMessage: rejectionMessage,
+    //           }
+    //         : app,
+    //     ),
+    //   );
+    // }
   };
 
   const sendRejection = () => {
