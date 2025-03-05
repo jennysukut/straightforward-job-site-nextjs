@@ -40,14 +40,19 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
     <div className="BusinessAppButtonsContainer -mt-28 flex flex-col items-end gap-4 self-end">
       <SiteButton
         variant="filled"
-        colorScheme="b5"
+        colorScheme={app.appStatus === "closed" ? "b3" : "b5"}
+        // colorScheme="b5"
         aria="Contact"
         addClasses="px-8"
-        disabled={app.appStatus === "closed"}
+        // disabled={app.appStatus === "closed"}
         onClick={goToMessages}
         isSelected={clickedButton === "goToMessages"}
       >
-        {clickedButton === "goToMessages" ? "loading..." : "message"}
+        {clickedButton === "goToMessages"
+          ? "loading..."
+          : app.appStatus === "closed"
+            ? "mail history"
+            : "message"}
       </SiteButton>
       <SiteButton
         variant="filled"

@@ -59,7 +59,6 @@ const MessageCenter = ({
   // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
-  const [rejectionTitle, setRejectionTitle] = useState("");
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -141,6 +140,7 @@ const MessageCenter = ({
           }),
           mail: [...(applications?.[index]?.mail || []), message],
         };
+
         const updatedApplications = [
           ...(applications ?? []).slice(0, index),
           updatedApp,
@@ -303,7 +303,6 @@ const MessageCenter = ({
 
   useEffect(() => {
     if (correspondingApp?.appIsBeingRejected) {
-      setRejectionTitle(correspondingApp.rejectionMessage);
       setCurrentMessage(correspondingApp.rejectionDetails?.message.join("\n"));
     }
   }, []);

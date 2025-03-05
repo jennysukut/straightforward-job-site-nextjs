@@ -1,17 +1,92 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
-import { stageList } from "@/lib/stageList";
+import { useApplications } from "@/contexts/ApplicationsContext";
+import { rejectionOptions } from "@/lib/rejectionOptions";
+import { useState, useEffect } from "react";
+
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
-import RejectionConfirmationModal from "./rejectConfirmationModal";
 import RejectionOptionsModal from "./rejectionOptionsModal";
+
+type RejectionOptionKey = keyof typeof rejectionOptions;
 
 export default function RejectionStep1Modal({ application }: any) {
   const { showModal, goBack, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
+  const [applicantInfo, setApplicantInfo] = useState({
+    firstName: "FirstName",
+    jobTitle: "JobTitle",
+    businessName: "BusinessName",
+  });
 
-  const basicMessage = () => {
-    // code here after rejection is verified
-    // We'll need to go ahead and set the status of the application as closed and initiate the rejection messages
+  const generateRejectionMessages = (
+    optionKey: keyof typeof rejectionOptions,
+    applicantInfo: {
+      firstName: string;
+      jobTitle: string;
+      businessName: string;
+    },
+  ) => {
+    const option = rejectionOptions[optionKey];
+    return option.message({
+      firstName: applicantInfo.firstName,
+      jobTitle: applicantInfo.jobTitle,
+      businessName: applicantInfo.businessName,
+    });
   };
+
+  const sendBasicRejection = () => {
+    //send a message from this business using the template text
+    //update application to appStatus "closed"
+
+    console.log(
+      "sending a basic rejection message & closing app: ",
+      application,
+    );
+
+    const rejectionMessage = generateRejectionMessages("basic", applicantInfo);
+    console.log(rejectionMessage);
+
+    const message = {
+      id: 127836742634,
+      text: rejectionMessage,
+      sender: "business",
+      date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
+      timestamp: `${new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
+      edited: false,
+      read: false,
+    };
+
+    const index: number =
+      applications?.findIndex((app: any) => app.id === application?.id) ?? -1;
+
+    setApplications(
+      applications?.map((app) =>
+        app.id === application.id
+          ? {
+              ...app,
+              appStatus: "closed",
+              appIsBeingRejected: true,
+              rejectionMessage: "basic",
+              mail: [...(applications?.[index]?.mail || []), message],
+            }
+          : app,
+      ) || [],
+    );
+    hideModal();
+  };
+
+  console.log(application);
+  useEffect(() => {
+    //set applicationInfo here
+    setApplicantInfo({
+      firstName: "Jenny",
+      jobTitle: "This Job",
+      businessName: application.business,
+    });
+  }, []);
 
   return (
     <div className="SetAppStatusModal flex w-[350px] flex-col items-center gap-4">
@@ -27,6 +102,7 @@ export default function RejectionStep1Modal({ application }: any) {
           addClasses="w-[250px]"
           colorScheme="d2"
           aria="basicMessage"
+          onClick={sendBasicRejection}
         >
           send a basic message
         </SiteButton>

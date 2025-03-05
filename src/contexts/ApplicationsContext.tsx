@@ -33,7 +33,9 @@ export interface Applications {
   }>;
   appIsBeingRejected?: boolean;
   rejectionMessage?: any;
-  rejectionDetails?: { name: string; details: string; message: any };
+  // can make rejectionMessage = "sent"?
+  rejectionDetails?: { message: any };
+
   highlighted?: boolean;
 }
 

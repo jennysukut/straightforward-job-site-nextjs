@@ -44,7 +44,7 @@ export default function RejectionMessageOptionsComponent({
     useState("kindGeneral" as RejectionOptionKey) || null;
   const [buttonClicked, setButtonClicked] = useState("");
   const [applicantInfo, setApplicantInfo] = useState({
-    firstName: applicant,
+    firstName: applicant.split(" ")[0],
     jobTitle: jobTitle,
     businessName: businessName,
     interviewer: interviewer || "hiring manager",
@@ -158,8 +158,6 @@ export default function RejectionMessageOptionsComponent({
                 appIsBeingRejected: true,
                 rejectionMessage: title,
                 rejectionDetails: {
-                  name: applicantInfo.firstName,
-                  details: "n/a",
                   message: messages,
                 },
               }
