@@ -21,8 +21,8 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 type RejectionOptionKey = keyof typeof rejectionOptions;
 
 const rejectionSchema = z.object({
-  title: z.string(),
-  details: z.string().min(2),
+  title: z.string().optional(),
+  details: z.string().optional(),
 });
 
 type FormData = z.infer<typeof rejectionSchema>;
@@ -40,11 +40,9 @@ export default function RejectionMessageOptionsComponent({
   const router = useRouter();
   const { textColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
-  const [title, setTitle] = useState(
-    ("kindGeneral" as RejectionOptionKey) || null,
-  );
+  const [title, setTitle] =
+    useState("kindGeneral" as RejectionOptionKey) || null;
   const [buttonClicked, setButtonClicked] = useState("");
-  const [rejectionMessage, setRejectionMessage] = useState("");
   const [applicantInfo, setApplicantInfo] = useState({
     firstName: applicant,
     jobTitle: jobTitle,
@@ -71,20 +69,17 @@ export default function RejectionMessageOptionsComponent({
   let placeholderText = "";
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log(data);
     console.log("using the onSubmit handler", "title:", title, "note:", data);
-    if (title === "kindGeneral") {
-      // setRejectionMessage({ title: title, note: "" });
-    } else if (title === "postInterview" && data.details) {
+    if (title === "postInterview" && data.details) {
       setApplicantInfo({ ...applicantInfo, qualityOrExp: data.details });
-      // setRejectionMessage({ title: title, note: data.details });
     } else if (title === "promisingCandidate" && data.details) {
       setApplicantInfo({ ...applicantInfo, skillOrExp: data.details });
-      // setRejectionMessage({ title: title, note: data.details });
     } else if (title === "underqualifiedSuggestion" && data.details) {
       setApplicantInfo({ ...applicantInfo, expArea: data.details });
-      // setRejectionMessage({ title: title, note: data.details });
     }
     setValue("details", "");
+
     if (applications) {
       setApplications(
         applications.map((app) =>
@@ -94,7 +89,7 @@ export default function RejectionMessageOptionsComponent({
                 appStatus: "closed",
                 appIsBeingRejected: true,
                 rejectionMessage: title,
-                rejectionDetails: data.details,
+                rejectionDetails: data.details || "n/a",
               }
             : app,
         ),
@@ -105,7 +100,6 @@ export default function RejectionMessageOptionsComponent({
 
   const sendRejection = () => {
     if (
-      title === "kindGeneral" ||
       (title === "postInterview" &&
         applicantInfo.qualityOrExp !== "_____________") ||
       (title === "promisingCandidate" &&
@@ -116,6 +110,24 @@ export default function RejectionMessageOptionsComponent({
       setButtonClicked("submit");
       handleSubmit(onSubmit);
       console.log("sending Rejection");
+    } else if (title === "kindGeneral") {
+      //info here for submitting rejection
+      if (applications) {
+        setApplications(
+          applications.map((app) =>
+            app.id === currentApp.id
+              ? {
+                  ...app,
+                  appStatus: "closed",
+                  appIsBeingRejected: true,
+                  rejectionMessage: title,
+                  rejectionDetails: "n/a",
+                }
+              : app,
+          ),
+        );
+      }
+      router.push(`/messages/${currentApp.id}`);
     } else {
       setError("details", {
         type: "manual",
@@ -202,7 +214,7 @@ export default function RejectionMessageOptionsComponent({
 
   useEffect(() => {
     setTitle(chosenMessage);
-  }, []);
+  }, [chosenMessage]);
 
   console.log("chosenMessage = ", chosenMessage, "title:", title);
 
