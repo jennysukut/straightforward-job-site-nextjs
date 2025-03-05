@@ -36,7 +36,7 @@ export const MessagesProvider: React.FC<{ children: ReactNode }> = ({
 export const useMessages = () => {
   const context = useContext(MessagesContext);
   if (!context) {
-    throw new Error("useApplications must be used within a MessagesProvider");
+    throw new Error("useMessages must be used within a MessagesProvider");
   }
   return context;
 };

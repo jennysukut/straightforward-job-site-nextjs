@@ -10,6 +10,7 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useFellows } from "@/contexts/FellowsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { rejectionOptions } from "@/lib/rejectionOptions";
 
 import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
@@ -32,6 +33,8 @@ export interface Messages {
 
 //TODO: Find the most recent messages, and open the jobListing category with that set of messages
 // {they're already being displayed in the messageCenter} and show which app is open via highlight - this might already be active?
+
+type RejectionOptionKey = keyof typeof rejectionOptions;
 
 const MessageCenter = ({
   activeApp,
@@ -56,6 +59,7 @@ const MessageCenter = ({
   // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
+  const [rejectionTitle, setRejectionTitle] = useState("");
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -212,13 +216,6 @@ const MessageCenter = ({
     hideModal();
   };
 
-  useEffect(() => {
-    if (correspondingApp?.appIsBeingRejected) {
-      console.log(correspondingApp.rejectionMessage);
-      setCurrentMessage(correspondingApp.rejectionMessage);
-    }
-  }, []);
-
   const findApplicantName: any = (id: any) => {
     const applicant = fellows?.find((fellow) => fellow.id === id);
     return applicant ? applicant.name : "Unknown";
@@ -305,6 +302,142 @@ const MessageCenter = ({
     readMesssages();
   }, []);
 
+  // Rejection Message Stuff:
+  // const optionKey: RejectionOptionKey = "kindGeneral";
+  // const option = rejectionOptions[optionKey];
+  // if (title === "kindGeneral") {
+  //   const rejMessage = option.message({
+  //     firstName: "Person",
+  //     jobTitle: correspondingListing?.job?.jobTitle,
+  //     businessName: correspondingApp?.business,
+  //     interviewer: "Interviewer",
+  //   });
+  //   setCurrentMessage(rejMessage.join("\n"));
+  // } else if (title === "postInterview") {
+  //   const rejMessage = option.message({
+  //     firstName: "Person",
+  //     jobTitle: correspondingListing?.job?.jobTitle,
+  //     businessName: correspondingApp?.business,
+  //     interviewer: "Interviewer",
+  //     qualityOrExp: correspondingApp?.rejectionDetails,
+  //   });
+  //   setCurrentMessage(rejMessage.join("\n"));
+  // } else if (title === "promisingCandidate") {
+  //   const rejMessage = option.message({
+  //     firstName: "Person",
+  //     jobTitle: correspondingListing?.job?.jobTitle,
+  //     businessName: correspondingApp?.business,
+  //     interviewer: "Interviewer",
+  //     skillOrExp: correspondingApp?.rejectionDetails,
+  //   });
+  //   setCurrentMessage(rejMessage.join("\n"));
+  // } else if (title === "underqualifiedSuggestion") {
+  //   const rejMessage = option.message({
+  //     firstName: "Person",
+  //     jobTitle: correspondingListing?.job?.jobTitle,
+  //     businessName: correspondingApp?.business,
+  //     interviewer: "Interviewer",
+  //     expArea: correspondingApp?.rejectionDetails,
+  //   });
+  //   setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
+  // }
+
+  useEffect(() => {
+    console.log("let's see if this app is being rejected...");
+    if (correspondingApp?.appIsBeingRejected) {
+      console.log("this app is being rejected");
+      // set this to the entire text
+      // setCurrentMessage(correspondingApp.rejectionMessage.join("\n")); // Join the array into a single string
+      setRejectionTitle(correspondingApp.rejectionMessage);
+
+      // const optionKey: RejectionOptionKey = "kindGeneral";
+      // const option = rejectionOptions[optionKey];
+      // // NEED TO DEFINE TITLE
+      // console.log(rejectionTitle);
+      // if (rejectionTitle === "kindGeneral") {
+      //   const rejMessage = option.message({
+      //     firstName: "Person",
+      //     jobTitle: correspondingListing?.job?.jobTitle,
+      //     businessName: correspondingApp?.business,
+      //     interviewer: "Interviewer",
+      //   });
+      //   setCurrentMessage(rejMessage.join("\n"));
+      // } else if (rejectionTitle === "postInterview") {
+      //   const rejMessage = option.message({
+      //     firstName: "Person",
+      //     jobTitle: correspondingListing?.job?.jobTitle,
+      //     businessName: correspondingApp?.business,
+      //     interviewer: "Interviewer",
+      //     qualityOrExp: correspondingApp?.rejectionDetails,
+      //   });
+      //   console.log(rejMessage);
+      //   setCurrentMessage(rejMessage.join("\n"));
+      // } else if (rejectionTitle === "promisingCandidate") {
+      //   const rejMessage = option.message({
+      //     firstName: "Person",
+      //     jobTitle: correspondingListing?.job?.jobTitle,
+      //     businessName: correspondingApp?.business,
+      //     interviewer: "Interviewer",
+      //     skillOrExp: correspondingApp?.rejectionDetails,
+      //   });
+      //   setCurrentMessage(rejMessage.join("\n"));
+      // } else if (rejectionTitle === "underqualifiedSuggestion") {
+      //   const rejMessage = option.message({
+      //     firstName: "Person",
+      //     jobTitle: correspondingListing?.job?.jobTitle,
+      //     businessName: correspondingApp?.business,
+      //     interviewer: "Interviewer",
+      //     expArea: correspondingApp?.rejectionDetails,
+      //   });
+      //   setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
+      // }
+    }
+  }, []);
+
+  useEffect(() => {
+    const optionKey: RejectionOptionKey = "kindGeneral";
+    const option = rejectionOptions[optionKey];
+    // NEED TO DEFINE TITLE
+    console.log(rejectionTitle);
+    if (rejectionTitle === "kindGeneral") {
+      const rejMessage = option.message({
+        firstName: "Person",
+        jobTitle: correspondingListing?.job?.jobTitle,
+        businessName: correspondingApp?.business,
+        interviewer: "Interviewer",
+      });
+      setCurrentMessage(rejMessage.join("\n"));
+    } else if (rejectionTitle === "postInterview") {
+      const rejMessage = option.message({
+        firstName: "Person",
+        jobTitle: correspondingListing?.job?.jobTitle,
+        businessName: correspondingApp?.business,
+        interviewer: "Interviewer",
+        qualityOrExp: correspondingApp?.rejectionDetails,
+      });
+      console.log(rejMessage);
+      setCurrentMessage(rejMessage.join("\n"));
+    } else if (rejectionTitle === "promisingCandidate") {
+      const rejMessage = option.message({
+        firstName: "Person",
+        jobTitle: correspondingListing?.job?.jobTitle,
+        businessName: correspondingApp?.business,
+        interviewer: "Interviewer",
+        skillOrExp: correspondingApp?.rejectionDetails,
+      });
+      setCurrentMessage(rejMessage.join("\n"));
+    } else if (rejectionTitle === "underqualifiedSuggestion") {
+      const rejMessage = option.message({
+        firstName: "Person",
+        jobTitle: correspondingListing?.job?.jobTitle,
+        businessName: correspondingApp?.business,
+        interviewer: "Interviewer",
+        expArea: correspondingApp?.rejectionDetails,
+      });
+      setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
+    }
+  }, [rejectionTitle]);
+
   return (
     <div
       className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between self-center`}
@@ -355,6 +488,8 @@ const MessageCenter = ({
             </p>
           </div>
         </div>
+
+        <div className="Test">{currentMessage}</div>
 
         {/* Messages */}
         <div
@@ -482,12 +617,20 @@ const MessageCenter = ({
           className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
           id="MessageInput"
         >
-          <textarea
-            value={currentMessage}
-            onChange={(e) => setCurrentMessage(e.target.value)}
-            placeholder="Your message..."
-            className="min-h-[100px] w-full rounded-2xl border-2 border-jade bg-cream p-3 pl-3 text-emerald drop-shadow-jade placeholder:text-jade placeholder:opacity-50 focus:outline-none"
-          />
+          <InfoBox
+            variant="hollow"
+            size="note"
+            aria="messageInput"
+            width="full"
+          >
+            <textarea
+              value={currentMessage}
+              onChange={(e) => setCurrentMessage(e.target.value)}
+              placeholder="Your message..."
+              className="min-h-[100px] w-full bg-transparent pr-2 leading-6 text-emerald placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
+            />
+          </InfoBox>
+
           <SiteButton
             type="submit"
             variant="filled"

@@ -13,11 +13,12 @@ export default function RejectionOptionsModal({ application }: any) {
   const router = useRouter();
 
   const setMessage = (title: any) => {
+    router.push(`/application/${application.id}/rejection/${title}`);
     if (applications) {
       setApplications(
         applications.map((app) =>
           app.id === application.id
-            ? { ...app, appIsBeingRejected: title }
+            ? { ...app, appIsBeingRejected: true, rejectionMessage: title }
             : app,
         ),
       );

@@ -31,8 +31,9 @@ export interface Applications {
     };
     interviewTime?: string;
   }>;
-  appIsBeingRejected?: string;
+  appIsBeingRejected?: boolean;
   rejectionMessage?: any;
+  rejectionDetails?: string;
   highlighted?: boolean;
 }
 
@@ -89,7 +90,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "12:00pm",
         },
       ],
-      appIsBeingRejected: "true",
+      appIsBeingRejected: true,
       highlighted: true,
     },
     {
@@ -102,7 +103,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "closed",
       appointments: [],
       mail: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       rejectionMessage: "",
 
       highlighted: false,
@@ -117,7 +118,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       mail: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
     },
     {
@@ -130,7 +131,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       mail: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
     },
     {
@@ -143,7 +144,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       mail: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: true,
     },
     {
@@ -184,7 +185,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "1.13.2024",
       appStatus: "closed",
       appointments: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: true,
     },
     {
@@ -262,7 +263,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       ],
       appStatus: "submitted",
       appointments: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
     },
 
@@ -314,7 +315,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "2:00pm",
         },
       ],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
     },
     {
@@ -409,7 +410,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           interviewTime: "3:00pm",
         },
       ],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
     },
     {
@@ -421,7 +422,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [],
       dateOfApp: "12.20.2024",
       appStatus: "offer",
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
     },
 
     {
@@ -438,7 +439,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       mail: [],
 
       appStatus: "viewed",
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
     },
     {
       id: "cv9t4t",
@@ -514,7 +515,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
           read: false,
         },
       ],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
     },
     {
       id: "hf7ve",
@@ -525,7 +526,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       dateOfApp: "12.20.2024",
       appStatus: "offer",
       mail: [],
-      appIsBeingRejected: "false",
+      appIsBeingRejected: false,
       highlighted: false,
 
       appointments: [

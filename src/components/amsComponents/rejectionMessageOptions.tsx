@@ -20,8 +20,10 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import MessageCenter from "../pages/messagingCenter/messagingCenter";
 
 type RejectionOptionKey = keyof typeof rejectionOptions;
+
 const rejectionSchema = z.object({
-  details: z.string(),
+  title: z.string(),
+  details: z.string().min(2),
 });
 
 type FormData = z.infer<typeof rejectionSchema>;
@@ -40,12 +42,13 @@ export default function RejectionMessageOptionsComponent({
   const { textColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
   const [title, setTitle] = useState("kindGeneral" as RejectionOptionKey);
-  const [rejectionMessage, setRejectionMessage] = useState({});
+  const [buttonClicked, setButtonClicked] = useState("");
+  const [rejectionMessage, setRejectionMessage] = useState("");
   const [applicantInfo, setApplicantInfo] = useState({
     firstName: applicant,
     jobTitle: jobTitle,
     businessName: businessName,
-    interviewer: interviewer,
+    interviewer: interviewer || "hiring manager",
     skillOrExp: "___________",
     qualityOrExp: "_____________",
     expArea: "_______________",
@@ -58,80 +61,78 @@ export default function RejectionMessageOptionsComponent({
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(rejectionSchema),
+    defaultValues: {
+      title: "kindGeneral",
+      details: "",
+    },
   });
 
   let placeholderText = "";
 
-  useEffect(() => {
-    if (
-      title === "kindGeneral" ||
-      title === "postInterview" ||
-      title === "promisingCandidate" ||
-      title === "underqualifiedSuggestion"
-    ) {
-      // No action needed, title is valid
-    } else {
-      setTitle("kindGeneral" as RejectionOptionKey);
-    }
-  }, [title]);
-
-  useEffect(() => {
-    setTitle(chosenMessage);
-  }, [chosenMessage]);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log("using the onSubmit handler", "title:", title, "note:", data);
     if (title === "kindGeneral") {
-      setRejectionMessage({ title: title, note: "" });
+      // setRejectionMessage({ title: title, note: "" });
     } else if (title === "postInterview" && data.details) {
       setApplicantInfo({ ...applicantInfo, qualityOrExp: data.details });
-      setRejectionMessage({ title: title, note: data.details });
+      // setRejectionMessage({ title: title, note: data.details });
     } else if (title === "promisingCandidate" && data.details) {
       setApplicantInfo({ ...applicantInfo, skillOrExp: data.details });
-      setRejectionMessage({ title: title, note: data.details });
+      // setRejectionMessage({ title: title, note: data.details });
     } else if (title === "underqualifiedSuggestion" && data.details) {
       setApplicantInfo({ ...applicantInfo, expArea: data.details });
-      setRejectionMessage({ title: title, note: data.details });
+      // setRejectionMessage({ title: title, note: data.details });
     }
     setValue("details", "");
-  };
-
-  const reject = () => {
+    if (applications) {
+      setApplications(
+        applications.map((app) =>
+          app.id === currentApp.id
+            ? {
+                ...app,
+                appStatus: "closed",
+                appIsBeingRejected: true,
+                rejectionMessage: title,
+                rejectionDetails: data.details,
+              }
+            : app,
+        ),
+      );
+    }
     router.push(`/messages/${currentApp.id}`);
-    // if (applications) {
-    //   setApplications(
-    //     applications.map((app) =>
-    //       app.id === currentApp.id
-    //         ? {
-    //             ...app,
-    //             appStatus: "closed",
-    //             appIsBeingRejected: "false",
-    //             rejectionMessage: rejectionMessage,
-    //           }
-    //         : app,
-    //     ),
-    //   );
-    // }
   };
 
   const sendRejection = () => {
-    if (title === "kindGeneral") {
-      reject();
-    } else if (
-      title === "postInterview" &&
-      applicantInfo.qualityOrExp !== "_____________"
+    if (
+      title === "kindGeneral" ||
+      (title === "postInterview" &&
+        applicantInfo.qualityOrExp !== "_____________") ||
+      (title === "promisingCandidate" &&
+        applicantInfo.skillOrExp !== "___________") ||
+      (title === "underqualifiedSuggestion" &&
+        applicantInfo.expArea !== "_______________")
     ) {
-      reject();
-    } else if (
-      title === "promisingCandidate" &&
-      applicantInfo.skillOrExp !== "___________"
-    ) {
-      reject();
-    } else if (
-      title === "underqualifiedSuggestion" &&
-      applicantInfo.expArea !== "_______________"
-    ) {
-      reject();
-    } else {
+      setButtonClicked("submit");
+      handleSubmit(onSubmit);
+      console.log("sending Rejection");
+    }
+    // } else if (
+    //   title === "postInterview" &&
+    //   applicantInfo.qualityOrExp !== "_____________"
+    // ) {
+    //   handleSubmit(onSubmit);
+    // } else if (
+    //   title === "promisingCandidate" &&
+    //   applicantInfo.skillOrExp !== "___________"
+    // ) {
+    //   handleSubmit(onSubmit);
+    // } else if (
+    //   title === "underqualifiedSuggestion" &&
+    //   applicantInfo.expArea !== "_______________"
+    // ) {
+    //   handleSubmit(onSubmit);
+    // }
+    else {
       setError("details", {
         type: "manual",
         message: "please fill out details to send.",
@@ -190,8 +191,8 @@ export default function RejectionMessageOptionsComponent({
     }
   };
 
-  // Generate messages for the 'kindGeneral' option
-  let messages = generateRejectionMessages(title, applicantInfo);
+  // Generate messages for the selected option
+  const messages = generateRejectionMessages(title, applicantInfo);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "title", data: any) => {
@@ -216,9 +217,21 @@ export default function RejectionMessageOptionsComponent({
   };
 
   useEffect(() => {
-    messages = generateRejectionMessages(title, applicantInfo);
-    setValue("details", "");
-  }, [title, applicantInfo]);
+    if (
+      title === "kindGeneral" ||
+      title === "postInterview" ||
+      title === "promisingCandidate" ||
+      title === "underqualifiedSuggestion"
+    ) {
+      // No action needed, title is valid
+    } else {
+      setTitle("kindGeneral" as RejectionOptionKey);
+    }
+  }, [title]);
+
+  useEffect(() => {
+    setTitle(chosenMessage);
+  }, []);
 
   return (
     <div
@@ -303,6 +316,7 @@ export default function RejectionMessageOptionsComponent({
           aria="reject"
           addClasses="px-6 py-3"
           onClick={sendRejection}
+          isSelected={buttonClicked === "submit"}
         >
           send message and reject application
         </SiteButton>
