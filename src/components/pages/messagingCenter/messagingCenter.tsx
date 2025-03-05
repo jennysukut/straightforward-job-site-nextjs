@@ -489,8 +489,6 @@ const MessageCenter = ({
           </div>
         </div>
 
-        <div className="Test">{currentMessage}</div>
-
         {/* Messages */}
         <div
           className={`Messages -mr-6 ${messageHeight} overflow-y-auto pr-6`}

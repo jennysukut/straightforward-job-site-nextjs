@@ -27,24 +27,10 @@ export default function Application({ params }: any) {
   })?.name;
 
   useEffect(() => {
-    if (
-      currentApp?.appIsBeingRejected !== false &&
-      currentApp?.rejectionMessage === ""
-    ) {
-      setChosenMessage("kindGeneral");
-    } else if (
-      currentApp?.appIsBeingRejected !== false &&
-      currentApp?.rejectionMessage !== ""
-    ) {
-      setChosenMessage(currentApp?.rejectionMessage);
-    } else if (currentApp?.appIsBeingRejected === false) {
-      setChosenMessage("");
-    }
-  }, [currentApp?.appIsBeingRejected]);
-
-  useEffect(() => {
-    setCurrentPage("application");
+    setChosenMessage(params.rejectionType);
   }, []);
+
+  console.log(chosenMessage);
 
   return (
     <div className="RejectionPage flex flex-grow flex-col items-center gap-8 md:pb-12">

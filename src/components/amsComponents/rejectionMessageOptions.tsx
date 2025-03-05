@@ -17,7 +17,6 @@ import DeleteHandler from "@/components/handlers/deleteHandler";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import InputComponent from "@/components/inputComponents/inputComponent";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
-import MessageCenter from "../pages/messagingCenter/messagingCenter";
 
 type RejectionOptionKey = keyof typeof rejectionOptions;
 
@@ -41,7 +40,9 @@ export default function RejectionMessageOptionsComponent({
   const router = useRouter();
   const { textColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
-  const [title, setTitle] = useState("kindGeneral" as RejectionOptionKey);
+  const [title, setTitle] = useState(
+    ("kindGeneral" as RejectionOptionKey) || null,
+  );
   const [buttonClicked, setButtonClicked] = useState("");
   const [rejectionMessage, setRejectionMessage] = useState("");
   const [applicantInfo, setApplicantInfo] = useState({
@@ -115,24 +116,7 @@ export default function RejectionMessageOptionsComponent({
       setButtonClicked("submit");
       handleSubmit(onSubmit);
       console.log("sending Rejection");
-    }
-    // } else if (
-    //   title === "postInterview" &&
-    //   applicantInfo.qualityOrExp !== "_____________"
-    // ) {
-    //   handleSubmit(onSubmit);
-    // } else if (
-    //   title === "promisingCandidate" &&
-    //   applicantInfo.skillOrExp !== "___________"
-    // ) {
-    //   handleSubmit(onSubmit);
-    // } else if (
-    //   title === "underqualifiedSuggestion" &&
-    //   applicantInfo.expArea !== "_______________"
-    // ) {
-    //   handleSubmit(onSubmit);
-    // }
-    else {
+    } else {
       setError("details", {
         type: "manual",
         message: "please fill out details to send.",
@@ -217,21 +201,10 @@ export default function RejectionMessageOptionsComponent({
   };
 
   useEffect(() => {
-    if (
-      title === "kindGeneral" ||
-      title === "postInterview" ||
-      title === "promisingCandidate" ||
-      title === "underqualifiedSuggestion"
-    ) {
-      // No action needed, title is valid
-    } else {
-      setTitle("kindGeneral" as RejectionOptionKey);
-    }
-  }, [title]);
-
-  useEffect(() => {
     setTitle(chosenMessage);
   }, []);
+
+  console.log("chosenMessage = ", chosenMessage, "title:", title);
 
   return (
     <div
@@ -256,71 +229,87 @@ export default function RejectionMessageOptionsComponent({
           buttonContainerClasses="flex-wrap gap-4 items-center justify-center"
         />
       </div>
-      <div className="Message mt-4 flex flex-col gap-4 overflow-y-visible font-medium">
-        <InfoBox
-          variant="hollow"
-          aria="rejectionMessage"
-          width="full"
-          size="large"
-        >
-          <div className="MessageLines flex flex-col gap-4">
-            {messages?.map((message: string, index: number) => {
-              return (
-                <p className="messageLine leading-6 text-emerald" key={index}>
-                  {message}
-                </p>
-              );
-            })}
+      {title === "kindGeneral" ||
+      title === "postInterview" ||
+      title === "promisingCandidate" ||
+      title === "underqualifiedSuggestion" ? (
+        <div className="RejMessageBody flex flex-grow flex-col items-center gap-8 self-center">
+          <div className="Message mt-4 flex flex-col gap-4 overflow-y-visible font-medium">
+            <InfoBox
+              variant="hollow"
+              aria="rejectionMessage"
+              width="full"
+              size="large"
+            >
+              <div className="MessageLines flex flex-col gap-4">
+                {messages?.map((message: string, index: number) => {
+                  return (
+                    <p
+                      className="messageLine leading-6 text-emerald"
+                      key={index}
+                    >
+                      {message}
+                    </p>
+                  );
+                })}
+              </div>
+            </InfoBox>
           </div>
-        </InfoBox>
-      </div>
-      {title === "underqualifiedSuggestion" && (
-        <p className="Detail -mt-2 text-right text-xs font-medium italic text-olive">
-          {`*this rejection does offer suggestions on your behalf - be sure you're
+          {title === "underqualifiedSuggestion" && (
+            <p className="Detail -mt-2 text-right text-xs font-medium italic text-olive">
+              {`*this rejection does offer suggestions on your behalf - be sure you're
           prepared to follow through with feedback if you choose this response.`}
-        </p>
-      )}
+            </p>
+          )}
 
-      {title !== "kindGeneral" && (
-        <form
-          className="Form flex items-center gap-3 self-start"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <p className="Details">customize:</p>
-          <InputComponent
-            type="string"
-            placeholderText={placeholderText}
-            required
-            register={register}
-            registerValue="details"
-            addClasses="w-[25vw]"
-            errors={errors.details}
-          />
-          <SiteButton
-            variant="filled"
-            colorScheme="d4"
-            aria="submit"
-            onClick={handleSubmit(onSubmit)}
-            addClasses="ml-3 mt-4 px-8"
+          {title !== "kindGeneral" && (
+            <form
+              className="Form flex items-center gap-3 self-start"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <p className="Details">customize:</p>
+              <InputComponent
+                type="string"
+                placeholderText={placeholderText}
+                required
+                register={register}
+                registerValue="details"
+                addClasses="w-[25vw]"
+                errors={errors.details}
+              />
+              <SiteButton
+                variant="filled"
+                colorScheme="d4"
+                aria="submit"
+                onClick={handleSubmit(onSubmit)}
+                addClasses="ml-3 mt-4 px-8"
+              >
+                add
+              </SiteButton>
+            </form>
+          )}
+          <div
+            className={`FinalButton ${title !== "kindGeneral" ? "-my-14" : "-mb-14"} self-end`}
           >
-            add
-          </SiteButton>
-        </form>
+            <SiteButton
+              variant="filled"
+              colorScheme="b6"
+              aria="reject"
+              addClasses="px-6 py-3"
+              onClick={sendRejection}
+              isSelected={buttonClicked === "submit"}
+            >
+              send message and reject application
+            </SiteButton>
+          </div>
+        </div>
+      ) : (
+        <div className="NoChosenMessageNote items-center text-center align-middle">
+          <p className="RejMessagePrompt mt-36 text-center italic text-olive">
+            please choose which rejection message you would like to send.
+          </p>
+        </div>
       )}
-      <div
-        className={`FinalButton ${title !== "kindGeneral" ? "-my-14" : "-mb-14"} self-end`}
-      >
-        <SiteButton
-          variant="filled"
-          colorScheme="b6"
-          aria="reject"
-          addClasses="px-6 py-3"
-          onClick={sendRejection}
-          isSelected={buttonClicked === "submit"}
-        >
-          send message and reject application
-        </SiteButton>
-      </div>
     </div>
   );
 }
