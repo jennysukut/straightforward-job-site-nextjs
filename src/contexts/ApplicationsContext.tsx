@@ -33,7 +33,7 @@ export interface Applications {
   }>;
   appIsBeingRejected?: boolean;
   rejectionMessage?: any;
-  rejectionDetails?: string;
+  rejectionDetails?: { name: string; details: string; message: any };
   highlighted?: boolean;
 }
 

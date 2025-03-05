@@ -69,8 +69,7 @@ export default function RejectionMessageOptionsComponent({
   let placeholderText = "";
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
-    console.log("using the onSubmit handler", "title:", title, "note:", data);
+    console.log("adding details via onSubmit submit handler");
     if (title === "postInterview" && data.details) {
       setApplicantInfo({ ...applicantInfo, qualityOrExp: data.details });
     } else if (title === "promisingCandidate" && data.details) {
@@ -79,61 +78,6 @@ export default function RejectionMessageOptionsComponent({
       setApplicantInfo({ ...applicantInfo, expArea: data.details });
     }
     setValue("details", "");
-
-    if (applications) {
-      setApplications(
-        applications.map((app) =>
-          app.id === currentApp.id
-            ? {
-                ...app,
-                appStatus: "closed",
-                appIsBeingRejected: true,
-                rejectionMessage: title,
-                rejectionDetails: data.details || "n/a",
-              }
-            : app,
-        ),
-      );
-    }
-    router.push(`/messages/${currentApp.id}`);
-  };
-
-  const sendRejection = () => {
-    if (
-      (title === "postInterview" &&
-        applicantInfo.qualityOrExp !== "_____________") ||
-      (title === "promisingCandidate" &&
-        applicantInfo.skillOrExp !== "___________") ||
-      (title === "underqualifiedSuggestion" &&
-        applicantInfo.expArea !== "_______________")
-    ) {
-      setButtonClicked("submit");
-      handleSubmit(onSubmit);
-      console.log("sending Rejection");
-    } else if (title === "kindGeneral") {
-      //info here for submitting rejection
-      if (applications) {
-        setApplications(
-          applications.map((app) =>
-            app.id === currentApp.id
-              ? {
-                  ...app,
-                  appStatus: "closed",
-                  appIsBeingRejected: true,
-                  rejectionMessage: title,
-                  rejectionDetails: "n/a",
-                }
-              : app,
-          ),
-        );
-      }
-      router.push(`/messages/${currentApp.id}`);
-    } else {
-      setError("details", {
-        type: "manual",
-        message: "please fill out details to send.",
-      });
-    }
   };
 
   // Function to generate rejection messages
@@ -189,7 +133,6 @@ export default function RejectionMessageOptionsComponent({
 
   // Generate messages for the selected option
   const messages = generateRejectionMessages(title, applicantInfo);
-
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "title", data: any) => {
     AddHandler({
@@ -200,6 +143,37 @@ export default function RejectionMessageOptionsComponent({
       },
       oneChoice: { title: true },
     });
+  };
+
+  const sendRejection = () => {
+    setButtonClicked("submit");
+    console.log("trying to send Rejection");
+    if (applications) {
+      setApplications(
+        applications.map((app) =>
+          app.id === currentApp.id
+            ? {
+                ...app,
+                appStatus: "closed",
+                appIsBeingRejected: true,
+                rejectionMessage: title,
+                rejectionDetails: {
+                  name: applicantInfo.firstName,
+                  details: "n/a",
+                  message: messages,
+                },
+              }
+            : app,
+        ),
+      );
+    }
+    router.push(`/messages/${currentApp.id}`);
+    // } else {
+    //   setError("details", {
+    //     type: "manual",
+    //     message: "please fill out details to send.",
+    //   });
+    // }
   };
 
   const handleDelete = (type: "title", id: any) => {
@@ -215,8 +189,6 @@ export default function RejectionMessageOptionsComponent({
   useEffect(() => {
     setTitle(chosenMessage);
   }, [chosenMessage]);
-
-  console.log("chosenMessage = ", chosenMessage, "title:", title);
 
   return (
     <div

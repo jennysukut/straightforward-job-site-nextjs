@@ -18,7 +18,6 @@ export default function Application({ params }: any) {
 
   const currentApp = applications?.find((app: any) => app.id === params.id);
 
-  console.log(params);
   const currentJob = jobListings?.find(
     (job: any) => job.jobId === currentApp?.jobId,
   )?.job;

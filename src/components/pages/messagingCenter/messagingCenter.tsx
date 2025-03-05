@@ -298,145 +298,15 @@ const MessageCenter = ({
 
   // useEffect to mark messages from other person as "read" - we should do this directly with the server
   useEffect(() => {
-    // make sure this gets updated each time the specific messages get changed.
     readMesssages();
   }, []);
 
-  // Rejection Message Stuff:
-  // const optionKey: RejectionOptionKey = "kindGeneral";
-  // const option = rejectionOptions[optionKey];
-  // if (title === "kindGeneral") {
-  //   const rejMessage = option.message({
-  //     firstName: "Person",
-  //     jobTitle: correspondingListing?.job?.jobTitle,
-  //     businessName: correspondingApp?.business,
-  //     interviewer: "Interviewer",
-  //   });
-  //   setCurrentMessage(rejMessage.join("\n"));
-  // } else if (title === "postInterview") {
-  //   const rejMessage = option.message({
-  //     firstName: "Person",
-  //     jobTitle: correspondingListing?.job?.jobTitle,
-  //     businessName: correspondingApp?.business,
-  //     interviewer: "Interviewer",
-  //     qualityOrExp: correspondingApp?.rejectionDetails,
-  //   });
-  //   setCurrentMessage(rejMessage.join("\n"));
-  // } else if (title === "promisingCandidate") {
-  //   const rejMessage = option.message({
-  //     firstName: "Person",
-  //     jobTitle: correspondingListing?.job?.jobTitle,
-  //     businessName: correspondingApp?.business,
-  //     interviewer: "Interviewer",
-  //     skillOrExp: correspondingApp?.rejectionDetails,
-  //   });
-  //   setCurrentMessage(rejMessage.join("\n"));
-  // } else if (title === "underqualifiedSuggestion") {
-  //   const rejMessage = option.message({
-  //     firstName: "Person",
-  //     jobTitle: correspondingListing?.job?.jobTitle,
-  //     businessName: correspondingApp?.business,
-  //     interviewer: "Interviewer",
-  //     expArea: correspondingApp?.rejectionDetails,
-  //   });
-  //   setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
-  // }
-
   useEffect(() => {
-    console.log("let's see if this app is being rejected...");
     if (correspondingApp?.appIsBeingRejected) {
-      console.log("this app is being rejected");
-      // set this to the entire text
-      // setCurrentMessage(correspondingApp.rejectionMessage.join("\n")); // Join the array into a single string
       setRejectionTitle(correspondingApp.rejectionMessage);
-
-      // const optionKey: RejectionOptionKey = "kindGeneral";
-      // const option = rejectionOptions[optionKey];
-      // // NEED TO DEFINE TITLE
-      // console.log(rejectionTitle);
-      // if (rejectionTitle === "kindGeneral") {
-      //   const rejMessage = option.message({
-      //     firstName: "Person",
-      //     jobTitle: correspondingListing?.job?.jobTitle,
-      //     businessName: correspondingApp?.business,
-      //     interviewer: "Interviewer",
-      //   });
-      //   setCurrentMessage(rejMessage.join("\n"));
-      // } else if (rejectionTitle === "postInterview") {
-      //   const rejMessage = option.message({
-      //     firstName: "Person",
-      //     jobTitle: correspondingListing?.job?.jobTitle,
-      //     businessName: correspondingApp?.business,
-      //     interviewer: "Interviewer",
-      //     qualityOrExp: correspondingApp?.rejectionDetails,
-      //   });
-      //   console.log(rejMessage);
-      //   setCurrentMessage(rejMessage.join("\n"));
-      // } else if (rejectionTitle === "promisingCandidate") {
-      //   const rejMessage = option.message({
-      //     firstName: "Person",
-      //     jobTitle: correspondingListing?.job?.jobTitle,
-      //     businessName: correspondingApp?.business,
-      //     interviewer: "Interviewer",
-      //     skillOrExp: correspondingApp?.rejectionDetails,
-      //   });
-      //   setCurrentMessage(rejMessage.join("\n"));
-      // } else if (rejectionTitle === "underqualifiedSuggestion") {
-      //   const rejMessage = option.message({
-      //     firstName: "Person",
-      //     jobTitle: correspondingListing?.job?.jobTitle,
-      //     businessName: correspondingApp?.business,
-      //     interviewer: "Interviewer",
-      //     expArea: correspondingApp?.rejectionDetails,
-      //   });
-      //   setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
-      // }
+      setCurrentMessage(correspondingApp.rejectionDetails?.message.join("\n"));
     }
   }, []);
-
-  useEffect(() => {
-    const optionKey: RejectionOptionKey = "kindGeneral";
-    const option = rejectionOptions[optionKey];
-    // NEED TO DEFINE TITLE
-    console.log(rejectionTitle);
-    if (rejectionTitle === "kindGeneral") {
-      const rejMessage = option.message({
-        firstName: "Person",
-        jobTitle: correspondingListing?.job?.jobTitle,
-        businessName: correspondingApp?.business,
-        interviewer: "Interviewer",
-      });
-      setCurrentMessage(rejMessage.join("\n"));
-    } else if (rejectionTitle === "postInterview") {
-      const rejMessage = option.message({
-        firstName: "Person",
-        jobTitle: correspondingListing?.job?.jobTitle,
-        businessName: correspondingApp?.business,
-        interviewer: "Interviewer",
-        qualityOrExp: correspondingApp?.rejectionDetails,
-      });
-      console.log(rejMessage);
-      setCurrentMessage(rejMessage.join("\n"));
-    } else if (rejectionTitle === "promisingCandidate") {
-      const rejMessage = option.message({
-        firstName: "Person",
-        jobTitle: correspondingListing?.job?.jobTitle,
-        businessName: correspondingApp?.business,
-        interviewer: "Interviewer",
-        skillOrExp: correspondingApp?.rejectionDetails,
-      });
-      setCurrentMessage(rejMessage.join("\n"));
-    } else if (rejectionTitle === "underqualifiedSuggestion") {
-      const rejMessage = option.message({
-        firstName: "Person",
-        jobTitle: correspondingListing?.job?.jobTitle,
-        businessName: correspondingApp?.business,
-        interviewer: "Interviewer",
-        expArea: correspondingApp?.rejectionDetails,
-      });
-      setCurrentMessage(rejMessage.join("\n")); // Join the array into a single string
-    }
-  }, [rejectionTitle]);
 
   return (
     <div
