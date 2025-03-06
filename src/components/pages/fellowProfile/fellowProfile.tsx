@@ -103,6 +103,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
       (option) => option.title === fellow?.avatar,
     );
   }
+  if (currentFellow) {
+    console.log(currentFellow);
+    avatarDetails = avatarOptions.find(
+      (option) => option.title === currentFellow?.avatar,
+    );
+  }
+
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.jobId}`);
   };

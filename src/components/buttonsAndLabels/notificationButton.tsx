@@ -31,8 +31,9 @@ const Notification: React.FC<NotificationProps> = ({
           variant="display"
           aria="notificationDetails"
           size="notificationDetails"
+          addClasses="mt-8 self-start left-14 mr-8"
+          colorScheme="f1"
           absolute
-          addClasses="mt-8 right-14"
         >
           <p className="NotificationDetails">{message}</p>
         </SiteLabel>

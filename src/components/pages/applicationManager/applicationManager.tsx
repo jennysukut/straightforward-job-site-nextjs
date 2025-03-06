@@ -226,7 +226,6 @@ export default function ApplicationManager({ jobId }: any) {
               </div>
               <div
                 className={`Applications flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
-                // h-[26rem]
               >
                 {renderApplications()}
               </div>

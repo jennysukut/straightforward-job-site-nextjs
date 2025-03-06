@@ -9,12 +9,13 @@ import { Notification } from "../buttonsAndLabels/notificationButton";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellows } from "@/contexts/FellowsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-import Image from "next/image";
 
+import Image from "next/image";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 import ApplicationNoteModal from "../modals/applicationModals/applicationNoteModal";
 import ViewApplicationNoteModal from "../modals/applicationModals/viewAppNotesModal";
+
 interface BusinessApplicationProps
   extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
@@ -26,6 +27,8 @@ interface BusinessApplicationProps
   app?: any;
   highlighted?: boolean;
 }
+
+// TODO: Make Notification Messages for each of these apps
 
 const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   id,

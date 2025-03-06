@@ -18,6 +18,7 @@ import SiteLabel from "./buttonsAndLabels/siteLabel";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
+import SiteButton from "./buttonsAndLabels/siteButton";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -111,18 +112,20 @@ export default function NavBar() {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              {/* I'm not sure if the daily apps should be the amount that have been submitted or if it should show the ones remaining for the day */}
-              <SiteLabel aria="dailyApps" variant="hollow" size="small">
+              {/* {dailyLimit?.count} */}
+              {/* <SiteLabel aria="dailyApps" variant="hollow" size="small">
                 daily apps: 2/5
-                {/* {dailyLimit?.count} */}
+              </SiteLabel> */}
+              <SiteLabel
+                aria="dailyApps"
+                colorScheme="c6"
+                // variant="display"
+                variant="hollow"
+                size="extraSmall"
+                addClasses="mt-2 px-3"
+              >
+                daily apps: 2/5
               </SiteLabel>
-              {/* <NavButton
-                onClick={handleNavButtonClick}
-                colorScheme="b4"
-                title="mailbox"
-                clickedButton={clickedButton}
-              /> */}
-
               <Link href={"/job-board"}>
                 <NavButton
                   onClick={handleNavButtonClick}

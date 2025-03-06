@@ -146,6 +146,7 @@ export const ApplicationsProvider: React.FC<{ children: ReactNode }> = ({
       appStatus: "submitted",
       appointments: [],
       mail: [],
+      message: "Hi there! Please hire me? That'd be great...",
       appIsBeingRejected: false,
       highlighted: true,
     },
