@@ -3,8 +3,8 @@ export const rejectionOptions = {
     title: "Basic Rejection Message",
     message: ({ firstName, jobTitle, businessName }: any) => [
       `Hi ${firstName}, Thank you so much for taking the time to apply for the ${jobTitle} position with us. We truly appreciate your effort and interest.`,
-      `After reviewing your application, we've decided not to move forward at this time. While we were impressed by your background, we're looking for a different combination of skills and experience for this particular role`,
-      `We wish you the best in your job search and encourage you to apply for future positions that might be a better match.`,
+      `After reviewing your application, we've decided not to move forward at this time. While we were impressed by your background, we're looking for a different combination of skills and experience for this particular role.`,
+      `We wish you the best in your job search and encourage you to apply for future positions that might be a better match!`,
       `Kind regards, ${businessName}`,
     ],
   },

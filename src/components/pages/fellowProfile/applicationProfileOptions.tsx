@@ -36,8 +36,25 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
     hideModal();
   };
 
+  const backToAms = () => {
+    setClickedButton("backToAms");
+    //reroute back to ams for this jobId number
+  };
+
   return (
     <div className="BusinessAppButtonsContainer -mt-28 flex flex-col items-end gap-4 self-end">
+      {app.appStatus === "closed" && (
+        <SiteButton
+          variant="hollow"
+          colorScheme="c4"
+          aria="back to ams"
+          addClasses="px-8"
+          onClick={backToAms}
+          isSelected={clickedButton === "backToAms"}
+        >
+          {clickedButton === "backToAms" ? "loading..." : "back to manager"}
+        </SiteButton>
+      )}
       <SiteButton
         variant="filled"
         colorScheme={app.appStatus === "closed" ? "b3" : "b5"}
@@ -56,15 +73,16 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
       </SiteButton>
       <SiteButton
         variant="filled"
-        colorScheme="e5"
+        colorScheme={app.appStatus === "closed" ? "c1" : "e5"}
         aria="edit"
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
-        disabled={app.appStatus === "closed"}
       >
         {app.BusinessNote && app.businessNote.length > 0
           ? "add another note"
-          : "add a note"}
+          : app.appStatus === "closed"
+            ? "add post-close note"
+            : "add a note"}
       </SiteButton>
       <SiteButton
         variant="filled"
@@ -126,15 +144,17 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
           )
         }
       >
-        move to next stage
+        {" "}
+        {app.appStatus === "closed" ? "app closed" : "move to next stage"}
       </SiteButton>
 
       <SiteButton
         variant="filled"
-        colorScheme="b6"
+        colorScheme={app.appStatus === "closed" ? "f5" : "b6"}
+        // colorScheme="b6"
         aria="edit"
         addClasses="px-8"
-        disabled={app.appStatus === "closed"}
+        // disabled={app.appStatus === "closed"}
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
         {app.BusinessNote && app.businessNote.length > 0

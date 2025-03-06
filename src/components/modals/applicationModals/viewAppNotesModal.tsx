@@ -14,6 +14,7 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import ApplicationNoteModal from "./applicationNoteModal";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 
 export default function ViewApplicationNoteModal({ app, notes }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
@@ -21,12 +22,12 @@ export default function ViewApplicationNoteModal({ app, notes }: any) {
 
   return (
     <div
-      className={`ViewApplicationNotesModal flex max-h-[300px] w-[400px] flex-col items-center gap-4 ${textColor} overflow-hidden overflow-y-auto`}
+      className={`ViewApplicationNotesModal flex w-[400px] flex-col items-center gap-4 ${textColor}`}
     >
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
         {notes.length > 1 ? "Your Notes:" : "Your Note:"}
       </Dialog.Title>
-      <div className="Notes flex flex-col items-center gap-4 pb-8 pt-4">
+      <div className="Notes flex max-h-[300px] flex-col items-center gap-4 overflow-hidden overflow-y-auto p-4">
         {notes.map((note: string, index: number) => {
           return (
             <InfoBox
@@ -35,7 +36,7 @@ export default function ViewApplicationNoteModal({ app, notes }: any) {
               aria="note"
               key={index}
               canEdit
-              addClasses="w-[350px]"
+              addClasses="w-[400px]"
               editClick={() =>
                 showModal(<ApplicationNoteModal app={app} note={note} />)
               }
@@ -44,6 +45,16 @@ export default function ViewApplicationNoteModal({ app, notes }: any) {
             </InfoBox>
           );
         })}
+      </div>
+      <div className="ButtonOptions self-start">
+        <SiteButton
+          variant="hollow"
+          aria="add a note"
+          colorScheme="b4"
+          onClick={() => showModal(<ApplicationNoteModal app={app} />)}
+        >
+          add another note
+        </SiteButton>
       </div>
     </div>
   );

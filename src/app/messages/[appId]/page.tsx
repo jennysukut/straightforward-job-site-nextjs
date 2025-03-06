@@ -8,6 +8,8 @@ import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 // It finds the application via the Id and passes it into the MessageCenter.
 // It's also tasked with scrolling to the bottom of the page - once we're connected to the database, we might just render the messages backwards instead?
 
+// TODO: Make sure this URL conversation is restricted to either of the parties involved or an admin?
+
 export default function AppMessages({ params }: any) {
   const { applications } = useApplications();
   const chatContainerRef = useRef<HTMLDivElement | null>(null);

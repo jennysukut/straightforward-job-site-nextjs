@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
@@ -8,6 +8,7 @@ import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
+import { debounce } from "lodash";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import AddHandler from "@/components/handlers/addHandler";
@@ -141,12 +142,12 @@ export default function ApplicationManager({ jobId }: any) {
 
   // use filters
   useEffect(() => {
+    console.log("using the filters useEffect in the ams");
     if (filters.length > 0) {
       filterApps(applications);
       setSelectedApps([]);
-      // setCurrentJob(undefined);
     }
-  }, [filterApps, filters, appStatus, applications]);
+  }, [appStatus, applications]);
 
   return (
     <div

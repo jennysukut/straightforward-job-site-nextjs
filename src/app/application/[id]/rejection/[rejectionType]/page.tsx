@@ -8,6 +8,8 @@ import { useFellows } from "@/contexts/FellowsContext";
 
 import RejectionMessageOptionsComponent from "@/components/amsComponents/rejectionMessageOptions";
 
+// TODO: Make sure this URL is only accessible by the business whose ID matches the currentApp.businessId
+
 export default function Application({ params }: any) {
   const { accountType, setCurrentPage } = usePageContext();
   const { applications } = useApplications();

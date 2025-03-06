@@ -26,6 +26,7 @@ import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteLabel from "../../buttonsAndLabels/siteLabel";
 import Avatar from "../../avatarComponent";
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
+import SiteButton from "@/components/buttonsAndLabels/siteButton";
 
 interface FellowProfile {
   hasId?: boolean;

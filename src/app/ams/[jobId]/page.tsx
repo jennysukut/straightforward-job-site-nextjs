@@ -19,9 +19,17 @@ export default function AMSJobPage({ params }: any) {
 
   return (
     <div
-      className={`AMS flex ${textColor} flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3 ${!isLoggedIn ? "justify-center" : ""}`}
+      className={`AMS flex ${textColor} flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3 ${!isLoggedIn || accountType === "Fellow" ? "justify-center" : ""}`}
     >
-      <ApplicationManager jobId={params.jobId} />
+      {/* make sure to check businessID to the parameters here as well */}
+      {isLoggedIn && accountType === "Business" && (
+        <ApplicationManager jobId={params.jobId} />
+      )}
+      {accountType === "Fellow" && (
+        <div className="AccessNotAllowed">
+          <p className="Details italic text-olive">{`It looks like you don't have access to this page.`}</p>
+        </div>
+      )}
       {!isLoggedIn && (
         <div className="LogInPrompt max-w-[40vw] text-center">
           <p className="prompt text-olive">{`It looks like you're not logged in. Be sure to set up an account and log in to keep track of your applications with our fantastical application management system!`}</p>
