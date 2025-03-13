@@ -38,7 +38,7 @@ export const BUSINESS_SIGNUP_MUTATION = gql`
     $isEarlySignup: Boolean
     $referral: String!
   ) {
-    signupFellow(
+    signupBusiness(
       email: $email
       password: $password
       name: $name

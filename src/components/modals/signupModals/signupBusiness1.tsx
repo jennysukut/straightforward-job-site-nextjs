@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { BUSINESS_SIGNUP_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import FormInputComponent from "@/components/inputComponents/formInputComponent";
@@ -36,18 +38,41 @@ export default function SignupModalBusiness1() {
     resolver: zodResolver(businessSchema),
   });
 
+  const [signupBusiness, { loading, error }] = useMutation(
+    BUSINESS_SIGNUP_MUTATION,
+  );
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      businessName: data.businessName,
-      email: data.email,
-      password: data.password,
-    });
-    router.push("/business-signup/step1");
-    setTimeout(() => {
-      hideModal();
-    }, 500);
+
+    try {
+      const response = await signupBusiness({
+        variables: {
+          email: data.email,
+          password: data.password,
+          name: data.businessName,
+          isBetaTester: false,
+          contactName: "",
+          isEarlySignup: false,
+          referral: "",
+        },
+      });
+      // when successful, set the Felow and push to the signup pages
+      console.log("Signup successful, ID:", response.data.signupBusiness); // Adjust based on your mutation response
+      setBusiness({
+        ...business,
+        businessName: data.businessName,
+        email: data.email,
+        password: data.password,
+      });
+      router.push("/business-signup/step1");
+      setTimeout(() => {
+        hideModal();
+      }, 500);
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   return (
