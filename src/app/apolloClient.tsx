@@ -506,36 +506,42 @@ avatar: Avatar
 }
 `;
 
-// Create a schema with mocks
-const schema = makeExecutableSchema({ typeDefs });
+//// Create a schema with mocks
+// const schema = makeExecutableSchema({ typeDefs });
 
-const mocks = {
-  Url: () => "https://example.com",
-  String: () => "String Here",
-  // Add other custom mocks here if needed
-  CustomType: () => ({
-    // Mock implementation for the custom type
-    id: "1",
-    name: "Custom Name",
-    description: "This is a custom description.",
-  }),
-  Avatar: () => "checks",
-};
+// const mocks = {
+//   Url: () => "https://example.com",
+//   String: () => "String Here",
+//   // Add other custom mocks here if needed
+//   CustomType: () => ({
+//     // Mock implementation for the custom type
+//     id: "1",
+//     name: "Custom Name",
+//     description: "This is a custom description.",
+//   }),
+//   Avatar: () => "checks",
+// };
 
-const schemaWithMocks = addMocksToSchema({
-  schema,
-  mocks,
-  preserveResolvers: true,
-});
+// const schemaWithMocks = addMocksToSchema({
+//   schema,
+//   mocks,
+//   preserveResolvers: true,
+// });
 
 // const mockLink = new SchemaLink({ schema: schemaWithMocks });
 
-const httpLink = createHttpLink({
-  uri: "/api/graphql",
-});
+// const httpLink = createHttpLink({
+//   uri: "/api/graphql",
+// });
 
 // Use mockLink for local testing, productionLink for production
 // const link = process.env.NODE_ENV === "development" ? mockLink : httpLink;
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+const httpLink = createHttpLink({
+  uri: apiUrl || "http://localhost:3001/graphql", // Fallback to localhost if API_URL is not set
+});
 
 const link = httpLink;
 

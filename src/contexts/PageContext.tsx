@@ -28,7 +28,7 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   const [accountType, setAccountType] = useState<string>("Fellow");
 
   // this is obvious - see if someone/a business is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   return (
     <PageContext.Provider

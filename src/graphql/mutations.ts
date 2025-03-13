@@ -2,6 +2,8 @@ import { gql } from "@apollo/client";
 
 // NEW MUTATIONS:
 // do these signup mutations return success & message or simply an Id?
+
+// removed the ID response?
 export const FELLOW_SIGNUP_MUTATION = gql`
   mutation signupFellow(
     $email: String!
@@ -22,10 +24,7 @@ export const FELLOW_SIGNUP_MUTATION = gql`
       message: $message
       referralCode: $referralCode
       isReferralPartner: $isReferralPartner
-    ) {
-      success
-      message
-    }
+    )
   }
 `;
 
@@ -48,27 +47,28 @@ export const BUSINESS_SIGNUP_MUTATION = gql`
       isEarlySignup: $isEarlySignup
       referral: $referral
     ) {
-      success
-      message
+      ID
     }
   }
 `;
 
 export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
   mutation saveFellowProfilePage1(
-    $smallBio: String!,
-    $country: String!,
-    $location: String!,
-    $skills: [String!]!,
-    $jobTitles: [String!]!,
+    $smallBio: String!
+    $country: String!
+    $location: String!
+    $skills: [String!]!
+    $jobTitles: [String!]!
     $languages: [String!]!
+  ) {
+    saveFellowProfilePage1(
+      smallBio: $smallBio
+      country: $country
+      location: $location
+      skills: $skills
+      jobTitles: $jobTitles
+      languages: $languages
     ) {
-    smallBio: $smallBio,
-    country: $country,
-    location: $location,
-    skills: $skills,
-    jobTitles: $jobTitles,
-    languages: $languages {
       success
       message
     }
@@ -145,132 +145,132 @@ export const LOGIN = gql`
 //   }
 // `;
 
-// export const GET_FELLOW_PROFILE = gql`
-//   query GetFellowProfile {
-//     fellowProfile {
-//       objectId
-//       smallBio
-//       location
-//       skills
-//       jobTitles
-//       experience {
-//         objectId
-//         title
-//         companyName
-//         yearDetails
-//         details
-//       }
-//       education {
-//         objectId
-//         degree
-//         school
-//         fieldOfStudy
-//       }
-//       awards {
-//         objectId
-//         awardTitle
-//         givenBy
-//         awardDetails
-//       }
-//       experienceLevels {
-//         objectId
-//         experienceLevel
-//         expLevelSkill
-//         skillYears
-//       }
-//       accomplishments {
-//         objectId
-//         accTitle
-//         accDetails
-//       }
-//       passions
-//       lookingFor
-//       hobbies {
-//         objectId
-//         hobbyTitle
-//         howLong
-//       }
-//       documents
-//       country
-//       languages
-//       locationOptions
-//       petDetails
-//       bookOrQuote {
-//         objectId
-//         author
-//         bookOrQuote
-//       }
-//       aboutMe
-//       links {
-//         objectId
-//         link
-//         linkType
-//       }
-//     }
-//   }
-// `;
+export const GET_FELLOW_PROFILE = gql`
+  query GetFellowProfile {
+    fellowProfile {
+      objectId
+      smallBio
+      location
+      skills
+      jobTitles
+      experience {
+        objectId
+        title
+        companyName
+        yearDetails
+        details
+      }
+      education {
+        objectId
+        degree
+        school
+        fieldOfStudy
+      }
+      awards {
+        objectId
+        awardTitle
+        givenBy
+        awardDetails
+      }
+      experienceLevels {
+        objectId
+        experienceLevel
+        expLevelSkill
+        skillYears
+      }
+      accomplishments {
+        objectId
+        accTitle
+        accDetails
+      }
+      passions
+      lookingFor
+      hobbies {
+        objectId
+        hobbyTitle
+        howLong
+      }
+      documents
+      country
+      languages
+      locationOptions
+      petDetails
+      bookOrQuote {
+        objectId
+        author
+        bookOrQuote
+      }
+      aboutMe
+      links {
+        objectId
+        link
+        linkType
+      }
+    }
+  }
+`;
 
-// export const SAVE_PROFILE_MUTATION = gql`
-//   mutation SaveProfile($requestBody: ProfileInput!) {
-//     saveProfile(requestBody: $requestBody) {
-//       objectId
-//       smallBio
-//       location
-//       skills
-//       jobTitles
-//       experience {
-//         objectId
-//         title
-//         companyName
-//         yearDetails
-//         details
-//       }
-//       education {
-//         objectId
-//         degree
-//         school
-//         fieldOfStudy
-//       }
-//       awards {
-//         objectId
-//         awardTitle
-//         givenBy
-//         awardDetails
-//       }
-//       experienceLevels {
-//         objectId
-//         experienceLevel
-//         expLevelSkill
-//         skillYears
-//       }
-//       accomplishments {
-//         objectId
-//         accTitle
-//         accDetails
-//       }
-//       passions
-//       lookingFor
-//       hobbies {
-//         objectId
-//         hobbyTitle
-//         howLong
-//       }
-//       documents
-//       country
-//       languages
-//       locationOptions
-//       petDetails
-//       bookOrQuote {
-//         objectId
-//         author
-//         bookOrQuote
-//       }
-//       aboutMe
-//       links {
-//         objectId
-//         link
-//         linkType
-//       }
-//     }
-//   }
-// `;
+export const SAVE_PROFILE_MUTATION = gql`
+  mutation SaveProfile($requestBody: ProfileInput!) {
+    saveProfile(requestBody: $requestBody) {
+      objectId
+      smallBio
+      location
+      skills
+      jobTitles
+      experience {
+        objectId
+        title
+        companyName
+        yearDetails
+        details
+      }
+      education {
+        objectId
+        degree
+        school
+        fieldOfStudy
+      }
+      awards {
+        objectId
+        awardTitle
+        givenBy
+        awardDetails
+      }
+      experienceLevels {
+        objectId
+        experienceLevel
+        expLevelSkill
+        skillYears
+      }
+      accomplishments {
+        objectId
+        accTitle
+        accDetails
+      }
+      passions
+      lookingFor
+      hobbies {
+        objectId
+        hobbyTitle
+        howLong
+      }
+      documents
+      country
+      languages
+      locationOptions
+      petDetails
+      bookOrQuote {
+        objectId
+        author
+        bookOrQuote
+      }
+      aboutMe
+      links {
+        objectId
+        link
+        linkType
+      }
+    }
+  }
+`;
