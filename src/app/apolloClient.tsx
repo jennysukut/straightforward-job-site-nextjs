@@ -530,18 +530,18 @@ avatar: Avatar
 
 // const mockLink = new SchemaLink({ schema: schemaWithMocks });
 
-// const httpLink = createHttpLink({
-//   uri: "/api/graphql",
-// });
+const httpLink = createHttpLink({
+  uri: "/api/graphql",
+});
 
 // Use mockLink for local testing, productionLink for production
 // const link = process.env.NODE_ENV === "development" ? mockLink : httpLink;
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+// const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-const httpLink = createHttpLink({
-  uri: apiUrl || "http://localhost:3001/graphql", // Fallback to localhost if API_URL is not set
-});
+// const httpLink = createHttpLink({
+//   uri: apiUrl || "http://localhost:3001/graphql", // Fallback to localhost if API_URL is not set
+// });
 
 const link = httpLink;
 
