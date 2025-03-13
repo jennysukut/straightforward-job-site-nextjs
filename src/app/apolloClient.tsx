@@ -528,14 +528,16 @@ const schemaWithMocks = addMocksToSchema({
   preserveResolvers: true,
 });
 
-const mockLink = new SchemaLink({ schema: schemaWithMocks });
+// const mockLink = new SchemaLink({ schema: schemaWithMocks });
 
 const httpLink = createHttpLink({
   uri: "/api/graphql",
 });
 
 // Use mockLink for local testing, productionLink for production
-const link = process.env.NODE_ENV === "development" ? mockLink : httpLink;
+// const link = process.env.NODE_ENV === "development" ? mockLink : httpLink;
+
+const link = httpLink;
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
