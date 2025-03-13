@@ -46,9 +46,7 @@ export const BUSINESS_SIGNUP_MUTATION = gql`
       contactName: $contactName
       isEarlySignup: $isEarlySignup
       referral: $referral
-    ) {
-      ID
-    }
+    )
   }
 `;
 
@@ -72,6 +70,15 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
   }
 `;
 
+export const SAVE_PROFILE_PAGE_2_MUTATION = gql`
+  mutation saveFellowProfilePage2(
+    $experience: [Experience!]!
+    $education: [Education!]!
+  ) {
+    saveFellowProfilePage1(experience: $experience, education: $education)
+  }
+`;
+
 // ALL THESE MUTATIONS ARE OBSOLETE - NEW ONES NEED TO BE WRITTEN THAT MATCH THE BACKEND MUTATIONS ON MVP-MAIN
 
 ////we'd need to update this to submit a single request body to be in line with the other requests
@@ -86,10 +93,7 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
 
 export const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      success
-      message
-    }
+    login(email: $email, password: $password)
   }
 `;
 

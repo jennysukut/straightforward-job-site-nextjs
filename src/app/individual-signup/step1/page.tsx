@@ -101,7 +101,7 @@ export default function IndividualSignupPage1() {
           profileIsBeingEdited: false,
         },
       });
-      // when successful, set the Felow and push to the signup pages
+      // when successful, set the Fellow and push to the next signup page
       console.log(
         "Details saved successfully, Details:",
         response.data.saveFellowProfilePage1,
