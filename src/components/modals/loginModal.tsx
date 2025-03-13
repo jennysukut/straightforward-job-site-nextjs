@@ -13,8 +13,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@apollo/client";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-
+import { useRouter } from "next/navigation";
 import { LOGIN } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
+
 import ErrorModal from "./errorModal";
 
 const LoginSchema = z.object({
@@ -25,9 +27,11 @@ const LoginSchema = z.object({
 type FormData = z.infer<typeof LoginSchema>;
 
 export default function LoginModal() {
-  const { replaceModalStack, showModal } = useModal();
-  const [disabledButton, setDisabledButton] = useState(false);
+  const router = useRouter();
+  const { replaceModalStack, showModal, hideModal } = useModal();
   const { textColor } = useColorOptions();
+  const { setIsLoggedIn, setAccountType } = usePageContext();
+  const [disabledButton, setDisabledButton] = useState(false);
 
   const {
     register,
@@ -47,8 +51,19 @@ export default function LoginModal() {
       const result = await login({ variables: data })
         .then((result) => {
           console.log(result);
-          // sendFellowSignupEmail(data.email, data.name, betaTester);
-          // showModal(<SignupModalIndividual2 />);
+          if (result.data.login === true) {
+            console.log("you're logged in!");
+            //SET PAGE TO LOGGED IN
+            setIsLoggedIn(true);
+
+            // Look at response and find the accountType and use that to set the accountType here
+            setAccountType("Fellow");
+
+            // THIS WORKS! We'll have to set the fellow based off the ID,
+            // redirect to the page we'd like to be at, and close the modal
+            router.push(`/profile`);
+            hideModal();
+          }
         })
         .catch((error) => {
           showModal(<ErrorModal />);
