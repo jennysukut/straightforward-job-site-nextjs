@@ -228,7 +228,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "flex-col" : ""} -mt-6 w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "flex-col" : ""} -mt-6 w-[84%] items-center gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       {applications?.length === 0 ? (
         <p className="ApplyPrompt mt-[20vh] max-w-[50vw] text-center align-middle italic text-olive">

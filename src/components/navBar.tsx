@@ -112,7 +112,6 @@ export default function NavBar() {
           // INDIVIDUAL NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              {/* {dailyLimit?.count} */}
               {/* <SiteLabel aria="dailyApps" variant="hollow" size="small">
                 daily apps: 2/5
               </SiteLabel> */}
@@ -124,7 +123,7 @@ export default function NavBar() {
                 size="extraSmall"
                 addClasses="mt-2 px-3"
               >
-                daily apps: 2/5
+                daily apps: {dailyLimit?.count}/5
               </SiteLabel>
               <Link href={"/job-board"}>
                 <NavButton

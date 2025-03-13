@@ -60,8 +60,9 @@ export default function LoginModal() {
             setAccountType("Fellow");
 
             // THIS WORKS! We'll have to set the fellow based off the ID,
-            // redirect to the page we'd like to be at, and close the modal
-            router.push(`/profile`);
+
+            // redirect to the page we'd like to be at??, and close the modal
+            // router.push(`/profile`);
             hideModal();
           }
         })

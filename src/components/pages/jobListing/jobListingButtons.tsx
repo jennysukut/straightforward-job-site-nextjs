@@ -12,6 +12,7 @@ import { useModal } from "@/contexts/ModalContext";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
@@ -74,24 +75,27 @@ const ListingTopButtons = ({
   app,
 }: any) => {
   const { showModal } = useModal();
+  const { isLoggedIn } = usePageContext();
   console.log(app);
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
-      <SiteButton
-        aria="saveJob"
-        colorScheme="d3"
-        onClick={() => saveClick(id)}
-        isSelected={jobSavedStatus || matchingIds}
-        disabled={matchingIds || !canApply}
-      >
-        {jobSavedStatus === true
-          ? "job saved"
-          : matchingIds
-            ? "applied"
-            : !canApply
+      {isLoggedIn && (
+        <SiteButton
+          aria="saveJob"
+          colorScheme="d3"
+          onClick={() => saveClick(id)}
+          isSelected={jobSavedStatus || matchingIds}
+          disabled={matchingIds || !canApply}
+        >
+          {jobSavedStatus === true
+            ? "job saved"
+            : matchingIds
               ? "applied"
-              : "save job"}
-      </SiteButton>
+              : !canApply
+                ? "applied"
+                : "save job"}
+        </SiteButton>
+      )}
       <SiteLabel
         variant="display"
         aria="appLimit"
@@ -104,7 +108,7 @@ const ListingTopButtons = ({
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
-      {matchingIds && (
+      {matchingIds && isLoggedIn && (
         <SiteButton
           variant="filled"
           colorScheme="b6"
@@ -129,6 +133,7 @@ const ListingBottomButtons = ({
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
+  const { isLoggedIn } = usePageContext();
   const continueRetract = () => {
     console.log("trying to retract this application");
     const updatedApplications = applications?.filter(
@@ -149,7 +154,7 @@ const ListingBottomButtons = ({
       >
         view company details
       </SiteButton>
-      {!matchingIds && (
+      {!matchingIds && isLoggedIn && (
         <SiteButton
           aria="publish"
           variant="filled"
@@ -169,7 +174,7 @@ const ListingBottomButtons = ({
           apply for this job
         </SiteButton>
       )}
-      {matchingIds && (
+      {matchingIds && isLoggedIn && (
         <div className="ApplicationButtons flex flex-col items-end gap-4 self-end">
           <SiteButton
             aria="publish"
@@ -189,6 +194,7 @@ const ListingBottomButtons = ({
           >
             view your application
           </SiteButton>
+
           <SiteButton
             variant="filled"
             colorScheme="f5"
