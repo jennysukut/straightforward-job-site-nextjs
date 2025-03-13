@@ -11,6 +11,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_1_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -63,6 +65,9 @@ export default function IndividualSignupPage1() {
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatar, setAvatar] = useState(avatarDetails);
+  const [saveFellowProfilePage1, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_1_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -83,23 +88,63 @@ export default function IndividualSignupPage1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
-    setFellow({
-      ...fellow,
-      smallBio: data.smallBio,
-      country: data.country,
-      location: data.location,
-      skills: skills,
-      jobTitles: jobTitles,
-      avatar: avatar?.title,
-      languages: languages,
-      profileIsBeingEdited: false,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
-      router.push("/individual-signup/step2");
+    try {
+      const response = await saveFellowProfilePage1({
+        variables: {
+          smallBio: data.smallBio,
+          country: data.country,
+          location: data.location,
+          skills: skills,
+          jobTitles: jobTitles,
+          avatar: avatar?.title,
+          languages: languages,
+          profileIsBeingEdited: false,
+        },
+      });
+      // when successful, set the Felow and push to the signup pages
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage1,
+      ); // Adjust based on your mutation response
+      setFellow({
+        ...fellow,
+        smallBio: data.smallBio,
+        country: data.country,
+        location: data.location,
+        skills: skills,
+        jobTitles: jobTitles,
+        avatar: avatar?.title,
+        languages: languages,
+        profileIsBeingEdited: false,
+      });
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step2");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
+
+  //   setFellow({
+  //     ...fellow,
+  //     smallBio: data.smallBio,
+  //     country: data.country,
+  //     location: data.location,
+  //     skills: skills,
+  //     jobTitles: jobTitles,
+  //     avatar: avatar?.title,
+  //     languages: languages,
+  //     profileIsBeingEdited: false,
+  //   });
+  //   if (fellow?.profileIsBeingEdited) {
+  //     router.push("/profile");
+  //   } else {
+  //     router.push("/individual-signup/step2");
+  //   }
+  // };
 
   // handlers for adding, updating, and deleting information tied to States
   const handleAdd = (

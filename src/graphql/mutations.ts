@@ -68,10 +68,7 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
       skills: $skills
       jobTitles: $jobTitles
       languages: $languages
-    ) {
-      success
-      message
-    }
+    )
   }
 `;
 
