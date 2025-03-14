@@ -81,7 +81,7 @@ export const SAVE_PROFILE_PAGE_2_MUTATION = gql`
     $experience: [Experience!]!
     $education: [Education!]!
   ) {
-    saveFellowProfilePage1(experience: $experience, education: $education)
+    saveFellowProfilePage2(experience: $experience, education: $education)
   }
 `;
 
