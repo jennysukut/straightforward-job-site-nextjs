@@ -51,18 +51,21 @@ export default function LoginModal() {
       const result = await login({ variables: data })
         .then((result) => {
           console.log(result);
-          if (result.data.login === true) {
-            console.log("you're logged in!");
+          if (result.data.login.includes("ROLE_FELLOW")) {
+            console.log("you're a fellow! and you're logged in!");
             //SET PAGE TO LOGGED IN
             setIsLoggedIn(true);
-
-            // Look at response and find the accountType and use that to set the accountType here
             setAccountType("Fellow");
-
-            // THIS WORKS! We'll have to set the fellow based off the ID,
-
-            // redirect to the page we'd like to be at??, and close the modal
-            // router.push(`/profile`);
+            hideModal();
+          } else if (result.data.login.includes("ROLE_BUSINESS")) {
+            console.log("you're a business! and you're logged in!");
+            //SET PAGE TO LOGGED IN
+            setIsLoggedIn(true);
+            setAccountType("Business");
+            hideModal();
+          } else if (result.data.login.includes("ROLE_ADMIN")) {
+            setIsLoggedIn(true);
+            setAccountType("Admin");
             hideModal();
           }
         })

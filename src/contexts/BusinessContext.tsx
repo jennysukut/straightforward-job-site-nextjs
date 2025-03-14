@@ -37,23 +37,24 @@ export const BusinessProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [business, setBusiness] = useState<Business | null>({
     id: "1b23i",
-    amountDue: "400",
-    billingDetails: true,
-    hasActiveJobs: true,
-    businessName: "Straightforward Job Site ",
-    avatar: "backpack",
-    email: "jenny@straightforwardjobsite.com",
-    password: "daehfjkgrnhtjelngr",
-    country: "United States",
-    location: "Montana",
-    smallBio: "The place where Hiring is Human",
-    website: "http://www.straightforwardjobsite.com",
-    profileIsBeingEdited: false,
-    businessField: "Job Board // HR Services",
-    missionVision:
-      "To use effective communication, simplicity, transparency, and human connection to make the job search and hiring process better for everyone involved.",
-    moreAboutBusiness:
-      "Started in 2024, Straightforward Job Site is a passion-based project built from volunteers who see the ability to help people in their job search by bringing more transparency and humanity to the process. We believe we can make things better by uplifting and connecting one person at a time. ",
+    avatar: "app",
+    // amountDue: "400",
+    // billingDetails: true,
+    // hasActiveJobs: true,
+    // businessName: "Straightforward Job Site ",
+    // avatar: "backpack",
+    // email: "jenny@straightforwardjobsite.com",
+    // password: "daehfjkgrnhtjelngr",
+    // country: "United States",
+    // location: "Montana",
+    // smallBio: "The place where Hiring is Human",
+    // website: "http://www.straightforwardjobsite.com",
+    // profileIsBeingEdited: false,
+    // businessField: "Job Board // HR Services",
+    // missionVision:
+    //   "To use effective communication, simplicity, transparency, and human connection to make the job search and hiring process better for everyone involved.",
+    // moreAboutBusiness:
+    //   "Started in 2024, Straightforward Job Site is a passion-based project built from volunteers who see the ability to help people in their job search by bringing more transparency and humanity to the process. We believe we can make things better by uplifting and connecting one person at a time. ",
   });
 
   return (

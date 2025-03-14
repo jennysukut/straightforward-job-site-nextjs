@@ -247,8 +247,8 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
       lastReset: dailyLimit.lastReset,
     },
     avatar: "music",
-    //   id: "testid",
-    //   name: "Jenny Sukut",
+    id: "testid",
+    name: "Test Name",
     //   email: "jennysukut@gmail.com",
     //   smallBio:
     //     "I'm a color-oriented graphic designer + web developer + serial entrepreneur. I like to learn new things and make things as beautiful and efficient and wonderful as possible!",

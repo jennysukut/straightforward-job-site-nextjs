@@ -86,7 +86,7 @@ export default function Messages() {
           height={140}
           alt="decor"
           src="/lime-flower.svg"
-          className="-mb-6 -ml-20 self-baseline"
+          className={`${!activeApp ? "-mb-4 -ml-4" : "-mb-6 -ml-20"} self-baseline`}
         ></Image>
       </div>
       <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
