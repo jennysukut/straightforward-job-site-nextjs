@@ -14,7 +14,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useState } from "react";
-
+import { useFellow } from "@/contexts/FellowContext";
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
   return (
@@ -76,11 +76,12 @@ const ListingTopButtons = ({
   app,
   hasMatchingNonNegParams,
 }: any) => {
+  const { fellow } = useFellow();
   const { showModal } = useModal();
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
-
-  console.log(matchingIds);
+  // const atAppLimit = currentJob.numberOfApps >= currentJob.applicationLimit;
+  const atDailyLimit = fellow?.dailyApplications?.count === 5;
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">
@@ -102,10 +103,14 @@ const ListingTopButtons = ({
             variant="display"
             size="extraSmall"
             aria="limit details"
-            addClasses="text-sm text-center -mt-2 -mr-1"
+            addClasses="text-sm text-center -mt-2 -mr-1 absolute"
             onClick={() => setShowLimitDetails(!showLimitDetails)}
           >
-            detail here
+            {!hasMatchingNonNegParams
+              ? "you don't match the non-negotiable parameters of this listing"
+              : atDailyLimit
+                ? "you've reached your daily app limit"
+                : "details here"}
           </SiteLabel>
         )}
         {isLoggedIn && (
