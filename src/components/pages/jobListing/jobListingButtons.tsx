@@ -88,7 +88,7 @@ const ListingTopButtons = ({
         {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
           <SiteButton
             size="smallCircle"
-            colorScheme="b3"
+            colorScheme="c4"
             variant="filled"
             aria="details"
             addClasses="text-sm text-center"
@@ -99,7 +99,7 @@ const ListingTopButtons = ({
         )}
         {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
           <SiteLabel
-            colorScheme="b3"
+            colorScheme="c4"
             variant="display"
             size="extraSmall"
             aria="limit details"

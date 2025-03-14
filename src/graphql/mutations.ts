@@ -3,7 +3,13 @@ import { gql } from "@apollo/client";
 // NEW MUTATIONS:
 // do these signup mutations return success & message or simply an Id?
 
-// removed the ID response?
+// LOGIN AND SIGNUP MUTATIONS
+export const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(email: $email, password: $password)
+  }
+`;
+
 export const FELLOW_SIGNUP_MUTATION = gql`
   mutation signupFellow(
     $email: String!
@@ -79,72 +85,62 @@ export const SAVE_PROFILE_PAGE_2_MUTATION = gql`
   }
 `;
 
-// ALL THESE MUTATIONS ARE OBSOLETE - NEW ONES NEED TO BE WRITTEN THAT MATCH THE BACKEND MUTATIONS ON MVP-MAIN
+// JOB LISTING CREATION MUTATIONS
 
-////we'd need to update this to submit a single request body to be in line with the other requests
-// export const SIGNUP_MUTATION = gql`
-//   mutation SignUp($name: String!, $email: String!, $betaTester: Boolean!) {
-//     signUp(name: $name, email: $email, betaTester: $betaTester) {
-//       success
-//       message
-//     }
-//   }
-// `;
-
-export const LOGIN = gql`
-  mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+export const CREATE_JOB_LISTING_MUTATION = gql`
+  mutation createJobListing($jobTitle: String!, $positionType: String!) {
+    createJobListing(jobTitle: $jobTitle, positionType: $positionType)
   }
 `;
 
-// export const FELLOW_SIGNUP_MUTATION = gql`
-//   mutation FellowSignUp($requestBody: FellowInput!) {
-//     signupFellow(requestBody: $requestBody)
-//   }
-// `;
+export const ADD_JOB_LISTING_DETAILS_1_MUTATION = gql`
+  mutation addJobListingDetailsStep1(
+    $id: ID!
+  $positionSummary: String!
+ $nonNegParams: [String!]!
+  ) {
+    addJobListingDetailsStep1(
+    id: $id
+  positionSummary: $positionSummary
+  nonNegParams: $nonNegParams
+  }
+`;
 
-// export const BUSINESS_SIGNUP_MUTATION = gql`
-//   mutation BusinessSignUp($requestBody: BusinessInput!) {
-//     signupBusiness(requestBody: $requestBody)
-//   }
-// `;
+// APPLICATION MUTATIONS
 
-// export const ACCEPT_FELLOW_DONATION = gql`
-//   mutation AcceptFellowDonation($donation: FellowDonationInput!) {
-//     acceptFellowDonation(donation: $donation) {
-//       id
-//       checkoutToken
-//     }
-//   }
-// `;
+export const APPLY_TO_JOB = gql`
+  mutation applyToJob($jobId: ID!, $message: String!) {
+    applyToJob(jobId: $jobId, message: $message)
+  }
+`;
 
-// export const ACCEPT_BUSINESS_DONATION = gql`
-//   mutation AcceptFellowDonation($donation: FellowDonationInput!) {
-//     acceptFellowDonation(donation: $donation) {
-//       id
-//       checkoutToken
-//     }
-//   }
-// `;
+export const KEEP_NOTES = gql`
+  mutation keepNotes($jobApplicationId: ID!, $notes: [String!]!) {
+    keepNotes(jobApplicationId: $jobApplicationId, notes: $notes)
+  }
+`;
 
-// export const COMPLETE_PAYMENT = gql`
-//   mutation CompletePayment($input: PaymentResultInput!) {
-//     completePayment(input: $input) {
-//       success
-//       message
-//       payment {
-//         id
-//         status
-//       }
-//     }
-//   }
-// `;
+export const SCHEDULE_APPOINTMENTS = gql`
+  mutation scheduleAppointments(
+    $jobApplicationId: ID!
+    $appointments: [JobInterviewAppointmentInput!]!
+  ) {
+    scheduleAppointments(
+      jobApplicationId: $jobApplicationId
+      appointments: $appointments
+    )
+  }
+`;
 
-// export const GET_CURRENT_AMOUNT = gql`
-//   query GetCurrentDonations {
-//     currentDonations
-//   }
-// `;
+// OTHER MUTATIONS
+
+export const SAVE_JOB = gql`
+  mutation saveJobListing($jobId: ID!) {
+    saveJobListing(jobId: $jobId)
+  }
+`;
+
+// GET & UPDATE PROFILE MUTATIONS
 
 export const GET_FELLOW_PROFILE = gql`
   query GetFellowProfile {
@@ -275,3 +271,64 @@ export const SAVE_PROFILE_MUTATION = gql`
     }
   }
 `;
+
+// ALL THESE MUTATIONS ARE OBSOLETE - NEW ONES NEED TO BE WRITTEN THAT MATCH THE BACKEND MUTATIONS ON MVP-MAIN
+
+////we'd need to update this to submit a single request body to be in line with the other requests
+// export const SIGNUP_MUTATION = gql`
+//   mutation SignUp($name: String!, $email: String!, $betaTester: Boolean!) {
+//     signUp(name: $name, email: $email, betaTester: $betaTester) {
+//       success
+//       message
+//     }
+//   }
+// `;
+
+// export const FELLOW_SIGNUP_MUTATION = gql`
+//   mutation FellowSignUp($requestBody: FellowInput!) {
+//     signupFellow(requestBody: $requestBody)
+//   }
+// `;
+
+// export const BUSINESS_SIGNUP_MUTATION = gql`
+//   mutation BusinessSignUp($requestBody: BusinessInput!) {
+//     signupBusiness(requestBody: $requestBody)
+//   }
+// `;
+
+// export const ACCEPT_FELLOW_DONATION = gql`
+//   mutation AcceptFellowDonation($donation: FellowDonationInput!) {
+//     acceptFellowDonation(donation: $donation) {
+//       id
+//       checkoutToken
+//     }
+//   }
+// `;
+
+// export const ACCEPT_BUSINESS_DONATION = gql`
+//   mutation AcceptFellowDonation($donation: FellowDonationInput!) {
+//     acceptFellowDonation(donation: $donation) {
+//       id
+//       checkoutToken
+//     }
+//   }
+// `;
+
+// export const COMPLETE_PAYMENT = gql`
+//   mutation CompletePayment($input: PaymentResultInput!) {
+//     completePayment(input: $input) {
+//       success
+//       message
+//       payment {
+//         id
+//         status
+//       }
+//     }
+//   }
+// `;
+
+// export const GET_CURRENT_AMOUNT = gql`
+//   query GetCurrentDonations {
+//     currentDonations
+//   }
+// `;
