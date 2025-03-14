@@ -110,11 +110,25 @@ export default function JobListing({
 
   // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
-  const canApply = false;
-  // currentJob?.numberOfApps !== currentJob?.applicationLimit &&
-  // hasMatchingNonNegParams === true &&
-  // fellow?.dailyApplications?.count !== 5 &&
-  // matchingIds;
+
+  // const canApply = true;
+
+  const canApply =
+    currentJob?.numberOfApps !== currentJob?.applicationLimit &&
+    hasMatchingNonNegParams === true &&
+    fellow?.dailyApplications?.count !== 5 &&
+    matchingIds;
+
+  console.log(
+    "number of apps:",
+    currentJob?.numberOfApps,
+    "app limit:",
+    currentJob?.applicationLimit,
+    "has matching non-neg params:",
+    hasMatchingNonNegParams,
+    "daily app count:",
+    fellow?.dailyApplications?.count,
+  );
 
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
@@ -171,6 +185,7 @@ export default function JobListing({
               currentJob={currentJob}
               canApply={canApply}
               app={currentApp ? currentApp : "no current app here"}
+              hasMatchingNonNegParams={hasMatchingNonNegParams}
             />
           )}
 

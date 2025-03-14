@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
+import { useState } from "react";
 
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
@@ -73,29 +74,58 @@ const ListingTopButtons = ({
   currentJob,
   canApply,
   app,
+  hasMatchingNonNegParams,
 }: any) => {
   const { showModal } = useModal();
   const { isLoggedIn } = usePageContext();
-  console.log(app);
+  const [showLimitDetails, setShowLimitDetails] = useState(false);
+
+  console.log(matchingIds);
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
-      {isLoggedIn && (
-        <SiteButton
-          aria="saveJob"
-          colorScheme="d3"
-          onClick={() => saveClick(id)}
-          isSelected={jobSavedStatus || matchingIds}
-          disabled={matchingIds || !canApply}
-        >
-          {jobSavedStatus === true
-            ? "job saved"
-            : matchingIds
-              ? "applied"
-              : !canApply
+      <div className="OptionalTopButtons flex items-start gap-2">
+        {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
+          <SiteButton
+            size="smallCircle"
+            colorScheme="b3"
+            variant="filled"
+            aria="details"
+            addClasses="text-sm text-center"
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            ?
+          </SiteButton>
+        )}
+        {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
+          <SiteLabel
+            colorScheme="b3"
+            variant="display"
+            size="extraSmall"
+            aria="limit details"
+            addClasses="text-sm text-center -mt-2 -mr-1"
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            detail here
+          </SiteLabel>
+        )}
+        {isLoggedIn && (
+          <SiteButton
+            aria="saveJob"
+            colorScheme="d3"
+            onClick={() => saveClick(id)}
+            isSelected={jobSavedStatus || matchingIds}
+            disabled={matchingIds || !canApply}
+          >
+            {jobSavedStatus === true
+              ? "job saved"
+              : matchingIds
                 ? "applied"
-                : "save job"}
-        </SiteButton>
-      )}
+                : !canApply
+                  ? "cannot apply"
+                  : "save job"}
+          </SiteButton>
+        )}
+      </div>
       <SiteLabel
         variant="display"
         aria="appLimit"
