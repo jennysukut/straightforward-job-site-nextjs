@@ -96,13 +96,14 @@ export const CREATE_JOB_LISTING_MUTATION = gql`
 export const ADD_JOB_LISTING_DETAILS_1_MUTATION = gql`
   mutation addJobListingDetailsStep1(
     $id: ID!
-  $positionSummary: String!
- $nonNegParams: [String!]!
+    $positionSummary: String!
+    $nonNegParams: [String!]!
   ) {
     addJobListingDetailsStep1(
-    id: $id
-  positionSummary: $positionSummary
-  nonNegParams: $nonNegParams
+      id: $id
+      positionSummary: $positionSummary
+      nonNegParams: $nonNegParams
+    )
   }
 `;
 
