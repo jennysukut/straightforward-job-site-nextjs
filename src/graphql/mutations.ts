@@ -56,6 +56,7 @@ export const BUSINESS_SIGNUP_MUTATION = gql`
   }
 `;
 
+// Here, we'll need to have the avatar sent to the database as well
 export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
   mutation saveFellowProfilePage1(
     $smallBio: String!
@@ -141,7 +142,7 @@ export const SAVE_JOB = gql`
   }
 `;
 
-// GET & UPDATE PROFILE MUTATIONS
+// GET & UPDATE PROFILE MUTATIONS - OLDER
 export const GET_FELLOW_PROFILE = gql`
   query GetFellowProfile {
     fellowProfile {

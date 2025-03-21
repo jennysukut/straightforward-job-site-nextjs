@@ -99,7 +99,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   } = useQuery(GET_PROFILE, {
     onCompleted: (data) => {
       console.log("called the GET_PROFILE query.");
-      setFellow(data.fellowProfile);
+      setFellow({ ...data.fellowProfile, avatar: "wave", name: "Test Name" });
       console.log(JSON.stringify(data.fellowProfile));
     },
   });

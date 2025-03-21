@@ -469,38 +469,40 @@ const FellowProfile: React.FC<FellowProfile> = ({
             </div>
           </InfoBox>
 
-          <InfoBox
-            variant="hollow"
-            aria="locationTypes"
-            size="profile"
-            width="medium"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/individual-signup/step4")}
-          >
-            <div className="LocationTypesInfo flex flex-col gap-2">
-              <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
-              <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
-                {currentFellow.locationOptions &&
-                  currentFellow?.locationOptions.map(
-                    (opt: any, index: number) => {
-                      return (
-                        <SiteLabel
-                          variant="display"
-                          aria="locationOption"
-                          key={index}
-                          size="medium"
-                          colorScheme={
-                            thirdColorArray[index % thirdColorArray.length]
-                          }
-                        >
-                          {opt}
-                        </SiteLabel>
-                      );
-                    },
-                  )}
+          {currentFellow?.locationOptions && (
+            <InfoBox
+              variant="hollow"
+              aria="locationTypes"
+              size="profile"
+              width="medium"
+              canEdit={canEdit}
+              editClick={() => handleEditClick("/individual-signup/step4")}
+            >
+              <div className="LocationTypesInfo flex flex-col gap-2">
+                <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
+                <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
+                  {currentFellow.locationOptions !== null &&
+                    currentFellow?.locationOptions.map(
+                      (opt: any, index: number) => {
+                        return (
+                          <SiteLabel
+                            variant="display"
+                            aria="locationOption"
+                            key={index}
+                            size="medium"
+                            colorScheme={
+                              thirdColorArray[index % thirdColorArray.length]
+                            }
+                          >
+                            {opt}
+                          </SiteLabel>
+                        );
+                      },
+                    )}
+                </div>
               </div>
-            </div>
-          </InfoBox>
+            </InfoBox>
+          )}
 
           {currentFellow?.links && currentFellow?.links.length > 0 && (
             <InfoBox

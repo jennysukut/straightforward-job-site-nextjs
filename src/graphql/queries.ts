@@ -5,6 +5,8 @@ export const GET_PROFILE = gql`
     fellowProfile {
       smallBio
       location
+      country
+      languages
       skills
       jobTitles
     }
