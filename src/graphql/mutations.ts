@@ -142,7 +142,6 @@ export const SAVE_JOB = gql`
 `;
 
 // GET & UPDATE PROFILE MUTATIONS
-
 export const GET_FELLOW_PROFILE = gql`
   query GetFellowProfile {
     fellowProfile {

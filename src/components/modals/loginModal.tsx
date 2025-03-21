@@ -16,8 +16,10 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useRouter } from "next/navigation";
 import { LOGIN } from "@/graphql/mutations";
 import { usePageContext } from "@/contexts/PageContext";
-
+import { useFellow } from "@/contexts/FellowContext";
+import { GET_PROFILE } from "@/graphql/queries";
 import ErrorModal from "./errorModal";
+import { useQuery } from "@apollo/client";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email Title Required" }),
@@ -32,6 +34,7 @@ export default function LoginModal() {
   const { textColor } = useColorOptions();
   const { setIsLoggedIn, setAccountType } = usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
+  const { setFellow } = useFellow();
 
   const {
     register,
@@ -42,36 +45,41 @@ export default function LoginModal() {
   });
 
   const [login, { loading, error }] = useMutation(LOGIN);
+  // const {
+  //   data: profileData,
+  //   loading: profileLoading,
+  //   error: profileError,
+  // } = useQuery(GET_PROFILE);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
     //Login Details Here!
     try {
-      const result = await login({ variables: data })
-        .then((result) => {
-          console.log(result);
-          if (result.data.login.includes("ROLE_FELLOW")) {
-            console.log("you're a fellow! and you're logged in!");
-            //SET PAGE TO LOGGED IN
-            setIsLoggedIn(true);
-            setAccountType("Fellow");
-            hideModal();
-          } else if (result.data.login.includes("ROLE_BUSINESS")) {
-            console.log("you're a business! and you're logged in!");
-            //SET PAGE TO LOGGED IN
-            setIsLoggedIn(true);
-            setAccountType("Business");
-            hideModal();
-          } else if (result.data.login.includes("ROLE_ADMIN")) {
-            setIsLoggedIn(true);
-            setAccountType("Admin");
-            hideModal();
-          }
-        })
-        .catch((error) => {
-          showModal(<ErrorModal />);
-        });
+      const result = await login({ variables: data });
+      console.log(result);
+      if (result.data.login.includes("ROLE_FELLOW")) {
+        console.log("you're a fellow! and you're logged in! result:", result);
+
+        // setFellow(profileData.getProfile); // Set fellow data
+        // console.log(profileData.getProfile);
+
+        //SET PAGE TO LOGGED IN
+        setIsLoggedIn(true);
+        setAccountType("Fellow");
+
+        hideModal();
+      } else if (result.data.login.includes("ROLE_BUSINESS")) {
+        console.log("you're a business! and you're logged in!");
+        //SET PAGE TO LOGGED IN
+        setIsLoggedIn(true);
+        setAccountType("Business");
+        hideModal();
+      } else if (result.data.login.includes("ROLE_ADMIN")) {
+        setIsLoggedIn(true);
+        setAccountType("Admin");
+        hideModal();
+      }
     } catch (err) {
       showModal(<ErrorModal />);
     }

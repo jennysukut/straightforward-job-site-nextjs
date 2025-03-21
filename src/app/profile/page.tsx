@@ -21,6 +21,8 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
 
+  console.log(fellow);
+
   // Set the page type to fellow or business here and render different profiles based on this
   // Once we have signup and login working, we'll be able to grab data on
   // who's logged in and use that to set these details
