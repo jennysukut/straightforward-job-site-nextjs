@@ -11,6 +11,8 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_JOB } from "@/graphql/mutations";
 
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
@@ -59,6 +61,7 @@ export default function JobListing({
   const [jobSavedStatus, setJobSavedStatus] = useState(
     fellow?.savedJobs?.includes(id),
   );
+  const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
 
   let currentApp;
   if (inAms || !isOwn) {
@@ -130,7 +133,8 @@ export default function JobListing({
   //   fellow?.dailyApplications?.count,
   // );
 
-  const saveClick = (jobId: any) => {
+  // TODO: We need an un-save operation
+  const saveClick = async (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {
       setFellow({
         ...fellow,
@@ -138,10 +142,25 @@ export default function JobListing({
       });
       setJobSavedStatus(false);
     } else {
-      setFellow({
-        ...fellow,
-        savedJobs: [...(fellow?.savedJobs || []), jobId],
-      });
+      try {
+        const response = await saveJobListing({
+          variables: {
+            jobId: jobId,
+          },
+        });
+        // when successful
+        console.log(
+          "save job successful, details:",
+          response.data.saveJobListing,
+        );
+      } catch (error) {
+        console.error("application error:", error);
+      }
+
+      // setFellow({
+      //   ...fellow,
+      //   savedJobs: [...(fellow?.savedJobs || []), jobId],
+      // });
       setJobSavedStatus(true);
     }
     hideModal();

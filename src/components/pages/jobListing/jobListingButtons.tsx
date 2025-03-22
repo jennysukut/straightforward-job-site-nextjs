@@ -15,6 +15,7 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useState } from "react";
 import { useFellow } from "@/contexts/FellowContext";
+
 const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
   return (
@@ -80,6 +81,7 @@ const ListingTopButtons = ({
   const { showModal } = useModal();
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
+
   // const atAppLimit = currentJob.numberOfApps >= currentJob.applicationLimit;
   const atDailyLimit = fellow?.dailyApplications?.count === 5;
   return (
