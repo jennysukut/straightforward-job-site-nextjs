@@ -1,18 +1,18 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers'; // Import for cookie handling
+import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers"; // Import for cookie handling
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    const accessToken = cookies().get('accessToken')?.value;
-
+    const accessToken = cookies().get("accessToken")?.value;
+    console.log(accessToken);
     const response = await fetch(process.env.API_URL as string, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-Api-Key': process.env.API_KEY as string,
-        'Authorization': accessToken as string,
+        "Content-Type": "application/json",
+        "X-Api-Key": process.env.API_KEY as string,
+        Authorization: accessToken as string,
       },
       body: JSON.stringify(body),
     });
@@ -27,26 +27,23 @@ export async function POST(request: NextRequest) {
     const authHeader = response.headers.get("authorization");
     if (authHeader) {
       // Set the access token as an HTTP-only cookie
-      cookies().set('accessToken', authHeader, {
+      cookies().set("accessToken", authHeader, {
         httpOnly: true,
         maxAge: 24 * 60 * 60, // Cookie expiration time
-        sameSite: 'strict',
+        sameSite: "strict",
       });
     }
 
     return nextResponse;
   } catch (error) {
-    console.error('Error in GraphQL proxy:', error);
+    console.error("Error in GraphQL proxy:", error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
-      { status: 500 }
+      { error: "Internal Server Error" },
+      { status: 500 },
     );
   }
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { error: 'Method not allowed' },
-    { status: 405 }
-  );
+  return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }

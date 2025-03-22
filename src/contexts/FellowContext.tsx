@@ -92,17 +92,17 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   });
 
   // Fetch fellow data using Apollo's useQuery hook
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-  } = useQuery(GET_PROFILE, {
-    onCompleted: (data) => {
-      console.log("called the GET_PROFILE query.");
-      setFellow({ ...data.fellowProfile, avatar: "wave", name: "Test Name" });
-      console.log(JSON.stringify(data.fellowProfile));
-    },
-  });
+  // const {
+  //   data: queryData,
+  //   loading: queryLoading,
+  //   error: queryError,
+  // } = useQuery(GET_PROFILE, {
+  //   onCompleted: (data) => {
+  //     console.log("called the GET_PROFILE query.");
+  //     setFellow({ ...data.fellowProfile, avatar: "wave", name: "Test Name" });
+  //     console.log(JSON.stringify(data.fellowProfile));
+  //   },
+  // });
 
   // Mutation for updating fellow data
   const [
@@ -132,14 +132,20 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   // };
 
   const getFellow = () =>
-    fellow || mutationData?.saveProfile || queryData?.fellowProfile || null;
+    fellow ||
+    mutationData?.saveProfile ||
+    // queryData?.fellowProfile ||
+    null;
 
   return (
     <FellowContext.Provider
       value={{
-        fellow: getFellow(),
-        loading: mutationLoading || queryLoading,
-        error: mutationError || queryError,
+        // fellow: getFellow(),
+        fellow: fellow,
+        loading: mutationLoading,
+        error: mutationError,
+        // loading: mutationLoading || queryLoading,
+        // error: mutationError || queryError,
         setFellow,
         dailyLimit,
         setDailyLimit,

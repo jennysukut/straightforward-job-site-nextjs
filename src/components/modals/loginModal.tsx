@@ -6,8 +6,9 @@ import * as z from "zod";
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
 import FormInputComponent from "../inputComponents/formInputComponent";
 import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
+import ErrorModal from "./errorModal";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +19,6 @@ import { LOGIN } from "@/graphql/mutations";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { GET_PROFILE } from "@/graphql/queries";
-import ErrorModal from "./errorModal";
 import { useQuery } from "@apollo/client";
 
 const LoginSchema = z.object({
@@ -32,9 +32,11 @@ export default function LoginModal() {
   const router = useRouter();
   const { replaceModalStack, showModal, hideModal } = useModal();
   const { textColor } = useColorOptions();
-  const { setIsLoggedIn, setAccountType } = usePageContext();
+  const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
+    usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
   const { setFellow } = useFellow();
+  const [fetchProfile, setFetchProfile] = useState(false);
 
   const {
     register,
@@ -45,11 +47,36 @@ export default function LoginModal() {
   });
 
   const [login, { loading, error }] = useMutation(LOGIN);
-  // const {
-  //   data: profileData,
-  //   loading: profileLoading,
-  //   error: profileError,
-  // } = useQuery(GET_PROFILE);
+
+  const {
+    data: queryData,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_PROFILE, {
+    skip: !fetchProfile,
+    onCompleted: (data) => {
+      if (accountType === "Fellow") {
+        console.log("called the GET_PROFILE query inside login Modal");
+        setFellow({
+          ...data.fellowProfile,
+          avatar: "wave",
+          name: "Test Name",
+          id: "testid",
+          dailyApplications: { count: 0, lastReset: "today" },
+        });
+        console.log(JSON.stringify(data.fellowProfile));
+      } else if (accountType === "Business") {
+        console.log("called the GET_PROFILE query inside login Modal");
+        // setBusiness({
+        //   ...data.businessProfile,
+        //   avatar: "wave",
+        //   name: "Test Name",
+        // });
+        console.log(JSON.stringify(data.businessProfile));
+      }
+      hideModal();
+    },
+  });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
@@ -57,23 +84,17 @@ export default function LoginModal() {
     //Login Details Here!
     try {
       const result = await login({ variables: data });
-      console.log(result);
+
       if (result.data.login.includes("ROLE_FELLOW")) {
         console.log("you're a fellow! and you're logged in! result:", result);
-
-        // setFellow(profileData.getProfile); // Set fellow data
-        // console.log(profileData.getProfile);
-
-        //SET PAGE TO LOGGED IN
         setIsLoggedIn(true);
         setAccountType("Fellow");
-
-        hideModal();
+        setFetchProfile(true);
       } else if (result.data.login.includes("ROLE_BUSINESS")) {
         console.log("you're a business! and you're logged in!");
-        //SET PAGE TO LOGGED IN
         setIsLoggedIn(true);
         setAccountType("Business");
+        setFetchProfile(true);
         hideModal();
       } else if (result.data.login.includes("ROLE_ADMIN")) {
         setIsLoggedIn(true);

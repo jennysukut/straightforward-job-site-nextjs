@@ -102,6 +102,9 @@ export default function JobListing({
 
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
+
+  // make sure they haven't applied before
+  //TODO: Maybe we should make sure they haven't applied some other way?
   const matchingIds =
     currentJob?.applicants &&
     !currentJob?.applicants?.some(
@@ -113,9 +116,19 @@ export default function JobListing({
 
   // const canApply = true;
   const canApply =
-    hasMatchingNonNegParams === true &&
-    fellow?.dailyApplications?.count !== 5 &&
-    matchingIds;
+    hasMatchingNonNegParams === true && fellow?.dailyApplications?.count !== 5;
+  // && matchingIds;
+
+  // console.log(
+  //   "can apply:",
+  //   canApply,
+  //   "has matching non-neg params:",
+  //   hasMatchingNonNegParams,
+  //   "has matching ids:",
+  //   matchingIds,
+  //   "daily application count:",
+  //   fellow?.dailyApplications?.count,
+  // );
 
   const saveClick = (jobId: any) => {
     if (fellow?.savedJobs?.includes(jobId)) {

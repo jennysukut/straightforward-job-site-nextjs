@@ -10,6 +10,8 @@ import { useColors } from "@/contexts/ColorContext";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 import { useRouter } from "next/navigation";
+import { useQuery } from "@apollo/client";
+import { GET_PROFILE } from "@/graphql/queries";
 export default function Profile() {
   const {
     setCurrentPage,
