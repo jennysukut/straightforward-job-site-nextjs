@@ -37,6 +37,7 @@ export default function LoginModal() {
   const [disabledButton, setDisabledButton] = useState(false);
   const { setFellow } = useFellow();
   const [fetchProfile, setFetchProfile] = useState(false);
+  const [id, setId] = useState("");
 
   const {
     register,
@@ -53,8 +54,10 @@ export default function LoginModal() {
     loading: queryLoading,
     error: queryError,
   } = useQuery(GET_PROFILE, {
+    variables: { id },
     skip: !fetchProfile,
     onCompleted: (data) => {
+      console.log("calling GET_PROFILE query");
       if (accountType === "Fellow") {
         console.log("called the GET_PROFILE query inside login Modal");
         setFellow({
@@ -85,18 +88,21 @@ export default function LoginModal() {
     try {
       const result = await login({ variables: data });
 
-      if (result.data.login.includes("ROLE_FELLOW")) {
+      console.log(result.data.login.roles);
+      if (result.data.login.roles.includes("FELLOW")) {
         console.log("you're a fellow! and you're logged in! result:", result);
+        setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFetchProfile(true);
-      } else if (result.data.login.includes("ROLE_BUSINESS")) {
+        // hideModal();
+      } else if (result.data.login.roles.includes("BUSINESS")) {
         console.log("you're a business! and you're logged in!");
         setIsLoggedIn(true);
         setAccountType("Business");
         setFetchProfile(true);
         hideModal();
-      } else if (result.data.login.includes("ROLE_ADMIN")) {
+      } else if (result.data.login.roles.includes("ADMIN")) {
         setIsLoggedIn(true);
         setAccountType("Admin");
         hideModal();
