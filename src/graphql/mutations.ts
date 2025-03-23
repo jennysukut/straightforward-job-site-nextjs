@@ -6,7 +6,10 @@ import { gql } from "@apollo/client";
 // LOGIN AND SIGNUP MUTATIONS
 export const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+    login(email: $email, password: $password) {
+      id
+      roles
+    }
   }
 `;
 
@@ -144,8 +147,8 @@ export const SAVE_JOB = gql`
 
 // GET & UPDATE PROFILE MUTATIONS - OLDER
 export const GET_FELLOW_PROFILE = gql`
-  query GetFellowProfile {
-    fellowProfile {
+  query GetFellowProfile($id: ID!) {
+    fellowProfile(id: $id) {
       objectId
       smallBio
       location

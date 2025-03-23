@@ -54,6 +54,7 @@ export default function LoginModal() {
     error: queryError,
   } = useQuery(GET_PROFILE, {
     skip: !fetchProfile,
+    variables: { id: 1 }, // Add this line
     onCompleted: (data) => {
       if (accountType === "Fellow") {
         console.log("called the GET_PROFILE query inside login Modal");
@@ -81,22 +82,23 @@ export default function LoginModal() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
+    console.log("We made it here")
     //Login Details Here!
     try {
       const result = await login({ variables: data });
 
-      if (result.data.login.includes("ROLE_FELLOW")) {
+      if (result.data.login.roles.includes("FELLOW")) {
         console.log("you're a fellow! and you're logged in! result:", result);
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFetchProfile(true);
-      } else if (result.data.login.includes("ROLE_BUSINESS")) {
+      } else if (result.data.login.roles.includes("BUSINESS")) {
         console.log("you're a business! and you're logged in!");
         setIsLoggedIn(true);
         setAccountType("Business");
         setFetchProfile(true);
         hideModal();
-      } else if (result.data.login.includes("ROLE_ADMIN")) {
+      } else if (result.data.login.roles.includes("ADMIN")) {
         setIsLoggedIn(true);
         setAccountType("Admin");
         hideModal();
