@@ -12,3 +12,20 @@ export const GET_PROFILE = gql`
     }
   }
 `;
+
+// OTHER FIELDS WE NEED FOR PROFILE
+
+// avatar
+// experience
+// education
+// awards
+// experienceLevels
+// accomplishments
+// passions
+// lookingFor
+// locationOptions
+// hobbies
+// bookOrQuote
+// petDetails
+// links
+// aboutMe

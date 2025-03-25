@@ -82,10 +82,58 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
 
 export const SAVE_PROFILE_PAGE_2_MUTATION = gql`
   mutation saveFellowProfilePage2(
-    $experience: [Experience!]!
-    $education: [Education!]!
+    $experience: [ExperienceInput!]!
+    $education: [EducationInput!]!
   ) {
     saveFellowProfilePage2(experience: $experience, education: $education)
+  }
+`;
+
+export const SAVE_PROFILE_PAGE_3_MUTATION = gql`
+  mutation saveFellowProfilePage3(
+    $awards: [AwardInput!]!
+    $experienceLevels: [ExperienceLevelInput!]!
+    $accomplishments: [AccomplishmentInput!]!
+  ) {
+    saveFellowProfilePage3(
+      awards: $awards
+      experienceLevels: $experienceLevels
+      accomplishments: $accomplishments
+    )
+  }
+`;
+
+export const SAVE_PROFILE_PAGE_4_MUTATION = gql`
+  mutation saveFellowProfilePage4(
+    $passions: String
+    $lookingFor: String
+    $locationOptions: [String!]!
+  ) {
+    saveFellowProfilePage4(
+      passions: $passions
+      lookingFor: $lookingFor
+      locationOptions: $locationOptions
+    )
+  }
+`;
+
+export const SAVE_PROFILE_PAGE_5_MUTATION = gql`
+  mutation saveFellowProfilePage5(
+    $hobbies: [HobbyInput!]!
+    $bookOrQuote: [BookOrQuoteInput!]!
+    $petDetails: String
+  ) {
+    saveFellowProfilePage5(
+      hobbies: $hobbies
+      bookOrQuote: $bookOrQuote
+      petDetails: $petDetails
+    )
+  }
+`;
+
+export const SAVE_PROFILE_PAGE_6_MUTATION = gql`
+  mutation saveFellowProfilePage6($links: [LinkInput!]!, $aboutMe: String) {
+    saveFellowProfilePage6(links: $links, aboutMe: $aboutMe)
   }
 `;
 

@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_5_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
@@ -40,6 +42,9 @@ export default function IndividualSignupPage5() {
   const [petDetails, setPetDetails] = useState(fellow?.petDetails || "");
   const [hobbyCounter, setHobbyCounter] = useState(1);
   const [bookOrQuoteCounter, setBookOrQuoteCounter] = useState(1);
+  const [saveFellowProfilePage5, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_5_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -105,17 +110,35 @@ export default function IndividualSignupPage5() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setFellow({
-      ...fellow,
-      profileIsBeingEdited: false,
-      hobbies: hobbies,
-      bookOrQuote: bookOrQuote,
-      petDetails: data.petDetails,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
-      router.push("/individual-signup/step6");
+
+    try {
+      const response = await saveFellowProfilePage5({
+        variables: {
+          hobbies: hobbies,
+          bookOrQuote: bookOrQuote,
+          petDetails: data.petDetails,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage5,
+      );
+
+      setFellow({
+        ...fellow,
+        profileIsBeingEdited: false,
+        hobbies: hobbies,
+        bookOrQuote: bookOrQuote,
+        petDetails: data.petDetails,
+      });
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step6");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 

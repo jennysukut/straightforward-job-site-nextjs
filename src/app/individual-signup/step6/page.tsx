@@ -10,6 +10,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_6_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
@@ -39,6 +41,9 @@ export default function IndividualSignupPage6() {
   const [links, setLinks] = useState<any[]>([]);
   const [linkCounter, setLinkCounter] = useState(1);
   const [aboutMe, setAboutMe] = useState("");
+  const [saveFellowProfilePage6, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_6_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -100,22 +105,40 @@ export default function IndividualSignupPage6() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    if (
-      fellow?.profileIsBeingEdited === false &&
-      fellow?.addMoreInfo === false
-    ) {
-      showModal(<SubscriptionModal />);
+
+    try {
+      const response = await saveFellowProfilePage6({
+        variables: {
+          links: links,
+          aboutMe: data.aboutMe,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage6,
+      );
+
+      // if (
+      //   fellow?.profileIsBeingEdited === false &&
+      //   fellow?.addMoreInfo === false
+      // ) {
+      //   showModal(<SubscriptionModal />);
+      // }
+
+      setAccountType("Fellow");
+      setIsLoggedIn(true);
+      setFellow({
+        ...fellow,
+        links: links,
+        aboutMe: data.aboutMe,
+        profileIsBeingEdited: false,
+        addMoreInfo: false,
+      });
+      router.push("/profile");
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
-    setAccountType("Fellow");
-    setIsLoggedIn(true);
-    setFellow({
-      ...fellow,
-      links: links,
-      aboutMe: data.aboutMe,
-      profileIsBeingEdited: false,
-      addMoreInfo: false,
-    });
-    router.push("/profile");
   };
 
   // Setting Details on page from fellowContext

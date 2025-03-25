@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_3_MUTATION } from "@/graphql/mutations";
 
 import Image from "next/image";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
@@ -27,6 +29,9 @@ export default function IndividualSignupPage3() {
   const [awardCounter, setAwardCounter] = useState(1);
   const [experienceLevelCounter, setExperienceLevelCounter] = useState(1);
   const [accomplishmentCounter, setAccomplishmentCounter] = useState(1);
+  const [saveFellowProfilePage3, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_3_MUTATION,
+  );
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -89,18 +94,35 @@ export default function IndividualSignupPage3() {
     });
   };
 
-  const handleSubmit = () => {
-    setFellow({
-      ...fellow,
-      awards: awards,
-      experienceLevels: experienceLevels,
-      accomplishments: accomplishments,
-      profileIsBeingEdited: false,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
-      router.push("/individual-signup/step4");
+  const handleSubmit = async () => {
+    try {
+      const response = await saveFellowProfilePage3({
+        variables: {
+          awards: awards,
+          experienceLevels: experienceLevels,
+          accomplishments: accomplishments,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage3,
+      );
+
+      setFellow({
+        ...fellow,
+        awards: awards,
+        experienceLevels: experienceLevels,
+        accomplishments: accomplishments,
+        profileIsBeingEdited: false,
+      });
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step4");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
