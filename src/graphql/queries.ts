@@ -9,6 +9,57 @@ export const GET_PROFILE = gql`
       languages
       skills
       jobTitles
+      experience {
+        id
+        title
+        companyName
+        yearDetails
+        details
+      }
+      education {
+        id
+        degree
+        school
+        fieldOfStudy
+      }
+      awards {
+        id
+        awardTitle
+        givenBy
+        awardDetails
+      }
+
+      experienceLevels {
+        id
+        experienceLevel
+        expLevelSkill
+        skillYears
+      }
+      accomplishments {
+        id
+        accTitle
+        accDetails
+      }
+      passions
+      lookingFor
+      locationOptions
+      hobbies {
+        id
+        hobbyTitle
+        howLong
+      }
+      bookOrQuote {
+        id
+        bookOrQuote
+        author
+      }
+      petDetails
+      links {
+        id
+        linkType
+        link
+      }
+      aboutMe
     }
   }
 `;
