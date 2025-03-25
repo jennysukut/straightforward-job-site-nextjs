@@ -1,17 +1,19 @@
 "use client";
 
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useColors } from "@/contexts/ColorContext";
-import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
-import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/queries";
+
+import React from "react";
+import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
+import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
+
 export default function Profile() {
   const {
     setCurrentPage,
@@ -23,7 +25,7 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const router = useRouter();
-  console.log(fellow);
+  const [fetchProfile, setFetchProfile] = useState(false);
 
   // Set the page type to fellow or business here and render different profiles based on this
   // Once we have signup and login working, we'll be able to grab data on
@@ -35,6 +37,7 @@ export default function Profile() {
       if (accountType === "Fellow") {
         setPageType("Fellow");
         setCurrentPage("fellowProfile");
+        // Do we put the GET_PROFILE query here to populate the details?
       } else if (accountType === "Business") {
         setPageType("Business");
         setCurrentPage("businessProfile");

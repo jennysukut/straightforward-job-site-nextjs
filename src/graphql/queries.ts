@@ -28,7 +28,6 @@ export const GET_PROFILE = gql`
         givenBy
         awardDetails
       }
-
       experienceLevels {
         id
         experienceLevel
@@ -60,6 +59,8 @@ export const GET_PROFILE = gql`
         link
       }
       aboutMe
+      avatar
+      name
     }
   }
 `;

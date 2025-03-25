@@ -68,6 +68,7 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
     $skills: [String!]!
     $jobTitles: [String!]!
     $languages: [String!]!
+    $avatar: String!
   ) {
     saveFellowProfilePage1(
       smallBio: $smallBio
@@ -76,6 +77,7 @@ export const SAVE_PROFILE_PAGE_1_MUTATION = gql`
       skills: $skills
       jobTitles: $jobTitles
       languages: $languages
+      avatar: $avatar
     )
   }
 `;

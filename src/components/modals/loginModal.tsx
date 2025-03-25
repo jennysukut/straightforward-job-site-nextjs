@@ -62,9 +62,6 @@ export default function LoginModal() {
         console.log("called the GET_PROFILE query inside login Modal");
         setFellow({
           ...data.fellowProfile,
-          avatar: "wave",
-          name: "Test Name",
-          id: "testid",
           dailyApplications: { count: 0, lastReset: "today" },
         });
         console.log(JSON.stringify(data.fellowProfile));

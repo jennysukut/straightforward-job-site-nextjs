@@ -65,6 +65,9 @@ export default function IndividualSignupPage1() {
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatar, setAvatar] = useState(avatarDetails);
+  const [currentAvatar, setCurrentAvatar] = useState(
+    fellow?.avatar || "groovy",
+  );
   const [saveFellowProfilePage1, { loading, error }] = useMutation(
     SAVE_PROFILE_PAGE_1_MUTATION,
   );
@@ -85,6 +88,8 @@ export default function IndividualSignupPage1() {
     },
   });
 
+  console.log("current Avatar:", currentAvatar);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
@@ -96,7 +101,7 @@ export default function IndividualSignupPage1() {
           location: data.location,
           skills: skills,
           jobTitles: jobTitles,
-          avatar: avatar?.title,
+          avatar: avatar?.title || "checks",
           languages: languages,
           profileIsBeingEdited: false,
         },
@@ -113,7 +118,7 @@ export default function IndividualSignupPage1() {
         location: data.location,
         skills: skills,
         jobTitles: jobTitles,
-        avatar: avatar?.title,
+        avatar: currentAvatar,
         languages: languages,
         profileIsBeingEdited: false,
       });
@@ -164,6 +169,8 @@ export default function IndividualSignupPage1() {
     });
   };
 
+  console.log(avatar);
+
   const handleDelete = (
     type: "skills" | "jobTitles" | "languages",
     item: any,
@@ -196,6 +203,12 @@ export default function IndividualSignupPage1() {
     setValue("jobTitles", fellow?.jobTitles || []);
     setValue("languages", fellow?.languages || []);
   }, [fellow, setValue]);
+
+  useEffect(() => {
+    if (avatar) {
+      setCurrentAvatar(avatar.title);
+    }
+  }, [avatar]);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
