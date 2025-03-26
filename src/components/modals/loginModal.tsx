@@ -18,8 +18,9 @@ import { useRouter } from "next/navigation";
 import { LOGIN } from "@/graphql/mutations";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
-import { GET_PROFILE } from "@/graphql/queries";
+import { GET_PROFILE, GET_BUSINESS_PROFILE } from "@/graphql/queries";
 import { useQuery } from "@apollo/client";
+import { useBusiness } from "@/contexts/BusinessContext";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email Title Required" }),
@@ -34,10 +35,13 @@ export default function LoginModal() {
   const { textColor } = useColorOptions();
   const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
     usePageContext();
-  const [disabledButton, setDisabledButton] = useState(false);
   const { setFellow } = useFellow();
-  const [fetchProfile, setFetchProfile] = useState(false);
+  const { setBusiness } = useBusiness();
+  const [disabledButton, setDisabledButton] = useState(false);
   const [id, setId] = useState("");
+  const [fetchProfileType, setFetchProfileType] = useState<
+    "fellow" | "business" | null
+  >(null);
 
   const {
     register,
@@ -53,56 +57,51 @@ export default function LoginModal() {
     data: queryData,
     loading: queryLoading,
     error: queryError,
-  } = useQuery(GET_PROFILE, {
-    variables: { id },
-    skip: !fetchProfile,
-    onCompleted: (data) => {
-      console.log("calling GET_PROFILE query");
-      if (accountType === "Fellow") {
-        console.log("called the GET_PROFILE query inside login Modal");
-        setFellow({
-          ...data.fellowProfile,
-          dailyApplications: { count: 0, lastReset: "today" },
-        });
-        console.log(JSON.stringify(data.fellowProfile));
-      } else if (accountType === "Business") {
-        console.log("called the GET_PROFILE query inside login Modal");
-        // setBusiness({
-        //   ...data.businessProfile,
-        //   avatar: "wave",
-        //   name: "Test Name",
-        // });
-        console.log(JSON.stringify(data.businessProfile));
-      }
-      hideModal();
+  } = useQuery(
+    fetchProfileType === "fellow" ? GET_PROFILE : GET_BUSINESS_PROFILE,
+    {
+      variables: { id },
+      skip: fetchProfileType === null,
+      onCompleted: (data) => {
+        console.log("calling GET_PROFILE query");
+        if (fetchProfileType === "fellow") {
+          console.log("called the GET_PROFILE query inside login Modal");
+          setFellow({
+            ...data.fellowProfile,
+            dailyApplications: { count: 0, lastReset: "today" },
+          });
+          console.log(JSON.stringify(data.fellowProfile));
+        } else if (fetchProfileType === "business") {
+          console.log(
+            "called the GET_BUSINESS_PROFILE query inside login Modal",
+          );
+          setBusiness(data.businessProfile);
+          console.log(JSON.stringify(data.businessProfile));
+        }
+        hideModal();
+      },
     },
-  });
+  );
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
-    //Login Details Here!
     try {
       const result = await login({ variables: data });
 
-      console.log(result.data.login.roles);
       if (result.data.login.roles.includes("FELLOW")) {
-        console.log("you're a fellow! and you're logged in! result:", result);
         setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Fellow");
-        setFetchProfile(true);
-        // hideModal();
+        setFetchProfileType("fellow");
       } else if (result.data.login.roles.includes("BUSINESS")) {
-        console.log("you're a business! and you're logged in!");
+        setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Business");
-        setFetchProfile(true);
-        hideModal();
+        setFetchProfileType("business");
       } else if (result.data.login.roles.includes("ADMIN")) {
         setIsLoggedIn(true);
         setAccountType("Admin");
-        hideModal();
       }
     } catch (err) {
       showModal(<ErrorModal />);

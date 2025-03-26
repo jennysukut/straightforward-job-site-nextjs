@@ -139,6 +139,40 @@ export const SAVE_PROFILE_PAGE_6_MUTATION = gql`
   }
 `;
 
+// BUSINESS PROFILE MUTATIONS
+
+export const SAVE_BUSINESS_PROFILE_PAGE_1_MUTATION = gql`
+  mutation saveBusinessProfilePage1(
+    $smallBio: String!
+    $country: String!
+    $location: String!
+    $website: Url!
+    $avatar: String
+  ) {
+    saveBusinessProfilePage1(
+      smallBio: $smallBio
+      country: $country
+      location: $location
+      website: $website
+      avatar: $avatar
+    )
+  }
+`;
+
+export const SAVE_BUSINESS_PROFILE_PAGE_2_MUTATION = gql`
+  mutation saveBusinessProfilePage2(
+    $businessField: String!
+    $missionVision: String!
+    $moreAboutBusiness: String!
+  ) {
+    saveBusinessProfilePage2(
+      businessField: $businessField
+      missionVision: $missionVision
+      moreAboutBusiness: $moreAboutBusiness
+    )
+  }
+`;
+
 // JOB LISTING CREATION MUTATIONS
 
 export const CREATE_JOB_LISTING_MUTATION = gql`
