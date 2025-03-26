@@ -10,6 +10,8 @@ import { ParamsList } from "@/lib/paramsList";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_1_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -38,6 +40,9 @@ export default function PostAJobStep1() {
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [nonNegParams, setNonNegParams] = useState<string[]>([]);
+  const [addJobListingDetailsStep1, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_1_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -52,19 +57,40 @@ export default function PostAJobStep1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setJob({
-      ...job,
-      positionSummary: data.positionSummary,
-      nonNegParams: nonNegParams,
-      location: business?.location,
-      businessName: business?.businessName,
-      country: business?.country,
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step2");
+
+    try {
+      const response = await addJobListingDetailsStep1({
+        variables: {
+          id: job?.jobId,
+          positionSummary: data.positionSummary,
+          nonNegParams: nonNegParams,
+          location: business?.location,
+          businessName: business?.businessName,
+          country: business?.country,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep1,
+      );
+      setJob({
+        ...job,
+        positionSummary: data.positionSummary,
+        nonNegParams: nonNegParams,
+        location: business?.location,
+        businessName: business?.businessName,
+        country: business?.country,
+        // jobIsBeingEdited: false,
+      });
+      if (job?.jobIsBeingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step2");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
