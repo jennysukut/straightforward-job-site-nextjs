@@ -10,6 +10,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_BUSINESS_PROFILE_PAGE_1_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -42,12 +45,16 @@ export default function BusinessSignupPage1() {
   const { showModal } = useModal();
   const { textColor, titleColor } = useColorOptions();
   const { colorOption } = useColors();
+  const { setIsLoggedIn } = usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const avatarDetails = avatarOptions.find(
     (option) => option.title === business?.avatar,
   );
   const [avatar, setAvatar] = useState(avatarDetails);
+  const [saveBusinessProfilePage1, { loading, error }] = useMutation(
+    SAVE_BUSINESS_PROFILE_PAGE_1_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -65,19 +72,40 @@ export default function BusinessSignupPage1() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     console.log(data);
-    setBusiness({
-      ...business,
-      country: data.country,
-      location: data.location,
-      smallBio: data.smallBio,
-      website: data.website,
-      avatar: avatar?.title,
-      profileIsBeingEdited: false,
-    });
-    if (business?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
-      router.push("/business-signup/step2");
+
+    try {
+      const response = await saveBusinessProfilePage1({
+        variables: {
+          country: data.country,
+          location: data.location,
+          smallBio: data.smallBio,
+          website: data.website,
+          avatar: avatar?.title,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveBusinessProfilePage1,
+      ); // Adjust based on your mutation response
+      setBusiness({
+        ...business,
+        country: data.country,
+        location: data.location,
+        smallBio: data.smallBio,
+        website: data.website,
+        avatar: avatar?.title,
+        profileIsBeingEdited: false,
+      });
+      setIsLoggedIn(true);
+      if (business?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/business-signup/step2");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
