@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_2_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -43,6 +45,9 @@ export default function PostAJobStep2() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [locationOption, setLocationOption] = useState<string[]>([]);
   const [payOption, setPayOption] = useState<string[]>([]);
+  const [addJobListingDetailsStep2, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_2_MUTATION,
+  );
   const {
     handleSubmit,
     setValue,
@@ -105,27 +110,73 @@ export default function PostAJobStep2() {
         return;
       }
     }
-
+    console.log(data);
     setDisabledButton(true);
-    setJob({
-      ...job,
-      payDetails: {
-        payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
-        payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
-        payOption: String(payOption),
-      },
-      locationOption: data.locationOption,
-      idealCandidate: data.idealCandidate,
-      hybridDetails: {
-        daysInOffice: data.daysInOffice,
-        daysRemote: data.daysRemote,
-      },
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step3");
+
+    const payscaleMin = Number(data.payscaleMin.replace(/[^0-9.-]+/g, ""));
+    const payscaleMax = Number(data.payscaleMax.replace(/[^0-9.-]+/g, ""));
+
+    // New validation to ensure payscaleMin and payscaleMax are valid numbers
+    if (
+      isNaN(payscaleMin) ||
+      isNaN(payscaleMax) ||
+      payscaleMin === 0 ||
+      payscaleMax === 0
+    ) {
+      setError("payscaleMin", {
+        type: "manual",
+        message: "Payscale values must be valid numbers greater than zero.",
+      });
+      setDisabledButton(false); // Re-enable the button
+      return;
+    }
+
+    console.log("Payscale Min and Max:", payscaleMin, payscaleMax);
+    try {
+      const response = await addJobListingDetailsStep2({
+        variables: {
+          id: job?.jobId,
+          payDetails: {
+            payscaleMin: payscaleMin,
+            payscaleMax: payscaleMax,
+            payOption: String(payOption),
+          },
+          locationOption: data.locationOption,
+          idealCandidate: data.idealCandidate,
+          hybridDetails: {
+            daysInOffice: data.daysInOffice,
+            daysRemote: data.daysRemote,
+          },
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep2,
+      );
+      setJob({
+        ...job,
+        payDetails: {
+          payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
+          payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
+          payOption: String(payOption),
+        },
+        locationOption: data.locationOption,
+        idealCandidate: data.idealCandidate,
+        hybridDetails: {
+          daysInOffice: data.daysInOffice,
+          daysRemote: data.daysRemote,
+        },
+        // jobIsBeingEdited: false,
+      });
+      if (job?.jobIsBeingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step3");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 

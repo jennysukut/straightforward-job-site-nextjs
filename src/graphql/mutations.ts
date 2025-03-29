@@ -195,6 +195,69 @@ export const ADD_JOB_LISTING_DETAILS_1_MUTATION = gql`
   }
 `;
 
+export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
+  mutation addJobListingDetailsStep2(
+    $id: ID!
+    $payscaleMin: Float!
+    $payscaleMax: Float!
+    $payOption: String!
+    $locationOption: String!
+    $idealCandidate: String!
+    $daysInOffice: String!
+    $daysRemote: String!
+  ) {
+    addJobListingDetailsStep2(
+      id: $id
+      payscaleMin: $payscaleMin
+      payscaleMax: $payscaleMax
+      payOption: $payOption
+      locationOption: $locationOption
+      idealCandidate: $idealCandidate
+      daysInOffice: $daysInOffice
+      daysRemote: $daysRemote
+    )
+  }
+`;
+
+export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
+  mutation addJobListingDetailsStep3(
+    $id: ID!
+    $experienceLevel: [String!]!
+    $preferredSkills: [String!]!
+    $moreAboutPosition: String
+  ) {
+    addJobListingDetailsStep3(
+      id: $id
+      experienceLevel: $experienceLevel
+      preferredSkills: $preferredSkills
+      moreAboutPosition: $moreAboutPosition
+    )
+  }
+`;
+
+export const ADD_JOB_LISTING_DETAILS_4_MUTATION = gql`
+  mutation addJobListingDetailsStep4(
+    $id: ID!
+    $responsibilities: [String!]!
+    $perks: [String!]!
+  ) {
+    addJobListingDetailsStep3(
+      id: $id
+      responsibilities: $responsibilities
+      perks: $perks
+    )
+  }
+`;
+
+export const ADD_JOB_LISTING_DETAILS_5_MUTATION = gql`
+  mutation addJobListingDetailsStep5(
+    $id: ID!
+    $interviewProcess: [InterviewProcessInput!]!
+  ) {
+    addJobListingDetailsStep3(id: $id, interviewProcess: $interviewProcess)
+  }
+`;
+
 // APPLICATION MUTATIONS
 
 export const APPLY_TO_JOB = gql`

@@ -63,6 +63,7 @@ export default function JobListing({
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
 
+  // when we go through the ID, we'll simply be able to grab the specific application
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
@@ -314,6 +315,7 @@ export default function JobListing({
             <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
           )}
 
+          {/* TODO: Finish these business Buttons */}
           {/* business buttons - in ams */}
           {isOwn && inAms && (
             <div className="ListingAmsBottomButtons flex flex-col items-end gap-3 self-end">
