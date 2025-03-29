@@ -88,7 +88,11 @@ export default function PostAJobModal() {
         response.data.createJobListing,
       );
 
-      setJob({ jobId: response.data.createJobListing });
+      setJob({
+        jobId: response.data.createJobListing,
+        jobTitle: data.jobTitle,
+        positionType: data.positionType,
+      });
 
       router.push("/post-a-job/step1");
       setTimeout(() => {

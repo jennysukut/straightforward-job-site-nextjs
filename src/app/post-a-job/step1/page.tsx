@@ -129,7 +129,7 @@ export default function PostAJobStep1() {
     >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${textColor}`}>
-          {job?.jobTitle || "Test Job Title"}
+          {job?.jobTitle}
         </h1>
         {job?.positionType && (
           <p className="PositionTypeDetails -mt-8 pl-8 italic">

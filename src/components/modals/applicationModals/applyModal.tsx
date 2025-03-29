@@ -28,7 +28,8 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
     try {
       const response = await applyToJob({
         variables: {
-          jobId: jobId,
+          // jobId: jobId,
+          jobId: 1,
           message: "test message goes here",
         },
       });

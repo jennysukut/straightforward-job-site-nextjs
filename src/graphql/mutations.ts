@@ -238,10 +238,10 @@ export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
 export const ADD_JOB_LISTING_DETAILS_4_MUTATION = gql`
   mutation addJobListingDetailsStep4(
     $id: ID!
-    $responsibilities: [String!]!
+    $responsibilities: [ResponsibilityInput!]!
     $perks: [String!]!
   ) {
-    addJobListingDetailsStep3(
+    addJobListingDetailsStep4(
       id: $id
       responsibilities: $responsibilities
       perks: $perks
@@ -254,7 +254,7 @@ export const ADD_JOB_LISTING_DETAILS_5_MUTATION = gql`
     $id: ID!
     $interviewProcess: [InterviewProcessInput!]!
   ) {
-    addJobListingDetailsStep3(id: $id, interviewProcess: $interviewProcess)
+    addJobListingDetailsStep5(id: $id, interviewProcess: $interviewProcess)
   }
 `;
 

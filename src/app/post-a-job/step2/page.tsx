@@ -59,6 +59,7 @@ export default function PostAJobStep2() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   console.log(payOption);
 
   // handlers for adding, updating, and deleting details
@@ -136,17 +137,13 @@ export default function PostAJobStep2() {
       const response = await addJobListingDetailsStep2({
         variables: {
           id: job?.jobId,
-          payDetails: {
-            payscaleMin: payscaleMin,
-            payscaleMax: payscaleMax,
-            payOption: String(payOption),
-          },
+          payscaleMin: payscaleMin,
+          payscaleMax: payscaleMax,
+          payOption: String(payOption),
           locationOption: data.locationOption,
           idealCandidate: data.idealCandidate,
-          hybridDetails: {
-            daysInOffice: data.daysInOffice,
-            daysRemote: data.daysRemote,
-          },
+          daysInOffice: data.daysInOffice || "",
+          daysRemote: data.daysRemote || "",
         },
       });
 
@@ -176,7 +173,9 @@ export default function PostAJobStep2() {
       }
     } catch (error) {
       console.error("Signup error:", error);
-      // Optionally, you can set an error state here to display to the user
+      setErrorMessage(
+        "An error occurred while saving the job listing. Please try again.",
+      );
     }
   };
 
@@ -198,9 +197,10 @@ export default function PostAJobStep2() {
     <div
       className={`PostAJobPage2 flex w-[95vw] max-w-[1600px] ${textColor} flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
     >
+      {errorMessage && <p className="-my-3 text-orange">{errorMessage}</p>}
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${titleColor}`}>
-          {job?.jobTitle || "Test Job Title"}
+          {job?.jobTitle}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           Payscale, Location, and Ideal Candidate Details:
