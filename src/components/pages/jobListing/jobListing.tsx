@@ -62,13 +62,20 @@ type jobListing = {
     step: string;
     details: string;
   }>;
-  businessName: string;
   numberOfApps: number;
   applicationLimit: number;
   applicants: Array<string>;
   applications: Array<string>;
   location: string;
   country: string;
+  business: {
+    id: string;
+    name: string;
+    businessProfile: {
+      country: string;
+      location: string;
+    };
+  };
 };
 export default function JobListing({
   isOwn,
@@ -127,17 +134,25 @@ export default function JobListing({
         responsibilities: data.jobListing.responsibilities,
         perks: data.jobListing.perks,
         interviewProcess: data.jobListing.interviewProcess,
-        businessName: data.jobListing.businessName,
         applications: [],
         applicants: [],
         applicationLimit: 25,
         numberOfApps: 0,
         location: "Somewhere",
         country: "United States",
+        business: {
+          id: data.jobListing.business?.id,
+          name: data.jobListing.business?.name,
+          businessProfile: {
+            country: data.jobListing.business?.businessProfile?.country,
+            location: data.jobListing.business?.businessProfile?.location,
+          },
+        },
       });
       renderJobListingRightColumn();
       renderJobListingLeftColumn();
       setLoadingData(false);
+      console.log(currentJob.business.name);
     },
   });
 
@@ -365,7 +380,7 @@ export default function JobListing({
                 <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
                 <Link href={"/profile"}>
                   <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
-                    {currentJob?.businessName}
+                    {currentJob?.business?.name}
                   </p>
                 </Link>
               </div>
@@ -398,7 +413,8 @@ export default function JobListing({
         >
           <div className="LocationPayDetailsInfo flex flex-col gap-4">
             <h2 className="LocationPayDetailsTitle mb-4 pl-2">
-              {`Location:`} {currentJob?.location}, {currentJob?.country}
+              {`Location:`} {currentJob?.business?.businessProfile?.location},{" "}
+              {currentJob?.business?.businessProfile?.country}
             </h2>
             {currentJob?.locationOption && (
               <h2 className="LocationOptionTitle mb-4 pl-2">
@@ -556,13 +572,19 @@ export default function JobListing({
               <ListingTopButtons
                 id={id}
                 saveClick={saveClick}
-                jobSavedStatus={jobSavedStatus}
-                matchingIds={matchingIds}
-                appNumber={appNumber}
+                // jobSavedStatus={jobSavedStatus}
+                // matchingIds={matchingIds}
+                // appNumber={appNumber}
+                // currentJob={currentJob}
+                // canApply={canApply}
+                // hasMatchingNonNegParams={hasMatchingNonNegParams}
+                hasMatchingNonNegParams={true}
+                jobSavedStatus={false}
+                matchingIds={false}
+                appNumber={0}
                 currentJob={currentJob}
-                canApply={canApply}
+                canApply={true}
                 app={currentApp ? currentApp : "no current app here"}
-                hasMatchingNonNegParams={hasMatchingNonNegParams}
               />
             )}
 

@@ -204,92 +204,39 @@ export default function JobBoard() {
 
   // rendering job listings depending on the input and filters
   const renderJobListings = () => {
-    const activeJobListings = jobListingsArray.filter((job: any) => {
-      const activeJob =
-        job.numberOfApps !== job.applicationLimit &&
-        !job.applicants?.includes(fellow?.id);
-      return activeJob;
-    });
+    // const activeJobListings = jobListingsArray.filter((job: any) => {
+    //   const activeJob =
+    //     job.numberOfApps !== job.applicationLimit &&
+    //     !job.applicants?.includes(fellow?.id);
+    //   return activeJob;
+    // });
 
-    const pendingJobListings = jobListingsArray.filter((job: any) => {
-      const pendingJob =
-        job.job?.numberOfApps === job.job?.applicationLimit ||
-        job.job?.applicants?.includes(fellow?.id);
-      return pendingJob;
-    });
+    // const pendingJobListings = jobListingsArray.filter((job: any) => {
+    //   const pendingJob =
+    //     job.job?.numberOfApps === job.job?.applicationLimit ||
+    //     job.job?.applicants?.includes(fellow?.id);
+    //   return pendingJob;
+    // });
 
-    const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
-      const activeJob =
-        job.job?.numberOfApps !== job.job?.applicationLimit &&
-        !job.job?.applicants?.includes(fellow?.id);
-      return activeJob;
-      // return job.job?.numberOfApps !== job.job?.applicationLimit;
-    });
+    // const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
+    //   const activeJob =
+    //     job.job?.numberOfApps !== job.job?.applicationLimit &&
+    //     !job.job?.applicants?.includes(fellow?.id);
+    //   return activeJob;
+    //   // return job.job?.numberOfApps !== job.job?.applicationLimit;
+    // });
 
-    const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
-      const pendingJob =
-        job.job?.numberOfApps === job.job?.applicationLimit ||
-        job.job?.applicants?.includes(fellow?.id);
-      return pendingJob;
-      // return job.job?.numberOfApps === job.job?.applicationLimit;
-    });
+    // const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
+    //   const pendingJob =
+    //     job.job?.numberOfApps === job.job?.applicationLimit ||
+    //     job.job?.applicants?.includes(fellow?.id);
+    //   return pendingJob;
+    //   // return job.job?.numberOfApps === job.job?.applicationLimit;
+    // });
 
     if (inputValue.length < 3 && filters.length === 0 && !viewPendingJobs) {
-      return activeJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (
-      inputValue.length < 3 &&
-      filters.length === 0 &&
-      viewPendingJobs
-    ) {
-      return pendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (filters.length > 0 && !viewPendingJobs) {
-      return filteredActiveJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (filters.length > 0 && viewPendingJobs) {
-      return filteredPendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (viewPendingJobs) {
-      return filteredPendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else {
-      return filteredActiveJobListings?.map((job: any, index: number) => (
+      // return activeJobListings?.map((job: any, index: number) => (
+      return jobListingsArray?.map((job: any, index: number) => (
         <JobPost
           job={job}
           index={index}
@@ -299,6 +246,61 @@ export default function JobBoard() {
         />
       ));
     }
+    // else if (
+    //   inputValue.length < 3 &&
+    //   filters.length === 0 &&
+    //   viewPendingJobs
+    // ) {
+    //   return pendingJobListings?.map((job: any, index: number) => (
+    //     <JobPost
+    //       job={job}
+    //       index={index}
+    //       colorArray={colorArray}
+    //       key={job.jobId}
+    //       saveClick={() => saveClick(job.jobId)}
+    //     />
+    //   ));
+    // } else if (filters.length > 0 && !viewPendingJobs) {
+    //   return filteredActiveJobListings?.map((job: any, index: number) => (
+    //     <JobPost
+    //       job={job}
+    //       index={index}
+    //       colorArray={colorArray}
+    //       key={job.jobId}
+    //       saveClick={() => saveClick(job.jobId)}
+    //     />
+    //   ));
+    // } else if (filters.length > 0 && viewPendingJobs) {
+    //   return filteredPendingJobListings?.map((job: any, index: number) => (
+    //     <JobPost
+    //       job={job}
+    //       index={index}
+    //       colorArray={colorArray}
+    //       key={job.jobId}
+    //       saveClick={() => saveClick(job.jobId)}
+    //     />
+    //   ));
+    // } else if (viewPendingJobs) {
+    //   return filteredPendingJobListings?.map((job: any, index: number) => (
+    //     <JobPost
+    //       job={job}
+    //       index={index}
+    //       colorArray={colorArray}
+    //       key={job.jobId}
+    //       saveClick={() => saveClick(job.jobId)}
+    //     />
+    //   ));
+    // } else {
+    //   return filteredActiveJobListings?.map((job: any, index: number) => (
+    //     <JobPost
+    //       job={job}
+    //       index={index}
+    //       colorArray={colorArray}
+    //       key={job.jobId}
+    //       saveClick={() => saveClick(job.jobId)}
+    //     />
+    //   ));
+    // }
   };
 
   useEffect(() => {
@@ -395,16 +397,6 @@ export default function JobBoard() {
 
       {/* job listings */}
       <div className="JobListings flex flex-wrap justify-center gap-8">
-        {Array.isArray(jobListingsArray) &&
-          jobListingsArray.length > 0 &&
-          jobListingsArray.map((job: any, index: number) => {
-            return (
-              <div className="TestListing" key={job.id}>
-                <h2 className="Id">{job.id}</h2>
-                <p className="Title">{job.jobTitle}</p>
-              </div>
-            );
-          })}
         {renderJobListings()}
       </div>
     </div>

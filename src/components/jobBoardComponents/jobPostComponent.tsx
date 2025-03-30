@@ -59,10 +59,13 @@ const JobPost: React.FC<JobPostProps> = ({
     setViewMoreClicked(true);
     if (applied) {
       router.push(`/application/${thisApp}`);
-    } else router.push(`/listing/${job.jobId}`);
+    } else router.push(`/listing/${job.id}`);
   };
 
-  const appNumber = job?.job.applications?.length;
+  // const appNumber = job?.job.applications?.length;
+  const appNumber = 2;
+
+  console.log(job);
 
   const saveButton = (() => {
     switch (colorOption) {
@@ -97,7 +100,7 @@ const JobPost: React.FC<JobPostProps> = ({
     }
   })();
   return (
-    <div className="JobListing flex flex-col gap-6" key={job.jobId}>
+    <div className="JobListing flex flex-col gap-6" key={job.id}>
       <InfoBox
         variant={colorOption === "seasonal" ? "hollow" : "filled"}
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
@@ -106,10 +109,11 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {appNumber}/{job.job?.applicationLimit} apps
+            {/* {appNumber}/{job?.applicationLimit} apps */}
+            {appNumber}/25 apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
-            {fellow?.savedJobs?.includes(job.jobId) ? (
+            {fellow?.savedJobs?.includes(job.id) ? (
               <SiteButton
                 aria="addJobsButton"
                 size="extraSmallCircle"
@@ -128,13 +132,12 @@ const JobPost: React.FC<JobPostProps> = ({
           </div>
         </div>
         <div className="JobDetails flex flex-col gap-1 text-center">
-          <h2 className="JobTitle mb-1">{job.job?.jobTitle}</h2>
+          <h2 className="JobTitle mb-1">{job.jobTitle}</h2>
           <p className="BusinessName font-medium italic">
-            with {job.job?.businessName}
+            with {job.business.name}
           </p>
           <p className="ExperienceLevel text-sm font-normal">
-            {capitalizeFirstLetter(job.job?.experienceLevel[0] || "junior")}{" "}
-            Level
+            {capitalizeFirstLetter(job.experienceLevel[0] || "junior")} Level
           </p>
           {/* divider */}
           <Image
@@ -144,24 +147,26 @@ const JobPost: React.FC<JobPostProps> = ({
             height={0}
             className="my-8 opacity-80"
           ></Image>
-          {job.job?.locationOption === "remote" && (
+          {job.locationOption === "remote" && (
             <p className="LocationOption">100% Remote</p>
           )}
-          {job.job?.locationOption === "on-site" && (
-            <p className="LocationOption">On-Site: {job.job?.country}</p>
+          {job.locationOption === "on-site" && (
+            <p className="LocationOption">
+              On-Site: {job.business.businessProfile.country}
+            </p>
           )}
-          {job.job?.locationOption === "hybrid" && (
+          {job.locationOption === "hybrid" && (
             <p className="LocationOption">Hybrid</p>
           )}
           <p className="PositionType font-normal italic">
-            {capitalizeFirstLetter(job.job?.positionType || "")} Position
+            {capitalizeFirstLetter(job.positionType || "")} Position
           </p>
           <p className="PayDetails">
-            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMin)} -{" "}
-            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMax)}
+            ${new Intl.NumberFormat().format(job.payscaleMin)} - $
+            {new Intl.NumberFormat().format(job.payscaleMax)}
           </p>
           <p className="PayOption italic">
-            {capitalizeFirstLetter(job.job?.payDetails.payOption || "")}
+            {capitalizeFirstLetter(job.payOption || "")}
           </p>
         </div>
       </InfoBox>

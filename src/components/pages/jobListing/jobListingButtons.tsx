@@ -121,7 +121,7 @@ const ListingTopButtons = ({
             colorScheme="d3"
             onClick={() => saveClick(id)}
             isSelected={jobSavedStatus || matchingIds}
-            disabled={matchingIds || !canApply}
+            // disabled={matchingIds || !canApply}
           >
             {jobSavedStatus === true
               ? "job saved"

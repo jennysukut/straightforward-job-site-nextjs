@@ -106,7 +106,14 @@ export const GET_JOB_LISTINGS = gql`
         step
         details
       }
-      businessName
+      business {
+        id
+        name
+        businessProfile {
+          country
+          location
+        }
+      }
     }
   }
 `;
@@ -137,7 +144,14 @@ export const GET_JOB_LISTING_BY_ID = gql`
         step
         details
       }
-      businessName
+      business {
+        id
+        name
+        businessProfile {
+          country
+          location
+        }
+      }
     }
   }
 `;
