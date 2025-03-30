@@ -92,6 +92,7 @@ export default function PostAJobModal() {
         jobId: response.data.createJobListing,
         jobTitle: data.jobTitle,
         positionType: data.positionType,
+        businessName: response.data.businessName,
       });
 
       router.push("/post-a-job/step1");

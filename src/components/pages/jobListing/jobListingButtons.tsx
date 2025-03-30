@@ -20,11 +20,11 @@ const OwnListingTopButtons = ({ currentJob }: any) => {
   const { showModal } = useModal();
   return (
     <div className="BusinessTopButtons -mb-2 -mt-10 flex flex-col items-end gap-2 self-end">
-      <Link href={"/job-board"}>
+      {/* <Link href={"/job-board"}>
         <SiteButton aria="job board" colorScheme="d5">
           go to job board
         </SiteButton>
-      </Link>
+      </Link> */}
       <SiteButton
         variant="filled"
         aria="apps"

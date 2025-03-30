@@ -80,6 +80,37 @@ export const GET_BUSINESS_PROFILE = gql`
   }
 `;
 
+export const GET_JOB_LISTINGS = gql`
+  query GetJobListings {
+    jobListings {
+      id
+      jobTitle
+      positionType
+      positionSummary
+      nonNegParams
+      payscaleMin
+      payscaleMax
+      payOption
+      locationOption
+      idealCandidate
+      daysInOffice
+      daysRemote
+      experienceLevel
+      preferredSkills
+      moreAboutPosition
+      responsibilities
+      perks
+      interviewProcess {
+        id
+        stage
+        step
+        details
+      }
+      businessName
+    }
+  }
+`;
+
 // OTHER FIELDS WE NEED FOR PROFILE
 
 // avatar

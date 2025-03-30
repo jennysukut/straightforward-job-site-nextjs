@@ -8,6 +8,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTINGS } from "@/graphql/queries";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
@@ -37,6 +39,15 @@ export default function JobBoard() {
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: queryData,
+  } = useQuery(GET_JOB_LISTINGS, {
+    onCompleted: (data) => {
+      console.log(JSON.stringify(data));
+    },
+  });
 
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
