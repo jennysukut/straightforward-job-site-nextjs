@@ -121,15 +121,8 @@ const ListingTopButtons = ({
             colorScheme="d3"
             onClick={() => saveClick(id)}
             isSelected={jobSavedStatus || matchingIds}
-            // disabled={matchingIds || !canApply}
           >
-            {jobSavedStatus === true
-              ? "job saved"
-              : matchingIds
-                ? "applied"
-                : !canApply
-                  ? "cannot apply"
-                  : "save job"}
+            {jobSavedStatus === true ? "saved" : "save job"}
           </SiteButton>
         )}
       </div>
@@ -145,6 +138,26 @@ const ListingTopButtons = ({
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
+      {!matchingIds && isLoggedIn && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="b4"
+          addClasses="px-8 mt-2"
+          onClick={() =>
+            showModal(
+              <ApplyModal
+                jobTitle={currentJob?.jobTitle}
+                business={currentJob?.businessName}
+                jobId={id}
+              />,
+            )
+          }
+          disabled={canApply === false || matchingIds}
+        >
+          {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
+        </SiteButton>
+      )}
       {matchingIds && isLoggedIn && (
         <SiteButton
           variant="filled"

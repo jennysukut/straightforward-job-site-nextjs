@@ -178,6 +178,8 @@ export default function JobBoard() {
     });
   };
 
+  console.log(fellow);
+
   const handleDelete = (
     type:
       | "filters"

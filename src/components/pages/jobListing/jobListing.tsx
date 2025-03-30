@@ -630,8 +630,10 @@ export default function JobListing({
             {/* fellow / apply buttons */}
             {!isOwn && (
               <ListingBottomButtons
-                matchingIds={matchingIds}
-                canApply={canApply}
+                // matchingIds={matchingIds}
+                // canApply={canApply}
+                matchingIds={false}
+                canApply={true}
                 currentJob={currentJob}
                 id={id}
                 currentApp={currentApp}
