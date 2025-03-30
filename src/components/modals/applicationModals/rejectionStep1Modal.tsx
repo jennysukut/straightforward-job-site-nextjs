@@ -78,7 +78,6 @@ export default function RejectionStep1Modal({ application }: any) {
     hideModal();
   };
 
-  console.log(application);
   useEffect(() => {
     //set applicationInfo here
     setApplicantInfo({
