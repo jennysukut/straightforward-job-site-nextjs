@@ -24,7 +24,7 @@ import LoginPromptModal from "@/components/modals/logInPromptModal";
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
-  const { jobListings } = useJobListings();
+  // const { jobListings } = useJobListings();
   const { currentPage, setCurrentPage, isLoggedIn } = usePageContext();
   const { hideModal, showModal } = useModal();
 
@@ -39,15 +39,19 @@ export default function JobBoard() {
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
+  // const [jobListings, setJobListings] = useState([{}]);
   const {
     loading: queryLoading,
     error: queryError,
-    data: queryData,
+    data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
     onCompleted: (data) => {
       console.log(JSON.stringify(data));
+      console.log(data);
     },
   });
+
+  console.log(jobListingsArray);
 
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,19 +83,17 @@ export default function JobBoard() {
   const filterSearch = (jobs: any) => {
     const filteredJobs = jobs.filter((job: any) => {
       const matchesExperience =
-        level.length > 0
-          ? level.includes(job.job?.experienceLevel || "")
-          : true;
+        level.length > 0 ? level.includes(job.experienceLevel || "") : true;
       const matchesLocationType =
         locationType.length > 0
-          ? locationType.includes(job.job?.locationOption || "")
+          ? locationType.includes(job.locationOption || "")
           : true;
       const matchesPositionType =
         positionType.length > 0
-          ? positionType.includes(job.job?.positionType || "")
+          ? positionType.includes(job.positionType || "")
           : true;
       const matchesCountry =
-        country.length > 0 ? country.includes(job.job?.country || "") : true;
+        country.length > 0 ? country.includes(job.country || "") : true;
 
       return (
         matchesExperience &&
@@ -110,8 +112,8 @@ export default function JobBoard() {
       // filter and make matches out of any card where the jobTitle matches the inputValue
       // or any of the preferredSkills listed contain any the inputValue
       const matches =
-        jobListings?.filter(
-          (job) =>
+        jobListingsArray.filter(
+          (job: any) =>
             job.job?.jobTitle
               ?.toLowerCase()
               .includes(inputValue.toLowerCase()) ||
@@ -126,9 +128,9 @@ export default function JobBoard() {
         setFilteredJobs(matches);
       }
     } else if (filters.length > 0) {
-      filterSearch(jobListings);
+      filterSearch(jobListingsArray);
     } else if (country.length > 0) {
-      filterSearch(jobListings);
+      filterSearch(jobListingsArray);
     } else {
       setFilteredJobs([]);
     }
@@ -202,14 +204,14 @@ export default function JobBoard() {
 
   // rendering job listings depending on the input and filters
   const renderJobListings = () => {
-    const activeJobListings = jobListings?.filter((job: any) => {
+    const activeJobListings = jobListingsArray.filter((job: any) => {
       const activeJob =
-        job.job?.numberOfApps !== job.job?.applicationLimit &&
-        !job.job?.applicants?.includes(fellow?.id);
+        job.numberOfApps !== job.applicationLimit &&
+        !job.applicants?.includes(fellow?.id);
       return activeJob;
     });
 
-    const pendingJobListings = jobListings?.filter((job: any) => {
+    const pendingJobListings = jobListingsArray.filter((job: any) => {
       const pendingJob =
         job.job?.numberOfApps === job.job?.applicationLimit ||
         job.job?.applicants?.includes(fellow?.id);
@@ -393,6 +395,16 @@ export default function JobBoard() {
 
       {/* job listings */}
       <div className="JobListings flex flex-wrap justify-center gap-8">
+        {Array.isArray(jobListingsArray) &&
+          jobListingsArray.length > 0 &&
+          jobListingsArray.map((job: any, index: number) => {
+            return (
+              <div className="TestListing" key={job.id}>
+                <h2 className="Id">{job.id}</h2>
+                <p className="Title">{job.jobTitle}</p>
+              </div>
+            );
+          })}
         {renderJobListings()}
       </div>
     </div>

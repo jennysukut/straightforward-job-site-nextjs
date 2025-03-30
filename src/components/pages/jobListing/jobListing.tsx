@@ -13,6 +13,8 @@ import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useMutation } from "@apollo/client";
 import { SAVE_JOB } from "@/graphql/mutations";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
 
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
@@ -36,6 +38,38 @@ import { capitalizeFirstLetter } from "@/utils/textUtils";
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
+type jobListing = {
+  id: string;
+  jobTitle: string;
+  positionType: string;
+  positionSummary: string;
+  nonNegParams: Array<string>;
+  payscaleMin: number;
+  payscaleMax: number;
+  payOption: string;
+  locationOption: string;
+  idealCandidate: string;
+  daysInOffice: string;
+  daysRemote: string;
+  experienceLevel: Array<string>;
+  preferredSkills: Array<string>;
+  moreAboutPosition: string;
+  responsibilities: Array<string>;
+  perks: Array<string>;
+  interviewProcess: Array<{
+    id: string;
+    stage: string;
+    step: string;
+    details: string;
+  }>;
+  businessName: string;
+  numberOfApps: number;
+  applicationLimit: number;
+  applicants: Array<string>;
+  applications: Array<string>;
+  location: string;
+  country: string;
+};
 export default function JobListing({
   isOwn,
   hasId,
@@ -62,6 +96,50 @@ export default function JobListing({
     fellow?.savedJobs?.includes(id),
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
+  const [currentJob, setCurrentJob] = useState({} as jobListing);
+  const [loadingData, setLoadingData] = useState(true);
+
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: queryData,
+  } = useQuery(GET_JOB_LISTING_BY_ID, {
+    variables: { id },
+    onCompleted: (data) => {
+      console.log(JSON.stringify(data));
+      console.log(data);
+      setCurrentJob({
+        id: data.jobListing.id,
+        jobTitle: data.jobListing.jobTitle,
+        positionType: data.jobListing.positionType,
+        positionSummary: data.jobListing.positionSummary,
+        nonNegParams: data.jobListing.nonNegParams,
+        payscaleMin: data.jobListing.payscaleMin,
+        payscaleMax: data.jobListing.payscaleMax,
+        payOption: data.jobListing.payOption,
+        locationOption: data.jobListing.locationOption,
+        idealCandidate: data.jobListing.idealCandidate,
+        daysInOffice: data.jobListing.daysInOffice,
+        daysRemote: data.jobListing.daysRemote,
+        experienceLevel: data.jobListing.experienceLevel,
+        preferredSkills: data.jobListing.preferredSkills,
+        moreAboutPosition: data.jobListing.moreAboutPosition,
+        responsibilities: data.jobListing.responsibilities,
+        perks: data.jobListing.perks,
+        interviewProcess: data.jobListing.interviewProcess,
+        businessName: data.jobListing.businessName,
+        applications: [],
+        applicants: [],
+        applicationLimit: 25,
+        numberOfApps: 0,
+        location: "Somewhere",
+        country: "United States",
+      });
+      renderJobListingRightColumn();
+      renderJobListingLeftColumn();
+      setLoadingData(false);
+    },
+  });
 
   // when we go through the ID, we'll simply be able to grab the specific application
   let currentApp;
@@ -74,14 +152,14 @@ export default function JobListing({
   }
 
   // define the current job
-  let currentJob;
-  if (hasId && jobListings) {
-    // if the job hasId we'll need to grab it's details from the database here
-    currentJob = jobListings.find((job: any) => job.jobId === id)?.job;
-  } else {
-    // when we're initially loading this page upon job creation, we'll use the jobContext object just created
-    currentJob = job;
-  }
+  // let currentJob;
+  // if (hasId && jobListings) {
+  //   // if the job hasId we'll need to grab it's details from the database here
+  //   currentJob = jobListings.find((job: any) => job.jobId === id)?.job;
+  // } else {
+  //   // when we're initially loading this page upon job creation, we'll use the jobContext object just created
+  //   currentJob = job;
+  // }
 
   const appNumber = currentJob?.applications?.length;
 
@@ -167,6 +245,275 @@ export default function JobListing({
     hideModal();
   };
 
+  const renderJobListingLeftColumn = () => {
+    return (
+      <div className="LeftColumn flex flex-col gap-8">
+        {/* Non-Negotiable Parameters */}
+        <InfoBox
+          variant="hollow"
+          aria="nonNegotiableParameters"
+          size="profile"
+          width="small"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step1")}
+        >
+          <h2 className="NonNegotiableParametersTitle text-center">{`Non-Negotiable Parameters:`}</h2>
+          <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
+            {currentJob?.nonNegParams && currentJob?.nonNegParams.length > 0 ? (
+              currentJob?.nonNegParams.map((skill: any, index: number) => {
+                return (
+                  <SiteLabel
+                    aria={skill}
+                    variant="display"
+                    key={skill}
+                    addClasses="px-8 py-3"
+                    colorScheme={
+                      primaryColorArray[index % primaryColorArray.length]
+                    }
+                  >
+                    {skill}
+                  </SiteLabel>
+                );
+              })
+            ) : (
+              <p>No non-negotiable parameters available.</p>
+            )}
+          </div>
+        </InfoBox>
+
+        {/* Preferred Skills Field */}
+        <InfoBox
+          variant="hollow"
+          aria="preferredSkills"
+          size="thin"
+          width="small"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step3")}
+        >
+          <h2 className="NonNegotiableParametersTitle text-center">{`Preferred Skills:`}</h2>
+          <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
+            {currentJob?.preferredSkills &&
+            currentJob?.preferredSkills.length > 0 ? (
+              currentJob?.preferredSkills.map((skill: any, index: number) => {
+                return (
+                  <SiteLabel
+                    aria={skill}
+                    variant="display"
+                    key={skill}
+                    colorScheme={
+                      secondaryColorArray[index % secondaryColorArray.length]
+                    }
+                  >
+                    {skill}
+                  </SiteLabel>
+                );
+              })
+            ) : (
+              <p>No preferred skills available.</p>
+            )}
+          </div>
+        </InfoBox>
+
+        {/* Interview Process */}
+        <InfoBox
+          variant="hollow"
+          aria="interviewProcess"
+          size="profile"
+          width="small"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step5")}
+        >
+          <h2 className="InterviewProcessTitle mb-4 pl-2">{`Our Interview Process:`}</h2>
+          <ul
+            className={`InterviewProcessList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          >
+            {currentJob?.interviewProcess?.map((int: any, index: number) => {
+              return (
+                <li className="InterviewProcessItem" key={index}>
+                  <p className="Stage">
+                    {int.stage}:
+                    <span className="Step">
+                      {` `}
+                      {int.step}
+                    </span>
+                  </p>
+                  <p className={`Details pt-4 ${textColor}`}>{int.details}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </InfoBox>
+      </div>
+    );
+  };
+
+  const renderJobListingRightColumn = () => {
+    return (
+      <div className="RightColumn flex flex-col gap-8">
+        <InfoBox
+          aria="business"
+          variant="hollow"
+          addClasses="gap-8 justify-evenly"
+          size="profile"
+          width="medium"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step1")}
+        >
+          <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
+            <div className="TitleBusinessButtonContainer flex justify-between">
+              <div className="TitleBusiness flex flex-col gap-4">
+                <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
+                <Link href={"/profile"}>
+                  <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
+                    {currentJob?.businessName}
+                  </p>
+                </Link>
+              </div>
+              {isOwn && inAms && (
+                <SiteButton
+                  variant="hollow"
+                  aria="back to apps"
+                  colorScheme="b3"
+                  onClick={() => setAltViewChoice("")}
+                >
+                  back to apps
+                </SiteButton>
+              )}
+            </div>
+            <p
+              className={`PositionSummary pl-2 pt-4 leading-7 ${secondaryTextColor}`}
+            >
+              {currentJob?.positionSummary}
+            </p>
+          </div>
+        </InfoBox>
+        {/* Location, locationOption, and Email */}
+        <InfoBox
+          variant="hollow"
+          aria="location"
+          size="profile"
+          width="medium"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step2")}
+        >
+          <div className="LocationPayDetailsInfo flex flex-col gap-4">
+            <h2 className="LocationPayDetailsTitle mb-4 pl-2">
+              {`Location:`} {currentJob?.location}, {currentJob?.country}
+            </h2>
+            {currentJob?.locationOption && (
+              <h2 className="LocationOptionTitle mb-4 pl-2">
+                {`Location Type:`}{" "}
+                {capitalizeFirstLetter(currentJob?.locationOption)}
+              </h2>
+            )}
+
+            {currentJob?.locationOption === "hybrid" && (
+              <div className="HybridDetailsContainer flex gap-4">
+                <h2 className="LocationTypeTitle mb-4 pl-2">
+                  {`Hybrid Details:`}
+                </h2>
+                <div className="Details -mt-2">
+                  <p className="HybridDetails">
+                    {currentJob?.daysInOffice} {`days in office, `}
+                  </p>
+                  <p className="HybridDetails">
+                    {currentJob?.daysRemote} {`days remote.`}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <h2 className="PayDetailsTitle mb-4 pl-2">
+              {`Pay: $${new Intl.NumberFormat().format(currentJob?.payscaleMin || 0)} -
+                  $${new Intl.NumberFormat().format(currentJob?.payscaleMax || 0)}`}{" "}
+              {capitalizeFirstLetter(currentJob?.payOption || "")}
+            </h2>
+
+            {currentJob?.positionType && (
+              <h2 className="PositionTypeTitle mb-0 pl-2">
+                {`Position Type: `}
+                {capitalizeFirstLetter(currentJob?.positionType)}
+              </h2>
+            )}
+          </div>
+        </InfoBox>
+
+        {/* More About The Position */}
+        <InfoBox
+          variant="hollow"
+          aria="moreAboutBusiness"
+          size="profile"
+          width="medium"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step3")}
+        >
+          {/* More About The Job */}
+          <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
+          <p className={`AboutJob pl-8 pt-4 italic leading-8 ${titleColor}`}>
+            {currentJob?.moreAboutPosition}
+          </p>
+          {/* Responsibilities */}
+          {currentJob?.responsibilities && (
+            <div className="Responsibilities mt-8">
+              <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
+              <ul
+                className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+              >
+                {currentJob?.responsibilities?.map(
+                  (resp: string, index: number) => {
+                    return (
+                      <li className="ResponsibilitiesItem" key={index}>
+                        <p className="Responsibility">{resp}</p>
+                      </li>
+                    );
+                  },
+                )}
+              </ul>
+            </div>
+          )}
+
+          {/* Perks */}
+          {currentJob?.perks && (
+            <div className="Perks mt-8">
+              <h2 className="PerksTitle mb-4 pl-2">{`Perks:`}</h2>
+              <ul className="PerksList flex flex-wrap justify-center gap-2 text-jade">
+                {currentJob.perks.map((perk: any, index: number) => {
+                  return (
+                    <SiteLabel
+                      key={index}
+                      aria={perk}
+                      variant="display"
+                      addClasses="px-8 py-3"
+                      colorScheme={
+                        thirdColorArray[index % thirdColorArray.length]
+                      }
+                    >
+                      {perk}
+                    </SiteLabel>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+        </InfoBox>
+        {/* Ideal Candidate Details */}
+        <InfoBox
+          variant="hollow"
+          aria="idealCandidate"
+          size="profile"
+          width="medium"
+          canEdit={canEdit}
+          editClick={() => handleEditClick("/post-a-job/step2")}
+        >
+          <h2 className="PetDetailsTitle mb-4 pl-2">{`Our Ideal Candidate:`}</h2>
+          <p className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}>
+            {currentJob?.idealCandidate}
+          </p>
+        </InfoBox>
+      </div>
+    );
+  };
+
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
@@ -180,339 +527,102 @@ export default function JobListing({
     // setPageType("jobListing");
   }, []);
 
+  useEffect(() => {
+    console.log(currentJob);
+  }, [currentJob]);
+
   return (
     <div
       className={`JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
     >
-      <div className="ProfileDetails flex gap-8">
-        <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
-          {/* TOP BUTTONS */}
+      {loadingData ? (
+        //make loading screen design here
+        <div>Loading...</div>
+      ) : (
+        <div className="ProfileDetails flex gap-8">
+          <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
+            {/* TOP BUTTONS */}
 
-          {/* business buttons - not ams */}
-          {isOwn && !inAms && <OwnListingTopButtons currentJob={currentJob} />}
+            {/* business buttons - not ams */}
+            {isOwn && !inAms && (
+              <OwnListingTopButtons currentJob={currentJob} />
+            )}
 
-          {/* business buttons - in ams */}
-          {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
+            {/* business buttons - in ams */}
+            {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
 
-          {/* fellow buttons */}
-          {!isOwn && (
-            <ListingTopButtons
-              id={id}
-              saveClick={saveClick}
-              jobSavedStatus={jobSavedStatus}
-              matchingIds={matchingIds}
-              appNumber={appNumber}
-              currentJob={currentJob}
-              canApply={canApply}
-              app={currentApp ? currentApp : "no current app here"}
-              hasMatchingNonNegParams={hasMatchingNonNegParams}
-            />
-          )}
+            {/* fellow buttons */}
+            {!isOwn && (
+              <ListingTopButtons
+                id={id}
+                saveClick={saveClick}
+                jobSavedStatus={jobSavedStatus}
+                matchingIds={matchingIds}
+                appNumber={appNumber}
+                currentJob={currentJob}
+                canApply={canApply}
+                app={currentApp ? currentApp : "no current app here"}
+                hasMatchingNonNegParams={hasMatchingNonNegParams}
+              />
+            )}
 
-          {!isOwn && <AppFellowNotes currentApp={currentApp} />}
+            {!isOwn && <AppFellowNotes currentApp={currentApp} />}
 
-          {/* Non-Negotiable Parameters */}
-          <InfoBox
-            variant="hollow"
-            aria="nonNegotiableParameters"
-            size="profile"
-            width="small"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step1")}
-          >
-            <h2 className="NonNegotiableParametersTitle text-center">{`Non-Negotiable Parameters:`}</h2>
-            <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {currentJob?.nonNegParams &&
-              currentJob?.nonNegParams.length > 0 ? (
-                currentJob?.nonNegParams.map((skill: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      aria={skill}
-                      variant="display"
-                      key={skill}
-                      addClasses="px-8 py-3"
-                      colorScheme={
-                        primaryColorArray[index % primaryColorArray.length]
-                      }
-                    >
-                      {skill}
-                    </SiteLabel>
-                  );
-                })
-              ) : (
-                <p>No non-negotiable parameters available.</p>
-              )}
-            </div>
-          </InfoBox>
+            {renderJobListingLeftColumn()}
 
-          {/* Preferred Skills Field */}
-          <InfoBox
-            variant="hollow"
-            aria="preferredSkills"
-            size="thin"
-            width="small"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step3")}
-          >
-            <h2 className="NonNegotiableParametersTitle text-center">{`Preferred Skills:`}</h2>
-            <div className="NonNegotiableParametersContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {currentJob?.preferredSkills &&
-              currentJob?.preferredSkills.length > 0 ? (
-                currentJob?.preferredSkills.map((skill: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      aria={skill}
-                      variant="display"
-                      key={skill}
-                      colorScheme={
-                        secondaryColorArray[index % secondaryColorArray.length]
-                      }
-                    >
-                      {skill}
-                    </SiteLabel>
-                  );
-                })
-              ) : (
-                <p>No preferred skills available.</p>
-              )}
-            </div>
-          </InfoBox>
+            {/* BOTTOM BUTTONS */}
 
-          {/* Interview Process */}
-          <InfoBox
-            variant="hollow"
-            aria="interviewProcess"
-            size="profile"
-            width="small"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step5")}
-          >
-            <h2 className="InterviewProcessTitle mb-4 pl-2">{`Our Interview Process:`}</h2>
-            <ul
-              className={`InterviewProcessList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
-            >
-              {currentJob?.interviewProcess?.map((int: any, index: number) => {
-                return (
-                  <li className="InterviewProcessItem" key={index}>
-                    <p className="Stage">
-                      {int.stage}:
-                      <span className="Step">
-                        {` `}
-                        {int.step}
-                      </span>
-                    </p>
-                    <p className={`Details pt-4 ${textColor}`}>{int.details}</p>
-                  </li>
-                );
-              })}
-            </ul>
-          </InfoBox>
+            {/* business buttons - not in ams */}
+            {isOwn && !inAms && (
+              <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
+            )}
 
-          {/* BOTTOM BUTTONS */}
-
-          {/* business buttons - not in ams */}
-          {isOwn && !inAms && (
-            <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
-          )}
-
-          {/* TODO: Finish these business Buttons */}
-          {/* business buttons - in ams */}
-          {isOwn && inAms && (
-            <div className="ListingAmsBottomButtons flex flex-col items-end gap-3 self-end">
-              <SiteButton aria="closeListing" variant="filled" colorScheme="c1">
-                settings / history
-              </SiteButton>
-              <SiteButton aria="closeListing" variant="filled" colorScheme="f1">
-                close listing
-              </SiteButton>
-              <SiteButton aria="closeListing" variant="filled" colorScheme="b3">
-                message us?
-              </SiteButton>
-            </div>
-          )}
-
-          {/* fellow / apply buttons */}
-          {!isOwn && (
-            <ListingBottomButtons
-              matchingIds={matchingIds}
-              canApply={canApply}
-              currentJob={currentJob}
-              id={id}
-              currentApp={currentApp}
-            />
-          )}
-        </div>
-
-        <div className="ProfileRightColumn flex flex-col gap-8">
-          {/* Job Title, Business Name, & Small Summary */}
-          <InfoBox
-            aria="business"
-            variant="hollow"
-            addClasses="gap-8 justify-evenly"
-            size="profile"
-            width="medium"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step1")}
-          >
-            <div className="JobTitleDetailsContainer flex flex-col gap-4 pl-4">
-              <div className="TitleBusinessButtonContainer flex justify-between">
-                <div className="TitleBusiness flex flex-col gap-4">
-                  <h1 className="JobTitle">{currentJob?.jobTitle}</h1>
-                  <Link href={"/profile"}>
-                    <p className="BusinessName -mt-6 pt-4 text-lg italic leading-6">
-                      {currentJob?.businessName}
-                    </p>
-                  </Link>
-                </div>
-                {isOwn && inAms && (
-                  <SiteButton
-                    variant="hollow"
-                    aria="back to apps"
-                    colorScheme="b3"
-                    onClick={() => setAltViewChoice("")}
-                  >
-                    back to apps
-                  </SiteButton>
-                )}
-              </div>
-              <p
-                className={`PositionSummary pl-2 pt-4 leading-7 ${secondaryTextColor}`}
-              >
-                {currentJob?.positionSummary}
-              </p>
-            </div>
-          </InfoBox>
-          {/* Location, locationOption, and Email */}
-          <InfoBox
-            variant="hollow"
-            aria="location"
-            size="profile"
-            width="medium"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step2")}
-          >
-            <div className="LocationPayDetailsInfo flex flex-col gap-4">
-              <h2 className="LocationPayDetailsTitle mb-4 pl-2">
-                {`Location:`} {currentJob?.location}, {currentJob?.country}
-              </h2>
-              {currentJob?.locationOption && (
-                <h2 className="LocationOptionTitle mb-4 pl-2">
-                  {`Location Type:`}{" "}
-                  {capitalizeFirstLetter(currentJob?.locationOption)}
-                </h2>
-              )}
-
-              {currentJob?.locationOption === "hybrid" && (
-                <div className="HybridDetailsContainer flex gap-4">
-                  <h2 className="LocationTypeTitle mb-4 pl-2">
-                    {`Hybrid Details:`}
-                  </h2>
-                  <div className="Details -mt-2">
-                    <p className="HybridDetails">
-                      {currentJob?.hybridDetails?.daysInOffice}{" "}
-                      {`days in office, `}
-                    </p>
-                    <p className="HybridDetails">
-                      {currentJob?.hybridDetails?.daysRemote} {`days remote.`}
-                    </p>
-                  </div>
-                </div>
-              )}
-              {currentJob?.payDetails && (
-                <h2 className="PayDetailsTitle mb-4 pl-2">
-                  {`Pay: $${new Intl.NumberFormat().format(currentJob?.payDetails?.payscaleMin || 0)} -
-                  $${new Intl.NumberFormat().format(currentJob?.payDetails?.payscaleMax || 0)}`}{" "}
-                  {capitalizeFirstLetter(
-                    currentJob?.payDetails?.payOption || "",
-                  )}
-                </h2>
-              )}
-
-              {currentJob?.positionType && (
-                <h2 className="PositionTypeTitle mb-0 pl-2">
-                  {`Position Type: `}
-                  {capitalizeFirstLetter(currentJob?.positionType)}
-                </h2>
-              )}
-            </div>
-          </InfoBox>
-
-          {/* More About The Position */}
-          <InfoBox
-            variant="hollow"
-            aria="moreAboutBusiness"
-            size="profile"
-            width="medium"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step3")}
-          >
-            {/* More About The Job */}
-            <h2 className="AboutJobTitle pb-4 pl-2 pt-2">{`About This Position:`}</h2>
-            <p className={`AboutJob pl-8 pt-4 italic leading-8 ${titleColor}`}>
-              {currentJob?.moreAboutPosition}
-            </p>
-            {/* Responsibilities */}
-            {currentJob?.responsibilities && (
-              <div className="Responsibilities mt-8">
-                <h2 className="ResponsibilitiesTitle mb-4 pl-2">{`Responsibilities:`}</h2>
-                <ul
-                  className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+            {/* TODO: Finish these business Buttons */}
+            {/* business buttons - in ams */}
+            {isOwn && inAms && (
+              <div className="ListingAmsBottomButtons flex flex-col items-end gap-3 self-end">
+                <SiteButton
+                  aria="closeListing"
+                  variant="filled"
+                  colorScheme="c1"
                 >
-                  {currentJob?.responsibilities?.map(
-                    (resp: { responsibility?: string; id?: number }) => {
-                      return (
-                        <li className="ResponsibilitiesItem" key={resp.id}>
-                          <p className="Responsibility">
-                            {resp.responsibility}
-                          </p>
-                        </li>
-                      );
-                    },
-                  )}
-                </ul>
+                  settings / history
+                </SiteButton>
+                <SiteButton
+                  aria="closeListing"
+                  variant="filled"
+                  colorScheme="f1"
+                >
+                  close listing
+                </SiteButton>
+                <SiteButton
+                  aria="closeListing"
+                  variant="filled"
+                  colorScheme="b3"
+                >
+                  message us?
+                </SiteButton>
               </div>
             )}
 
-            {/* Perks */}
-            {currentJob?.perks && (
-              <div className="Perks mt-8">
-                <h2 className="PerksTitle mb-4 pl-2">{`Perks:`}</h2>
-                <ul className="PerksList flex flex-wrap justify-center gap-2 text-jade">
-                  {currentJob.perks.map((perk: any, index: number) => {
-                    return (
-                      <SiteLabel
-                        key={index}
-                        aria={perk}
-                        variant="display"
-                        addClasses="px-8 py-3"
-                        colorScheme={
-                          thirdColorArray[index % thirdColorArray.length]
-                        }
-                      >
-                        {perk}
-                      </SiteLabel>
-                    );
-                  })}
-                </ul>
-              </div>
+            {/* fellow / apply buttons */}
+            {!isOwn && (
+              <ListingBottomButtons
+                matchingIds={matchingIds}
+                canApply={canApply}
+                currentJob={currentJob}
+                id={id}
+                currentApp={currentApp}
+              />
             )}
-          </InfoBox>
-          {/* Ideal Candidate Details */}
-          <InfoBox
-            variant="hollow"
-            aria="idealCandidate"
-            size="profile"
-            width="medium"
-            canEdit={canEdit}
-            editClick={() => handleEditClick("/post-a-job/step2")}
-          >
-            <h2 className="PetDetailsTitle mb-4 pl-2">{`Our Ideal Candidate:`}</h2>
-            <p className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}>
-              {currentJob?.idealCandidate}
-            </p>
-          </InfoBox>
+          </div>
+
+          <div className="ProfileRightColumn flex flex-col gap-8">
+            {/* Job Title, Business Name, & Small Summary */}
+            {renderJobListingRightColumn()}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

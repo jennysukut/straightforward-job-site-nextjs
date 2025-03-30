@@ -111,6 +111,37 @@ export const GET_JOB_LISTINGS = gql`
   }
 `;
 
+export const GET_JOB_LISTING_BY_ID = gql`
+  query GetJobListingById($id: ID!) {
+    jobListing(id: $id) {
+      id
+      jobTitle
+      positionType
+      positionSummary
+      nonNegParams
+      payscaleMin
+      payscaleMax
+      payOption
+      locationOption
+      idealCandidate
+      daysInOffice
+      daysRemote
+      experienceLevel
+      preferredSkills
+      moreAboutPosition
+      responsibilities
+      perks
+      interviewProcess {
+        id
+        stage
+        step
+        details
+      }
+      businessName
+    }
+  }
+`;
+
 // OTHER FIELDS WE NEED FOR PROFILE
 
 // avatar
