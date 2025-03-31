@@ -39,6 +39,7 @@ export default function JobBoard() {
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
+  const [loadingData, setLoadingData] = useState(true);
 
   const {
     loading: queryLoading,
@@ -59,6 +60,7 @@ export default function JobBoard() {
     onCompleted: (data) => {
       console.log(JSON.stringify(data));
       console.log(data);
+      setLoadingData(false);
     },
   });
 
@@ -250,9 +252,14 @@ export default function JobBoard() {
       </div>
 
       {/* job listings */}
-      <div className="JobListings flex flex-wrap justify-center gap-8">
-        {renderJobListings()}
-      </div>
+      {loadingData ? (
+        //make loading screen design here
+        <div className="LoadingText text-olive">Loading...</div>
+      ) : (
+        <div className="JobListings flex flex-wrap justify-center gap-8">
+          {renderJobListings()}
+        </div>
+      )}
     </div>
   );
 }

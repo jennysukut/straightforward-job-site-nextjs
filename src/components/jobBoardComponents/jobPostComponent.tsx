@@ -65,8 +65,6 @@ const JobPost: React.FC<JobPostProps> = ({
   // const appNumber = job?.job.applications?.length;
   const appNumber = 2;
 
-  console.log(job);
-
   const saveButton = (() => {
     switch (colorOption) {
       case "highContrast":
@@ -113,7 +111,7 @@ const JobPost: React.FC<JobPostProps> = ({
             {appNumber}/25 apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
-            {fellow?.savedJobs?.includes(job.id) ? (
+            {job.isSaved ? (
               <SiteButton
                 aria="addJobsButton"
                 size="extraSmallCircle"

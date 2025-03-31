@@ -553,7 +553,7 @@ export default function JobListing({
     >
       {loadingData ? (
         //make loading screen design here
-        <div>Loading...</div>
+        <div className="LoadingText text-center text-olive">Loading...</div>
       ) : (
         <div className="ProfileDetails flex gap-8">
           <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
