@@ -39,19 +39,28 @@ export default function JobBoard() {
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
-  // const [jobListings, setJobListings] = useState([{}]);
+
   const {
     loading: queryLoading,
     error: queryError,
     data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
+    variables: {
+      experienceLevel:
+        level.length <= 0
+          ? undefined
+          : level.includes("entry-level")
+            ? "entry"
+            : level,
+      locationOption: locationType.length > 0 ? locationType : undefined,
+      positionType: positionType.length > 0 ? positionType : undefined,
+      country: country.length > 0 ? country : undefined,
+    },
     onCompleted: (data) => {
       console.log(JSON.stringify(data));
       console.log(data);
     },
   });
-
-  console.log(jobListingsArray);
 
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,72 +87,6 @@ export default function JobBoard() {
     }
     hideModal();
   };
-
-  // function for when you use our filtering buttons
-  const filterSearch = (jobs: any) => {
-    const filteredJobs = jobs.filter((job: any) => {
-      const matchesExperience =
-        level.length > 0 ? level.includes(job.experienceLevel || "") : true;
-      const matchesLocationType =
-        locationType.length > 0
-          ? locationType.includes(job.locationOption || "")
-          : true;
-      const matchesPositionType =
-        positionType.length > 0
-          ? positionType.includes(job.positionType || "")
-          : true;
-      const matchesCountry =
-        country.length > 0 ? country.includes(job.country || "") : true;
-
-      return (
-        matchesExperience &&
-        matchesLocationType &&
-        matchesPositionType &&
-        matchesCountry
-      );
-    });
-
-    setFilteredJobs(filteredJobs);
-  };
-
-  // whenever input or buttons change, it determines what kind of filtering we do
-  useEffect(() => {
-    if (inputValue.length >= 3) {
-      // filter and make matches out of any card where the jobTitle matches the inputValue
-      // or any of the preferredSkills listed contain any the inputValue
-      const matches =
-        jobListingsArray.filter(
-          (job: any) =>
-            job.job?.jobTitle
-              ?.toLowerCase()
-              .includes(inputValue.toLowerCase()) ||
-            job.job?.preferredSkills?.some((skill: string) =>
-              skill.toLowerCase().includes(inputValue.toLowerCase()),
-            ),
-        ) || [];
-
-      if (filters.length > 0 || country.length > 0) {
-        filterSearch(matches);
-      } else {
-        setFilteredJobs(matches);
-      }
-    } else if (filters.length > 0) {
-      filterSearch(jobListingsArray);
-    } else if (country.length > 0) {
-      filterSearch(jobListingsArray);
-    } else {
-      setFilteredJobs([]);
-    }
-  }, [
-    inputValue,
-    filters,
-    positionType,
-    level,
-    pay,
-    location,
-    locationType,
-    country,
-  ]);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -178,8 +121,6 @@ export default function JobBoard() {
     });
   };
 
-  console.log(fellow);
-
   const handleDelete = (
     type:
       | "filters"
@@ -204,105 +145,16 @@ export default function JobBoard() {
     });
   };
 
-  // rendering job listings depending on the input and filters
   const renderJobListings = () => {
-    // const activeJobListings = jobListingsArray.filter((job: any) => {
-    //   const activeJob =
-    //     job.numberOfApps !== job.applicationLimit &&
-    //     !job.applicants?.includes(fellow?.id);
-    //   return activeJob;
-    // });
-
-    // const pendingJobListings = jobListingsArray.filter((job: any) => {
-    //   const pendingJob =
-    //     job.job?.numberOfApps === job.job?.applicationLimit ||
-    //     job.job?.applicants?.includes(fellow?.id);
-    //   return pendingJob;
-    // });
-
-    // const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
-    //   const activeJob =
-    //     job.job?.numberOfApps !== job.job?.applicationLimit &&
-    //     !job.job?.applicants?.includes(fellow?.id);
-    //   return activeJob;
-    //   // return job.job?.numberOfApps !== job.job?.applicationLimit;
-    // });
-
-    // const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
-    //   const pendingJob =
-    //     job.job?.numberOfApps === job.job?.applicationLimit ||
-    //     job.job?.applicants?.includes(fellow?.id);
-    //   return pendingJob;
-    //   // return job.job?.numberOfApps === job.job?.applicationLimit;
-    // });
-
-    if (inputValue.length < 3 && filters.length === 0 && !viewPendingJobs) {
-      // return activeJobListings?.map((job: any, index: number) => (
-      return jobListingsArray?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    }
-    // else if (
-    //   inputValue.length < 3 &&
-    //   filters.length === 0 &&
-    //   viewPendingJobs
-    // ) {
-    //   return pendingJobListings?.map((job: any, index: number) => (
-    //     <JobPost
-    //       job={job}
-    //       index={index}
-    //       colorArray={colorArray}
-    //       key={job.jobId}
-    //       saveClick={() => saveClick(job.jobId)}
-    //     />
-    //   ));
-    // } else if (filters.length > 0 && !viewPendingJobs) {
-    //   return filteredActiveJobListings?.map((job: any, index: number) => (
-    //     <JobPost
-    //       job={job}
-    //       index={index}
-    //       colorArray={colorArray}
-    //       key={job.jobId}
-    //       saveClick={() => saveClick(job.jobId)}
-    //     />
-    //   ));
-    // } else if (filters.length > 0 && viewPendingJobs) {
-    //   return filteredPendingJobListings?.map((job: any, index: number) => (
-    //     <JobPost
-    //       job={job}
-    //       index={index}
-    //       colorArray={colorArray}
-    //       key={job.jobId}
-    //       saveClick={() => saveClick(job.jobId)}
-    //     />
-    //   ));
-    // } else if (viewPendingJobs) {
-    //   return filteredPendingJobListings?.map((job: any, index: number) => (
-    //     <JobPost
-    //       job={job}
-    //       index={index}
-    //       colorArray={colorArray}
-    //       key={job.jobId}
-    //       saveClick={() => saveClick(job.jobId)}
-    //     />
-    //   ));
-    // } else {
-    //   return filteredActiveJobListings?.map((job: any, index: number) => (
-    //     <JobPost
-    //       job={job}
-    //       index={index}
-    //       colorArray={colorArray}
-    //       key={job.jobId}
-    //       saveClick={() => saveClick(job.jobId)}
-    //     />
-    //   ));
-    // }
+    return jobListingsArray?.map((job: any, index: number) => (
+      <JobPost
+        job={job}
+        index={index}
+        colorArray={colorArray}
+        key={job.jobId}
+        saveClick={() => saveClick(job.jobId)}
+      />
+    ));
   };
 
   useEffect(() => {

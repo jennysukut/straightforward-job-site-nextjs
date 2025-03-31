@@ -81,8 +81,22 @@ export const GET_BUSINESS_PROFILE = gql`
 `;
 
 export const GET_JOB_LISTINGS = gql`
-  query GetJobListings {
-    jobListings {
+  query GetJobListings(
+    $businessId: ID
+    $isSaved: Boolean
+    $experienceLevel: [String!]
+    $locationOption: [String!]
+    $positionType: [String!]
+    $country: String
+  ) {
+    jobListings(
+      businessId: $businessId
+      isSaved: $isSaved
+      experienceLevel: $experienceLevel
+      locationOption: $locationOption
+      positionType: $positionType
+      country: $country
+    ) {
       id
       jobTitle
       positionType
