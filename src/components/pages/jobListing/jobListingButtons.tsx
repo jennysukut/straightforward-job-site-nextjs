@@ -200,7 +200,7 @@ const ListingBottomButtons = ({
         colorScheme="c4"
         aria="edit"
         addClasses="px-8"
-        onClick={() => router.push(`/profile/1b23i`)}
+        onClick={() => router.push(`/business/${currentJob.business.id}`)}
       >
         view company details
       </SiteButton>

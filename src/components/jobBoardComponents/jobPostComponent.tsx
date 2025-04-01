@@ -13,7 +13,10 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-
+import { usePageContext } from "@/contexts/PageContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_JOB } from "@/graphql/mutations";
+import LoginPromptModal from "../modals/logInPromptModal";
 interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   job: any;
   colorArray: Array<string>;
@@ -25,7 +28,7 @@ const JobPost: React.FC<JobPostProps> = ({
   job,
   colorArray,
   index,
-  saveClick,
+  // saveClick,
 }) => {
   const router = useRouter();
   const { colorOption } = useColors();
@@ -33,6 +36,9 @@ const JobPost: React.FC<JobPostProps> = ({
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
+  const { isLoggedIn } = usePageContext();
+  const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
+
   const removeSavedJob = () => {
     showModal(
       <DeleteConfirmationModal
@@ -42,6 +48,7 @@ const JobPost: React.FC<JobPostProps> = ({
     );
   };
 
+  // we'll be able to pass in an appId directly
   let thisApp: string;
   const applied = job.job?.applicants?.includes(fellow?.id);
   if (applied) {
@@ -53,6 +60,30 @@ const JobPost: React.FC<JobPostProps> = ({
       thisApp = currentApp.id;
     }
   }
+
+  const saveClick = async () => {
+    if (!isLoggedIn) {
+      showModal(<LoginPromptModal />);
+      return;
+    }
+    hideModal();
+
+    console.log(job.id);
+    try {
+      const response = await saveJob({
+        variables: {
+          jobId: job.id,
+        },
+      });
+      //rerender here to set the saved status of the job?
+      console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
+  console.log(job);
 
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
@@ -111,7 +142,7 @@ const JobPost: React.FC<JobPostProps> = ({
             {appNumber}/25 apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
-            {job.isSaved ? (
+            {job.saved ? (
               <SiteButton
                 aria="addJobsButton"
                 size="extraSmallCircle"

@@ -10,6 +10,8 @@ import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTINGS } from "@/graphql/queries";
+import { useMutation } from "@apollo/client";
+import { SAVE_JOB } from "@/graphql/mutations";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
@@ -40,6 +42,7 @@ export default function JobBoard() {
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
   const [loadingData, setLoadingData] = useState(true);
+  const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
 
   const {
     loading: queryLoading,
@@ -71,24 +74,26 @@ export default function JobBoard() {
   };
 
   // save jobs to saved-jobs list/page
-  const saveClick = (jobId: any) => {
-    if (!isLoggedIn) {
-      showModal(<LoginPromptModal />);
-      return;
-    }
-    if (fellow?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
-      });
-    } else {
-      setFellow({
-        ...fellow,
-        savedJobs: [...(fellow?.savedJobs || []), jobId],
-      });
-    }
-    hideModal();
-  };
+  // const saveClick = async (jobId: any) => {
+  //   if (!isLoggedIn) {
+  //     showModal(<LoginPromptModal />);
+  //     return;
+  //   }
+  //   hideModal();
+
+  //   console.log(jobId);
+  //   try {
+  //     const response = await saveJob({
+  //       variables: {
+  //         jobId: jobId,
+  //       },
+  //     });
+  //     console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
+  //   } catch (error) {
+  //     console.error("Signup error:", error);
+  //     // Optionally, you can set an error state here to display to the user
+  //   }
+  // };
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -153,8 +158,8 @@ export default function JobBoard() {
         job={job}
         index={index}
         colorArray={colorArray}
-        key={job.jobId}
-        saveClick={() => saveClick(job.jobId)}
+        key={job.id}
+        // saveClick={() => saveClick(job.id)}
       />
     ));
   };

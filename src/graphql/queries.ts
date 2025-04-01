@@ -114,6 +114,7 @@ export const GET_JOB_LISTINGS = gql`
       moreAboutPosition
       responsibilities
       perks
+      saved
       interviewProcess {
         id
         stage
@@ -152,6 +153,7 @@ export const GET_JOB_LISTING_BY_ID = gql`
       moreAboutPosition
       responsibilities
       perks
+      saved
       interviewProcess {
         id
         stage
