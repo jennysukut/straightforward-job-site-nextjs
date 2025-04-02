@@ -2,72 +2,89 @@ import { gql } from "@apollo/client";
 
 export const GET_PROFILE = gql`
   query GetFellowProfile($id: ID!) {
-    fellowProfile(id: $id) {
-      smallBio
-      location
-      country
-      languages
-      skills
-      jobTitles
-      experience {
-        id
-        title
-        companyName
-        yearDetails
-        details
-      }
-      education {
-        id
-        degree
-        school
-        fieldOfStudy
-      }
-      awards {
-        id
-        awardTitle
-        givenBy
-        awardDetails
-      }
-      experienceLevels {
-        id
-        experienceLevel
-        expLevelSkill
-        skillYears
-      }
-      accomplishments {
-        id
-        accTitle
-        accDetails
-      }
-      passions
-      lookingFor
-      locationOptions
-      hobbies {
-        id
-        hobbyTitle
-        howLong
-      }
-      bookOrQuote {
-        id
-        bookOrQuote
-        author
-      }
-      petDetails
-      links {
-        id
-        linkType
-        link
-      }
-      aboutMe
-      avatar
+    fellow(id: $id) {
+      id
       name
+      profile {
+        smallBio
+        location
+        country
+        languages
+        skills
+        jobTitles
+        experience {
+          id
+          title
+          companyName
+          yearDetails
+          details
+        }
+        education {
+          id
+          degree
+          school
+          fieldOfStudy
+        }
+        awards {
+          id
+          awardTitle
+          givenBy
+          awardDetails
+        }
+        experienceLevels {
+          id
+          experienceLevel
+          expLevelSkill
+          skillYears
+        }
+        accomplishments {
+          id
+          accTitle
+          accDetails
+        }
+        passions
+        lookingFor
+        locationOptions
+        hobbies {
+          id
+          hobbyTitle
+          howLong
+        }
+        bookOrQuote {
+          id
+          bookOrQuote
+          author
+        }
+        petDetails
+        links {
+          id
+          linkType
+          link
+        }
+        aboutMe
+        avatar
+        name
+      }
+      savedJobs {
+        id
+      }
+      jobApplications {
+        id
+        message
+        status
+      }
+      dailyApplications {
+        id
+        message
+        status
+      }
     }
   }
 `;
 
 export const GET_BUSINESS_PROFILE = gql`
   query GetBusinessProfile($id: ID!) {
-    businessProfile(id: $id) {
+    business(id: $id) {
       smallBio
       country
       location

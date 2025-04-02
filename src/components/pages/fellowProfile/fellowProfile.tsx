@@ -181,60 +181,66 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
             <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {currentFellow?.skills && currentFellow.skills.length > 0 ? (
-                currentFellow.skills.map((skill: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      aria={skill}
-                      variant="display"
-                      key={skill}
-                      colorScheme={
-                        primaryColorArray[index % primaryColorArray.length]
-                      }
-                    >
-                      {skill}
-                    </SiteLabel>
-                  );
-                })
+              {currentFellow?.profile.skills &&
+              currentFellow.profile.skills.length > 0 ? (
+                currentFellow.profile.skills.map(
+                  (skill: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        aria={skill}
+                        variant="display"
+                        key={skill}
+                        colorScheme={
+                          primaryColorArray[index % primaryColorArray.length]
+                        }
+                      >
+                        {skill}
+                      </SiteLabel>
+                    );
+                  },
+                )
               ) : (
                 <p>No skills available.</p>
               )}
             </div>
           </InfoBox>
-          {currentFellow?.education && currentFellow?.education.length > 0 && (
-            <InfoBox
-              variant="hollow"
-              aria="education"
-              size="profile"
-              width="small"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step2")}
-            >
-              <h2 className="EducationTitle mb-4 pl-2">{`My Education:`}</h2>
-              <ul
-                className={`EducationList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.profile.education &&
+            currentFellow?.profile.education.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="education"
+                size="profile"
+                width="small"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step2")}
               >
-                {currentFellow.education.map((edu: any, index: number) => {
-                  return (
-                    <li className="EducationItem" key={index}>
-                      <p className="DegreeFOS">
-                        {edu.degree},
-                        <span className="FieldOfStudy">
-                          {` `}
-                          {edu.fieldOfStudy}
-                        </span>
-                      </p>
-                      <p className={`School italic ${textColor}`}>
-                        {edu.school}
-                      </p>
-                    </li>
-                  );
-                })}
-              </ul>
-            </InfoBox>
-          )}
-          {currentFellow?.experience &&
-            currentFellow?.experience.length > 0 && (
+                <h2 className="EducationTitle mb-4 pl-2">{`My Education:`}</h2>
+                <ul
+                  className={`EducationList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.profile.education.map(
+                    (edu: any, index: number) => {
+                      return (
+                        <li className="EducationItem" key={index}>
+                          <p className="DegreeFOS">
+                            {edu.degree},
+                            <span className="FieldOfStudy">
+                              {` `}
+                              {edu.fieldOfStudy}
+                            </span>
+                          </p>
+                          <p className={`School italic ${textColor}`}>
+                            {edu.school}
+                          </p>
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </InfoBox>
+            )}
+          {currentFellow?.profile.experience &&
+            currentFellow?.profile.experience.length > 0 && (
               <InfoBox
                 variant="hollow"
                 aria="experience"
@@ -247,68 +253,73 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 <ul
                   className={`ExperienceList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
                 >
-                  {currentFellow.experience.map((exp: any, index: number) => {
-                    return (
-                      <li className="ExperienceItem" key={index}>
-                        <p className="JobTitle pr-4">
-                          {exp.title},
-                          <span className="Company italic">
-                            {` `}
-                            {exp.companyName}
-                          </span>
-                          {exp.yearDetails && (
-                            <span className={`Years italic ${textColor}`}>
-                              {` - `}
-                              {exp.yearDetails}
+                  {currentFellow.profile.experience.map(
+                    (exp: any, index: number) => {
+                      return (
+                        <li className="ExperienceItem" key={index}>
+                          <p className="JobTitle pr-4">
+                            {exp.title},
+                            <span className="Company italic">
+                              {` `}
+                              {exp.companyName}
                             </span>
-                          )}
-                        </p>
-                        {exp.details && (
-                          <p
-                            className={`Details mt-2 text-sm font-medium ${secondaryTextColor}`}
-                          >
-                            {exp.details}
+                            {exp.yearDetails && (
+                              <span className={`Years italic ${textColor}`}>
+                                {` - `}
+                                {exp.yearDetails}
+                              </span>
+                            )}
                           </p>
-                        )}
-                      </li>
-                    );
-                  })}
+                          {exp.details && (
+                            <p
+                              className={`Details mt-2 text-sm font-medium ${secondaryTextColor}`}
+                            >
+                              {exp.details}
+                            </p>
+                          )}
+                        </li>
+                      );
+                    },
+                  )}
                 </ul>
               </InfoBox>
             )}
-          {currentFellow?.awards && currentFellow?.awards.length >= 1 && (
-            <InfoBox
-              variant="hollow"
-              aria="awards"
-              size="profile"
-              width="small"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step3")}
-            >
-              <h2 className="AwardsTitle mb-4 pl-2">{`Awards / Honors:`}</h2>
-              <ul
-                className={`AwardsList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.profile.awards &&
+            currentFellow?.profile.awards.length >= 1 && (
+              <InfoBox
+                variant="hollow"
+                aria="awards"
+                size="profile"
+                width="small"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step3")}
               >
-                {currentFellow.awards.map((award: any, index: number) => {
-                  return (
-                    <li className="AwardItem" key={index}>
-                      <p className="AwardTitle pr-4">{award.awardTitle},</p>
-                      <p className="GivenBy italic">{award.givenBy}</p>
-                      {award.awardDetails && (
-                        <p
-                          className={`Details mt-2 text-sm font-medium ${textColor}`}
-                        >
-                          {award.awardDetails}
-                        </p>
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </InfoBox>
-          )}
-          {currentFellow?.experienceLevels &&
-            currentFellow?.experienceLevels.length > 0 && (
+                <h2 className="AwardsTitle mb-4 pl-2">{`Awards / Honors:`}</h2>
+                <ul
+                  className={`AwardsList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.profile.awards.map(
+                    (award: any, index: number) => {
+                      return (
+                        <li className="AwardItem" key={index}>
+                          <p className="AwardTitle pr-4">{award.awardTitle},</p>
+                          <p className="GivenBy italic">{award.givenBy}</p>
+                          {award.awardDetails && (
+                            <p
+                              className={`Details mt-2 text-sm font-medium ${textColor}`}
+                            >
+                              {award.awardDetails}
+                            </p>
+                          )}
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </InfoBox>
+            )}
+          {currentFellow?.profile.experienceLevels &&
+            currentFellow?.profile.experienceLevels.length > 0 && (
               <InfoBox
                 variant="hollow"
                 aria="expLevels"
@@ -321,7 +332,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 <ul
                   className={`ExperienceLevelList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
                 >
-                  {currentFellow.experienceLevels.map(
+                  {currentFellow.profile.experienceLevels.map(
                     (exp: any, index: number) => {
                       return (
                         <li className="ExperienceLevelItem" key={index}>
@@ -342,8 +353,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 </ul>
               </InfoBox>
             )}
-          {currentFellow?.bookOrQuote &&
-            currentFellow?.bookOrQuote.length > 0 && (
+          {currentFellow?.profile.bookOrQuote &&
+            currentFellow?.profile.bookOrQuote.length > 0 && (
               <InfoBox
                 variant="hollow"
                 aria="bookOrQuote"
@@ -356,20 +367,22 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 <ul
                   className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
                 >
-                  {currentFellow.bookOrQuote.map((bq: any, index: number) => {
-                    return (
-                      <li className="BookOrQuoteItem" key={index}>
-                        <p className="BookOrQuote">{bq.bookOrQuote}</p>
-                        <p className={`Author italic ${textColor}`}>
-                          - {bq.author}
-                        </p>
-                      </li>
-                    );
-                  })}
+                  {currentFellow.profile.bookOrQuote.map(
+                    (bq: any, index: number) => {
+                      return (
+                        <li className="BookOrQuoteItem" key={index}>
+                          <p className="BookOrQuote">{bq.bookOrQuote}</p>
+                          <p className={`Author italic ${textColor}`}>
+                            - {bq.author}
+                          </p>
+                        </li>
+                      );
+                    },
+                  )}
                 </ul>
               </InfoBox>
             )}
-          {currentFellow?.petDetails && (
+          {currentFellow?.profile.petDetails && (
             <InfoBox
               variant="hollow"
               aria="petInfo"
@@ -382,7 +395,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <p
                 className={`PetDetails ml-8 font-medium ${secondaryTextColor}`}
               >
-                {currentFellow.petDetails}
+                {currentFellow.profile.petDetails}
               </p>
             </InfoBox>
           )}
@@ -429,7 +442,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 <div className="NameBioContainer">
                   <h1 className="Name">{currentFellow?.name}</h1>
                   <p className="SmallBio min-w-[20vw] pt-4 leading-6">
-                    {currentFellow?.smallBio ||
+                    {currentFellow?.profile.smallBio ||
                       "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                   </p>
                 </div>
@@ -464,12 +477,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <div className="LocationInfo flex flex-col gap-2">
               <p className={`Location ml-2 ${titleColor}`}>
-                Location: {currentFellow?.location}, {currentFellow?.country}
+                Location: {currentFellow?.profile.location},{" "}
+                {currentFellow?.profile.country}
               </p>
             </div>
           </InfoBox>
 
-          {currentFellow?.locationOptions && (
+          {currentFellow?.profile.locationOptions && (
             <InfoBox
               variant="hollow"
               aria="locationTypes"
@@ -481,8 +495,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <div className="LocationTypesInfo flex flex-col gap-2">
                 <h2 className="LocationTitle text-center">{`My Work Location Types:`}</h2>
                 <div className="LocationTypes -mb-2 mt-4 flex items-center justify-evenly gap-2 self-center">
-                  {currentFellow.locationOptions !== null &&
-                    currentFellow?.locationOptions.map(
+                  {currentFellow.profile.locationOptions !== null &&
+                    currentFellow?.profile.locationOptions.map(
                       (opt: any, index: number) => {
                         return (
                           <SiteLabel
@@ -504,44 +518,47 @@ const FellowProfile: React.FC<FellowProfile> = ({
             </InfoBox>
           )}
 
-          {currentFellow?.links && currentFellow?.links.length > 0 && (
-            <InfoBox
-              variant="hollow"
-              aria="links"
-              size="profile"
-              width="medium"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step6")}
-            >
-              <h2 className="LinksTitle mb-4 pl-2">{`${currentFellow.name}'s Links:`}</h2>
-              <div className="Links ml-8 flex flex-col gap-2">
-                {currentFellow?.links && (
-                  <div className="LinksList mt-2 flex flex-col gap-2">
-                    {currentFellow.links.map((link: any, index: number) => {
-                      return (
-                        <div className="Link" key={index}>
-                          <p className={`Link ${titleColor}`}>
-                            {link.linkType} {`: `}
-                          </p>
-                          <a
-                            href={link.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            <p
-                              className={`Link text-sm font-medium italic ${secondaryTextColor} max-w-[400px] overflow-clip text-ellipsis text-nowrap`}
-                            >
-                              {link.link}
-                            </p>
-                          </a>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            </InfoBox>
-          )}
+          {currentFellow?.profile.links &&
+            currentFellow?.profile.links.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="links"
+                size="profile"
+                width="medium"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step6")}
+              >
+                <h2 className="LinksTitle mb-4 pl-2">{`${currentFellow.name}'s Links:`}</h2>
+                <div className="Links ml-8 flex flex-col gap-2">
+                  {currentFellow?.profile.links && (
+                    <div className="LinksList mt-2 flex flex-col gap-2">
+                      {currentFellow.profile.links.map(
+                        (link: any, index: number) => {
+                          return (
+                            <div className="Link" key={index}>
+                              <p className={`Link ${titleColor}`}>
+                                {link.linkType} {`: `}
+                              </p>
+                              <a
+                                href={link.link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                <p
+                                  className={`Link text-sm font-medium italic ${secondaryTextColor} max-w-[400px] overflow-clip text-ellipsis text-nowrap`}
+                                >
+                                  {link.link}
+                                </p>
+                              </a>
+                            </div>
+                          );
+                        },
+                      )}
+                    </div>
+                  )}
+                </div>
+              </InfoBox>
+            )}
 
           <InfoBox
             variant="hollow"
@@ -553,29 +570,33 @@ const FellowProfile: React.FC<FellowProfile> = ({
           >
             <h2 className="JobTitlesTitle text-center">{`My Job Titles:`}</h2>
             <div className="JobTitlesContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-              {currentFellow?.jobTitles &&
-              currentFellow.jobTitles.length > 0 ? (
-                currentFellow.jobTitles.map((title: any, index: number) => {
-                  return (
-                    <SiteLabel
-                      aria={title}
-                      variant="display"
-                      key={index}
-                      size="medium"
-                      colorScheme={
-                        secondaryColorArray[index % secondaryColorArray.length]
-                      }
-                    >
-                      {title}
-                    </SiteLabel>
-                  );
-                })
+              {currentFellow?.profile.jobTitles &&
+              currentFellow.profile.jobTitles.length > 0 ? (
+                currentFellow.profile.jobTitles.map(
+                  (title: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        aria={title}
+                        variant="display"
+                        key={index}
+                        size="medium"
+                        colorScheme={
+                          secondaryColorArray[
+                            index % secondaryColorArray.length
+                          ]
+                        }
+                      >
+                        {title}
+                      </SiteLabel>
+                    );
+                  },
+                )
               ) : (
                 <p>No job titles available.</p>
               )}
             </div>
           </InfoBox>
-          {currentFellow?.passions && (
+          {currentFellow?.profile.passions && (
             <InfoBox
               variant="hollow"
               aria="passionateAbout"
@@ -588,11 +609,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 className={`PassionateAboutTitle mb-4 pl-2 ${titleColor}`}
               >{`What I'm Passionate About:`}</h2>
               <p className="PassionateAbout text-md px-6 font-medium">
-                {currentFellow.passions}
+                {currentFellow.profile.passions}
               </p>
             </InfoBox>
           )}
-          {currentFellow?.lookingFor && (
+          {currentFellow?.profile.lookingFor && (
             <InfoBox
               variant="hollow"
               aria="lookingFor"
@@ -608,43 +629,46 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <p
                 className={`LookingFor text-md mt-4 px-6 font-medium ${secondaryTextColor}`}
               >
-                {currentFellow.lookingFor}
+                {currentFellow.profile.lookingFor}
               </p>
             </InfoBox>
           )}
-          {currentFellow?.hobbies && currentFellow?.hobbies.length > 0 && (
-            <InfoBox
-              variant="hollow"
-              aria="hobbies"
-              size="profile"
-              width="medium"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step5")}
-            >
-              <h2 className="HobbiesTitle mb-4 pl-2">{`My Hobbies / Pastimes:`}</h2>
-              <ul
-                className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+          {currentFellow?.profile.hobbies &&
+            currentFellow?.profile.hobbies.length > 0 && (
+              <InfoBox
+                variant="hollow"
+                aria="hobbies"
+                size="profile"
+                width="medium"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step5")}
               >
-                {currentFellow.hobbies.map((hobby: any, index: number) => {
-                  return (
-                    <li className={`HobbyItem ${textColor}`} key={index}>
-                      <p className="Hobby">
-                        {hobby.hobbyTitle}
-                        {hobby.howLong && (
-                          <span className="HobbyTimeline">
-                            {", "}
-                            {hobby.howLong}
-                          </span>
-                        )}
-                      </p>
-                    </li>
-                  );
-                })}
-              </ul>
-            </InfoBox>
-          )}
-          {currentFellow?.accomplishments &&
-            currentFellow?.accomplishments.length >= 1 && (
+                <h2 className="HobbiesTitle mb-4 pl-2">{`My Hobbies / Pastimes:`}</h2>
+                <ul
+                  className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
+                >
+                  {currentFellow.profile.hobbies.map(
+                    (hobby: any, index: number) => {
+                      return (
+                        <li className={`HobbyItem ${textColor}`} key={index}>
+                          <p className="Hobby">
+                            {hobby.hobbyTitle}
+                            {hobby.howLong && (
+                              <span className="HobbyTimeline">
+                                {", "}
+                                {hobby.howLong}
+                              </span>
+                            )}
+                          </p>
+                        </li>
+                      );
+                    },
+                  )}
+                </ul>
+              </InfoBox>
+            )}
+          {currentFellow?.profile.accomplishments &&
+            currentFellow?.profile.accomplishments.length >= 1 && (
               <InfoBox
                 variant="hollow"
                 aria="accomplishments"
@@ -657,7 +681,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 <ul
                   className={`BookOrQuoteList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
                 >
-                  {currentFellow.accomplishments.map(
+                  {currentFellow.profile.accomplishments.map(
                     (acc: any, index: number) => {
                       return (
                         <li
@@ -679,7 +703,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 </ul>
               </InfoBox>
             )}
-          {currentFellow?.aboutMe && (
+          {currentFellow?.profile.aboutMe && (
             <InfoBox
               variant="hollow"
               aria="moreAboutMe"
@@ -692,7 +716,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 className={`AboutMeTitle mb-4 pl-2 ${titleColor}`}
               >{`More About Me:`}</h2>
               <p className="AboutMe text-md px-6 font-medium">
-                {currentFellow.aboutMe}
+                {currentFellow.profile.aboutMe}
               </p>
             </InfoBox>
           )}

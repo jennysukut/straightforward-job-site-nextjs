@@ -67,8 +67,8 @@ export default function LoginModal() {
         if (fetchProfileType === "fellow") {
           console.log("called the GET_PROFILE query inside login Modal");
           setFellow({
-            ...data.fellowProfile,
-            dailyApplications: { count: 0, lastReset: "today" },
+            ...data.fellow,
+            avatar: data.fellow.profile.avatar,
           });
           console.log(JSON.stringify(data.fellowProfile));
         } else if (fetchProfileType === "business") {
