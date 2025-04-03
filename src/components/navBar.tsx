@@ -41,7 +41,7 @@ export default function NavBar() {
     );
   } else if (accountType === "Business") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === business?.avatar,
+      (option) => option.title === business?.businessProfile?.avatar,
     );
   }
 

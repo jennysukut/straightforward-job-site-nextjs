@@ -61,14 +61,11 @@ export default function SignupModalBusiness1() {
       console.log("Signup successful, ID:", response.data.signupBusiness); // Adjust based on your mutation response
       setBusiness({
         ...business,
-        businessName: data.businessName,
+        name: data.businessName,
         email: data.email,
         password: data.password,
       });
       router.push("/business-signup/step1");
-      setTimeout(() => {
-        hideModal();
-      }, 500);
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

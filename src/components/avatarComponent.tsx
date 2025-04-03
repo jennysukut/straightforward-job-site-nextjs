@@ -16,11 +16,11 @@ export default function Avatar({
   let avatarDetails;
   if (avatarType === "Business") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === business?.avatar,
+      (option) => option.title === business?.businessProfile.avatar,
     );
   } else if (avatarType === "Fellow") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.profile.avatar,
+      (option) => option.title === fellow?.profile.avatar || fellow?.avatar,
     );
   }
 

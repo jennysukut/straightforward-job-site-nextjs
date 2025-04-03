@@ -57,7 +57,7 @@ export default function Settings() {
               addClasses="-mt-20"
             >
               <div className="NameAndEmail ml-2 flex flex-col gap-8">
-                <h2 className="Name">Business: {business?.businessName}</h2>
+                <h2 className="Name">Business: {business?.name}</h2>
 
                 <h2 className="Name leading-6">Email: {business?.email}</h2>
               </div>
@@ -109,7 +109,7 @@ export default function Settings() {
                 addClasses="-mt-20"
               >
                 <div className="NameAndEmail ml-2 flex flex-col gap-8">
-                  <h2 className="Name">Business: {business?.businessName}</h2>
+                  <h2 className="Name">Business: {business?.name}</h2>
 
                   <h2 className="Name leading-6">Email: {business?.email}</h2>
                 </div>

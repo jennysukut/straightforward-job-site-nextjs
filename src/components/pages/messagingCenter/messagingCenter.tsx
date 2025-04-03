@@ -64,7 +64,7 @@ const MessageCenter = ({
     if (accountType === "Fellow") {
       return option.title === fellow?.avatar;
     } else if (accountType === "Business") {
-      return option.title === business?.avatar;
+      return option.title === business?.businessProfile?.avatar;
     }
   })?.colorScheme;
 

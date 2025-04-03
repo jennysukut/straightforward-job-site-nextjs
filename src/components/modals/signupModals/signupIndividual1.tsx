@@ -65,9 +65,6 @@ export default function SignupModalIndividual1() {
         email: data.email,
       });
       router.push("/individual-signup/step1");
-      setTimeout(() => {
-        hideModal();
-      }, 1500);
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

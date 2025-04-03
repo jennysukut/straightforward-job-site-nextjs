@@ -42,14 +42,14 @@ type FormData = z.infer<typeof businessSchema>;
 export default function BusinessSignupPage1() {
   const router = useRouter();
   const { business, setBusiness } = useBusiness();
-  const { showModal } = useModal();
+  const { hideModal, showModal } = useModal();
   const { textColor, titleColor } = useColorOptions();
   const { colorOption } = useColors();
   const { setIsLoggedIn } = usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const avatarDetails = avatarOptions.find(
-    (option) => option.title === business?.avatar,
+    (option) => option.title === business?.businessProfile?.avatar,
   );
   const [avatar, setAvatar] = useState(avatarDetails);
   const [saveBusinessProfilePage1, { loading, error }] = useMutation(
@@ -65,7 +65,7 @@ export default function BusinessSignupPage1() {
   } = useForm<FormData>({
     resolver: zodResolver(businessSchema),
     defaultValues: {
-      country: business?.country,
+      country: business?.businessProfile?.country,
     },
   });
 
@@ -90,12 +90,14 @@ export default function BusinessSignupPage1() {
       ); // Adjust based on your mutation response
       setBusiness({
         ...business,
-        country: data.country,
-        location: data.location,
-        smallBio: data.smallBio,
-        website: data.website,
-        avatar: avatar?.title,
         profileIsBeingEdited: false,
+        businessProfile: {
+          country: data.country,
+          location: data.location,
+          smallBio: data.smallBio,
+          website: data.website,
+          avatar: avatar?.title,
+        },
       });
       setIsLoggedIn(true);
       if (business?.profileIsBeingEdited) {
@@ -121,6 +123,7 @@ export default function BusinessSignupPage1() {
 
   // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
+    hideModal();
     ShuffleIdealButtonPattern(setColorArray);
   }, []);
 
@@ -131,7 +134,7 @@ export default function BusinessSignupPage1() {
       <div className="BusinessSignupContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="NameAvatarContainer -mb-6 flex justify-between">
           <h1 className="BusinessName ml-8 self-end pb-4 tracking-superwide">
-            {business?.businessName || "Test BusinessName"}
+            {business?.name || "Test BusinessName"}
           </h1>
           <div className="AvatarButtonContainer -mr-14 -mt-14 mb-2 flex flex-col items-end self-end">
             <div className="AvatarContainer flex items-baseline gap-4 self-end">
@@ -166,7 +169,7 @@ export default function BusinessSignupPage1() {
             searchData={countries}
             colorArray={colorArray}
             options
-            defaultValue={business?.country}
+            defaultValue={business?.businessProfile?.country}
             width="full"
             register
             registerValue="country"
@@ -180,7 +183,7 @@ export default function BusinessSignupPage1() {
             errors={errors.location}
             register={register}
             registerValue="location"
-            defaultValue={business?.location}
+            defaultValue={business?.businessProfile?.location}
             addClasses="-mt-2"
             width="full"
             required
@@ -193,7 +196,7 @@ export default function BusinessSignupPage1() {
             errors={errors.smallBio}
             register={register}
             registerValue="smallBio"
-            defaultValue={business?.smallBio}
+            defaultValue={business?.businessProfile?.smallBio}
             width="full"
             required
           />
@@ -205,7 +208,7 @@ export default function BusinessSignupPage1() {
             errors={errors.website}
             register={register}
             registerValue="website"
-            defaultValue={business?.website}
+            defaultValue={business?.businessProfile?.website}
             width="full"
             required
           />

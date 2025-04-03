@@ -64,9 +64,9 @@ export default function PostAJobStep1() {
           id: job?.jobId,
           positionSummary: data.positionSummary,
           nonNegParams: nonNegParams,
-          location: business?.location,
-          businessName: business?.businessName,
-          country: business?.country,
+          location: business?.businessProfile?.location,
+          businessName: business?.name,
+          country: business?.businessProfile?.country,
         },
       });
 
@@ -78,9 +78,9 @@ export default function PostAJobStep1() {
         ...job,
         positionSummary: data.positionSummary,
         nonNegParams: nonNegParams,
-        location: business?.location,
-        businessName: business?.businessName,
-        country: business?.country,
+        location: business?.businessProfile?.location,
+        businessName: business?.name,
+        country: business?.businessProfile?.country,
         // jobIsBeingEdited: false,
       });
       if (job?.jobIsBeingEdited) {

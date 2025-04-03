@@ -53,7 +53,7 @@ type FormData = z.infer<typeof fellowSchema>;
 export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
-  const { showModal } = useModal();
+  const { hideModal, showModal } = useModal();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails = avatarOptions.find(
@@ -133,24 +133,6 @@ export default function IndividualSignupPage1() {
     }
   };
 
-  //   setFellow({
-  //     ...fellow,
-  //     smallBio: data.smallBio,
-  //     country: data.country,
-  //     location: data.location,
-  //     skills: skills,
-  //     jobTitles: jobTitles,
-  //     avatar: avatar?.title,
-  //     languages: languages,
-  //     profileIsBeingEdited: false,
-  //   });
-  //   if (fellow?.profileIsBeingEdited) {
-  //     router.push("/profile");
-  //   } else {
-  //     router.push("/individual-signup/step2");
-  //   }
-  // };
-
   // handlers for adding, updating, and deleting information tied to States
   const handleAdd = (
     type: "skills" | "jobTitles" | "country" | "languages",
@@ -169,8 +151,6 @@ export default function IndividualSignupPage1() {
     });
   };
 
-  console.log(avatar);
-
   const handleDelete = (
     type: "skills" | "jobTitles" | "languages",
     item: any,
@@ -188,6 +168,7 @@ export default function IndividualSignupPage1() {
 
   // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
+    hideModal();
     const colors = getRandomColorArray(36);
     setColorArray(colors);
   }, []);

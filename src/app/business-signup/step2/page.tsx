@@ -64,9 +64,12 @@ export default function BusinessSignupPage2() {
 
       setBusiness({
         ...business,
-        businessField: data.businessField,
-        missionVision: data.missionVision,
-        moreAboutBusiness: data.moreAboutBusiness,
+        businessProfile: {
+          ...business?.businessProfile,
+          businessField: data.businessField,
+          missionVision: data.missionVision,
+          moreAboutBusiness: data.moreAboutBusiness,
+        },
       });
       setIsLoggedIn(true);
       router.push("/profile");
@@ -97,7 +100,7 @@ export default function BusinessSignupPage2() {
           errors={errors.businessField}
           register={register}
           registerValue="businessField"
-          defaultValue={business?.businessField}
+          defaultValue={business?.businessProfile?.businessField}
           addClasses="-mt-2"
           width="full"
           required
@@ -110,7 +113,7 @@ export default function BusinessSignupPage2() {
           errors={errors.missionVision}
           register={register}
           registerValue="missionVision"
-          defaultValue={business?.missionVision}
+          defaultValue={business?.businessProfile?.missionVision}
           addClasses="-mt-2"
           width="full"
           required
@@ -123,9 +126,10 @@ export default function BusinessSignupPage2() {
           errors={errors.moreAboutBusiness}
           register={register}
           registerValue="moreAboutBusiness"
-          defaultValue={business?.moreAboutBusiness}
+          defaultValue={business?.businessProfile?.moreAboutBusiness}
           width="full"
           size="medium"
+          required
         />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">
