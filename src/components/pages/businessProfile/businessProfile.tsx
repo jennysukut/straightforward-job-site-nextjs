@@ -20,6 +20,21 @@ interface BusinessProfile {
   isOwn?: boolean;
 }
 
+interface BusinessProfileData {
+  id?: string;
+  name?: string;
+  businessProfile?: {
+    avatar?: string;
+    smallBio?: string;
+    location?: string;
+    country?: string;
+    missionVision?: string;
+    website?: string;
+    moreAboutBusiness?: string;
+    businessField?: string;
+  };
+}
+
 const BusinessProfile: React.FC<BusinessProfile> = ({
   isOwn,
   self,
@@ -33,13 +48,15 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   const { textColor, titleColor, secondaryTextColor } = useColorOptions();
   const router = useRouter();
   const [canEdit, setCanEdit] = useState(false);
-  const [loadingData, setLoadingData] = useState(!isOwn ? true : false);
+  const [loadingData, setLoadingData] = useState(true);
+  const [thisBusiness, setThisBusiness] = useState<BusinessProfileData>({});
 
-  let thisBusiness;
-  if (isOwn) {
-    console.log("business = self");
-    thisBusiness = self;
-  }
+  useEffect(() => {
+    if (isOwn) {
+      setThisBusiness(self);
+      setLoadingData(false);
+    }
+  }, []);
 
   console.log("this business", thisBusiness);
   // make query and have it not run if isOwn?
@@ -53,10 +70,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
     },
     skip: isOwn,
     onCompleted: (data) => {
+      setThisBusiness({
+        ...data.business,
+        avatar: data.business.businessProfile.avatar,
+      });
       setLoadingData(false);
-      console.log(queryData);
-      thisBusiness = queryData;
-      // console.log(thisBusiness);
     },
   });
 
@@ -115,7 +133,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             >
               <h2 className="MissionVisionTitle mb-4 pl-2">{`Mission & Vision:`}</h2>
               <p className="MissionVision ml-4 font-medium italic text-emerald">
-                {thisBusiness.businessProfile.missionVision}
+                {thisBusiness?.businessProfile?.missionVision}
               </p>
             </InfoBox>
 
@@ -132,7 +150,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               <p
                 className={`BusinessField ml-8 font-medium ${secondaryTextColor}`}
               >
-                {thisBusiness.businessProfile.businessField}
+                {thisBusiness?.businessProfile?.businessField}
               </p>
             </InfoBox>
 
@@ -180,7 +198,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                   <div className="NameBioContainer">
                     <h1 className="BusinessName">{thisBusiness.name}</h1>
                     <p className="SmallBio pt-4 leading-6 text-emerald">
-                      {thisBusiness?.businessProfile.smallBio ||
+                      {thisBusiness?.businessProfile?.smallBio ||
                         "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                     </p>
                   </div>
@@ -199,18 +217,18 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             >
               <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
                 <p className={`Location ml-2 ${titleColor}`}>
-                  Location: {thisBusiness?.businessProfile.location},{" "}
-                  {thisBusiness?.businessProfile.country}
+                  Location: {thisBusiness?.businessProfile?.location},{" "}
+                  {thisBusiness?.businessProfile?.country}
                 </p>
                 <p className={`Website ml-2 flex gap-2 ${titleColor}`}>
                   Website:
                   <a
-                    href={thisBusiness?.businessProfile.website}
+                    href={thisBusiness?.businessProfile?.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${secondaryTextColor} mt-[2px] text-sm font-medium italic`}
                   >
-                    {thisBusiness?.businessProfile.website}
+                    {thisBusiness?.businessProfile?.website}
                   </a>
                 </p>
                 {/* <p className={`Email ml-2 ${titleColor}`}>
@@ -220,7 +238,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             </InfoBox>
 
             {/* More About The Business */}
-            {thisBusiness?.businessProfile.moreAboutBusiness !== undefined && (
+            {thisBusiness?.businessProfile?.moreAboutBusiness !== undefined && (
               <InfoBox
                 variant="hollow"
                 aria="moreAboutBusiness"
@@ -233,7 +251,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                 <p
                   className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
                 >
-                  {thisBusiness.businessProfile.moreAboutBusiness}
+                  {thisBusiness?.businessProfile?.moreAboutBusiness}
                 </p>
               </InfoBox>
             )}

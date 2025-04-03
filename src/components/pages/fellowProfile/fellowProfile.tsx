@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
@@ -31,6 +31,15 @@ import Avatar from "../../avatarComponent";
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 
+interface FellowProfile {
+  hasId?: boolean;
+  id?: string;
+  self?: any;
+  isOwn?: boolean;
+  isApp?: boolean;
+  appId?: string;
+}
+
 interface FellowProfileData {
   name?: string;
   profile?: {
@@ -57,7 +66,14 @@ interface FellowProfileData {
   };
 }
 
-const FellowProfile = ({ hasId, id, self, isOwn, isApp }: any) => {
+const FellowProfile: React.FC<FellowProfile> = ({
+  hasId,
+  id,
+  self,
+  isOwn,
+  isApp,
+  appId,
+}) => {
   const router = useRouter();
 
   const { fellow, setFellow } = useFellow();
