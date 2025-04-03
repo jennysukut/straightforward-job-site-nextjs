@@ -119,8 +119,8 @@ const FellowProfile = ({ hasId, id, self, isOwn, isApp }: any) => {
     skip: !id || isOwn,
     onCompleted: (data) => {
       console.log("calling GET_PROFILE query:", data);
-      setCurrentFellow(data.fellow);
-      // setCurrentFellow({ ...fellow.fellow, avatar: fellow.profile.avatar });
+      // setCurrentFellow(data.fellow);
+      setCurrentFellow({ ...data.fellow, avatar: data.fellow.profile.avatar });
       console.log("currentFellow:", currentFellow);
       setLoadingData(false);
     },

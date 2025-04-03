@@ -26,20 +26,14 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const router = useRouter();
-  // const [fetchProfile, setFetchProfile] = useState(false);
-
-  // Set the page type to fellow or business here and render different profiles based on this
-  // Once we have signup and login working, we'll be able to grab data on
-  // who's logged in and use that to set these details
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/"); // Redirect to main page
+      router.push("/"); // Redirect to main page if not logged in
     } else {
       if (accountType === "Fellow" && pageType !== "Fellow") {
         setPageType("Fellow");
         setCurrentPage("fellowProfile");
-        // Do we put the GET_PROFILE query here to populate the details?
       } else if (accountType === "Business" && pageType !== "Business") {
         setPageType("Business");
         setCurrentPage("businessProfile");
@@ -49,7 +43,6 @@ export default function Profile() {
 
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
-      {/* here, we'll have to look to make sure the id of the current person is used to set their profile info */}
       {isLoggedIn && accountType === "Fellow" && (
         <FellowProfile self={fellow} isOwn />
       )}

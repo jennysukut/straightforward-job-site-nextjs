@@ -41,6 +41,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
     thisBusiness = self;
   }
 
+  console.log("this business", thisBusiness);
   // make query and have it not run if isOwn?
   const {
     loading: queryLoading,
@@ -113,9 +114,9 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               editClick={() => handleEditClick("/business-signup/step2")}
             >
               <h2 className="MissionVisionTitle mb-4 pl-2">{`Mission & Vision:`}</h2>
-              {/* <p className="MissionVision ml-4 font-medium italic text-emerald">
-                {thisBusiness.missionVision}
-              </p> */}
+              <p className="MissionVision ml-4 font-medium italic text-emerald">
+                {thisBusiness.businessProfile.missionVision}
+              </p>
             </InfoBox>
 
             {/* Business Field */}
@@ -128,11 +129,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               editClick={() => handleEditClick("/business-signup/step2")}
             >
               <h2 className="BusinessFieldTitle mb-4 pl-2">{`Industry:`}</h2>
-              {/* <p
+              <p
                 className={`BusinessField ml-8 font-medium ${secondaryTextColor}`}
               >
-                {thisBusiness.businessField}
-              </p> */}
+                {thisBusiness.businessProfile.businessField}
+              </p>
             </InfoBox>
 
             {/* Edit Buttons */}
@@ -177,11 +178,9 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                     avatarType="Business"
                   />
                   <div className="NameBioContainer">
-                    {/* <h1 className="BusinessName">
-                      {thisBusiness?.businessName}
-                    </h1> */}
+                    <h1 className="BusinessName">{thisBusiness.name}</h1>
                     <p className="SmallBio pt-4 leading-6 text-emerald">
-                      {thisBusiness?.smallBio ||
+                      {thisBusiness?.businessProfile.smallBio ||
                         "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
                     </p>
                   </div>
@@ -200,27 +199,28 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             >
               <div className="LocationWebsiteEmailInfo flex flex-col gap-4">
                 <p className={`Location ml-2 ${titleColor}`}>
-                  Location: {thisBusiness?.location}, {thisBusiness?.country}
+                  Location: {thisBusiness?.businessProfile.location},{" "}
+                  {thisBusiness?.businessProfile.country}
                 </p>
                 <p className={`Website ml-2 flex gap-2 ${titleColor}`}>
                   Website:
                   <a
-                    href={thisBusiness?.website}
+                    href={thisBusiness?.businessProfile.website}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`${secondaryTextColor} mt-[2px] text-sm font-medium italic`}
                   >
-                    {thisBusiness?.website}
+                    {thisBusiness?.businessProfile.website}
                   </a>
                 </p>
-                <p className={`Email ml-2 ${titleColor}`}>
-                  Email: {thisBusiness?.email}
-                </p>
+                {/* <p className={`Email ml-2 ${titleColor}`}>
+                  Email: {thisBusiness?.businessProfile.email}
+                </p> */}
               </div>
             </InfoBox>
 
             {/* More About The Business */}
-            {thisBusiness?.moreAboutBusiness !== undefined && (
+            {thisBusiness?.businessProfile.moreAboutBusiness !== undefined && (
               <InfoBox
                 variant="hollow"
                 aria="moreAboutBusiness"
@@ -229,11 +229,11 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                 canEdit={canEdit}
                 editClick={() => handleEditClick("/business-signup/step2")}
               >
-                {/* <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.businessName}:`}</h2> */}
+                <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.name}:`}</h2>
                 <p
                   className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
                 >
-                  {/* {thisBusiness.moreAboutBusiness} */}
+                  {thisBusiness.businessProfile.moreAboutBusiness}
                 </p>
               </InfoBox>
             )}

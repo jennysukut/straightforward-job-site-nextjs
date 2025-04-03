@@ -85,14 +85,18 @@ export const GET_PROFILE = gql`
 export const GET_BUSINESS_PROFILE = gql`
   query GetBusinessProfile($id: ID!) {
     business(id: $id) {
-      smallBio
-      country
-      location
-      website
-      avatar
-      businessField
-      missionVision
-      moreAboutBusiness
+      id
+      name
+      businessProfile {
+        smallBio
+        country
+        location
+        website
+        avatar
+        businessField
+        missionVision
+        moreAboutBusiness
+      }
     }
   }
 `;

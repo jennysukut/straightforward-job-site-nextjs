@@ -2,12 +2,12 @@
 
 import { useEffect } from "react";
 import { usePageContext } from "@/contexts/PageContext";
-
+import { useRouter } from "next/navigation";
 import OtherHeaderSection from "./otherHeaderSection";
 
 export default function Home() {
   const { setPageType } = usePageContext();
-
+  const router = useRouter();
   useEffect(() => {
     setPageType("main");
   }, []);
@@ -21,6 +21,9 @@ export default function Home() {
         backgroundPosition: "center",
       }}
     >
+      {/* <button onClick={() => router.push(`/business-signup/step2`)}>
+        go to signup page 3
+      </button> */}
       <OtherHeaderSection />
     </div>
   );

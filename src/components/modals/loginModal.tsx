@@ -36,7 +36,7 @@ export default function LoginModal() {
   const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
     usePageContext();
   const { fellow, setFellow } = useFellow();
-  const { setBusiness } = useBusiness();
+  const { business, setBusiness } = useBusiness();
   const [disabledButton, setDisabledButton] = useState(false);
   const [id, setId] = useState("");
   const [fetchProfileType, setFetchProfileType] = useState<
@@ -71,14 +71,16 @@ export default function LoginModal() {
             ...data.fellow,
             avatar: data.fellow.profile.avatar,
           });
-          // setFellow(data.fellow);
           console.log(JSON.stringify(data));
         } else if (fetchProfileType === "business") {
           console.log(
             "called the GET_BUSINESS_PROFILE query inside login Modal",
           );
-          setBusiness(data.businessProfile);
-          console.log(JSON.stringify(data.businessProfile));
+          console.log(data);
+          setBusiness({
+            ...data.business,
+            avatar: data.business.businessProfile.avatar,
+          });
         }
         hideModal();
       },
@@ -97,7 +99,10 @@ export default function LoginModal() {
         setAccountType("Fellow");
         setFetchProfileType("fellow");
       } else if (result.data.login.roles.includes("BUSINESS")) {
-        setId(result.data.login.id);
+        console.log("id:", result.data.login.id);
+        const realId = Number(result.data.login.id) - 2;
+        setId(String(realId));
+        // setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Business");
         setFetchProfileType("business");
