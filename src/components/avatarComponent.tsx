@@ -20,7 +20,8 @@ export default function Avatar({
     );
   } else if (avatarType === "Fellow") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.avatar,
+      (option) => option.title === "checks",
+      // fellow?.profile.avatar,
     );
   }
 

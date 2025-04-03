@@ -17,6 +17,7 @@ import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 export default function Profile() {
   const {
     setCurrentPage,
+    pageType,
     setPageType,
     accountType,
     isLoggedIn,
@@ -25,25 +26,26 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const router = useRouter();
-  const [fetchProfile, setFetchProfile] = useState(false);
+  // const [fetchProfile, setFetchProfile] = useState(false);
 
   // Set the page type to fellow or business here and render different profiles based on this
   // Once we have signup and login working, we'll be able to grab data on
   // who's logged in and use that to set these details
+
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/"); // Redirect to main page
     } else {
-      if (accountType === "Fellow") {
+      if (accountType === "Fellow" && pageType !== "Fellow") {
         setPageType("Fellow");
         setCurrentPage("fellowProfile");
         // Do we put the GET_PROFILE query here to populate the details?
-      } else if (accountType === "Business") {
+      } else if (accountType === "Business" && pageType !== "Business") {
         setPageType("Business");
         setCurrentPage("businessProfile");
       }
     }
-  }, [setCurrentPage, setPageType, accountType]);
+  }, [isLoggedIn, accountType, pageType, setCurrentPage, setPageType, router]);
 
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">

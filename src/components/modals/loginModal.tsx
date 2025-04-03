@@ -35,7 +35,7 @@ export default function LoginModal() {
   const { textColor } = useColorOptions();
   const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
     usePageContext();
-  const { setFellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { setBusiness } = useBusiness();
   const [disabledButton, setDisabledButton] = useState(false);
   const [id, setId] = useState("");
@@ -66,11 +66,13 @@ export default function LoginModal() {
         console.log("calling GET_PROFILE query");
         if (fetchProfileType === "fellow") {
           console.log("called the GET_PROFILE query inside login Modal");
+          console.log(data);
           setFellow({
             ...data.fellow,
             avatar: data.fellow.profile.avatar,
           });
-          console.log(JSON.stringify(data.fellowProfile));
+          // setFellow(data.fellow);
+          console.log(JSON.stringify(data));
         } else if (fetchProfileType === "business") {
           console.log(
             "called the GET_BUSINESS_PROFILE query inside login Modal",

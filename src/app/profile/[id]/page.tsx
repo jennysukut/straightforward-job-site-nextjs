@@ -11,8 +11,8 @@ export default function ListingPage({ params }: any) {
   return (
     <div className="ProfilePage flex flex-grow flex-col items-center gap-8 md:pb-12">
       {accountType === "Fellow" && <BusinessProfile hasId id={params.id} />}
-      {accountType === "Business" && (
-        <FellowProfile hasId id="testId" isApp appId={params.id} />
+      {(accountType === "Business" || accountType === "") && (
+        <FellowProfile hasId id={params.id} isApp />
       )}
     </div>
   );
