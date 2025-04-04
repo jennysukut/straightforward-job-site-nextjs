@@ -96,7 +96,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
   // const cookies = document.cookie.includes("your_cookie_name"); // Check for specific cookie
   const cookies = document.cookie.length > 0; // Check for specific cookie
 
-  console.log("cookies", cookies, "--", document.cookie);
+  // console.log("cookies", cookies, "--", document.cookie);
 
   const {
     data: queryData,

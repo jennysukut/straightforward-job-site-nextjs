@@ -7,9 +7,9 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
 export default function Avatar({
   addClasses,
-  fellow,
   business,
   avatarType,
+  avatar,
 }: any) {
   const { colorOption } = useColors();
 
@@ -19,9 +19,8 @@ export default function Avatar({
       (option) => option.title === business?.businessProfile.avatar,
     );
   } else if (avatarType === "Fellow") {
-    avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.profile.avatar || fellow?.avatar,
-    );
+    avatarDetails = avatarOptions.find((option) => option.title === avatar);
+    console.log("avatar details:", avatarDetails);
   }
 
   return (

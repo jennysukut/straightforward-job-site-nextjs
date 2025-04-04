@@ -477,7 +477,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                   <Avatar
                     addClasses="self-start min-w-[60px]"
                     avatarType="Fellow"
-                    fellow={currentFellow}
+                    avatar={currentFellow.profile?.avatar}
                   />
                   <div className="NameBioContainer">
                     <h1 className="Name">

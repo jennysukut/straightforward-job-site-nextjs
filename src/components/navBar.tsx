@@ -123,7 +123,7 @@ export default function NavBar() {
                 size="extraSmall"
                 addClasses="mt-2 px-3"
               >
-                h daily apps: currentAmount/5
+                daily apps: curent.amt/5
               </SiteLabel>
               <Link href={"/job-board"}>
                 <NavButton
