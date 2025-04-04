@@ -14,36 +14,38 @@ import { GET_PROFILE } from "@/graphql/queries";
 export interface Fellow {
   id?: string;
   name?: string;
-  email?: string;
-  smallBio?: string;
-  country?: string;
-  location?: string;
-  skills?: Array<string>;
-  jobTitles?: Array<string>;
-  experience?: Record<string, any>;
-  education?: Record<string, any>;
-  awards?: Record<string, any>;
-  experienceLevels?: Record<string, any>;
-  accomplishments?: Record<string, any>;
-  passions?: string;
-  lookingFor?: string;
-  hobbies?: Array<any>;
-  bookOrQuote?: Array<any>;
-  petDetails?: string;
-  links?: Array<any>;
-  aboutMe?: string;
-  avatar?: any;
-  shadow?: any;
-  locationOptions?: Array<string>;
-  colorScheme?: string;
-  languages?: Array<string>;
-  buttonShadow?: any;
-  buttonImg?: any;
-  profileIsBeingEdited?: boolean;
-  addMoreInfo?: boolean;
-  subscriptionAmount?: any;
-  savedJobs?: Array<any>;
-  dailyApplications?: Record<string, any>;
+  profile?: {
+    email?: string;
+    smallBio?: string;
+    country?: string;
+    location?: string;
+    skills?: Array<string>;
+    jobTitles?: Array<string>;
+    experience?: Record<string, any>;
+    education?: Record<string, any>;
+    awards?: Record<string, any>;
+    experienceLevels?: Record<string, any>;
+    accomplishments?: Record<string, any>;
+    passions?: string;
+    lookingFor?: string;
+    hobbies?: Array<any>;
+    bookOrQuote?: Array<any>;
+    petDetails?: string;
+    links?: Array<any>;
+    aboutMe?: string;
+    avatar?: any;
+    shadow?: any;
+    locationOptions?: Array<string>;
+    colorScheme?: string;
+    languages?: Array<string>;
+    buttonShadow?: any;
+    buttonImg?: any;
+    profileIsBeingEdited?: boolean;
+    addMoreInfo?: boolean;
+    subscriptionAmount?: any;
+    savedJobs?: Array<any>;
+    dailyApplications?: Record<string, any>;
+  };
 }
 
 interface FellowContextType {
@@ -51,33 +53,33 @@ interface FellowContextType {
   loading: boolean;
   error: any;
   setFellow: (fellow: Fellow) => void;
-  dailyLimit: DailyLimit | null;
-  setDailyLimit: (type: any) => void;
+  // dailyLimit: DailyLimit | null;
+  // setDailyLimit: (type: any) => void;
 }
 
 //DATA FOR HANDLING DAILY APPLICATION LIMIT
-interface DailyLimit {
-  count: number;
-  lastReset: string;
-}
+// interface DailyLimit {
+//   count: number;
+//   lastReset: string;
+// }
 
-const shouldResetDaily = (lastResetDate: string): boolean => {
-  const lastReset = new Date(lastResetDate);
-  const now = new Date();
-  // Reset if it's a different day
-  return lastReset.toDateString() !== now.toDateString();
-};
+// const shouldResetDaily = (lastResetDate: string): boolean => {
+//   const lastReset = new Date(lastResetDate);
+//   const now = new Date();
+//   // Reset if it's a different day
+//   return lastReset.toDateString() !== now.toDateString();
+// };
 
-const handleDailyLimit = (currentLimit: DailyLimit): DailyLimit => {
-  if (shouldResetDaily(currentLimit.lastReset)) {
-    // It's a new day, reset the count
-    return {
-      count: 0,
-      lastReset: new Date().toISOString(),
-    };
-  }
-  return currentLimit;
-};
+// const handleDailyLimit = (currentLimit: DailyLimit): DailyLimit => {
+//   if (shouldResetDaily(currentLimit.lastReset)) {
+//     // It's a new day, reset the count
+//     return {
+//       count: 0,
+//       lastReset: new Date().toISOString(),
+//     };
+//   }
+//   return currentLimit;
+// };
 
 const FellowContext = createContext<FellowContextType | undefined>(undefined);
 
@@ -86,36 +88,41 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [fellow, setFellow] = useState<Fellow | null>(null);
 
-  const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
-    count: 0,
-    lastReset: new Date().toISOString(),
-  });
-
-  // Fetch fellow data using Apollo's useQuery hook
-  // const {
-  //   data: queryData,
-  //   loading: queryLoading,
-  //   error: queryError,
-  // } = useQuery(GET_PROFILE, {
-  //   onCompleted: (data) => {
-  //     console.log("called the GET_PROFILE query.");
-  //     setFellow({ ...data.fellowProfile, avatar: "wave", name: "Test Name" });
-  //     console.log(JSON.stringify(data.fellowProfile));
-  //   },
+  // const [dailyLimit, setDailyLimit] = useState<DailyLimit>({
+  //   count: 0,
+  //   lastReset: new Date().toISOString(),
   // });
 
-  // Mutation for updating fellow data
-  const [
-    updateFellow,
-    { data: mutationData, loading: mutationLoading, error: mutationError },
-  ] = useMutation(SAVE_PROFILE_MUTATION, {
+  // const cookies = document.cookie.includes("your_cookie_name"); // Check for specific cookie
+  const cookies = document.cookie.length > 0; // Check for specific cookie
+
+  console.log("cookies", cookies, "--", document.cookie);
+
+  const {
+    data: queryData,
+    loading: queryLoading,
+    error: queryError,
+  } = useQuery(GET_PROFILE, {
+    skip: !cookies, // Skip if cookies are not present
     onCompleted: (data) => {
-      setFellow(data.saveProfile);
-      console.log(JSON.stringify(data.saveProfile));
-      console.log("called the SAVE_PROFILE_MUTATION.");
+      console.log("called the GET_PROFILE query inside the Fellow Context");
+      setFellow({ ...data.fellow });
+      console.log(JSON.stringify(data.fellow));
     },
-    ignoreResults: false,
   });
+
+  // Mutation for updating fellow data
+  // const [
+  //   updateFellow,
+  //   { data: mutationData, loading: mutationLoading, error: mutationError },
+  // ] = useMutation(SAVE_PROFILE_MUTATION, {
+  //   onCompleted: (data) => {
+  //     setFellow(data.saveProfile);
+  //     console.log(JSON.stringify(data.saveProfile));
+  //     console.log("called the SAVE_PROFILE_MUTATION.");
+  //   },
+  //   ignoreResults: false,
+  // });
 
   // Set fellow function to trigger mutation
   // const setFellow = (fellow: Fellow) => {
@@ -133,7 +140,7 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
 
   const getFellow = () =>
     fellow ||
-    mutationData?.saveProfile ||
+    // mutationData?.saveProfile ||
     // queryData?.fellowProfile ||
     null;
 
@@ -142,13 +149,13 @@ export const FellowProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         // fellow: getFellow(),
         fellow: fellow,
-        loading: mutationLoading,
-        error: mutationError,
-        // loading: mutationLoading || queryLoading,
-        // error: mutationError || queryError,
+        // loading: mutationLoading,
+        // error: mutationError,
+        loading: queryLoading,
+        error: queryError,
         setFellow,
-        dailyLimit,
-        setDailyLimit,
+        // dailyLimit,
+        // setDailyLimit,
       }}
     >
       {children}

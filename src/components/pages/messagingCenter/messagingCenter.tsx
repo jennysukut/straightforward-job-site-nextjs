@@ -62,7 +62,7 @@ const MessageCenter = ({
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
-      return option.title === fellow?.avatar;
+      return option.title === fellow?.profile?.avatar;
     } else if (accountType === "Business") {
       return option.title === business?.businessProfile?.avatar;
     }

@@ -39,7 +39,9 @@ export default function IndividualSignupPage5() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [hobbies, setHobbies] = useState<any[]>([]);
   const [bookOrQuote, setBookOrQuote] = useState<any[]>([]);
-  const [petDetails, setPetDetails] = useState(fellow?.petDetails || "");
+  const [petDetails, setPetDetails] = useState(
+    fellow?.profile?.petDetails || "",
+  );
   const [hobbyCounter, setHobbyCounter] = useState(1);
   const [bookOrQuoteCounter, setBookOrQuoteCounter] = useState(1);
   const [saveFellowProfilePage5, { loading, error }] = useMutation(
@@ -126,16 +128,19 @@ export default function IndividualSignupPage5() {
 
       setFellow({
         ...fellow,
-        profileIsBeingEdited: false,
-        hobbies: hobbies,
-        bookOrQuote: bookOrQuote,
-        petDetails: data.petDetails,
+        profile: {
+          ...fellow?.profile,
+          // profileIsBeingEdited: false,
+          hobbies: hobbies,
+          bookOrQuote: bookOrQuote,
+          petDetails: data.petDetails,
+        },
       });
-      if (fellow?.profileIsBeingEdited) {
-        router.push("/profile");
-      } else {
-        router.push("/individual-signup/step6");
-      }
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
+      router.push("/individual-signup/step6");
+      // }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -144,9 +149,13 @@ export default function IndividualSignupPage5() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setHobbies(Array.isArray(fellow?.hobbies) ? fellow.hobbies : []);
+    setHobbies(
+      Array.isArray(fellow?.profile?.hobbies) ? fellow.profile?.hobbies : [],
+    );
     setBookOrQuote(
-      Array.isArray(fellow?.bookOrQuote) ? fellow.bookOrQuote : [],
+      Array.isArray(fellow?.profile?.bookOrQuote)
+        ? fellow.profile?.bookOrQuote
+        : [],
     );
   }, []);
 
@@ -199,7 +208,7 @@ export default function IndividualSignupPage5() {
           errors={errors.petDetails}
           register={register}
           registerValue="petDetails"
-          defaultValue={fellow?.petDetails}
+          defaultValue={fellow?.profile?.petDetails}
           width="full"
         />
 
@@ -211,13 +220,15 @@ export default function IndividualSignupPage5() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Saving Information..." : "continue"}
           </SiteButton>
         </div>
       </div>

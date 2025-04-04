@@ -37,10 +37,10 @@ export default function SubscriptionModal(isBeingUpdated: any) {
   };
 
   useEffect(() => {
-    if (fellow?.subscriptionAmount) {
-      setSelectedAmount(fellow.subscriptionAmount);
+    if (fellow?.profile?.subscriptionAmount) {
+      setSelectedAmount(fellow.profile?.subscriptionAmount);
     }
-  }, [fellow?.subscriptionAmount]);
+  }, [fellow?.profile?.subscriptionAmount]);
 
   return (
     <div className="SubscriptionModal flex flex-col items-center gap-10">

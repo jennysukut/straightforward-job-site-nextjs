@@ -62,7 +62,7 @@ export default function SignupModalIndividual1() {
       setFellow({
         ...fellow,
         name: data.name,
-        email: data.email,
+        // email: data.email,
       });
       router.push("/individual-signup/step1");
     } catch (error) {

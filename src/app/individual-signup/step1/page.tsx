@@ -57,7 +57,7 @@ export default function IndividualSignupPage1() {
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails = avatarOptions.find(
-    (option) => option.title === fellow?.avatar,
+    (option) => option.title === fellow?.profile?.avatar,
   );
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
@@ -66,7 +66,7 @@ export default function IndividualSignupPage1() {
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatar, setAvatar] = useState(avatarDetails);
   const [currentAvatar, setCurrentAvatar] = useState(
-    fellow?.avatar || "groovy",
+    fellow?.profile?.avatar || "groovy",
   );
   const [saveFellowProfilePage1, { loading, error }] = useMutation(
     SAVE_PROFILE_PAGE_1_MUTATION,
@@ -83,7 +83,7 @@ export default function IndividualSignupPage1() {
     defaultValues: {
       skills: skills,
       jobTitles: jobTitles,
-      country: fellow?.country,
+      country: fellow?.profile?.country,
       languages: languages,
     },
   });
@@ -113,20 +113,22 @@ export default function IndividualSignupPage1() {
       ); // Adjust based on your mutation response
       setFellow({
         ...fellow,
-        smallBio: data.smallBio,
-        country: data.country,
-        location: data.location,
-        skills: skills,
-        jobTitles: jobTitles,
-        avatar: currentAvatar,
-        languages: languages,
-        profileIsBeingEdited: false,
+        profile: {
+          smallBio: data.smallBio,
+          country: data.country,
+          location: data.location,
+          skills: skills,
+          jobTitles: jobTitles,
+          avatar: currentAvatar,
+          languages: languages,
+        },
+        // profileIsBeingEdited: false,
       });
-      if (fellow?.profileIsBeingEdited) {
-        router.push("/profile");
-      } else {
-        router.push("/individual-signup/step2");
-      }
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
+      router.push("/individual-signup/step2");
+      // }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -175,14 +177,24 @@ export default function IndividualSignupPage1() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
-    setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
-    setLanguages(Array.isArray(fellow?.languages) ? fellow.languages : []);
+    setSkills(
+      Array.isArray(fellow?.profile?.skills) ? fellow.profile?.skills : [],
+    );
+    setJobTitles(
+      Array.isArray(fellow?.profile?.jobTitles)
+        ? fellow.profile?.jobTitles
+        : [],
+    );
+    setLanguages(
+      Array.isArray(fellow?.profile?.languages)
+        ? fellow.profile?.languages
+        : [],
+    );
 
     // Update default values for the form
-    setValue("skills", fellow?.skills || []);
-    setValue("jobTitles", fellow?.jobTitles || []);
-    setValue("languages", fellow?.languages || []);
+    setValue("skills", fellow?.profile?.skills || []);
+    setValue("jobTitles", fellow?.profile?.jobTitles || []);
+    setValue("languages", fellow?.profile?.languages || []);
   }, [fellow, setValue]);
 
   useEffect(() => {
@@ -212,7 +224,7 @@ export default function IndividualSignupPage1() {
               errors={errors.smallBio}
               register={register}
               registerValue="smallBio"
-              defaultValue={fellow?.smallBio}
+              defaultValue={fellow?.profile?.smallBio}
               required
             />
 
@@ -225,7 +237,7 @@ export default function IndividualSignupPage1() {
               searchData={countries}
               colorArray={colorArray}
               options
-              defaultValue={fellow?.country}
+              defaultValue={fellow?.profile?.country}
               required
             />
 
@@ -236,7 +248,7 @@ export default function IndividualSignupPage1() {
               errors={errors.location}
               register={register}
               registerValue="location"
-              defaultValue={fellow?.location}
+              defaultValue={fellow?.profile?.location}
               addClasses="-mt-2"
               required
             />
@@ -308,13 +320,15 @@ export default function IndividualSignupPage1() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && fellow?.profileIsBeingEdited === true
+              {/* {disabledButton && fellow?.profileIsBeingEdited === true
                 ? "Returning To Profile..."
                 : !disabledButton && fellow?.profileIsBeingEdited === true
                   ? "update"
                   : disabledButton && fellow?.profileIsBeingEdited === false
-                    ? "Saving Information.."
-                    : "continue"}{" "}
+                    ? "Saving Information..."
+                    : "continue"}{" "} */}
+
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </div>

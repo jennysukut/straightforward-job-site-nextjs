@@ -100,7 +100,7 @@ export default function JobListing({
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
   const [jobSavedStatus, setJobSavedStatus] = useState(
-    fellow?.savedJobs?.includes(id),
+    fellow?.profile?.savedJobs?.includes(id),
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
   const [currentJob, setCurrentJob] = useState({} as jobListing);
@@ -185,20 +185,20 @@ export default function JobListing({
     router.push(url);
   };
 
-  const checkNonNegParamsMatch = () => {
-    if (!currentJob?.nonNegParams || !fellow) return false;
-    const { country, languages = [], skills = [] } = fellow;
-    // Check if all non negotiable parameters have a match in country, languages, or skills
-    return currentJob.nonNegParams.every(
-      (param) =>
-        param === country ||
-        languages.includes(param) ||
-        skills.includes(param),
-    );
-  };
+  // const checkNonNegParamsMatch = () => {
+  //   if (!currentJob?.nonNegParams || !fellow) return false;
+  //   const { country, languages = [], skills = [] } = fellow.profile;
+  //   // Check if all non negotiable parameters have a match in country, languages, or skills
+  //   return currentJob.nonNegParams.every(
+  //     (param) =>
+  //       param === country ||
+  //       languages.includes(param) ||
+  //       skills.includes(param),
+  //   );
+  // };
 
   //meets minimum requirements to apply
-  const hasMatchingNonNegParams = checkNonNegParamsMatch();
+  // const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
   // make sure they haven't applied before
   //TODO: Maybe we should make sure they haven't applied some other way?
@@ -212,8 +212,9 @@ export default function JobListing({
   // for the fellow aren't at it's limit of 5, they can apply!
 
   // const canApply = true;
-  const canApply =
-    hasMatchingNonNegParams === true && fellow?.dailyApplications?.count !== 5;
+  const canApply = true;
+  // hasMatchingNonNegParams === true &&
+  // fellow?.fellow?.dailyApplications?.count !== 5;
   // && matchingIds;
 
   // console.log(
@@ -229,10 +230,15 @@ export default function JobListing({
 
   // TODO: We need an un-save operation
   const saveClick = async (jobId: any) => {
-    if (fellow?.savedJobs?.includes(jobId)) {
+    if (fellow?.profile?.savedJobs?.includes(jobId)) {
       setFellow({
         ...fellow,
-        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
+        profile: {
+          ...fellow.profile,
+          savedJobs: fellow?.profile?.savedJobs?.filter(
+            (id: any) => id !== jobId,
+          ),
+        },
       });
       setJobSavedStatus(false);
     } else {

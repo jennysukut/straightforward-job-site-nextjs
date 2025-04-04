@@ -93,16 +93,19 @@ export default function IndividualSignupPage4() {
 
       setFellow({
         ...fellow,
-        passions: data.passions,
-        lookingFor: data.lookingFor,
-        locationOptions: locationOptions,
-        profileIsBeingEdited: false,
+        profile: {
+          ...fellow?.profile,
+          passions: data.passions,
+          lookingFor: data.lookingFor,
+          locationOptions: locationOptions,
+        },
+        // profileIsBeingEdited: false,
       });
-      if (fellow?.profileIsBeingEdited) {
-        router.push("/profile");
-      } else {
-        router.push("/individual-signup/step5");
-      }
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
+      router.push("/individual-signup/step5");
+      // }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -112,9 +115,11 @@ export default function IndividualSignupPage4() {
   // Setting Details on page from fellowContext
   useEffect(() => {
     setLocationOptions(
-      Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
+      Array.isArray(fellow?.profile?.locationOptions)
+        ? fellow.profile?.locationOptions
+        : [],
     );
-    setValue("locationOptions", fellow?.locationOptions || []);
+    setValue("locationOptions", fellow?.profile?.locationOptions || []);
   }, []);
 
   return (
@@ -142,7 +147,7 @@ export default function IndividualSignupPage4() {
           errors={errors.lookingFor}
           register={register}
           registerValue="lookingFor"
-          defaultValue={fellow?.lookingFor}
+          defaultValue={fellow?.profile?.lookingFor}
           width="full"
           size="medium"
         />
@@ -168,7 +173,7 @@ export default function IndividualSignupPage4() {
           errors={errors.passions}
           register={register}
           registerValue="passions"
-          defaultValue={fellow?.passions}
+          defaultValue={fellow?.profile?.passions}
           size="medium"
           width="full"
         />
@@ -181,13 +186,15 @@ export default function IndividualSignupPage4() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Saving Information..." : "continue"}
           </SiteButton>
         </div>
       </div>

@@ -83,7 +83,7 @@ const ListingTopButtons = ({
   const [showLimitDetails, setShowLimitDetails] = useState(false);
 
   // const atAppLimit = currentJob.numberOfApps >= currentJob.applicationLimit;
-  const atDailyLimit = fellow?.dailyApplications?.count === 5;
+  const atDailyLimit = fellow?.profile?.dailyApplications?.count === 5;
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">

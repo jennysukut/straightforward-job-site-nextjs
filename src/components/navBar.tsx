@@ -28,7 +28,7 @@ export default function NavBar() {
   const { business } = useBusiness();
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
-  const { dailyLimit } = useFellow();
+  // const { dailyLimit } = useFellow();
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
@@ -37,7 +37,7 @@ export default function NavBar() {
   let avatarDetails;
   if (accountType === "Fellow") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.avatar,
+      (option) => option.title === fellow?.profile?.avatar,
     );
   } else if (accountType === "Business") {
     avatarDetails = avatarOptions.find(
@@ -123,7 +123,7 @@ export default function NavBar() {
                 size="extraSmall"
                 addClasses="mt-2 px-3"
               >
-                daily apps: {dailyLimit?.count}/5
+                h daily apps: currentAmount/5
               </SiteLabel>
               <Link href={"/job-board"}>
                 <NavButton

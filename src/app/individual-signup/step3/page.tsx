@@ -110,16 +110,19 @@ export default function IndividualSignupPage3() {
 
       setFellow({
         ...fellow,
-        awards: awards,
-        experienceLevels: experienceLevels,
-        accomplishments: accomplishments,
-        profileIsBeingEdited: false,
+        profile: {
+          ...fellow?.profile,
+          awards: awards,
+          experienceLevels: experienceLevels,
+          accomplishments: accomplishments,
+          // profileIsBeingEdited: false,
+        },
       });
-      if (fellow?.profileIsBeingEdited) {
-        router.push("/profile");
-      } else {
-        router.push("/individual-signup/step4");
-      }
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
+      router.push("/individual-signup/step4");
+      // }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -128,12 +131,18 @@ export default function IndividualSignupPage3() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setAwards(Array.isArray(fellow?.awards) ? fellow.awards : []);
+    setAwards(
+      Array.isArray(fellow?.profile?.awards) ? fellow.profile?.awards : [],
+    );
     setExperienceLevels(
-      Array.isArray(fellow?.experienceLevels) ? fellow.experienceLevels : [],
+      Array.isArray(fellow?.profile?.experienceLevels)
+        ? fellow.profile?.experienceLevels
+        : [],
     );
     setAccomplishments(
-      Array.isArray(fellow?.accomplishments) ? fellow.accomplishments : [],
+      Array.isArray(fellow?.profile?.accomplishments)
+        ? fellow.profile?.accomplishments
+        : [],
     );
   }, []);
 
@@ -196,13 +205,15 @@ export default function IndividualSignupPage3() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}{" "}
+                  : "continue"}{" "} */}
+
+            {disabledButton ? "Saving Information..." : "continue"}
           </SiteButton>
         </div>
       </div>

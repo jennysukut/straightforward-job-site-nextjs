@@ -129,10 +129,12 @@ export default function IndividualSignupPage6() {
       setIsLoggedIn(true);
       setFellow({
         ...fellow,
-        links: links,
-        aboutMe: data.aboutMe,
-        profileIsBeingEdited: false,
-        addMoreInfo: false,
+        profile: {
+          links: links,
+          aboutMe: data.aboutMe,
+          // profileIsBeingEdited: false,
+          addMoreInfo: false,
+        },
       });
       router.push("/profile");
     } catch (error) {
@@ -143,8 +145,10 @@ export default function IndividualSignupPage6() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setLinks(Array.isArray(fellow?.links) ? fellow.links : []);
-    setAboutMe(fellow?.aboutMe || "");
+    setLinks(
+      Array.isArray(fellow?.profile?.links) ? fellow.profile?.links : [],
+    );
+    setAboutMe(fellow?.profile?.aboutMe || "");
   }, []);
 
   return (
@@ -186,7 +190,7 @@ export default function IndividualSignupPage6() {
           errors={errors.aboutMe}
           register={register}
           registerValue="aboutMe"
-          defaultValue={fellow?.aboutMe}
+          defaultValue={fellow?.profile?.aboutMe}
           width="full"
           size="tall"
         />
@@ -199,13 +203,15 @@ export default function IndividualSignupPage6() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Generating Profile..."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Generating Profile..." : "continue"}
           </SiteButton>
         </div>
       </div>

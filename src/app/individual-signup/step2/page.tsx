@@ -99,15 +99,18 @@ export default function IndividualSignupPage2() {
       // when successful, set the Fellow and push to the next signup page
       setFellow({
         ...fellow,
-        experience: experienceDetails,
-        education: educationDetails,
-        profileIsBeingEdited: false,
+        profile: {
+          ...fellow?.profile,
+          experience: experienceDetails,
+          education: educationDetails,
+          // profileIsBeingEdited: false,
+        },
       });
-      if (fellow?.profileIsBeingEdited) {
-        router.push("/profile");
-      } else {
-        router.push("/individual-signup/step3");
-      }
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
+      router.push("/individual-signup/step3");
+      // }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -117,10 +120,14 @@ export default function IndividualSignupPage2() {
   // Setting Details on page from fellowContext
   useEffect(() => {
     setExperienceDetails(
-      Array.isArray(fellow?.experience) ? fellow.experience : [],
+      Array.isArray(fellow?.profile?.experience)
+        ? fellow.profile?.experience
+        : [],
     );
     setEducationDetails(
-      Array.isArray(fellow?.education) ? fellow.education : [],
+      Array.isArray(fellow?.profile?.education)
+        ? fellow.profile?.education
+        : [],
     );
   }, []);
 
@@ -168,13 +175,15 @@ export default function IndividualSignupPage2() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Saving Information" : "continue"}
           </SiteButton>
         </div>
       </div>
