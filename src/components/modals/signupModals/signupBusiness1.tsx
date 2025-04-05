@@ -29,6 +29,7 @@ export default function SignupModalBusiness1() {
   const { business, setBusiness } = useBusiness();
   const { textColor } = useColorOptions();
 
+  const [seePassword, setSeePassword] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const {
     register,
@@ -72,6 +73,10 @@ export default function SignupModalBusiness1() {
     }
   };
 
+  const viewPassword = () => {
+    setSeePassword(!seePassword);
+  };
+
   return (
     <div
       className={`SignupModal flex w-[50vw] max-w-[450px] flex-col gap-4 ${textColor}`}
@@ -105,12 +110,14 @@ export default function SignupModalBusiness1() {
 
         {/* password input */}
         <FormInputComponent
-          type="password"
+          type={`${seePassword ? "text" : "password"}`}
           title="your password*"
           placeholderText="***********"
           register={register}
           registerValue="password"
           errors={errors.password}
+          viewButton
+          viewFunction={viewPassword}
         />
 
         {/* form submission button */}

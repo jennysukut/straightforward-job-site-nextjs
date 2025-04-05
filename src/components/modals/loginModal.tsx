@@ -7,6 +7,7 @@ import SignupOptionsModal from "./signupModals/signupOptionsModal";
 import FormInputComponent from "../inputComponents/formInputComponent";
 import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
 import ErrorModal from "./errorModal";
+import Image from "next/image";
 
 import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
@@ -39,6 +40,8 @@ export default function LoginModal() {
   const { business, setBusiness } = useBusiness();
   const [disabledButton, setDisabledButton] = useState(false);
   const [id, setId] = useState("");
+  const [login, { loading, error }] = useMutation(LOGIN);
+  const [seePassword, setSeePassword] = useState(false);
   const [fetchProfileType, setFetchProfileType] = useState<
     "fellow" | "business" | null
   >(null);
@@ -50,8 +53,6 @@ export default function LoginModal() {
   } = useForm<FormData>({
     resolver: zodResolver(LoginSchema),
   });
-
-  const [login, { loading, error }] = useMutation(LOGIN);
 
   const {
     data: queryData,
@@ -115,6 +116,10 @@ export default function LoginModal() {
     }
   };
 
+  const viewPassword = () => {
+    setSeePassword(!seePassword);
+  };
+
   return (
     <div
       className={`LoginModal flex flex-col items-center gap-10 ${textColor}`}
@@ -124,9 +129,16 @@ export default function LoginModal() {
       >
         login
       </Dialog.Title>
+
       <form
         className="LoginForm xs:pt-8 flex min-w-[30vw] flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            handleSubmit(onSubmit)(); // Trigger the submit handler
+          }
+        }}
       >
         {/* email input */}
         <FormInputComponent
@@ -137,31 +149,35 @@ export default function LoginModal() {
           registerValue="email"
           errors={errors.email}
         />
-
         {/* password input */}
+
+        {/* <div className="PasswordSection flex gap-2"> */}
         <FormInputComponent
-          type="password"
+          type={`${seePassword ? "text" : "password"}`}
           title="password*"
           placeholderText="**********"
           register={register}
           registerValue="password"
           errors={errors.password}
+          viewButton
+          viewFunction={viewPassword}
         />
 
         {/* form buttons */}
-        <div className="LoginButtonsContainer flex justify-between">
-          <button
-            className="SignupOption text-xs opacity-80 hover:opacity-100"
-            onClick={() => replaceModalStack(<SignupOptionsModal />)}
-          >
-            or signup
-          </button>
+        <div className="LoginButtonsContainer flex flex-row-reverse justify-between">
           <FormSubmissionButton
             disabledButton={disabledButton}
             handleSubmit={handleSubmit(onSubmit)}
             addText="login"
             addingText="Logging In..."
           />
+
+          <button
+            className="SignupOption text-xs opacity-80 hover:opacity-100"
+            onClick={() => replaceModalStack(<SignupOptionsModal />)}
+          >
+            or signup
+          </button>
         </div>
       </form>
     </div>
