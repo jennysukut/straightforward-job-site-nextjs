@@ -22,7 +22,8 @@ import SiteButton from "./buttonsAndLabels/siteButton";
 
 export default function NavBar() {
   const { showModal } = useModal();
-  const { currentPage, pageType, accountType, isLoggedIn } = usePageContext();
+  const { currentPage, pageType, accountType, isLoggedIn, isLoadingAccount } =
+    usePageContext();
   const { fellow } = useFellow();
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
@@ -111,7 +112,9 @@ export default function NavBar() {
         } else if (accountType === "Fellow" && isLoggedIn === true) {
           // INDIVIDUAL NAV BAR
           return (
-            <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+            <div
+              className={`NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
+            >
               {/* <SiteLabel aria="dailyApps" variant="hollow" size="small">
                 daily apps: 2/5
               </SiteLabel> */}
@@ -245,7 +248,9 @@ export default function NavBar() {
         } else {
           return (
             // STANDARD / MAIN NAV BAR
-            <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+            <div
+              className={`NavButtonContainer ${isLoadingAccount ? "blur-sm" : ""} hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
+            >
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"

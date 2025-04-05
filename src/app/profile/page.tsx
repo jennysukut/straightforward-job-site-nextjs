@@ -9,6 +9,8 @@ import { useColors } from "@/contexts/ColorContext";
 import { useRouter } from "next/navigation";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/queries";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 import React from "react";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
@@ -27,6 +29,15 @@ export default function Profile() {
   const { business } = useBusiness();
   const router = useRouter();
 
+  const handleLogout = async () => {
+    const response = await fetch("/api/logout", {
+      method: "PATCH",
+    });
+    const data = await response.json();
+    console.log(data.message);
+    setIsLoggedIn(false);
+  };
+
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/"); // Redirect to main page if not logged in
@@ -44,10 +55,10 @@ export default function Profile() {
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
       {isLoggedIn && accountType === "Fellow" && (
-        <FellowProfile self={fellow} isOwn />
+        <FellowProfile self={fellow} isOwn logout={handleLogout} />
       )}
       {isLoggedIn && accountType === "Business" && (
-        <BusinessProfile self={business} isOwn />
+        <BusinessProfile self={business} isOwn logout={handleLogout} />
       )}
     </div>
   );

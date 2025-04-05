@@ -18,6 +18,7 @@ interface BusinessProfile {
   id?: string;
   self?: any;
   isOwn?: boolean;
+  logout?: any;
 }
 
 interface BusinessProfileData {
@@ -40,6 +41,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   self,
   hasId,
   id,
+  logout,
 }) => {
   const { setBusiness } = useBusiness();
   const { businessList } = useBusinessList();
@@ -101,6 +103,15 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
           <div className="ProfileLeftColumn mt-32 flex flex-col gap-8">
             {!isOwn && (
               <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
+                <SiteButton
+                  variant="filled"
+                  colorScheme="b4"
+                  aria="logout"
+                  addClasses="px-8"
+                  onClick={logout}
+                >
+                  logout
+                </SiteButton>
                 <SiteButton
                   variant="filled"
                   colorScheme="b6"

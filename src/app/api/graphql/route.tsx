@@ -44,6 +44,30 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// export async function logout(setIsLoggedIn: any) {
+//   // Clear the access token cookie
+//   cookies().set("accessToken", "", {
+//     httpOnly: true,
+//     maxAge: 0,
+//     sameSite: "strict",
+//   });
+
+//   setIsLoggedIn(false);
+
+//   return NextResponse.json({ message: "Logged out successfully" });
+// }
+
+export async function PATCH() {
+  // Clear the access token cookie
+  cookies().set("accessToken", "", {
+    httpOnly: true,
+    maxAge: 0,
+    sameSite: "strict",
+  });
+
+  return NextResponse.json({ message: "Logged out successfully" });
+}
+
 export async function GET() {
   return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
 }

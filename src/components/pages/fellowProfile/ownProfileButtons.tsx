@@ -2,11 +2,28 @@ import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 
+import { usePageContext } from "@/contexts/PageContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 
-const OwnFellowTopButtons = ({ setCanEdit, canEdit, addMoreInfo }: any) => {
+const OwnFellowTopButtons = ({
+  setCanEdit,
+  canEdit,
+  addMoreInfo,
+  logout,
+}: any) => {
+  const { setIsLoggedIn } = usePageContext();
+
   return (
     <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
+      <SiteButton
+        variant="filled"
+        colorScheme="b4"
+        aria="logout"
+        addClasses="px-8"
+        onClick={logout}
+      >
+        logout
+      </SiteButton>
       <SiteButton
         variant="filled"
         colorScheme="b6"

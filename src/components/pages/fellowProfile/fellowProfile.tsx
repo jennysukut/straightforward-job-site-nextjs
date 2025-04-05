@@ -38,6 +38,7 @@ interface FellowProfile {
   isOwn?: boolean;
   isApp?: boolean;
   appId?: string;
+  logout?: any;
 }
 
 interface FellowProfileData {
@@ -73,6 +74,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   isOwn,
   isApp,
   appId,
+  logout,
 }) => {
   const router = useRouter();
 
@@ -183,6 +185,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 setCanEdit={setCanEdit}
                 canEdit={canEdit}
                 addMoreInfo={addMoreInfo}
+                logout={logout}
               />
             )}
 
