@@ -4,6 +4,7 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { useEffect } from "react";
 
 export default function Avatar({
   addClasses,
@@ -20,7 +21,6 @@ export default function Avatar({
     );
   } else if (avatarType === "Fellow") {
     avatarDetails = avatarOptions.find((option) => option.title === avatar);
-    console.log("avatar details:", avatarDetails);
   }
 
   return (

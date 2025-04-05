@@ -8,6 +8,7 @@ import { GET_MY_PROFILE } from "@/graphql/queries";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import OtherHeaderSection from "./otherHeaderSection";
+import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
 
 export default function Home() {
   const {
@@ -16,6 +17,7 @@ export default function Home() {
     setIsLoggedIn,
     setAccountType,
     setIsLoadingAccount,
+    isLoggingOut,
   } = usePageContext();
   const { setFellow } = useFellow();
   const { setBusiness } = useBusiness();
@@ -32,7 +34,7 @@ export default function Home() {
     loading: queryLoading,
     error: queryError,
   } = useQuery(GET_MY_PROFILE, {
-    skip: isLoggedIn,
+    skip: isLoggedIn || isLoggingOut,
     onCompleted: (data) => {
       console.log("called the GET_MY_PROFILE query on the Home Screen", data);
       if (data.getMyProfile === null) {
@@ -56,6 +58,14 @@ export default function Home() {
     },
   });
 
+  const logout = () => {
+    console.log("trying to log out from the home page");
+    removeCookie("accessToken");
+    // THIS WORKS!!!!
+    setIsLoggedIn(false);
+    setAccountType("");
+  };
+
   useEffect(() => {
     setPageType("main");
   }, []);
@@ -69,9 +79,10 @@ export default function Home() {
         backgroundPosition: "center",
       }}
     >
-      {/* <button onClick={() => router.push(`/business-signup/step2`)}>
-        go to signup page 3
-      </button> */}
+      <button className="mb-10" onClick={logout}>
+        Other Logout
+      </button>
+
       <OtherHeaderSection />
     </div>
   );

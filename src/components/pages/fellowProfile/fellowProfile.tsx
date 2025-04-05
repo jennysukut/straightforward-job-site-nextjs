@@ -120,7 +120,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   useEffect(() => {
     if (isOwn) {
-      console.log("fellow:", fellow);
       setCurrentFellow(fellow as FellowProfileData);
       setLoadingData(false);
     }
@@ -141,8 +140,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
       setLoadingData(false);
     },
   });
-
-  console.log(currentFellow);
 
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.jobId}`);
@@ -178,7 +175,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
         <div className="ProfileDetails flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}
-            {/* {isOwn && !isApp && (
+            {isOwn && !isApp && (
               <OwnFellowTopButtons
                 setCanEdit={setCanEdit}
                 canEdit={canEdit}
@@ -199,7 +196,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 app={currentApp}
                 applicant={currentFellow.name}
               />
-            )} */}
+            )}
 
             {/* Business Note On App */}
             {/* {!isOwn &&
