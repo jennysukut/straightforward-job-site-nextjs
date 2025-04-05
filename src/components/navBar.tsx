@@ -46,6 +46,17 @@ export default function NavBar() {
     );
   }
 
+  // useEffect(() => {
+  //   if (accountType == "Fellow") {
+  //     const dailyApplications = fellow?.profile?.dailyApplications?.length;
+  //   }
+  // }, []);
+
+  const dailyApplications = 5;
+  // fellow?.profile?.dailyApplications === undefined
+  //   ? 0
+  //   : fellow?.profile?.dailyApplications?.length;
+
   useEffect(() => {
     // if (currentPage === "profile" && )
     setClickedButton(currentPage);
@@ -126,7 +137,10 @@ export default function NavBar() {
                 size="extraSmall"
                 addClasses="mt-2 px-3"
               >
-                daily apps: curent.amt/5
+                {dailyApplications >= 5
+                  ? "daily app limit reached"
+                  : `daily apps: ${dailyApplications}/5`}
+                {/* daily apps: {dailyApplications}/5 */}
               </SiteLabel>
               <Link href={"/job-board"}>
                 <NavButton

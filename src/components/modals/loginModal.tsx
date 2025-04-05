@@ -54,40 +54,41 @@ export default function LoginModal() {
     resolver: zodResolver(LoginSchema),
   });
 
-  const {
-    data: queryData,
-    loading: queryLoading,
-    error: queryError,
-  } = useQuery(
-    fetchProfileType === "fellow" ? GET_PROFILE : GET_BUSINESS_PROFILE,
-    {
-      variables: { id },
-      skip: fetchProfileType === null,
-      onCompleted: (data) => {
-        console.log("calling GET_PROFILE query");
-        if (fetchProfileType === "fellow") {
-          console.log("called the GET_PROFILE query inside login Modal");
-          console.log(data);
-          setFellow({
-            ...data.fellow,
-            avatar: data.fellow.profile.avatar,
-          });
-          console.log(JSON.stringify(data));
-        } else if (fetchProfileType === "business") {
-          console.log(
-            "called the GET_BUSINESS_PROFILE query inside login Modal",
-          );
-          console.log(data);
-          setBusiness({
-            ...data.business,
-            avatar: data.business.businessProfile.avatar,
-          });
-        }
-        hideModal();
-      },
-    },
-  );
+  // const {
+  //   data: queryData,
+  //   loading: queryLoading,
+  //   error: queryError,
+  // } = useQuery(
+  //   fetchProfileType === "fellow" ? GET_PROFILE : GET_BUSINESS_PROFILE,
+  //   {
+  //     variables: { id },
+  //     skip: fetchProfileType === null || isLoggedIn,
+  //     onCompleted: (data) => {
+  //       console.log("calling GET_PROFILE query");
+  //       if (fetchProfileType === "fellow") {
+  //         console.log("called the GET_PROFILE query inside login Modal");
+  //         console.log(data);
+  //         setFellow({
+  //           ...data.fellow,
+  //           avatar: data.fellow.profile.avatar,
+  //         });
+  //         console.log(JSON.stringify(data));
+  //       } else if (fetchProfileType === "business") {
+  //         console.log(
+  //           "called the GET_BUSINESS_PROFILE query inside login Modal",
+  //         );
+  //         console.log(data);
+  //         setBusiness({
+  //           ...data.business,
+  //           avatar: data.business.businessProfile.avatar,
+  //         });
+  //       }
+  //       hideModal();
+  //     },
+  //   },
+  // );
 
+  // On Login, set the business or fellow based on the login response
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
@@ -95,22 +96,26 @@ export default function LoginModal() {
       const result = await login({ variables: data });
 
       if (result.data.login.roles.includes("FELLOW")) {
-        setId(result.data.login.id);
+        // setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Fellow");
-        setFetchProfileType("fellow");
+        setFellow(result.data.login.fellow);
+        // setFetchProfileType("fellow");
       } else if (result.data.login.roles.includes("BUSINESS")) {
-        console.log("id:", result.data.login.id);
-        const realId = Number(result.data.login.id) - 2;
-        setId(String(realId));
+        // console.log("id:", result.data.login.id);
+        // const realId = Number(result.data.login.id) - 2;
+        // setId(String(realId));
         // setId(result.data.login.id);
         setIsLoggedIn(true);
         setAccountType("Business");
-        setFetchProfileType("business");
+        setBusiness(result.data.login.business);
+        // setFetchProfileType("business");
       } else if (result.data.login.roles.includes("ADMIN")) {
-        setIsLoggedIn(true);
-        setAccountType("Admin");
+        // setIsLoggedIn(true);
+        // setAccountType("Admin");
+        console.log("you're an admin?");
       }
+      hideModal();
     } catch (err) {
       showModal(<ErrorModal />);
     }

@@ -4,13 +4,9 @@ import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@apollo/client";
-import { GET_PROFILE } from "@/graphql/queries";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+
 import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
 
 import React from "react";
@@ -25,6 +21,7 @@ export default function Profile() {
     accountType,
     isLoggedIn,
     setIsLoggedIn,
+    setIsLoggingOut,
     setAccountType,
   } = usePageContext();
   const { fellow } = useFellow();
@@ -32,6 +29,7 @@ export default function Profile() {
   const router = useRouter();
 
   const logout = () => {
+    setIsLoggingOut(true);
     console.log("trying to log out from the profile page");
     removeCookie("accessToken");
     // THIS WORKS!!!!

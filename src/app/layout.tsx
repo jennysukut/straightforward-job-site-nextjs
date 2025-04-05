@@ -15,6 +15,8 @@ import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
 import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
 import { MessagesProvider } from "@/contexts/MessagesContext";
 import { ReportsProvider } from "@/contexts/ReportsContext";
+import ClientAuthWrapper from "@/components/clientAuthWrapper";
+
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -61,12 +63,13 @@ export default function RootLayout({
                             <FellowProvider>
                               <ColorProvider>
                                 <ModalProvider>
-                                  <NavBar />
-                                  <main className="Main flex flex-1 flex-col">
-                                    {children}
-                                    {/* we could slip a fun background element in here? */}
-                                  </main>
-                                  <Footer />
+                                  <ClientAuthWrapper>
+                                    <NavBar />
+                                    <main className="Main flex flex-1 flex-col">
+                                      {children}
+                                    </main>
+                                    <Footer />
+                                  </ClientAuthWrapper>
                                 </ModalProvider>
                               </ColorProvider>
                             </FellowProvider>
