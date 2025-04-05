@@ -58,13 +58,13 @@ export default function Home() {
     },
   });
 
-  const logout = () => {
-    console.log("trying to log out from the home page");
-    removeCookie("accessToken");
-    // THIS WORKS!!!!
-    setIsLoggedIn(false);
-    setAccountType("");
-  };
+  // export function logout = () => {
+  //   console.log("trying to log out from the home page");
+  //   removeCookie("accessToken");
+  //   // THIS WORKS!!!!
+  //   setIsLoggedIn(false);
+  //   setAccountType("");
+  // };
 
   useEffect(() => {
     setPageType("main");
@@ -79,9 +79,9 @@ export default function Home() {
         backgroundPosition: "center",
       }}
     >
-      <button className="mb-10" onClick={logout}>
+      {/* <button className="mb-10" onClick={logout}>
         Other Logout
-      </button>
+      </button> */}
 
       <OtherHeaderSection />
     </div>

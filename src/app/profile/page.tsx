@@ -11,6 +11,7 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/queries";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
 
 import React from "react";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
@@ -24,18 +25,19 @@ export default function Profile() {
     accountType,
     isLoggedIn,
     setIsLoggedIn,
+    setAccountType,
   } = usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const router = useRouter();
 
-  const handleLogout = async () => {
-    const response = await fetch("/api/logout", {
-      method: "PATCH",
-    });
-    const data = await response.json();
-    console.log(data.message);
+  const logout = () => {
+    console.log("trying to log out from the profile page");
+    removeCookie("accessToken");
+    // THIS WORKS!!!!
     setIsLoggedIn(false);
+    setAccountType("");
+    router.push(`/`);
   };
 
   useEffect(() => {
@@ -55,10 +57,10 @@ export default function Profile() {
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
       {isLoggedIn && accountType === "Fellow" && (
-        <FellowProfile self={fellow} isOwn logout={handleLogout} />
+        <FellowProfile self={fellow} isOwn logout={logout} />
       )}
       {isLoggedIn && accountType === "Business" && (
-        <BusinessProfile self={business} isOwn logout={handleLogout} />
+        <BusinessProfile self={business} isOwn logout={logout} />
       )}
     </div>
   );
