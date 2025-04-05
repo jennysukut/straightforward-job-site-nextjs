@@ -9,6 +9,97 @@ export const LOGIN = gql`
     login(email: $email, password: $password) {
       id
       roles
+      business {
+        id
+        name
+        businessProfile {
+          smallBio
+          country
+          location
+          website
+          avatar
+          businessField
+          missionVision
+          moreAboutBusiness
+        }
+      }
+      fellow {
+        id
+        name
+        profile {
+          smallBio
+          location
+          country
+          languages
+          skills
+          jobTitles
+          experience {
+            id
+            title
+            companyName
+            yearDetails
+            details
+          }
+          education {
+            id
+            degree
+            school
+            fieldOfStudy
+          }
+          awards {
+            id
+            awardTitle
+            givenBy
+            awardDetails
+          }
+          experienceLevels {
+            id
+            experienceLevel
+            expLevelSkill
+            skillYears
+          }
+          accomplishments {
+            id
+            accTitle
+            accDetails
+          }
+          passions
+          lookingFor
+          locationOptions
+          hobbies {
+            id
+            hobbyTitle
+            howLong
+          }
+          bookOrQuote {
+            id
+            bookOrQuote
+            author
+          }
+          petDetails
+          links {
+            id
+            linkType
+            link
+          }
+          aboutMe
+          avatar
+          name
+        }
+        savedJobs {
+          id
+        }
+        jobApplications {
+          id
+          message
+          status
+        }
+        dailyApplications {
+          id
+          message
+          status
+        }
+      }
     }
   }
 `;
@@ -255,6 +346,20 @@ export const ADD_JOB_LISTING_DETAILS_5_MUTATION = gql`
     $interviewProcess: [InterviewProcessInput!]!
   ) {
     addJobListingDetailsStep5(id: $id, interviewProcess: $interviewProcess)
+  }
+`;
+
+export const CREATE_JOB_LISTING_ROUND = gql`
+  mutation createJobListingRound(
+    $id: ID!
+    $applicationLimit: Int
+    $roundNumber: Int
+  ) {
+    createJobListingRound(
+      id: $id
+      applicationLimit: $applicationLimit
+      roundNumber: $roundNumber
+    )
   }
 `;
 

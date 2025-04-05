@@ -310,6 +310,7 @@ export default function IndividualSignupPage1() {
               options
               searchData={skillsList}
               required
+              canAddNew
             />
           </div>
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end gap-4 self-end">

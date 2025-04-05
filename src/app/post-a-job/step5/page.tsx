@@ -145,7 +145,7 @@ export default function PostAJobStep5() {
         router.push("/listing");
       } else {
         router.push("/listing");
-        showModal(<ApplicationLimitModal />);
+        showModal(<ApplicationLimitModal jobId={job?.jobId} />);
       }
     } catch (error) {
       console.error("Signup error:", error);

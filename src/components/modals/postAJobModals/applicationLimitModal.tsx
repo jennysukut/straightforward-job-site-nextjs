@@ -8,25 +8,48 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useMutation } from "@apollo/client";
+import { CREATE_JOB_LISTING_ROUND } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 
-export default function ApplicationLimitModal(isBeingUpdated: any) {
+export default function ApplicationLimitModal(isBeingUpdated: any, jobId: any) {
   const { job, setJob } = useJob();
   const { textColor, secondaryTextColor } = useColorOptions();
   const { colorOption } = useColors();
   const { setPageType } = usePageContext();
   const { hideModal } = useModal();
   const [applicationLimit, setApplicationLimit] = useState("25");
+  const [createJobListingRound, { loading, error }] = useMutation(
+    CREATE_JOB_LISTING_ROUND,
+  );
 
-  const handleSubmit = () => {
-    setJob({
-      ...job,
-      applicationLimit: applicationLimit,
-    });
+  const handleSubmit = async () => {
+    try {
+      const response = await createJobListingRound({
+        variables: {
+          id: jobId,
+          applicationLimit: Number(applicationLimit),
+          roundNumber: 1,
+        },
+      });
 
-    hideModal();
+      console.log(
+        "Round Details saved successfully, Details:",
+        response.data.createJobListingRound,
+      );
+      setJob({
+        ...job,
+        applicationLimit: applicationLimit,
+        roundNumber: "1",
+      });
+
+      hideModal();
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   useEffect(() => {

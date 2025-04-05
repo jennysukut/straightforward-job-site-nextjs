@@ -24,6 +24,7 @@ interface LabelGeneratorAndDisplayComp {
   width?: "full";
   subTitle?: string;
   addClassesToResults?: string;
+  canAddNew?: boolean;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -42,6 +43,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   subTitle,
   width,
   addClassesToResults,
+  canAddNew,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
@@ -72,7 +74,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       setFilteredItems(matches);
     } else {
       setFilteredItems([]);
-      setAddingNewItem(true);
+      if (canAddNew) {
+        setAddingNewItem(true);
+      }
     }
   };
 

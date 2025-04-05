@@ -168,6 +168,7 @@ export default function PostAJobStep1() {
             subTitle="you can choose from skills, country-of-location, or languages"
             width="full"
             addClassesToResults="pl-8"
+            canAddNew
           />
         </form>
 

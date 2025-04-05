@@ -179,6 +179,7 @@ export default function PostAJobStep3() {
             options
             searchData={skillsList}
             width="full"
+            canAddNew
           />
 
           {/*  more about the position input */}
