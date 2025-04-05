@@ -4,7 +4,6 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useEffect, useState } from "react";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
-import { useFellows } from "@/contexts/FellowsContext";
 
 import RejectionMessageOptionsComponent from "@/components/amsComponents/rejectionMessageOptions";
 
@@ -14,7 +13,6 @@ export default function Application({ params }: any) {
   const { accountType, setCurrentPage } = usePageContext();
   const { applications } = useApplications();
   const { jobListings } = useJobListings();
-  const { fellows } = useFellows();
 
   const [chosenMessage, setChosenMessage] = useState("");
 
@@ -23,10 +21,11 @@ export default function Application({ params }: any) {
   const currentJob = jobListings?.find(
     (job: any) => job.jobId === currentApp?.jobId,
   )?.job;
-  const currentFellow = fellows?.find((fellow: any) => {
-    return fellow.id === currentApp?.applicant;
-  })?.name;
+  // const currentFellow = fellows?.find((fellow: any) => {
+  //   return fellow.id === currentApp?.applicant;
+  // })?.name;
 
+  const currentFellow = "test current fellow";
   useEffect(() => {
     setChosenMessage(params.rejectionType);
   }, []);

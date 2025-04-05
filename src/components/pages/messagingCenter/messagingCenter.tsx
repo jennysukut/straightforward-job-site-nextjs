@@ -7,7 +7,6 @@ import { useColors } from "@/contexts/ColorContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
-import { useFellows } from "@/contexts/FellowsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
@@ -48,7 +47,6 @@ const MessageCenter = ({
   const { applications, setApplications } = useApplications();
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
-  const { fellows } = useFellows();
   const { business } = useBusiness();
 
   const router = useRouter();
@@ -217,7 +215,8 @@ const MessageCenter = ({
   };
 
   const findApplicantName: any = (id: any) => {
-    const applicant = fellows?.find((fellow) => fellow.id === id);
+    // const applicant = fellows?.find((fellow) => fellow.id === id);
+    const applicant = { name: "Person", smallBio: "smallBio here" };
     return applicant ? applicant.name : "Unknown";
   };
 

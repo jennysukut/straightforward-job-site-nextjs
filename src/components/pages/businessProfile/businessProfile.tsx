@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { usePageContext } from "@/contexts/PageContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useBusinessList } from "@/contexts/BusinessListContext";
 import { useQuery } from "@apollo/client";
 import { GET_BUSINESS_PROFILE } from "@/graphql/queries";
 
@@ -44,7 +43,6 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   logout,
 }) => {
   const { setBusiness } = useBusiness();
-  const { businessList } = useBusinessList();
   const { setPageType, setCurrentPage } = usePageContext();
   const { showModal } = useModal();
   const { textColor, titleColor, secondaryTextColor } = useColorOptions();

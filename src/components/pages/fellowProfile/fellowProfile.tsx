@@ -7,7 +7,6 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
-import { useFellows } from "@/contexts/FellowsContext";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE } from "@/graphql/queries";
 
@@ -84,7 +83,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { applications, setApplications } = useApplications();
   const { jobListings } = useJobListings();
   const { showModal } = useModal();
-  const { fellows } = useFellows();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
