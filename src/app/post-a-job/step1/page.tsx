@@ -61,7 +61,7 @@ export default function PostAJobStep1() {
     try {
       const response = await addJobListingDetailsStep1({
         variables: {
-          id: job?.jobId,
+          id: job?.id,
           positionSummary: data.positionSummary,
           nonNegParams: nonNegParams,
           location: business?.businessProfile?.location,
@@ -74,16 +74,21 @@ export default function PostAJobStep1() {
         "Details saved successfully, Details:",
         response.data.addJobListingDetailsStep1,
       );
+
       setJob({
         ...job,
         positionSummary: data.positionSummary,
         nonNegParams: nonNegParams,
-        location: business?.businessProfile?.location,
-        businessName: business?.name,
-        country: business?.businessProfile?.country,
-        // jobIsBeingEdited: false,
+        business: {
+          name: business?.name,
+          businessProfile: {
+            location: business?.businessProfile?.location,
+            country: business?.businessProfile?.country,
+          },
+        },
+        beingEdited: false,
       });
-      if (job?.jobIsBeingEdited) {
+      if (job?.beingEdited) {
         router.push("/listing");
       } else {
         router.push("/post-a-job/step2");
@@ -180,11 +185,11 @@ export default function PostAJobStep1() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && job?.jobIsBeingEdited === true
+            {disabledButton && job?.beingEdited === true
               ? "Returning To Listing..."
-              : !disabledButton && job?.jobIsBeingEdited === true
+              : !disabledButton && job?.beingEdited === true
                 ? "update"
-                : disabledButton && job?.jobIsBeingEdited === false
+                : disabledButton && job?.beingEdited === false
                   ? "Saving Information..."
                   : "continue"}{" "}
             {/* {disabledButton ? "Saving Information..." : "continue"} */}

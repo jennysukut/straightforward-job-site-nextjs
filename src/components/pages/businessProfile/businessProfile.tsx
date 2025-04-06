@@ -256,7 +256,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                 canEdit={canEdit}
                 editClick={() => handleEditClick("/business-signup/step2")}
               >
-                <h2 className="MoreAboutBusinessTitle pb-4 pl-2 pt-2">{`More About ${thisBusiness.name}:`}</h2>
+                <h2 className="MoreAboutBusinessTitle pb-2 pl-2 pt-2 leading-8">{`More About ${thisBusiness.name}:`}</h2>
                 <p
                   className={`MoreAboutBusiness pl-8 pt-4 font-medium leading-8 ${titleColor}`}
                 >

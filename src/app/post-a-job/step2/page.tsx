@@ -136,7 +136,7 @@ export default function PostAJobStep2() {
     try {
       const response = await addJobListingDetailsStep2({
         variables: {
-          id: job?.jobId,
+          id: job?.id,
           payscaleMin: payscaleMin,
           payscaleMax: payscaleMax,
           payOption: String(payOption),
@@ -151,22 +151,19 @@ export default function PostAJobStep2() {
         "Details saved successfully, Details:",
         response.data.addJobListingDetailsStep2,
       );
+
       setJob({
         ...job,
-        payDetails: {
-          payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
-          payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
-          payOption: String(payOption),
-        },
+        payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
+        payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
+        payOption: String(payOption),
         locationOption: data.locationOption,
         idealCandidate: data.idealCandidate,
-        hybridDetails: {
-          daysInOffice: data.daysInOffice,
-          daysRemote: data.daysRemote,
-        },
-        // jobIsBeingEdited: false,
+        daysInOffice: data.daysInOffice,
+        daysRemote: data.daysRemote,
+        beingEdited: false,
       });
-      if (job?.jobIsBeingEdited) {
+      if (job?.beingEdited) {
         router.push("/listing");
       } else {
         router.push("/post-a-job/step3");
@@ -180,11 +177,11 @@ export default function PostAJobStep2() {
   };
 
   useEffect(() => {
-    if (job?.payDetails) {
-      setPayOption(job?.payDetails.payOption ? [job.payDetails.payOption] : []);
-      setValue("payOption", job?.payDetails.payOption || "");
-      setValue("payscaleMin", "$" + job?.payDetails.payscaleMin);
-      setValue("payscaleMax", "$" + job?.payDetails.payscaleMax);
+    if (job?.payscaleMin) {
+      setPayOption(job?.payOption ? [job.payOption] : []);
+      setValue("payOption", job?.payOption || "");
+      setValue("payscaleMin", "$" + job?.payscaleMin);
+      setValue("payscaleMax", "$" + job?.payscaleMax);
     }
 
     if (job?.locationOption) {
@@ -308,11 +305,11 @@ export default function PostAJobStep2() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

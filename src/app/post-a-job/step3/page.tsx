@@ -96,7 +96,7 @@ export default function PostAJobStep3() {
     try {
       const response = await addJobListingDetailsStep3({
         variables: {
-          id: job?.jobId,
+          id: job?.id,
           experienceLevel: experienceLevel,
           preferredSkills: preferredSkills,
           moreAboutPosition: data.moreAboutPosition,
@@ -113,9 +113,9 @@ export default function PostAJobStep3() {
         experienceLevel: experienceLevel,
         preferredSkills: preferredSkills,
         moreAboutPosition: data.moreAboutPosition,
-        // jobIsBeingEdited: false,
+        beingEdited: false,
       });
-      if (job?.jobIsBeingEdited) {
+      if (job?.beingEdited) {
         router.push("/listing");
       } else {
         router.push("/post-a-job/step4");
@@ -202,11 +202,11 @@ export default function PostAJobStep3() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Profile..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

@@ -359,7 +359,48 @@ export const CREATE_JOB_LISTING_ROUND = gql`
       id: $id
       applicationLimit: $applicationLimit
       roundNumber: $roundNumber
-    )
+    ) {
+      id
+      jobTitle
+      positionType
+      positionSummary
+      nonNegParams
+      payscaleMin
+      payscaleMax
+      payOption
+      locationOption
+      idealCandidate
+      daysInOffice
+      daysRemote
+      experienceLevel
+      preferredSkills
+      moreAboutPosition
+      responsibilities
+      perks
+      interviewProcess {
+        id
+        stage
+        step
+        details
+      }
+      business {
+        id
+        name
+        businessProfile {
+          smallBio
+          country
+          location
+          website
+          avatar
+          businessField
+          missionVision
+          moreAboutBusiness
+        }
+      }
+      saved
+      published
+      beingEdited
+    }
   }
 `;
 

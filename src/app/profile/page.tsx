@@ -27,6 +27,7 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const router = useRouter();
+  const [loadingData, setLoadingData] = useState(true);
 
   const logout = () => {
     setIsLoggingOut(true);
@@ -39,26 +40,33 @@ export default function Profile() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/"); // Redirect to main page if not logged in
-    } else {
-      if (accountType === "Fellow" && pageType !== "Fellow") {
-        setPageType("Fellow");
-        setCurrentPage("fellowProfile");
-      } else if (accountType === "Business" && pageType !== "Business") {
-        setPageType("Business");
-        setCurrentPage("businessProfile");
-      }
+    if (accountType === "Fellow" && pageType !== "Fellow") {
+      setPageType("Fellow");
+      setCurrentPage("fellowProfile");
+    } else if (accountType === "Business" && pageType !== "Business") {
+      setPageType("Business");
+      setCurrentPage("businessProfile");
     }
   }, [isLoggedIn, accountType, pageType, setCurrentPage, setPageType, router]);
 
+  useEffect(() => {
+    setLoadingData(false);
+  }, [fellow, business]);
+
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
-      {isLoggedIn && accountType === "Fellow" && (
-        <FellowProfile self={fellow} isOwn logout={logout} />
-      )}
-      {isLoggedIn && accountType === "Business" && (
-        <BusinessProfile self={business} isOwn logout={logout} />
+      {loadingData ? (
+        //make loading screen design here
+        <div className="LoadingText text-olive">Loading...</div>
+      ) : (
+        <div className="ProfilePage">
+          {isLoggedIn && accountType === "Fellow" && (
+            <FellowProfile self={fellow} isOwn logout={logout} />
+          )}
+          {isLoggedIn && accountType === "Business" && (
+            <BusinessProfile self={business} isOwn logout={logout} />
+          )}
+        </div>
       )}
     </div>
   );

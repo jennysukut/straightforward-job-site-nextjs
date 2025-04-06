@@ -125,7 +125,7 @@ export default function PostAJobStep5() {
     try {
       const response = await addJobListingDetailsStep5({
         variables: {
-          id: job?.jobId,
+          id: job?.id,
           interviewProcess: interviewProcess,
         },
       });
@@ -139,13 +139,13 @@ export default function PostAJobStep5() {
         ...job,
         interviewProcess: interviewProcess,
         roundNumber: "1",
-        // jobIsBeingEdited: false,
+        beingEdited: false,
       });
-      if (job?.jobIsBeingEdited) {
+      if (job?.beingEdited) {
         router.push("/listing");
       } else {
         router.push("/listing");
-        showModal(<ApplicationLimitModal jobId={job?.jobId} />);
+        showModal(<ApplicationLimitModal jobId={job?.id} />);
       }
     } catch (error) {
       console.error("Signup error:", error);
@@ -206,11 +206,11 @@ export default function PostAJobStep5() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

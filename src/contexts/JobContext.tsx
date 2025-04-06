@@ -3,30 +3,18 @@
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 export interface Job {
-  // this job number will probably get replaced by an
-  // auto-generated id made by sending details to the server?
-  //probably best to name it jobId
-  applicants?: Array<string>;
-  jobId?: string;
+  id?: number;
   jobTitle?: string;
-  businessName?: string;
-  applications?: Array<string>;
-  applicationLimit?: string;
-  numberOfApps?: string;
   positionType?: string;
   positionSummary?: string;
   nonNegParams?: Array<string>;
+  payscaleMin?: number;
+  payscaleMax?: number;
+  payOption?: string;
   locationOption?: string;
   idealCandidate?: string;
-  payDetails?: {
-    payscaleMin?: number;
-    payscaleMax?: number;
-    payOption?: string;
-  };
-  hybridDetails?: {
-    daysInOffice?: string;
-    daysRemote?: string;
-  };
+  daysInOffice?: string;
+  daysRemote?: string;
   experienceLevel?: Array<string>;
   preferredSkills?: Array<string>;
   moreAboutPosition?: string;
@@ -38,9 +26,23 @@ export interface Job {
     details: string;
     id: number;
   }>;
-  location?: string;
-  country?: string;
-  jobIsBeingEdited?: boolean;
+  business?: {
+    id?: string;
+    name?: string;
+    businessProfile?: {
+      smallBio?: string;
+      country?: string;
+      location?: string;
+      website?: string;
+      avatar?: string;
+      businessField?: string;
+      missionVision?: string;
+      moreAboutBusiness?: string;
+    };
+  };
+  applications?: Array<string>;
+  applicationLimit?: string;
+  beingEdited?: boolean;
   roundNumber?: string;
 }
 
@@ -54,7 +56,9 @@ const JobContext = createContext<JobContextType | undefined>(undefined);
 export const JobProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [job, setJob] = useState<Job | null>({});
+  const [job, setJob] = useState<Job | null>({
+    id: 1,
+  });
 
   return (
     <JobContext.Provider value={{ job, setJob }}>

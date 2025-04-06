@@ -14,7 +14,7 @@ export default function ListingPage() {
 
   return (
     <div className="JobListingPage flex flex-grow flex-col items-center gap-8 md:pb-12">
-      {accountType === "Business" && <JobListing isOwn />}
+      {accountType === "Business" && <JobListing isOwn newPost />}
       {accountType === "Fellow" && (
         <div className="Prompt max-w-[40vw] text-center">
           <p className="prompt text-olive">{`You'll need to have a job id to access a listing.`}</p>

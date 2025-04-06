@@ -132,7 +132,7 @@ export default function PostAJobStep4() {
     try {
       const response = await addJobListingDetailsStep4({
         variables: {
-          id: job?.jobId,
+          id: job?.id,
           responsibilities: responsibilities,
           perks: perks,
         },
@@ -147,9 +147,9 @@ export default function PostAJobStep4() {
         ...job,
         responsibilities: responsibilities,
         perks: perks,
-        // jobIsBeingEdited: false,
+        beingEdited: false,
       });
-      if (job?.jobIsBeingEdited) {
+      if (job?.beingEdited) {
         router.push("/listing");
       } else {
         router.push("/post-a-job/step5");
@@ -232,11 +232,11 @@ export default function PostAJobStep4() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

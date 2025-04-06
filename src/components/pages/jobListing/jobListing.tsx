@@ -32,61 +32,59 @@ import {
 } from "./jobListingButtons";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
-
+import { Job } from "@/contexts/JobContext";
 // ADD DETAILS FOR HYBRID SCHEDULE AS WELL
 // Make Buttons for current isOwn show up if the job isn't posted yet. If it is, use secondary Business Buttons
 // Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
 // If the listing is active, add Business Button to : view applications or go to application management system
 
-type jobListing = {
-  id: string;
-  jobTitle: string;
-  positionType: string;
-  positionSummary: string;
-  nonNegParams: Array<string>;
-  payscaleMin: number;
-  payscaleMax: number;
-  payOption: string;
-  locationOption: string;
-  idealCandidate: string;
-  daysInOffice: string;
-  daysRemote: string;
-  experienceLevel: Array<string>;
-  preferredSkills: Array<string>;
-  moreAboutPosition: string;
-  responsibilities: Array<string>;
-  perks: Array<string>;
-  interviewProcess: Array<{
-    id: string;
-    stage: string;
-    step: string;
-    details: string;
-  }>;
-  numberOfApps: number;
-  applicationLimit: number;
-  applicants: Array<string>;
-  applications: Array<string>;
-  location: string;
-  country: string;
-  business: {
-    id: string;
-    name: string;
-    businessProfile: {
-      country: string;
-      location: string;
-    };
-  };
-};
+// type jobListing = {
+//   id: number;
+//   jobTitle: string;
+//   positionType: string;
+//   positionSummary: string;
+//   nonNegParams: Array<string>;
+//   payscaleMin: number;
+//   payscaleMax: number;
+//   payOption: string;
+//   locationOption: string;
+//   idealCandidate: string;
+//   daysInOffice: string;
+//   daysRemote: string;
+//   experienceLevel: Array<string>;
+//   preferredSkills: Array<string>;
+//   moreAboutPosition: string;
+//   responsibilities: Array<string>;
+//   perks: Array<string>;
+//   interviewProcess: Array<{
+//     id: string;
+//     stage: string;
+//     step: string;
+//     details: string;
+//   }>;
+//   applicationLimit: number;
+//   applications: Array<string>;
+//   business: {
+//     id: string;
+//     name: string;
+//     businessProfile: {
+//       country: string;
+//       location: string;
+//     };
+//   };
+// };
+
 export default function JobListing({
   isOwn,
   hasId,
   id,
   inAms,
   setAltViewChoice,
+  newPost,
 }: any) {
   const router = useRouter();
 
-  const { setPageType } = usePageContext();
+  const { setPageType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
@@ -103,58 +101,40 @@ export default function JobListing({
     fellow?.profile?.savedJobs?.includes(id),
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
-  const [currentJob, setCurrentJob] = useState({} as jobListing);
+  const [currentJob, setCurrentJob] = useState({} as Job);
   const [loadingData, setLoadingData] = useState(true);
+
+  let thisId;
+  if (!id) {
+    thisId === job?.id;
+  } else {
+    thisId === id;
+  }
+
+  console.log(thisId);
 
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
-    variables: { id },
+    variables: { id: 1 },
+    // skip: !id || !isLoggedIn,
     onCompleted: (data) => {
       console.log(JSON.stringify(data));
       console.log(data);
-      setCurrentJob({
-        id: data.jobListing.id,
-        jobTitle: data.jobListing.jobTitle,
-        positionType: data.jobListing.positionType,
-        positionSummary: data.jobListing.positionSummary,
-        nonNegParams: data.jobListing.nonNegParams,
-        payscaleMin: data.jobListing.payscaleMin,
-        payscaleMax: data.jobListing.payscaleMax,
-        payOption: data.jobListing.payOption,
-        locationOption: data.jobListing.locationOption,
-        idealCandidate: data.jobListing.idealCandidate,
-        daysInOffice: data.jobListing.daysInOffice,
-        daysRemote: data.jobListing.daysRemote,
-        experienceLevel: data.jobListing.experienceLevel,
-        preferredSkills: data.jobListing.preferredSkills,
-        moreAboutPosition: data.jobListing.moreAboutPosition,
-        responsibilities: data.jobListing.responsibilities,
-        perks: data.jobListing.perks,
-        interviewProcess: data.jobListing.interviewProcess,
-        applications: [],
-        applicants: [],
-        applicationLimit: 25,
-        numberOfApps: 0,
-        location: "Somewhere",
-        country: "United States",
-        business: {
-          id: data.jobListing.business?.id,
-          name: data.jobListing.business?.name,
-          businessProfile: {
-            country: data.jobListing.business?.businessProfile?.country,
-            location: data.jobListing.business?.businessProfile?.location,
-          },
-        },
-      });
+      setCurrentJob(data.jobListing);
       renderJobListingRightColumn();
       renderJobListingLeftColumn();
       setLoadingData(false);
-      console.log(currentJob.business.name);
     },
   });
+
+  useEffect(() => {
+    if (isOwn && newPost && job && !id) {
+      setCurrentJob(job);
+    }
+  }, []);
 
   // when we go through the ID, we'll simply be able to grab the specific application
   let currentApp;
@@ -166,20 +146,10 @@ export default function JobListing({
     currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
   }
 
-  // define the current job
-  // let currentJob;
-  // if (hasId && jobListings) {
-  //   // if the job hasId we'll need to grab it's details from the database here
-  //   currentJob = jobListings.find((job: any) => job.jobId === id)?.job;
-  // } else {
-  //   // when we're initially loading this page upon job creation, we'll use the jobContext object just created
-  //   currentJob = job;
-  // }
-
   const appNumber = currentJob?.applications?.length;
 
   const handleEditClick = (url: any) => {
-    setJob({ ...job, jobIsBeingEdited: true });
+    setJob({ ...job, beingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
@@ -202,11 +172,12 @@ export default function JobListing({
 
   // make sure they haven't applied before
   //TODO: Maybe we should make sure they haven't applied some other way?
-  const matchingIds =
-    currentJob?.applicants &&
-    !currentJob?.applicants?.some(
-      (applicant: any) => applicant.id === fellow?.id,
-    );
+
+  // const matchingIds =
+  //   currentJob?.applicants &&
+  //   !currentJob?.applicants?.some(
+  //     (applicant: any) => applicant.id === fellow?.id,
+  //   );
 
   // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
@@ -481,15 +452,19 @@ export default function JobListing({
               <ul
                 className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {currentJob?.responsibilities?.map(
-                  (resp: string, index: number) => {
-                    return (
-                      <li className="ResponsibilitiesItem" key={index}>
-                        <p className="Responsibility">{resp}</p>
-                      </li>
-                    );
-                  },
-                )}
+                {currentJob?.responsibilities?.map((item, index) => {
+                  const responsibilityText =
+                    typeof item === "string"
+                      ? item
+                      : item?.responsibility || "";
+
+                  return (
+                    <li className="ResponsibilitiesItem" key={index}>
+                      <p className="Responsibility text-jade"></p>
+                      {responsibilityText}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           )}

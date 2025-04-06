@@ -38,7 +38,10 @@ export default function ClientAuthWrapper({
   } = useQuery(GET_MY_PROFILE, {
     skip: isLoggedIn || isLoggingOut,
     onCompleted: (data) => {
-      console.log("called the GET_MY_PROFILE query on the Home Screen", data);
+      console.log(
+        "called the GET_MY_PROFILE query in the Client Auth Wrapper",
+        data,
+      );
       if (data.getMyProfile === null) {
         console.log("looks like you're not logged in");
         setIsLoggedIn(false);
