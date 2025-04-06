@@ -16,28 +16,50 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useState } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 
-const OwnListingTopButtons = ({ currentJob }: any) => {
+const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
   const { showModal } = useModal();
+  // figure out which buttons to use here before they've published a listing - perhaps edits?
   return (
-    <div className="BusinessTopButtons -mb-2 -mt-10 flex flex-col items-end gap-2 self-end">
-      {/* <Link href={"/job-board"}>
-        <SiteButton aria="job board" colorScheme="d5">
-          go to job board
-        </SiteButton>
-      </Link> */}
+    <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
+      <SiteButton
+        variant="filled"
+        colorScheme="b4"
+        aria="edit"
+        addClasses="px-8"
+        onClick={() => setCanEdit(!canEdit)}
+        isSelected={canEdit}
+      >
+        {canEdit ? "finish editing" : "edit"}
+      </SiteButton>
+      <SiteButton
+        aria="publish"
+        variant="filled"
+        colorScheme="f1"
+        addClasses="px-8"
+        onClick={() =>
+          showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+        }
+      >
+        publish
+      </SiteButton>
       <SiteButton
         variant="filled"
         aria="apps"
         colorScheme="b1"
         onClick={() => showModal(<ApplicationLimitModal />)}
       >
-        application limit: {currentJob?.applicationLimit}
+        application limit: {currentJob?.applicationLimit || 25}
       </SiteButton>
     </div>
   );
 };
 
-const OwnJobBottomButtons = ({ canEdit, setCanEdit }: any) => {
+const OwnJobBottomButtons = ({
+  canEdit,
+  setCanEdit,
+  setSavingForLater,
+  savingForLater,
+}: any) => {
   const { showModal } = useModal();
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
@@ -62,6 +84,16 @@ const OwnJobBottomButtons = ({ canEdit, setCanEdit }: any) => {
       >
         publish
       </SiteButton>
+      <SiteButton
+        variant="filled"
+        colorScheme="c1"
+        aria="saveForLater"
+        addClasses="px-8"
+        onClick={() => setSavingForLater(!savingForLater)}
+        isSelected={savingForLater}
+      >
+        save for later
+      </SiteButton>
     </div>
   );
 };
@@ -82,8 +114,8 @@ const ListingTopButtons = ({
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
 
-  // const atAppLimit = currentJob.numberOfApps >= currentJob.applicationLimit;
   const atDailyLimit = fellow?.profile?.dailyApplications?.count === 5;
+
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">

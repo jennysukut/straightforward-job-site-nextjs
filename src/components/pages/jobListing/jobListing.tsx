@@ -33,46 +33,6 @@ import {
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
-// ADD DETAILS FOR HYBRID SCHEDULE AS WELL
-// Make Buttons for current isOwn show up if the job isn't posted yet. If it is, use secondary Business Buttons
-// Add Buttons for applications, if isNotOwn? = view company details, apply, and report -- make the apply button disabled if it doesn't meet parameters
-// If the listing is active, add Business Button to : view applications or go to application management system
-
-// type jobListing = {
-//   id: number;
-//   jobTitle: string;
-//   positionType: string;
-//   positionSummary: string;
-//   nonNegParams: Array<string>;
-//   payscaleMin: number;
-//   payscaleMax: number;
-//   payOption: string;
-//   locationOption: string;
-//   idealCandidate: string;
-//   daysInOffice: string;
-//   daysRemote: string;
-//   experienceLevel: Array<string>;
-//   preferredSkills: Array<string>;
-//   moreAboutPosition: string;
-//   responsibilities: Array<string>;
-//   perks: Array<string>;
-//   interviewProcess: Array<{
-//     id: string;
-//     stage: string;
-//     step: string;
-//     details: string;
-//   }>;
-//   applicationLimit: number;
-//   applications: Array<string>;
-//   business: {
-//     id: string;
-//     name: string;
-//     businessProfile: {
-//       country: string;
-//       location: string;
-//     };
-//   };
-// };
 
 export default function JobListing({
   isOwn,
@@ -102,7 +62,10 @@ export default function JobListing({
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
   const [currentJob, setCurrentJob] = useState({} as Job);
-  const [loadingData, setLoadingData] = useState(true);
+  const [savingForLater, setSavingForLater] = useState<boolean>(false);
+  const [loadingData, setLoadingData] = useState(
+    job?.beingEdited ? false : true,
+  );
 
   let thisId;
   if (!id) {
@@ -111,22 +74,21 @@ export default function JobListing({
     thisId === id;
   }
 
-  console.log(thisId);
-
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
     variables: { id: 1 },
-    // skip: !id || !isLoggedIn,
+    // be sure to update this ID - I've set it to find the old job listing
+    skip: !isLoggedIn || job?.beingEdited,
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
       console.log(data);
       setCurrentJob(data.jobListing);
       renderJobListingRightColumn();
       renderJobListingLeftColumn();
       setLoadingData(false);
+      setJob(data.jobListing);
     },
   });
 
@@ -136,7 +98,6 @@ export default function JobListing({
     }
   }, []);
 
-  // when we go through the ID, we'll simply be able to grab the specific application
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
@@ -150,25 +111,26 @@ export default function JobListing({
 
   const handleEditClick = (url: any) => {
     setJob({ ...job, beingEdited: true });
+    // plug in the editJob query here
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
 
-  // const checkNonNegParamsMatch = () => {
-  //   if (!currentJob?.nonNegParams || !fellow) return false;
-  //   const { country, languages = [], skills = [] } = fellow.profile;
-  //   // Check if all non negotiable parameters have a match in country, languages, or skills
-  //   return currentJob.nonNegParams.every(
-  //     (param) =>
-  //       param === country ||
-  //       languages.includes(param) ||
-  //       skills.includes(param),
-  //   );
-  // };
+  const checkNonNegParamsMatch = () => {
+    if (!currentJob?.nonNegParams || !fellow) return false;
+    const { country, languages = [], skills = [] } = fellow?.profile || {};
+    // Check if all non negotiable parameters have a match in country, languages, or skills
+    return currentJob.nonNegParams.every(
+      (param) =>
+        param === country ||
+        languages.includes(param) ||
+        skills.includes(param),
+    );
+  };
 
   //meets minimum requirements to apply
-  // const hasMatchingNonNegParams = checkNonNegParamsMatch();
+  const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
   // make sure they haven't applied before
   //TODO: Maybe we should make sure they haven't applied some other way?
@@ -182,22 +144,10 @@ export default function JobListing({
   // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
 
-  // const canApply = true;
   const canApply = true;
-  // hasMatchingNonNegParams === true &&
-  // fellow?.fellow?.dailyApplications?.count !== 5;
+  hasMatchingNonNegParams === true &&
+    fellow?.profile?.dailyApplications?.length < 5;
   // && matchingIds;
-
-  // console.log(
-  //   "can apply:",
-  //   canApply,
-  //   "has matching non-neg params:",
-  //   hasMatchingNonNegParams,
-  //   "has matching ids:",
-  //   matchingIds,
-  //   "daily application count:",
-  //   fellow?.dailyApplications?.count,
-  // );
 
   // TODO: We need an un-save operation
   const saveClick = async (jobId: any) => {
@@ -227,11 +177,6 @@ export default function JobListing({
       } catch (error) {
         console.error("application error:", error);
       }
-
-      // setFellow({
-      //   ...fellow,
-      //   savedJobs: [...(fellow?.savedJobs || []), jobId],
-      // });
       setJobSavedStatus(true);
     }
     hideModal();
@@ -514,35 +459,46 @@ export default function JobListing({
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
-    // if (job?.jobIsBeingEdited) {
-    //   setCanEdit(true);
-    // }
+    if (job?.beingEdited) {
+      setCanEdit(true);
+    }
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
-
-    // setPageType("jobListing");
+    setPageType("jobListing");
   }, []);
 
   useEffect(() => {
     console.log(currentJob);
   }, [currentJob]);
 
+  useEffect(() => {
+    if (savingForLater) {
+      console.log("let's save this for later");
+      // here, we should call the mutation for isPublished, but set it to something for listings in a holding pattern.
+    }
+  }, [savingForLater]);
+
   return (
     <div
       className={`JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
     >
       {loadingData ? (
-        //make loading screen design here
-        <div className="LoadingText text-center text-olive">Loading...</div>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <div className="LoadingText text-center text-olive">Loading...</div>
+        </div>
       ) : (
         <div className="ProfileDetails flex gap-8">
           <div className="ProfileLeftColumn mt-28 flex flex-col gap-8">
             {/* TOP BUTTONS */}
 
-            {/* business buttons - not ams */}
+            {/* business buttons - not ams // pre-published state */}
             {isOwn && !inAms && (
-              <OwnListingTopButtons currentJob={currentJob} />
+              <OwnListingTopButtons
+                currentJob={currentJob}
+                canEdit={canEdit}
+                setCanEdit={setCanEdit}
+              />
             )}
 
             {/* business buttons - in ams */}
@@ -577,7 +533,12 @@ export default function JobListing({
 
             {/* business buttons - not in ams */}
             {isOwn && !inAms && (
-              <OwnJobBottomButtons canEdit={canEdit} setCanEdit={setCanEdit} />
+              <OwnJobBottomButtons
+                canEdit={canEdit}
+                setCanEdit={setCanEdit}
+                setSavingForLater={setSavingForLater}
+                savingForLater={savingForLater}
+              />
             )}
 
             {/* TODO: Finish these business Buttons */}

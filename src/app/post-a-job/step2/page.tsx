@@ -33,6 +33,8 @@ const jobSchema = z.object({
   }),
   daysInOffice: z.string().optional(),
   daysRemote: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
 });
 
 type FormData = z.infer<typeof jobSchema>;
@@ -132,7 +134,6 @@ export default function PostAJobStep2() {
       return;
     }
 
-    console.log("Payscale Min and Max:", payscaleMin, payscaleMax);
     try {
       const response = await addJobListingDetailsStep2({
         variables: {
@@ -144,6 +145,7 @@ export default function PostAJobStep2() {
           idealCandidate: data.idealCandidate,
           daysInOffice: data.daysInOffice || "",
           daysRemote: data.daysRemote || "",
+          // add the city state info here
         },
       });
 
@@ -162,6 +164,7 @@ export default function PostAJobStep2() {
         daysInOffice: data.daysInOffice,
         daysRemote: data.daysRemote,
         beingEdited: false,
+        // add the city state info here
       });
       if (job?.beingEdited) {
         router.push("/listing");
@@ -258,32 +261,63 @@ export default function PostAJobStep2() {
             errors={errors.locationOption}
             required
             classesForButtons="px-[3rem] py-3"
-            addClasses="mt-4 -mb-2"
+            addClasses="mt-4 -mb-"
           />
 
-          {locationOption.includes("hybrid") && (
-            <div className="HybridDetails mb-6 flex justify-center gap-6">
-              <p className="HybridTitle">Hybrid Details:*</p>
-              {/* days in office */}
-              <InputComponent
-                type="text"
-                placeholderText="Days In Office"
-                errors={errors.daysInOffice}
-                register={register}
-                registerValue="daysInOffice"
-                addClasses="-mt-2"
-              />
-              {/* days remote */}
-              <InputComponent
-                type="text"
-                placeholderText="Days Remote"
-                errors={errors.daysRemote}
-                register={register}
-                registerValue="daysRemote"
-                addClasses="-mt-2"
-              />
-            </div>
-          )}
+          <div
+            className={`LocationDetails -mt-4 flex gap-6 ${locationOption.includes("on-site") ? "flex-col items-center" : ""}`}
+          >
+            {locationOption.length >= 1 &&
+              !locationOption.includes("remote") && (
+                <div
+                  className={`LocationSpecifics mb-4 flex w-full justify-center gap-6 ${locationOption.includes("on-site") ? "" : "flex-col"}`}
+                >
+                  <p className="Location Details">Location Details:*</p>
+                  {/* city */}
+                  <InputComponent
+                    type="text"
+                    placeholderText="City"
+                    errors={errors.city}
+                    register={register}
+                    registerValue="city"
+                    addClasses="-mt-2"
+                  />
+                  {/* state */}
+                  <InputComponent
+                    type="text"
+                    placeholderText="State"
+                    errors={errors.state}
+                    register={register}
+                    registerValue="state"
+                    addClasses="-mt-2"
+                  />
+                </div>
+              )}
+
+            {locationOption.includes("hybrid") && (
+              <div className="HybridDetails mb-6 flex w-[50%] flex-col gap-6">
+                <p className="HybridTitle">Hybrid Details:*</p>
+                {/* days in office */}
+                <InputComponent
+                  type="text"
+                  placeholderText="Days In Office"
+                  errors={errors.daysInOffice}
+                  register={register}
+                  registerValue="daysInOffice"
+                  addClasses="-mt-2"
+                />
+                {/* days remote */}
+                <InputComponent
+                  type="text"
+                  placeholderText="Days Remote"
+                  errors={errors.daysRemote}
+                  register={register}
+                  registerValue="daysRemote"
+                  addClasses="-mt-2"
+                />
+              </div>
+            )}
+          </div>
 
           {/*  ideal candidate input */}
           <InputComponent
