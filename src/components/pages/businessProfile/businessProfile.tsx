@@ -6,11 +6,14 @@ import { useModal } from "@/contexts/ModalContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useQuery } from "@apollo/client";
 import { GET_BUSINESS_PROFILE } from "@/graphql/queries";
+import {
+  OwnBusinessBottomButtons,
+  OwnBusinessTopButtons,
+} from "./businessProfileButtonOptions";
 
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import Avatar from "../../avatarComponent";
-import PostAJobModal from "../../modals/postAJobModals/postAJobModal";
 
 interface BusinessProfile {
   hasId?: boolean;
@@ -99,27 +102,16 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
       ) : (
         <div className="ProfileDetails flex gap-8">
           <div className="ProfileLeftColumn mt-32 flex flex-col gap-8">
+            {/* Edit Buttons */}
+            {isOwn && (
+              <OwnBusinessTopButtons
+                logout={logout}
+                canEdit={canEdit}
+                setCanEdit={setCanEdit}
+              />
+            )}
             {!isOwn && (
               <div className="EditButtonContainer -mt-28 flex flex-col items-end gap-4 self-end">
-                <SiteButton
-                  variant="filled"
-                  colorScheme="b4"
-                  aria="logout"
-                  addClasses="px-8"
-                  onClick={logout}
-                >
-                  logout
-                </SiteButton>
-                <SiteButton
-                  variant="filled"
-                  colorScheme="b6"
-                  aria="edit"
-                  addClasses="px-8"
-                  // onClick={() => setCanEdit(!canEdit)}
-                  // isSelected={canEdit}
-                >
-                  send a message
-                </SiteButton>
                 <SiteButton
                   variant="filled"
                   colorScheme="c4"
@@ -131,6 +123,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                 </SiteButton>
               </div>
             )}
+
             {/* Mission & Vision */}
             <InfoBox
               variant="hollow"
@@ -163,33 +156,16 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
               </p>
             </InfoBox>
 
-            {/* Edit Buttons */}
             {isOwn && (
-              <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-                <SiteButton
-                  variant="filled"
-                  colorScheme="b6"
-                  aria="edit"
-                  addClasses="px-8"
-                  onClick={() => setCanEdit(!canEdit)}
-                  isSelected={canEdit}
-                >
-                  edit
-                </SiteButton>
-                <SiteButton
-                  aria="post a job"
-                  variant="filled"
-                  colorScheme="f1"
-                  addClasses="px-8"
-                  onClick={() => showModal(<PostAJobModal />)}
-                >
-                  post a job
-                </SiteButton>
-              </div>
+              <OwnBusinessBottomButtons
+                canEdit={canEdit}
+                setCanEdit={setCanEdit}
+              />
             )}
           </div>
+
           <div className="ProfileRightColumn flex flex-col gap-8">
-            {/* NAME AND SMALL BIO */}
+            {/* Name And Small Bio */}
             <div className="BusinessName mr-8">
               <InfoBox
                 aria="business"

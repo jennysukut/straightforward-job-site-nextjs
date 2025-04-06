@@ -80,6 +80,7 @@ export default function PostAJobModal() {
         variables: {
           jobTitle: data.jobTitle,
           positionType: data.positionType,
+          // add beingEdited and isPublished to this mutation, set them to "false" and perhaps a string for the isPublished
         },
       });
 

@@ -16,3 +16,14 @@ export const getMonthName = (month: any) => {
   const monthName = d.toLocaleString("default", { month: "long" });
   return monthName;
 };
+
+export type businessProfileStages = [
+  "create",
+  "step1",
+  "step2",
+  "step3",
+  "step4",
+  "step5",
+  "appLimit",
+  "payment",
+];

@@ -265,7 +265,7 @@ export default function PostAJobStep2() {
           />
 
           <div
-            className={`LocationDetails -mt-4 flex gap-6 ${locationOption.includes("on-site") ? "flex-col items-center" : ""}`}
+            className={`LocationDetails flex gap-6 ${locationOption.includes("on-site") ? "flex-col items-center" : "-mt-6"}`}
           >
             {locationOption.length >= 1 &&
               !locationOption.includes("remote") && (
