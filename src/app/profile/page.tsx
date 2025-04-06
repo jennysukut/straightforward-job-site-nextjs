@@ -6,9 +6,10 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
 import { useRouter } from "next/navigation";
-
+import { useModal } from "@/contexts/ModalContext";
 import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
 
+import ConfirmLogoutModal from "@/components/modals/confirmLogoutModal";
 import React from "react";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
@@ -26,17 +27,27 @@ export default function Profile() {
   } = usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
+  const { showModal, hideModal } = useModal();
   const router = useRouter();
   const [loadingData, setLoadingData] = useState(true);
 
   const logout = () => {
     setIsLoggingOut(true);
     console.log("trying to log out from the profile page");
+    showModal(
+      <ConfirmLogoutModal
+        continueLogout={continueLogout}
+        setIsLoggingOut={setIsLoggingOut}
+      />,
+    );
+    router.push(`/`);
+  };
+
+  const continueLogout = () => {
     removeCookie("accessToken");
-    // THIS WORKS!!!!
     setIsLoggedIn(false);
     setAccountType("");
-    router.push(`/`);
+    hideModal();
   };
 
   useEffect(() => {
