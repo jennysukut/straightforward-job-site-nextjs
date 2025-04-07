@@ -57,13 +57,14 @@ export default function JobListing({
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
-  const [jobSavedStatus, setJobSavedStatus] = useState(
-    fellow?.profile?.savedJobs?.includes(id),
-  );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
   const [starOrStopEditingJobListing] = useMutation(EDIT_JOB_LISTING);
   const [currentJob, setCurrentJob] = useState({} as Job);
   const [savingForLater, setSavingForLater] = useState<boolean>(false);
+  const [jobSavedStatus, setJobSavedStatus] = useState(
+    fellow?.profile?.savedJobs?.includes(id),
+  );
+
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
@@ -75,13 +76,14 @@ export default function JobListing({
     thisId === id;
   }
 
+  const appNumber = currentJob?.applications?.length;
+
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
-    variables: { id: 1 },
-    // be sure to update this ID - I've set it to find the old job listing
+    variables: { id: thisId },
     skip: !isLoggedIn || job?.beingEdited,
     onCompleted: (data) => {
       console.log(data);
@@ -92,12 +94,6 @@ export default function JobListing({
       setJob(data.jobListing);
     },
   });
-
-  useEffect(() => {
-    if (isOwn && newPost && job && !id) {
-      setCurrentJob(job);
-    }
-  }, []);
 
   const editJob = async () => {
     try {
@@ -118,10 +114,6 @@ export default function JobListing({
     }
   };
 
-  useEffect(() => {
-    editJob();
-  }, [canEdit]);
-
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
@@ -131,12 +123,9 @@ export default function JobListing({
     currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
   }
 
-  const appNumber = currentJob?.applications?.length;
-
   const handleEditClick = (url: any) => {
     setJob({ ...job, beingEdited: true });
-    // plug in the editJob query here
-    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
+    setCanEdit(true);
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
@@ -157,7 +146,6 @@ export default function JobListing({
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
   // make sure they haven't applied before
-  //TODO: Maybe we should make sure they haven't applied some other way?
 
   // const matchingIds =
   //   currentJob?.applicants &&
@@ -173,7 +161,6 @@ export default function JobListing({
     fellow?.profile?.dailyApplications?.length < 5;
   // && matchingIds;
 
-  // TODO: We need an un-save operation
   const saveClick = async (jobId: any) => {
     try {
       const response = await saveJobListing({
@@ -194,6 +181,41 @@ export default function JobListing({
     hideModal();
   };
 
+  // USE EFFECTS
+  useEffect(() => {
+    if (isOwn && newPost && job && !id) {
+      setCurrentJob(job);
+    }
+  }, []);
+
+  useEffect(() => {
+    editJob();
+  }, [canEdit]);
+
+  useEffect(() => {
+    // if the job is being edited, set the button to stay being pressed
+    // in case they'd like to edit other things
+    if (job?.beingEdited) {
+      setCanEdit(true);
+    }
+    ShuffleIdealButtonPattern(setPrimaryColorArray);
+    ShuffleIdealButtonPattern(setSecondaryColorArray);
+    ShuffleIdealButtonPattern(setThirdColorArray);
+    setPageType("jobListing");
+  }, []);
+
+  useEffect(() => {
+    console.log(currentJob);
+  }, [currentJob]);
+
+  useEffect(() => {
+    if (savingForLater) {
+      console.log("let's save this for later");
+      // here, we should call the mutation for isPublished, but set it to something for listings in a holding pattern.
+    }
+  }, [savingForLater]);
+
+  // RENDERING FUNCTIONS
   const renderJobListingLeftColumn = () => {
     return (
       <div className="LeftColumn flex flex-col gap-8">
@@ -462,29 +484,6 @@ export default function JobListing({
       </div>
     );
   };
-
-  useEffect(() => {
-    // if the job is being edited, set the button to stay being pressed
-    // in case they'd like to edit other things
-    if (job?.beingEdited) {
-      setCanEdit(true);
-    }
-    ShuffleIdealButtonPattern(setPrimaryColorArray);
-    ShuffleIdealButtonPattern(setSecondaryColorArray);
-    ShuffleIdealButtonPattern(setThirdColorArray);
-    setPageType("jobListing");
-  }, []);
-
-  useEffect(() => {
-    console.log(currentJob);
-  }, [currentJob]);
-
-  useEffect(() => {
-    if (savingForLater) {
-      console.log("let's save this for later");
-      // here, we should call the mutation for isPublished, but set it to something for listings in a holding pattern.
-    }
-  }, [savingForLater]);
 
   return (
     <div

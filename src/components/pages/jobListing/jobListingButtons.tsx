@@ -18,10 +18,11 @@ import { useState } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useMutation } from "@apollo/client";
 import { useJob } from "@/contexts/JobContext";
+import PaymentSuccessfulModal from "@/components/modals/paymentSuccessfulModal";
 
 const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
   const { showModal } = useModal();
-  const { setJob } = useJob();
+  const { setJob, job } = useJob();
   const [publishJobListing, { loading, error }] =
     useMutation(PUBLISH_JOB_LISTING);
   const router = useRouter();
@@ -38,13 +39,12 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
       });
 
       console.log(
-        "Job Listing successfully publishe, Details:",
+        "Job Listing successfully published, Details:",
         response.data.publishJobListing,
       );
+      showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
 
       setJob({});
-
-      // router.push(`/listing/${response}`);
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -68,10 +68,7 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
         variant="filled"
         colorScheme="f1"
         addClasses="px-8"
-        onClick={
-          () => publishPost
-          // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-        }
+        onClick={publishPost}
       >
         publish
       </SiteButton>
@@ -125,7 +122,7 @@ const OwnJobBottomButtons = ({
         onClick={() => setSavingForLater(!savingForLater)}
         isSelected={savingForLater}
       >
-        save for later
+        save
       </SiteButton>
     </div>
   );

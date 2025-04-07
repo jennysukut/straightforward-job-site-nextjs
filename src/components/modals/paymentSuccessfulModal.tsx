@@ -1,9 +1,18 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import { useModal } from "@/contexts/ModalContext";
-
-export default function PaymentSuccessfulModal(isJobPost: any) {
+import { useRouter } from "next/navigation";
+export default function PaymentSuccessfulModal(isJobPost: any, jobId: any) {
   const { hideModal } = useModal();
+  const router = useRouter();
+
+  const Continue = () => {
+    if (isJobPost) {
+      router.push(`/listing/${jobId}`);
+    } else {
+      router.push(`/profile`);
+    }
+  };
   return (
     <div className="SignupOptionsModal flex max-w-[35rem] flex-col items-center gap-4">
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
@@ -18,7 +27,7 @@ export default function PaymentSuccessfulModal(isJobPost: any) {
         variant="filled"
         colorScheme="b5"
         size="large"
-        onClick={() => hideModal()}
+        onClick={Continue}
       >
         {isJobPost ? "view your listing" : "continue to your profile"}
       </SiteButton>
