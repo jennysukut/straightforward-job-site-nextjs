@@ -127,6 +127,7 @@ export default function PostAJobStep5() {
         variables: {
           id: job?.id,
           interviewProcess: interviewProcess,
+          completed: "step5",
         },
       });
 

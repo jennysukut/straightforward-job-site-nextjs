@@ -100,6 +100,7 @@ export default function PostAJobStep4() {
           id: job?.id,
           responsibilities: responsibilities,
           perks: perks,
+          completed: "step4",
         },
       });
 

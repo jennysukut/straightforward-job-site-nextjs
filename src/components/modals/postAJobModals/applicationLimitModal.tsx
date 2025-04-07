@@ -29,10 +29,10 @@ export default function ApplicationLimitModal(isBeingUpdated: any, jobId: any) {
     try {
       const response = await createJobListingRound({
         variables: {
-          // id: jobId,
-          id: 1,
+          id: job?.id,
           applicationLimit: Number(applicationLimit),
           roundNumber: 1,
+          completed: "appLimit",
         },
       });
 

@@ -100,6 +100,7 @@ export default function PostAJobStep3() {
           experienceLevel: experienceLevel,
           preferredSkills: preferredSkills,
           moreAboutPosition: data.moreAboutPosition,
+          completed: "step3",
         },
       });
 

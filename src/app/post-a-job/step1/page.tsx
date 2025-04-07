@@ -69,6 +69,7 @@ export default function PostAJobStep1() {
           location: business?.businessProfile?.location,
           businessName: business?.name,
           country: business?.businessProfile?.country,
+          completed: "step1",
         },
       });
 

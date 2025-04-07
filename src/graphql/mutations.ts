@@ -420,6 +420,20 @@ export const CREATE_JOB_LISTING_ROUND = gql`
   }
 `;
 
+export const EDIT_JOB_LISTING = gql`
+  mutation starOrStopEditingJobListing(
+    $id: ID!
+    $beingEdited: Boolean!
+    $completed: String
+  ) {
+    starOrStopEditingJobListing(
+      id: $id
+      beingEdited: $beingEdited
+      completed: $completed
+    )
+  }
+`;
+
 export const PUBLISH_JOB_LISTING = gql`
   mutation publishJobListing($id: ID!) {
     publishJobListing(id: $id) {

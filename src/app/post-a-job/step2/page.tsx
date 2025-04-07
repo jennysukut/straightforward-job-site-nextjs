@@ -147,6 +147,7 @@ export default function PostAJobStep2() {
           daysRemote: data.daysRemote || "",
           city: data.city || "",
           state: data.state || "",
+          completed: "step2",
         },
       });
 

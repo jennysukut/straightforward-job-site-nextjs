@@ -33,6 +33,7 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
       const response = await publishJobListing({
         variables: {
           id: currentJob.id,
+          completed: "payment",
         },
       });
 

@@ -12,7 +12,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useMutation } from "@apollo/client";
-import { SAVE_JOB } from "@/graphql/mutations";
+import { SAVE_JOB, EDIT_JOB_LISTING } from "@/graphql/mutations";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
 
@@ -61,6 +61,7 @@ export default function JobListing({
     fellow?.profile?.savedJobs?.includes(id),
   );
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
+  const [starOrStopEditingJobListing] = useMutation(EDIT_JOB_LISTING);
   const [currentJob, setCurrentJob] = useState({} as Job);
   const [savingForLater, setSavingForLater] = useState<boolean>(false);
   const [loadingData, setLoadingData] = useState(
@@ -97,6 +98,29 @@ export default function JobListing({
       setCurrentJob(job);
     }
   }, []);
+
+  const editJob = async () => {
+    try {
+      const response = await starOrStopEditingJobListing({
+        variables: {
+          jobId: job?.id,
+          beingEdited: canEdit,
+          completed: "step5",
+        },
+      });
+      // when successful
+      console.log(
+        "edit job successful, details:",
+        response.data.starOrStopEditingJobListing,
+      );
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    editJob();
+  }, [canEdit]);
 
   let currentApp;
   if (inAms || !isOwn) {
@@ -151,34 +175,22 @@ export default function JobListing({
 
   // TODO: We need an un-save operation
   const saveClick = async (jobId: any) => {
-    if (fellow?.profile?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        profile: {
-          ...fellow.profile,
-          savedJobs: fellow?.profile?.savedJobs?.filter(
-            (id: any) => id !== jobId,
-          ),
+    try {
+      const response = await saveJobListing({
+        variables: {
+          jobId: job?.id,
         },
       });
-      setJobSavedStatus(false);
-    } else {
-      try {
-        const response = await saveJobListing({
-          variables: {
-            jobId: jobId,
-          },
-        });
-        // when successful
-        console.log(
-          "save job successful, details:",
-          response.data.saveJobListing,
-        );
-      } catch (error) {
-        console.error("application error:", error);
-      }
-      setJobSavedStatus(true);
+      // when successful
+      console.log(
+        "save job successful, details:",
+        response.data.saveJobListing,
+      );
+    } catch (error) {
+      console.error("application error:", error);
     }
+    setJobSavedStatus(true);
+
     hideModal();
   };
 
