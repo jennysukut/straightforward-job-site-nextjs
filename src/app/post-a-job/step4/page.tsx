@@ -21,15 +21,7 @@ import AddResponsibilityModal from "@/components/modals/postAJobModals/addRespon
 
 const jobSchema = z.object({
   responsibilities: z
-    .array(
-      z.object({
-        id: z.number().optional(),
-        responsibility: z
-          .string()
-          .min(1, { message: "Description is required" })
-          .optional(),
-      }),
-    )
+    .array(z.string().min(1, { message: "Description is required" }).optional())
     .min(1, { message: "You Must Have At Least 1 Responsibility Listed" }),
   perks: z
     .array(z.string())
@@ -46,13 +38,7 @@ export default function PostAJobStep4() {
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
-  const [responsibilities, setResponsibilities] = useState<
-    Array<{
-      id: number;
-      responsibility: string;
-    }>
-  >([]);
-  const [responsibilityCounter, setResponsibilityCounter] = useState(1);
+  const [responsibilities, setResponsibilities] = useState<string[]>([]);
   const [perks, setPerks] = useState<string[]>([]);
   const [addJobListingDetailsStep4, { loading, error }] = useMutation(
     ADD_JOB_LISTING_DETAILS_4_MUTATION,
@@ -82,29 +68,8 @@ export default function PostAJobStep4() {
       setValue,
       clearErrors,
       hasId: {
-        responsibilities: true,
+        responsibilities: false,
         perks: false,
-      },
-      counterFunctions: {
-        responsibilities: setResponsibilityCounter,
-      },
-      counterDetails: {
-        responsibilities: responsibilityCounter,
-      },
-    });
-  };
-
-  const handleUpdate = (
-    type: "responsibilities",
-    updatedData: any,
-    id: any,
-  ) => {
-    UpdateHandler({
-      item: id,
-      updatedData,
-      type,
-      setFunctions: {
-        responsibilities: setResponsibilities,
       },
     });
   };
@@ -120,7 +85,7 @@ export default function PostAJobStep4() {
       setValue,
       clearErrors,
       hasId: {
-        responsibilities: true,
+        responsibilities: false,
         perks: false,
       },
     });
@@ -161,13 +126,9 @@ export default function PostAJobStep4() {
   };
 
   useEffect(() => {
-    if (Array.isArray(job?.responsibilities)) {
-      const validResponsibilities = job.responsibilities.map((item) => ({
-        id: item.id ?? 0,
-        responsibility: item.responsibility ?? "",
-      }));
-      setResponsibilities(validResponsibilities);
-    }
+    setResponsibilities(
+      Array.isArray(job?.responsibilities) ? job?.responsibilities : [],
+    );
     setValue("responsibilities", job?.responsibilities || []);
     setPerks(Array.isArray(job?.perks) ? job?.perks : []);
     setValue("perks", job?.perks || []);
@@ -195,7 +156,7 @@ export default function PostAJobStep4() {
           </p>
 
           {/* Add + Display Responsibilities */}
-          <PopulateDisplayField
+          {/* <PopulateDisplayField
             handleAdd={handleAdd}
             handleDelete={handleDelete}
             handleUpdate={handleUpdate}
@@ -207,6 +168,19 @@ export default function PostAJobStep4() {
             required
             height="tall"
             errors={errors.responsibilities}
+          /> */}
+
+          <LabelGeneratorAndDisplayComp
+            handleAdd={handleAdd}
+            errors={errors.responsibilities}
+            selectedArray={responsibilities}
+            handleDelete={handleDelete}
+            placeholder="Responsibilities Of The Position"
+            name="responsibilities"
+            variant="functional"
+            required
+            width="full"
+            addClassesToResults="pl-8"
           />
 
           {/* perks generator */}
@@ -239,7 +213,6 @@ export default function PostAJobStep4() {
                   : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
-              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

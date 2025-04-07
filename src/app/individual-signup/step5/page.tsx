@@ -170,7 +170,7 @@ export default function IndividualSignupPage5() {
             <Avatar
               addClasses="self-end -mt-14"
               avatarType="Fellow"
-              fellow={fellow}
+              avatar={fellow?.profile?.avatar}
             />
           </div>
         </div>

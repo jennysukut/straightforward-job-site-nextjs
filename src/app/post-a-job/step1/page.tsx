@@ -12,6 +12,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useMutation } from "@apollo/client";
 import { ADD_JOB_LISTING_DETAILS_1_MUTATION } from "@/graphql/mutations";
+import { useModal } from "@/contexts/ModalContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -37,6 +38,7 @@ export default function PostAJobStep1() {
   const { job, setJob } = useJob();
   const { business } = useBusiness();
   const { textColor } = useColorOptions();
+  const { hideModal } = useModal();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [nonNegParams, setNonNegParams] = useState<string[]>([]);
@@ -126,6 +128,7 @@ export default function PostAJobStep1() {
 
   useEffect(() => {
     setNonNegParams(Array.isArray(job?.nonNegParams) ? job?.nonNegParams : []);
+    hideModal();
   }, []);
 
   return (

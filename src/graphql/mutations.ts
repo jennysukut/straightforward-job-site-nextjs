@@ -267,8 +267,20 @@ export const SAVE_BUSINESS_PROFILE_PAGE_2_MUTATION = gql`
 // JOB LISTING CREATION MUTATIONS
 
 export const CREATE_JOB_LISTING_MUTATION = gql`
-  mutation createJobListing($jobTitle: String!, $positionType: String!) {
-    createJobListing(jobTitle: $jobTitle, positionType: $positionType)
+  mutation createJobListing(
+    $jobTitle: String!
+    $positionType: String!
+    $beingEdited: Boolean
+    $published: Boolean
+    $completed: String
+  ) {
+    createJobListing(
+      jobTitle: $jobTitle
+      positionType: $positionType
+      beingEdited: $beingEdited
+      published: $published
+      completed: $completed
+    )
   }
 `;
 
@@ -296,6 +308,8 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
     $idealCandidate: String!
     $daysInOffice: String!
     $daysRemote: String!
+    $city: String
+    $state: String
   ) {
     addJobListingDetailsStep2(
       id: $id
@@ -306,6 +320,8 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
       idealCandidate: $idealCandidate
       daysInOffice: $daysInOffice
       daysRemote: $daysRemote
+      city: $city
+      state: $state
     )
   }
 `;
@@ -400,6 +416,14 @@ export const CREATE_JOB_LISTING_ROUND = gql`
       saved
       published
       beingEdited
+    }
+  }
+`;
+
+export const PUBLISH_JOB_LISTING = gql`
+  mutation publishJobListing($id: ID!) {
+    publishJobListing(id: $id) {
+      id
     }
   }
 `;

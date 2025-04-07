@@ -101,7 +101,7 @@ export default function IndividualSignupPage1() {
           location: data.location,
           skills: skills,
           jobTitles: jobTitles,
-          avatar: avatar?.title || "checks",
+          avatar: currentAvatar || "checks",
           languages: languages,
           profileIsBeingEdited: false,
         },

@@ -58,6 +58,9 @@ export default function Profile() {
       setPageType("Business");
       setCurrentPage("businessProfile");
     }
+    // if (!isLoggedIn) {
+    //   router.push(`/`);
+    // }
   }, [isLoggedIn, accountType, pageType, setCurrentPage, setPageType, router]);
 
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function Profile() {
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
       ) : (
-        <div className="ProfilePage">
+        <div className="ProfilePage mr-14 flex justify-center">
           {isLoggedIn && accountType === "Fellow" && (
             <FellowProfile self={fellow} isOwn logout={logout} />
           )}

@@ -94,7 +94,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   }, [setPageType]);
 
   return (
-    <div className="BusinessProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%]">
+    <div className="BusinessProfileContainer flex w-[80%] max-w-[1600px] flex-col gap-8 self-center">
       {/* PROFILE DETAILS */}
       {loadingData ? (
         //make loading screen design here

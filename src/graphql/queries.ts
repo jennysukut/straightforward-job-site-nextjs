@@ -250,6 +250,17 @@ export const GET_JOB_LISTINGS = gql`
           location
         }
       }
+      published
+      beingEdited
+      completed
+      city
+      state
+      applications {
+        id
+        message
+        status
+      }
+      applicationLimit
     }
   }
 `;

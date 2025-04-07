@@ -64,19 +64,19 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
         ...fellow,
         profile: { ...fellow?.profile, subscriptionAmount: subscriptionAmount },
       });
-      if (isJobPost && job) {
-        setJobListings([
-          ...(jobListings || []),
-          {
-            jobId: randomId,
-            job: {
-              ...job,
-              numberOfApps: String(0),
-            },
-          },
-        ]);
-        showModal(<PaymentSuccessfulModal isJobPost />);
-      }
+      // if (isJobPost && job) {
+      //   setJobListings([
+      //     ...(jobListings || []),
+      //     {
+      //       jobId: randomId,
+      //       job: {
+      //         ...job,
+      //         numberOfApps: String(0),
+      //       },
+      //     },
+      //   ]);
+      showModal(<PaymentSuccessfulModal isJobPost />);
+      // }
       {
         !isJobPost && showModal(<PaymentSuccessfulModal />);
       }

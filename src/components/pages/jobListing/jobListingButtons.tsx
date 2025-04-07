@@ -7,6 +7,7 @@ import PaymentModal from "@/components/modals/paymentModal";
 import ApplyModal from "@/components/modals/applicationModals/applyModal";
 import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
+import { PUBLISH_JOB_LISTING } from "@/graphql/mutations";
 
 import { useModal } from "@/contexts/ModalContext";
 import { useRouter } from "next/navigation";
@@ -15,10 +16,40 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useState } from "react";
 import { useFellow } from "@/contexts/FellowContext";
+import { useMutation } from "@apollo/client";
+import { useJob } from "@/contexts/JobContext";
 
 const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
   const { showModal } = useModal();
-  // figure out which buttons to use here before they've published a listing - perhaps edits?
+  const { setJob } = useJob();
+  const [publishJobListing, { loading, error }] =
+    useMutation(PUBLISH_JOB_LISTING);
+  const router = useRouter();
+
+  const publishPost = async () => {
+    // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+
+    try {
+      const response = await publishJobListing({
+        variables: {
+          id: currentJob.id,
+        },
+      });
+
+      console.log(
+        "Job Listing successfully publishe, Details:",
+        response.data.publishJobListing,
+      );
+
+      setJob({});
+
+      // router.push(`/listing/${response}`);
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
       <SiteButton
@@ -36,8 +67,9 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
         variant="filled"
         colorScheme="f1"
         addClasses="px-8"
-        onClick={() =>
-          showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+        onClick={
+          () => publishPost
+          // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
         }
       >
         publish

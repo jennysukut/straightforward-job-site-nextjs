@@ -80,7 +80,9 @@ export default function PostAJobModal() {
         variables: {
           jobTitle: data.jobTitle,
           positionType: data.positionType,
-          // add beingEdited and isPublished to this mutation, set them to "false" and perhaps a string for the isPublished
+          beingEdited: false,
+          published: false,
+          completed: "create",
         },
       });
 
@@ -96,9 +98,6 @@ export default function PostAJobModal() {
       });
 
       router.push("/post-a-job/step1");
-      setTimeout(() => {
-        hideModal();
-      }, 500);
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

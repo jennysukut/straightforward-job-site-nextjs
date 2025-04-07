@@ -397,16 +397,11 @@ export default function JobListing({
               <ul
                 className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {currentJob?.responsibilities?.map((item, index) => {
-                  const responsibilityText =
-                    typeof item === "string"
-                      ? item
-                      : item?.responsibility || "";
-
+                {currentJob?.responsibilities?.map((responsibility, index) => {
                   return (
                     <li className="ResponsibilitiesItem" key={index}>
                       <p className="Responsibility text-jade"></p>
-                      {responsibilityText}
+                      {responsibility}
                     </li>
                   );
                 })}

@@ -24,7 +24,7 @@ export default function AMS() {
           <p className="prompt text-olive">
             {`It looks like you're not logged in.`}{" "}
           </p>
-          <p className="prompt text-olive">{`Be sure to set up an account and log in to keep track of your applications with our fantastical application management system!`}</p>
+          <p className="prompt text-olive">{`Be sure to set up an account and log in to keep track of your applications with our fantastical, most practical application management system!`}</p>
         </div>
       )}
     </div>

@@ -15,10 +15,12 @@ export interface Job {
   idealCandidate?: string;
   daysInOffice?: string;
   daysRemote?: string;
+  city?: string;
+  state?: string;
   experienceLevel?: Array<string>;
   preferredSkills?: Array<string>;
   moreAboutPosition?: string;
-  responsibilities?: Array<{ id?: number; responsibility?: string }> | [];
+  responsibilities?: Array<string>;
   perks?: Array<string>;
   interviewProcess?: Array<{
     stage: string;
