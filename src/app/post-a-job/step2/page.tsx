@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_2_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -31,6 +33,8 @@ const jobSchema = z.object({
   }),
   daysInOffice: z.string().optional(),
   daysRemote: z.string().optional(),
+  city: z.string().optional(),
+  state: z.string().optional(),
 });
 
 type FormData = z.infer<typeof jobSchema>;
@@ -43,6 +47,9 @@ export default function PostAJobStep2() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [locationOption, setLocationOption] = useState<string[]>([]);
   const [payOption, setPayOption] = useState<string[]>([]);
+  const [addJobListingDetailsStep2, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_2_MUTATION,
+  );
   const {
     handleSubmit,
     setValue,
@@ -54,6 +61,7 @@ export default function PostAJobStep2() {
     resolver: zodResolver(jobSchema),
     defaultValues: {},
   });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   console.log(payOption);
 
   // handlers for adding, updating, and deleting details
@@ -105,36 +113,78 @@ export default function PostAJobStep2() {
         return;
       }
     }
-
+    console.log(data);
     setDisabledButton(true);
-    setJob({
-      ...job,
-      payDetails: {
+
+    const payscaleMin = Number(data.payscaleMin.replace(/[^0-9.-]+/g, ""));
+    const payscaleMax = Number(data.payscaleMax.replace(/[^0-9.-]+/g, ""));
+
+    // New validation to ensure payscaleMin and payscaleMax are valid numbers
+    if (
+      isNaN(payscaleMin) ||
+      isNaN(payscaleMax) ||
+      payscaleMin === 0 ||
+      payscaleMax === 0
+    ) {
+      setError("payscaleMin", {
+        type: "manual",
+        message: "Payscale values must be valid numbers greater than zero.",
+      });
+      setDisabledButton(false); // Re-enable the button
+      return;
+    }
+
+    try {
+      const response = await addJobListingDetailsStep2({
+        variables: {
+          id: job?.id,
+          payscaleMin: payscaleMin,
+          payscaleMax: payscaleMax,
+          payOption: String(payOption),
+          locationOption: data.locationOption,
+          idealCandidate: data.idealCandidate,
+          daysInOffice: data.daysInOffice || "",
+          daysRemote: data.daysRemote || "",
+          // add the city state info here
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep2,
+      );
+
+      setJob({
+        ...job,
         payscaleMin: Number(data.payscaleMin.replace(/[^0-9.-]+/g, "")),
         payscaleMax: Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")),
         payOption: String(payOption),
-      },
-      locationOption: data.locationOption,
-      idealCandidate: data.idealCandidate,
-      hybridDetails: {
+        locationOption: data.locationOption,
+        idealCandidate: data.idealCandidate,
         daysInOffice: data.daysInOffice,
         daysRemote: data.daysRemote,
-      },
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step3");
+        beingEdited: false,
+        // add the city state info here
+      });
+      if (job?.beingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step3");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      setErrorMessage(
+        "An error occurred while saving the job listing. Please try again.",
+      );
     }
   };
 
   useEffect(() => {
-    if (job?.payDetails) {
-      setPayOption(job?.payDetails.payOption ? [job.payDetails.payOption] : []);
-      setValue("payOption", job?.payDetails.payOption || "");
-      setValue("payscaleMin", "$" + job?.payDetails.payscaleMin);
-      setValue("payscaleMax", "$" + job?.payDetails.payscaleMax);
+    if (job?.payscaleMin) {
+      setPayOption(job?.payOption ? [job.payOption] : []);
+      setValue("payOption", job?.payOption || "");
+      setValue("payscaleMin", "$" + job?.payscaleMin);
+      setValue("payscaleMax", "$" + job?.payscaleMax);
     }
 
     if (job?.locationOption) {
@@ -147,9 +197,10 @@ export default function PostAJobStep2() {
     <div
       className={`PostAJobPage2 flex w-[95vw] max-w-[1600px] ${textColor} flex-grow flex-col items-center gap-8 self-center pt-6 md:pb-8 md:pt-8`}
     >
+      {errorMessage && <p className="-my-3 text-orange">{errorMessage}</p>}
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${titleColor}`}>
-          {job?.jobTitle || "Test Job Title"}
+          {job?.jobTitle}
         </h1>
         <p className="PositionTypeDetails -mt-8 pl-8 italic">
           Payscale, Location, and Ideal Candidate Details:
@@ -210,32 +261,63 @@ export default function PostAJobStep2() {
             errors={errors.locationOption}
             required
             classesForButtons="px-[3rem] py-3"
-            addClasses="mt-4 -mb-2"
+            addClasses="mt-4 -mb-"
           />
 
-          {locationOption.includes("hybrid") && (
-            <div className="HybridDetails mb-6 flex justify-center gap-6">
-              <p className="HybridTitle">Hybrid Details:*</p>
-              {/* days in office */}
-              <InputComponent
-                type="text"
-                placeholderText="Days In Office"
-                errors={errors.daysInOffice}
-                register={register}
-                registerValue="daysInOffice"
-                addClasses="-mt-2"
-              />
-              {/* days remote */}
-              <InputComponent
-                type="text"
-                placeholderText="Days Remote"
-                errors={errors.daysRemote}
-                register={register}
-                registerValue="daysRemote"
-                addClasses="-mt-2"
-              />
-            </div>
-          )}
+          <div
+            className={`LocationDetails flex gap-6 ${locationOption.includes("on-site") ? "flex-col items-center" : "-mt-6"}`}
+          >
+            {locationOption.length >= 1 &&
+              !locationOption.includes("remote") && (
+                <div
+                  className={`LocationSpecifics mb-4 flex w-full justify-center gap-6 ${locationOption.includes("on-site") ? "" : "flex-col"}`}
+                >
+                  <p className="Location Details">Location Details:*</p>
+                  {/* city */}
+                  <InputComponent
+                    type="text"
+                    placeholderText="City"
+                    errors={errors.city}
+                    register={register}
+                    registerValue="city"
+                    addClasses="-mt-2"
+                  />
+                  {/* state */}
+                  <InputComponent
+                    type="text"
+                    placeholderText="State"
+                    errors={errors.state}
+                    register={register}
+                    registerValue="state"
+                    addClasses="-mt-2"
+                  />
+                </div>
+              )}
+
+            {locationOption.includes("hybrid") && (
+              <div className="HybridDetails mb-6 flex w-[50%] flex-col gap-6">
+                <p className="HybridTitle">Hybrid Details:*</p>
+                {/* days in office */}
+                <InputComponent
+                  type="text"
+                  placeholderText="Days In Office"
+                  errors={errors.daysInOffice}
+                  register={register}
+                  registerValue="daysInOffice"
+                  addClasses="-mt-2"
+                />
+                {/* days remote */}
+                <InputComponent
+                  type="text"
+                  placeholderText="Days Remote"
+                  errors={errors.daysRemote}
+                  register={register}
+                  registerValue="daysRemote"
+                  addClasses="-mt-2"
+                />
+              </div>
+            )}
+          </div>
 
           {/*  ideal candidate input */}
           <InputComponent
@@ -257,11 +339,11 @@ export default function PostAJobStep2() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

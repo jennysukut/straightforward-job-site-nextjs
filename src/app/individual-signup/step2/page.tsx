@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_2_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
@@ -25,7 +27,9 @@ export default function IndividualSignupPage2() {
   // there might be a better way to do this, because this doesn't facilitate navigating back to the page and adding new data
   const [experienceCounter, setExperienceCounter] = useState(1);
   const [educationCounter, setEducationCounter] = useState(1);
-  //try setting the ID to using the array index?
+  const [saveFellowProfilePage2, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_2_MUTATION,
+  );
 
   // handlers for adding, updating, and deleting experiences and education details
   const handleAdd = (type: "experience" | "education", data: any) => {
@@ -76,29 +80,54 @@ export default function IndividualSignupPage2() {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setDisabledButton(true);
 
-    setFellow({
-      ...fellow,
-      experience: experienceDetails,
-      education: educationDetails,
-      profileIsBeingEdited: false,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
+    try {
+      const response = await saveFellowProfilePage2({
+        variables: {
+          experience: experienceDetails,
+          education: educationDetails,
+          profileIsBeingEdited: false,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage2,
+      );
+
+      // when successful, set the Fellow and push to the next signup page
+      setFellow({
+        ...fellow,
+        profile: {
+          ...fellow?.profile,
+          experience: experienceDetails,
+          education: educationDetails,
+          // profileIsBeingEdited: false,
+        },
+      });
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
       router.push("/individual-signup/step3");
+      // }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
     setExperienceDetails(
-      Array.isArray(fellow?.experience) ? fellow.experience : [],
+      Array.isArray(fellow?.profile?.experience)
+        ? fellow.profile?.experience
+        : [],
     );
     setEducationDetails(
-      Array.isArray(fellow?.education) ? fellow.education : [],
+      Array.isArray(fellow?.profile?.education)
+        ? fellow.profile?.education
+        : [],
     );
   }, []);
 
@@ -146,13 +175,15 @@ export default function IndividualSignupPage2() {
             onClick={handleSubmit}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Saving Information" : "continue"}
           </SiteButton>
         </div>
       </div>

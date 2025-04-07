@@ -10,6 +10,8 @@ import { ParamsList } from "@/lib/paramsList";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_1_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -38,6 +40,9 @@ export default function PostAJobStep1() {
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [nonNegParams, setNonNegParams] = useState<string[]>([]);
+  const [addJobListingDetailsStep1, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_1_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -52,19 +57,45 @@ export default function PostAJobStep1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setJob({
-      ...job,
-      positionSummary: data.positionSummary,
-      nonNegParams: nonNegParams,
-      location: business?.location,
-      businessName: business?.businessName,
-      country: business?.country,
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step2");
+
+    try {
+      const response = await addJobListingDetailsStep1({
+        variables: {
+          id: job?.id,
+          positionSummary: data.positionSummary,
+          nonNegParams: nonNegParams,
+          location: business?.businessProfile?.location,
+          businessName: business?.name,
+          country: business?.businessProfile?.country,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep1,
+      );
+
+      setJob({
+        ...job,
+        positionSummary: data.positionSummary,
+        nonNegParams: nonNegParams,
+        business: {
+          name: business?.name,
+          businessProfile: {
+            location: business?.businessProfile?.location,
+            country: business?.businessProfile?.country,
+          },
+        },
+        beingEdited: false,
+      });
+      if (job?.beingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step2");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -103,7 +134,7 @@ export default function PostAJobStep1() {
     >
       <div className="PostAJobContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <h1 className={`JobName pl-8 tracking-superwide ${textColor}`}>
-          {job?.jobTitle || "Test Job Title"}
+          {job?.jobTitle}
         </h1>
         {job?.positionType && (
           <p className="PositionTypeDetails -mt-8 pl-8 italic">
@@ -142,6 +173,7 @@ export default function PostAJobStep1() {
             subTitle="you can choose from skills, country-of-location, or languages"
             width="full"
             addClassesToResults="pl-8"
+            canAddNew
           />
         </form>
 
@@ -153,11 +185,11 @@ export default function PostAJobStep1() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && job?.jobIsBeingEdited === true
+            {disabledButton && job?.beingEdited === true
               ? "Returning To Listing..."
-              : !disabledButton && job?.jobIsBeingEdited === true
+              : !disabledButton && job?.beingEdited === true
                 ? "update"
-                : disabledButton && job?.jobIsBeingEdited === false
+                : disabledButton && job?.beingEdited === false
                   ? "Saving Information..."
                   : "continue"}{" "}
             {/* {disabledButton ? "Saving Information..." : "continue"} */}

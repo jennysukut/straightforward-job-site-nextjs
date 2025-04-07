@@ -7,7 +7,6 @@ import { useColors } from "@/contexts/ColorContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
-import { useFellows } from "@/contexts/FellowsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
@@ -48,7 +47,6 @@ const MessageCenter = ({
   const { applications, setApplications } = useApplications();
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
-  const { fellows } = useFellows();
   const { business } = useBusiness();
 
   const router = useRouter();
@@ -62,9 +60,9 @@ const MessageCenter = ({
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
-      return option.title === fellow?.avatar;
+      return option.title === fellow?.profile?.avatar;
     } else if (accountType === "Business") {
-      return option.title === business?.avatar;
+      return option.title === business?.businessProfile?.avatar;
     }
   })?.colorScheme;
 
@@ -217,7 +215,8 @@ const MessageCenter = ({
   };
 
   const findApplicantName: any = (id: any) => {
-    const applicant = fellows?.find((fellow) => fellow.id === id);
+    // const applicant = fellows?.find((fellow) => fellow.id === id);
+    const applicant = { name: "Person", smallBio: "smallBio here" };
     return applicant ? applicant.name : "Unknown";
   };
 
@@ -316,24 +315,18 @@ const MessageCenter = ({
     >
       <div className="Messages flex w-[100%] flex-col self-center align-top">
         <div className={`TitleArea flex justify-between align-middle`}>
-          {!specificMessages && (
+          {!specificMessages && activeApp && (
             <div className="ExpandOption flex gap-2 self-start align-middle">
               <SiteButton
                 aria="expandButton"
                 size="smallCircle"
                 variant="filled"
                 colorScheme={(currentColorScheme as ButtonColorOption) || "b3"}
-                // colorScheme="f3"
                 addImage="bg-[url('/expand-icon.svg')] bg-center bg-no-repeat"
                 addClasses={`mt-2 -ml-6`}
                 onClick={expandClick}
                 isSelected={buttonClicked === "expandClick"}
               />
-              {/* {buttonClicked === "expandClick" && (
-                <p className="RedirectingMessage text-sm text-olive">
-                  redirecting...
-                </p>
-              )} */}
             </div>
           )}
           {specificMessages && (
@@ -347,7 +340,20 @@ const MessageCenter = ({
               go to mailbox
             </SiteButton>
           )}
-          <div className="Title flex flex-col">
+          {(activeApp || specificMessages) && (
+            <div className="Title flex flex-col">
+              <h2 className="text-right text-emerald">
+                Your Conversation with{" "}
+                {accountType === "Fellow"
+                  ? correspondingListing?.job?.businessName
+                  : findApplicantName(correspondingApp?.applicant)}
+              </h2>
+              <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
+                regarding the {correspondingListing?.job?.jobTitle} position
+              </p>
+            </div>
+          )}
+          {/* <div className="Title flex flex-col">
             <h2 className="text-right text-emerald">
               Your Conversation with{" "}
               {accountType === "Fellow"
@@ -357,15 +363,22 @@ const MessageCenter = ({
             <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
               regarding the {correspondingListing?.job?.jobTitle} position
             </p>
-          </div>
+          </div> */}
         </div>
 
         {/* Messages */}
         <div
-          className={`Messages -mr-6 ${messageHeight} overflow-y-auto pr-6`}
+          className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
           id="Messages"
         >
-          {messages.length < 1 && (
+          {!activeApp && (
+            <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
+              <p className="NoMessagesText text-center italic text-olive">
+                There are no messages yet.
+              </p>
+            </div>
+          )}
+          {activeApp && messages.length < 1 && (
             <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages with{" "}

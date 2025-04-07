@@ -30,7 +30,7 @@ export default function SignupModalIndividual1() {
     FELLOW_SIGNUP_MUTATION,
   );
   const { titleColor, textColor } = useColorOptions();
-
+  const [seePassword, setSeePassword] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
   const {
     register,
@@ -42,16 +42,37 @@ export default function SignupModalIndividual1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setFellow({
-      ...fellow,
-      name: data.name,
-      email: data.email,
-    });
-    signupFellow({ variables: { requestBody: data } });
-    router.push("/individual-signup/step1");
-    setTimeout(() => {
-      hideModal();
-    }, 1500);
+    console.log(data);
+
+    try {
+      const response = await signupFellow({
+        variables: {
+          email: data.email,
+          password: data.password,
+          name: data.name,
+          isBetaTester: false,
+          isCollaborator: false,
+          isReferralPartner: false,
+          message: "testing",
+          referralCode: "test456",
+        },
+      });
+      // when successful, set the Felow and push to the signup pages
+      console.log("Signup successful, ID:", response.data.signupFellow); // Adjust based on your mutation response
+      setFellow({
+        ...fellow,
+        name: data.name,
+        // email: data.email,
+      });
+      router.push("/individual-signup/step1");
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
+  const viewPassword = () => {
+    setSeePassword(!seePassword);
   };
 
   return (
@@ -89,12 +110,14 @@ export default function SignupModalIndividual1() {
 
         {/* password input */}
         <FormInputComponent
-          type="password"
+          type={`${seePassword ? "text" : "password"}`}
           title="your password*"
           placeholderText="**********"
           register={register}
           registerValue="password"
           errors={errors.password}
+          viewButton
+          viewFunction={viewPassword}
         />
 
         {/* form submission button */}

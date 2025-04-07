@@ -48,8 +48,11 @@ export default function AddAMessageModal({ business, jobId }: any) {
     });
     setFellow({
       ...fellow,
-      dailyApplications: {
-        count: fellow?.dailyApplications?.count + 1,
+      profile: {
+        ...fellow?.profile,
+        dailyApplications: {
+          count: fellow?.profile?.dailyApplications?.count + 1,
+        },
       },
     });
     showModal(<SuccessfulApplicationModal />);

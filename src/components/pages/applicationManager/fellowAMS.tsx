@@ -228,7 +228,7 @@ export default function FellowAMS() {
 
   return (
     <div
-      className={`FellowAMSPage flex ${!currentJob ? "flex-col" : ""} -mt-6 w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
+      className={`FellowAMSPage flex ${!currentJob ? "flex-col" : ""} -mt-6 w-[84%] items-center gap-8 self-center ${textColor} max-w-[1600px]`}
     >
       {applications?.length === 0 ? (
         <p className="ApplyPrompt mt-[20vh] max-w-[50vw] text-center align-middle italic text-olive">
@@ -337,7 +337,7 @@ export default function FellowAMS() {
             <div className="JobDetails flex flex-col gap-1 pt-6 text-center">
               <h2 className="JobTitle mb-1">{currentJob?.jobTitle}</h2>
               <p className="BusinessName font-medium italic">
-                with {currentJob?.businessName}
+                with {currentJob?.business?.name}
               </p>
 
               <p className="ExperienceLevel text-sm font-normal">
@@ -358,7 +358,9 @@ export default function FellowAMS() {
                 <p className="LocationOption">100% Remote</p>
               )}
               {currentJob?.locationOption === "on-site" && (
-                <p className="LocationOption">On-Site: {currentJob?.country}</p>
+                <p className="LocationOption">
+                  On-Site: {currentJob?.business?.businessProfile?.country}
+                </p>
               )}
               {currentJob?.locationOption === "hybrid" && (
                 <p className="LocationOption">Hybrid</p>
@@ -367,15 +369,10 @@ export default function FellowAMS() {
                 {capitalizeFirstLetter(currentJob?.positionType || "")} Position
               </p>
               <p className="PayDetails">
-                $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMin ?? 0,
-                )}{" "}
+                ${new Intl.NumberFormat().format(currentJob?.payscaleMin ?? 0)}{" "}
                 - $
-                {new Intl.NumberFormat().format(
-                  currentJob?.payDetails?.payscaleMax ?? 0,
-                )}{" "}
-                {capitalizeFirstLetter(currentJob?.payDetails?.payOption || "")}
+                {new Intl.NumberFormat().format(currentJob?.payscaleMax ?? 0)}{" "}
+                {capitalizeFirstLetter(currentJob?.payOption || "")}
               </p>
             </div>
           </InfoBox>

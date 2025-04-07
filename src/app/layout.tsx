@@ -10,13 +10,13 @@ import { BusinessProvider } from "@/contexts/BusinessContext";
 import { JobProvider } from "@/contexts/JobContext";
 import { ColorProvider } from "@/contexts/ColorContext";
 import { JobListingsProvider } from "@/contexts/JobListingsContext";
-import { BusinessListProvider } from "@/contexts/BusinessListContext";
 import { ApplicationProvider } from "@/contexts/ApplicationContext";
 import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
 import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
-import { FellowsProvider } from "@/contexts/FellowsContext";
 import { MessagesProvider } from "@/contexts/MessagesContext";
 import { ReportsProvider } from "@/contexts/ReportsContext";
+import ClientAuthWrapper from "@/components/clientAuthWrapper";
+
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
 import Image from "next/image";
@@ -52,38 +52,35 @@ export default function RootLayout({
       <body className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-cream">
         <PageProvider>
           <ApolloWrapper>
-            <BusinessListProvider>
-              <AppointmentsContextProvider>
-                <MessagesProvider>
-                  <ReportsProvider>
-                    <ApplicationsProvider>
-                      <ApplicationProvider>
-                        <JobListingsProvider>
-                          <JobProvider>
-                            <BusinessProvider>
-                              <FellowsProvider>
-                                <FellowProvider>
-                                  <ColorProvider>
-                                    <ModalProvider>
-                                      <NavBar />
-                                      <main className="Main flex flex-1 flex-col">
-                                        {children}
-                                        {/* we could slip a fun background element in here? */}
-                                      </main>
-                                      <Footer />
-                                    </ModalProvider>
-                                  </ColorProvider>
-                                </FellowProvider>
-                              </FellowsProvider>
-                            </BusinessProvider>
-                          </JobProvider>
-                        </JobListingsProvider>
-                      </ApplicationProvider>
-                    </ApplicationsProvider>
-                  </ReportsProvider>
-                </MessagesProvider>
-              </AppointmentsContextProvider>
-            </BusinessListProvider>
+            <AppointmentsContextProvider>
+              <MessagesProvider>
+                <ReportsProvider>
+                  <ApplicationsProvider>
+                    <ApplicationProvider>
+                      <JobListingsProvider>
+                        <JobProvider>
+                          <BusinessProvider>
+                            <FellowProvider>
+                              <ColorProvider>
+                                <ModalProvider>
+                                  <ClientAuthWrapper>
+                                    <NavBar />
+                                    <main className="Main flex flex-1 flex-col">
+                                      {children}
+                                    </main>
+                                    <Footer />
+                                  </ClientAuthWrapper>
+                                </ModalProvider>
+                              </ColorProvider>
+                            </FellowProvider>
+                          </BusinessProvider>
+                        </JobProvider>
+                      </JobListingsProvider>
+                    </ApplicationProvider>
+                  </ApplicationsProvider>
+                </ReportsProvider>
+              </MessagesProvider>
+            </AppointmentsContextProvider>
           </ApolloWrapper>
         </PageProvider>
       </body>

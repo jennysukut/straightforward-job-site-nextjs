@@ -44,7 +44,7 @@ const MessagingCenter = ({ activeApp }: any) => {
   const { setCurrentColorScheme } = useColors();
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
-    return option.title === fellow?.avatar;
+    return option.title === fellow?.profile?.avatar;
   })?.colorScheme;
 
   const correspondingApp = applications?.find((app: any) => {

@@ -6,16 +6,22 @@ import * as z from "zod";
 import SignupOptionsModal from "./signupModals/signupOptionsModal";
 import FormInputComponent from "../inputComponents/formInputComponent";
 import FormSubmissionButton from "../buttonsAndLabels/formSubmissionButton";
+import ErrorModal from "./errorModal";
+import Image from "next/image";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "@/contexts/ModalContext";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@apollo/client";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-
+import { useRouter } from "next/navigation";
 import { LOGIN } from "@/graphql/mutations";
-import ErrorModal from "./errorModal";
+import { usePageContext } from "@/contexts/PageContext";
+import { useFellow } from "@/contexts/FellowContext";
+import { GET_PROFILE, GET_BUSINESS_PROFILE } from "@/graphql/queries";
+import { useQuery } from "@apollo/client";
+import { useBusiness } from "@/contexts/BusinessContext";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email Title Required" }),
@@ -25,9 +31,20 @@ const LoginSchema = z.object({
 type FormData = z.infer<typeof LoginSchema>;
 
 export default function LoginModal() {
-  const { replaceModalStack, showModal } = useModal();
-  const [disabledButton, setDisabledButton] = useState(false);
+  const router = useRouter();
+  const { replaceModalStack, showModal, hideModal } = useModal();
   const { textColor } = useColorOptions();
+  const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
+    usePageContext();
+  const { fellow, setFellow } = useFellow();
+  const { business, setBusiness } = useBusiness();
+  const [disabledButton, setDisabledButton] = useState(false);
+  const [id, setId] = useState("");
+  const [login, { loading, error }] = useMutation(LOGIN);
+  const [seePassword, setSeePassword] = useState(false);
+  const [fetchProfileType, setFetchProfileType] = useState<
+    "fellow" | "business" | null
+  >(null);
 
   const {
     register,
@@ -37,25 +54,75 @@ export default function LoginModal() {
     resolver: zodResolver(LoginSchema),
   });
 
-  const [login, { loading, error }] = useMutation(LOGIN);
+  // const {
+  //   data: queryData,
+  //   loading: queryLoading,
+  //   error: queryError,
+  // } = useQuery(
+  //   fetchProfileType === "fellow" ? GET_PROFILE : GET_BUSINESS_PROFILE,
+  //   {
+  //     variables: { id },
+  //     skip: fetchProfileType === null || isLoggedIn,
+  //     onCompleted: (data) => {
+  //       console.log("calling GET_PROFILE query");
+  //       if (fetchProfileType === "fellow") {
+  //         console.log("called the GET_PROFILE query inside login Modal");
+  //         console.log(data);
+  //         setFellow({
+  //           ...data.fellow,
+  //           avatar: data.fellow.profile.avatar,
+  //         });
+  //         console.log(JSON.stringify(data));
+  //       } else if (fetchProfileType === "business") {
+  //         console.log(
+  //           "called the GET_BUSINESS_PROFILE query inside login Modal",
+  //         );
+  //         console.log(data);
+  //         setBusiness({
+  //           ...data.business,
+  //           avatar: data.business.businessProfile.avatar,
+  //         });
+  //       }
+  //       hideModal();
+  //     },
+  //   },
+  // );
 
+  // On Login, set the business or fellow based on the login response
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
-    //Login Details Here!
     try {
-      const result = await login({ variables: data })
-        .then((result) => {
-          console.log(result);
-          // sendFellowSignupEmail(data.email, data.name, betaTester);
-          // showModal(<SignupModalIndividual2 />);
-        })
-        .catch((error) => {
-          showModal(<ErrorModal />);
-        });
+      const result = await login({ variables: data });
+
+      if (result.data.login.roles.includes("FELLOW")) {
+        // setId(result.data.login.id);
+        setIsLoggedIn(true);
+        setAccountType("Fellow");
+        setFellow(result.data.login.fellow);
+        // setFetchProfileType("fellow");
+      } else if (result.data.login.roles.includes("BUSINESS")) {
+        // console.log("id:", result.data.login.id);
+        // const realId = Number(result.data.login.id) - 2;
+        // setId(String(realId));
+        // setId(result.data.login.id);
+        setIsLoggedIn(true);
+        setAccountType("Business");
+        setBusiness(result.data.login.business);
+        // setFetchProfileType("business");
+      } else if (result.data.login.roles.includes("ADMIN")) {
+        // setIsLoggedIn(true);
+        // setAccountType("Admin");
+        console.log("you're an admin?");
+      }
+      hideModal();
     } catch (err) {
       showModal(<ErrorModal />);
     }
+  };
+
+  const viewPassword = () => {
+    setSeePassword(!seePassword);
   };
 
   return (
@@ -67,9 +134,16 @@ export default function LoginModal() {
       >
         login
       </Dialog.Title>
+
       <form
         className="LoginForm xs:pt-8 flex min-w-[30vw] flex-col gap-8"
         onSubmit={handleSubmit(onSubmit)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault(); // Prevent default form submission
+            handleSubmit(onSubmit)(); // Trigger the submit handler
+          }
+        }}
       >
         {/* email input */}
         <FormInputComponent
@@ -80,31 +154,35 @@ export default function LoginModal() {
           registerValue="email"
           errors={errors.email}
         />
-
         {/* password input */}
+
+        {/* <div className="PasswordSection flex gap-2"> */}
         <FormInputComponent
-          type="password"
+          type={`${seePassword ? "text" : "password"}`}
           title="password*"
           placeholderText="**********"
           register={register}
           registerValue="password"
           errors={errors.password}
+          viewButton
+          viewFunction={viewPassword}
         />
 
         {/* form buttons */}
-        <div className="LoginButtonsContainer flex justify-between">
-          <button
-            className="SignupOption text-xs opacity-80 hover:opacity-100"
-            onClick={() => replaceModalStack(<SignupOptionsModal />)}
-          >
-            or signup
-          </button>
+        <div className="LoginButtonsContainer flex flex-row-reverse justify-between">
           <FormSubmissionButton
             disabledButton={disabledButton}
             handleSubmit={handleSubmit(onSubmit)}
             addText="login"
             addingText="Logging In..."
           />
+
+          <button
+            className="SignupOption text-xs opacity-80 hover:opacity-100"
+            onClick={() => replaceModalStack(<SignupOptionsModal />)}
+          >
+            or signup
+          </button>
         </div>
       </form>
     </div>

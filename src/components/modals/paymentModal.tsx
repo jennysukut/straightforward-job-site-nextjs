@@ -60,7 +60,10 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
     if (agree) {
       setDisabledButton(true);
       console.log(data, agree);
-      setFellow({ ...fellow, subscriptionAmount: subscriptionAmount });
+      setFellow({
+        ...fellow,
+        profile: { ...fellow?.profile, subscriptionAmount: subscriptionAmount },
+      });
       if (isJobPost && job) {
         setJobListings([
           ...(jobListings || []),

@@ -26,48 +26,46 @@ export const AppointmentsContextProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [appointments, setAppointments] = useState<Appointments[] | null>([
-    {
-      id: "1",
-      month: 0,
-      day: 15,
-      time: "2:00am",
-      businessName: "Insight Analytics Co.",
-      jobId: "chwit7",
-    },
-    {
-      id: "3",
-      month: 0,
-      day: 14,
-      time: "2:00am",
-      businessName: "QuickAssist Corp",
-      jobId: "dfkjb8",
-    },
-
-    {
-      id: "5",
-      month: 0,
-      day: 14,
-      time: "4:00apm",
-      businessName: "Business",
-      jobId: "dfkjb8",
-    },
-
-    {
-      id: "6",
-      month: 0,
-      day: 14,
-      time: "2:00pm",
-      businessName: "Test Corp.",
-      jobId: "dfkjb8",
-    },
-    {
-      id: "4",
-      month: 1,
-      day: 14,
-      time: "3:00pm",
-      businessName: "Innovatech Manufacturing",
-      jobId: "cv9t4t",
-    },
+    // {
+    //   id: "1",
+    //   month: 0,
+    //   day: 15,
+    //   time: "2:00am",
+    //   businessName: "Insight Analytics Co.",
+    //   jobId: "chwit7",
+    // },
+    // {
+    //   id: "3",
+    //   month: 0,
+    //   day: 14,
+    //   time: "2:00am",
+    //   businessName: "QuickAssist Corp",
+    //   jobId: "dfkjb8",
+    // },
+    // {
+    //   id: "5",
+    //   month: 0,
+    //   day: 14,
+    //   time: "4:00apm",
+    //   businessName: "Business",
+    //   jobId: "dfkjb8",
+    // },
+    // {
+    //   id: "6",
+    //   month: 0,
+    //   day: 14,
+    //   time: "2:00pm",
+    //   businessName: "Test Corp.",
+    //   jobId: "dfkjb8",
+    // },
+    // {
+    //   id: "4",
+    //   month: 1,
+    //   day: 14,
+    //   time: "3:00pm",
+    //   businessName: "Innovatech Manufacturing",
+    //   jobId: "cv9t4t",
+    // },
   ]);
 
   return (

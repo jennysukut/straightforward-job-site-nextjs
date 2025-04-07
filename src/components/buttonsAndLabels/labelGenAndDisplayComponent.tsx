@@ -24,6 +24,7 @@ interface LabelGeneratorAndDisplayComp {
   width?: "full";
   subTitle?: string;
   addClassesToResults?: string;
+  canAddNew?: boolean;
 }
 
 const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
@@ -42,12 +43,15 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
   subTitle,
   width,
   addClassesToResults,
+  canAddNew,
   ...props
 }) => {
   const [filteredItems, setFilteredItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
+  const [addingNewItem, setAddingNewItem] = useState(false);
+
   const { inputColors, textColor, secondaryTextColor, errorColor } =
     useColorOptions();
 
@@ -70,6 +74,9 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       setFilteredItems(matches);
     } else {
       setFilteredItems([]);
+      if (canAddNew) {
+        setAddingNewItem(true);
+      }
     }
   };
 
@@ -78,6 +85,8 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       handleAdd(name, item || inputValue);
       setFilteredItems([]);
       setInputValue("");
+      setAddingNewItem(false);
+      // Here, send the query to the database to add the skills in we're adding the items??
     } else {
       console.log("Input value must be at least 2 characters long.");
     }
@@ -109,8 +118,10 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
         variant="hollow"
         size="extraSmall"
         aria={name}
-        canAdd={!options}
-        canSearch={options}
+        // Here, make it so they canAdd if there is MakeANew option
+        // // you can add if there aren't any options, or if addingNewItem is true
+        canAdd={!options || (options && addingNewItem === true)}
+        canSearch={options && addingNewItem === false}
         addClasses="flex"
         type={name}
         addClick={() => addItem(name)}

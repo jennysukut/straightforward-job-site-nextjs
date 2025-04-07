@@ -8,6 +8,9 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { SAVE_BUSINESS_PROFILE_PAGE_2_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -26,8 +29,12 @@ type FormData = z.infer<typeof businessSchema>;
 export default function BusinessSignupPage2() {
   const { business, setBusiness } = useBusiness();
   const { textColor } = useColorOptions();
+  const { setIsLoggedIn } = usePageContext();
   const router = useRouter();
   const [disabledButton, setDisabledButton] = useState(false);
+  const [saveBusinessProfilePage2, { loading, error }] = useMutation(
+    SAVE_BUSINESS_PROFILE_PAGE_2_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -40,13 +47,36 @@ export default function BusinessSignupPage2() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setBusiness({
-      ...business,
-      businessField: data.businessField,
-      missionVision: data.missionVision,
-      moreAboutBusiness: data.moreAboutBusiness,
-    });
-    router.push("/profile");
+
+    try {
+      const response = await saveBusinessProfilePage2({
+        variables: {
+          businessField: data.businessField,
+          missionVision: data.missionVision,
+          moreAboutBusiness: data.moreAboutBusiness,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveBusinessProfilePage2,
+      ); // Adjust based on your mutation response
+
+      setBusiness({
+        ...business,
+        businessProfile: {
+          ...business?.businessProfile,
+          businessField: data.businessField,
+          missionVision: data.missionVision,
+          moreAboutBusiness: data.moreAboutBusiness,
+        },
+      });
+      setIsLoggedIn(true);
+      router.push("/profile");
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   return (
@@ -70,7 +100,7 @@ export default function BusinessSignupPage2() {
           errors={errors.businessField}
           register={register}
           registerValue="businessField"
-          defaultValue={business?.businessField}
+          defaultValue={business?.businessProfile?.businessField}
           addClasses="-mt-2"
           width="full"
           required
@@ -83,7 +113,7 @@ export default function BusinessSignupPage2() {
           errors={errors.missionVision}
           register={register}
           registerValue="missionVision"
-          defaultValue={business?.missionVision}
+          defaultValue={business?.businessProfile?.missionVision}
           addClasses="-mt-2"
           width="full"
           required
@@ -96,9 +126,10 @@ export default function BusinessSignupPage2() {
           errors={errors.moreAboutBusiness}
           register={register}
           registerValue="moreAboutBusiness"
-          defaultValue={business?.moreAboutBusiness}
+          defaultValue={business?.businessProfile?.moreAboutBusiness}
           width="full"
           size="medium"
+          required
         />
 
         <div className="ButtonContainer -mb-6 mt-6 flex justify-end self-end">

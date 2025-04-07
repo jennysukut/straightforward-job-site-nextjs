@@ -9,6 +9,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { CREATE_JOB_LISTING_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
@@ -16,6 +18,7 @@ import FormInputComponent from "@/components/inputComponents/formInputComponent"
 
 import DeleteHandler from "@/components/handlers/deleteHandler";
 import AddHandler from "@/components/handlers/addHandler";
+import { create } from "lodash";
 
 const jobSchema = z.object({
   jobTitle: z.string().min(2, { message: "Job Title Required" }),
@@ -33,6 +36,9 @@ export default function PostAJobModal() {
 
   const [positionType, setPositionType] = useState("");
   const [disabledButton, setDisabledButton] = useState(false);
+  const [createJobListing, { loading, error }] = useMutation(
+    CREATE_JOB_LISTING_MUTATION,
+  );
   const {
     register,
     handleSubmit,
@@ -69,15 +75,34 @@ export default function PostAJobModal() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setJob({
-      jobTitle: data.jobTitle,
-      positionType: data.positionType,
-    });
+    try {
+      const response = await createJobListing({
+        variables: {
+          jobTitle: data.jobTitle,
+          positionType: data.positionType,
+          // add beingEdited and isPublished to this mutation, set them to "false" and perhaps a string for the isPublished
+        },
+      });
 
-    router.push("/post-a-job/step1");
-    setTimeout(() => {
-      hideModal();
-    }, 500);
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.createJobListing,
+      );
+
+      setJob({
+        id: response.data.createJobListing,
+        jobTitle: data.jobTitle,
+        positionType: data.positionType,
+      });
+
+      router.push("/post-a-job/step1");
+      setTimeout(() => {
+        hideModal();
+      }, 500);
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   return (

@@ -9,6 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useModal } from "@/contexts/ModalContext";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_5_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import DeleteHandler from "@/components/handlers/deleteHandler";
@@ -53,6 +55,9 @@ export default function PostAJobStep5() {
     }>
   >([]);
   const [processCounter, setProcessCounter] = useState(1);
+  const [addJobListingDetailsStep5, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_5_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -116,17 +121,35 @@ export default function PostAJobStep5() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setJob({
-      ...job,
-      interviewProcess: interviewProcess,
-      roundNumber: "1",
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/listing");
-      showModal(<ApplicationLimitModal />);
+
+    try {
+      const response = await addJobListingDetailsStep5({
+        variables: {
+          id: job?.id,
+          interviewProcess: interviewProcess,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep4,
+      );
+
+      setJob({
+        ...job,
+        interviewProcess: interviewProcess,
+        roundNumber: "1",
+        beingEdited: false,
+      });
+      if (job?.beingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/listing");
+        showModal(<ApplicationLimitModal jobId={job?.id} />);
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -183,14 +206,13 @@ export default function PostAJobStep5() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
-              {/* {disabledButton ? "Saving Information..." : "continue"} */}
             </SiteButton>
           </div>
         </form>

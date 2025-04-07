@@ -13,7 +13,10 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
-
+import { usePageContext } from "@/contexts/PageContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_JOB } from "@/graphql/mutations";
+import LoginPromptModal from "../modals/logInPromptModal";
 interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   job: any;
   colorArray: Array<string>;
@@ -25,7 +28,7 @@ const JobPost: React.FC<JobPostProps> = ({
   job,
   colorArray,
   index,
-  saveClick,
+  // saveClick,
 }) => {
   const router = useRouter();
   const { colorOption } = useColors();
@@ -33,6 +36,9 @@ const JobPost: React.FC<JobPostProps> = ({
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
+  const { isLoggedIn } = usePageContext();
+  const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
+
   const removeSavedJob = () => {
     showModal(
       <DeleteConfirmationModal
@@ -42,6 +48,7 @@ const JobPost: React.FC<JobPostProps> = ({
     );
   };
 
+  // we'll be able to pass in an appId directly
   let thisApp: string;
   const applied = job.job?.applicants?.includes(fellow?.id);
   if (applied) {
@@ -54,15 +61,40 @@ const JobPost: React.FC<JobPostProps> = ({
     }
   }
 
+  const saveClick = async () => {
+    if (!isLoggedIn) {
+      showModal(<LoginPromptModal />);
+      return;
+    }
+    hideModal();
+
+    console.log(job.id);
+    try {
+      const response = await saveJob({
+        variables: {
+          jobId: job.id,
+        },
+      });
+      //rerender here to set the saved status of the job?
+      console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
+  console.log(job);
+
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
     setViewMoreClicked(true);
     if (applied) {
       router.push(`/application/${thisApp}`);
-    } else router.push(`/listing/${job.jobId}`);
+    } else router.push(`/listing/${job.id}`);
   };
 
-  const appNumber = job?.job.applications?.length;
+  // const appNumber = job?.job.applications?.length;
+  const appNumber = 2;
 
   const saveButton = (() => {
     switch (colorOption) {
@@ -97,7 +129,7 @@ const JobPost: React.FC<JobPostProps> = ({
     }
   })();
   return (
-    <div className="JobListing flex flex-col gap-6" key={job.jobId}>
+    <div className="JobListing flex flex-col gap-6" key={job.id}>
       <InfoBox
         variant={colorOption === "seasonal" ? "hollow" : "filled"}
         colorScheme={colorArray[index % colorArray.length] as ButtonColorOption}
@@ -106,10 +138,11 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {appNumber}/{job.job?.applicationLimit} apps
+            {/* {appNumber}/{job?.applicationLimit} apps */}
+            {appNumber}/25 apps
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
-            {fellow?.savedJobs?.includes(job.jobId) ? (
+            {job.saved ? (
               <SiteButton
                 aria="addJobsButton"
                 size="extraSmallCircle"
@@ -128,13 +161,12 @@ const JobPost: React.FC<JobPostProps> = ({
           </div>
         </div>
         <div className="JobDetails flex flex-col gap-1 text-center">
-          <h2 className="JobTitle mb-1">{job.job?.jobTitle}</h2>
+          <h2 className="JobTitle mb-1">{job.jobTitle}</h2>
           <p className="BusinessName font-medium italic">
-            with {job.job?.businessName}
+            with {job.business.name}
           </p>
           <p className="ExperienceLevel text-sm font-normal">
-            {capitalizeFirstLetter(job.job?.experienceLevel[0] || "junior")}{" "}
-            Level
+            {capitalizeFirstLetter(job.experienceLevel[0] || "junior")} Level
           </p>
           {/* divider */}
           <Image
@@ -144,24 +176,26 @@ const JobPost: React.FC<JobPostProps> = ({
             height={0}
             className="my-8 opacity-80"
           ></Image>
-          {job.job?.locationOption === "remote" && (
+          {job.locationOption === "remote" && (
             <p className="LocationOption">100% Remote</p>
           )}
-          {job.job?.locationOption === "on-site" && (
-            <p className="LocationOption">On-Site: {job.job?.country}</p>
+          {job.locationOption === "on-site" && (
+            <p className="LocationOption">
+              On-Site: {job.business.businessProfile.country}
+            </p>
           )}
-          {job.job?.locationOption === "hybrid" && (
+          {job.locationOption === "hybrid" && (
             <p className="LocationOption">Hybrid</p>
           )}
           <p className="PositionType font-normal italic">
-            {capitalizeFirstLetter(job.job?.positionType || "")} Position
+            {capitalizeFirstLetter(job.positionType || "")} Position
           </p>
           <p className="PayDetails">
-            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMin)} -{" "}
-            ${new Intl.NumberFormat().format(job.job?.payDetails.payscaleMax)}
+            ${new Intl.NumberFormat().format(job.payscaleMin)} - $
+            {new Intl.NumberFormat().format(job.payscaleMax)}
           </p>
           <p className="PayOption italic">
-            {capitalizeFirstLetter(job.job?.payDetails.payOption || "")}
+            {capitalizeFirstLetter(job.payOption || "")}
           </p>
         </div>
       </InfoBox>

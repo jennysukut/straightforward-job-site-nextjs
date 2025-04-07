@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_4_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import DeleteHandler from "@/components/handlers/deleteHandler";
@@ -52,6 +54,9 @@ export default function PostAJobStep4() {
   >([]);
   const [responsibilityCounter, setResponsibilityCounter] = useState(1);
   const [perks, setPerks] = useState<string[]>([]);
+  const [addJobListingDetailsStep4, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_4_MUTATION,
+  );
   const {
     handleSubmit,
     setValue,
@@ -123,17 +128,35 @@ export default function PostAJobStep4() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log("submitting form:", data);
-    setJob({
-      ...job,
-      responsibilities: responsibilities,
-      perks: perks,
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step5");
+
+    try {
+      const response = await addJobListingDetailsStep4({
+        variables: {
+          id: job?.id,
+          responsibilities: responsibilities,
+          perks: perks,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep4,
+      );
+
+      setJob({
+        ...job,
+        responsibilities: responsibilities,
+        perks: perks,
+        beingEdited: false,
+      });
+      if (job?.beingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step5");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -209,11 +232,11 @@ export default function PostAJobStep4() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Listing..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

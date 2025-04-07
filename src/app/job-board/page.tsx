@@ -8,6 +8,10 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
 import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTINGS } from "@/graphql/queries";
+import { useMutation } from "@apollo/client";
+import { SAVE_JOB } from "@/graphql/mutations";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
@@ -22,7 +26,7 @@ import LoginPromptModal from "@/components/modals/logInPromptModal";
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
-  const { jobListings } = useJobListings();
+  // const { jobListings } = useJobListings();
   const { currentPage, setCurrentPage, isLoggedIn } = usePageContext();
   const { hideModal, showModal } = useModal();
 
@@ -37,6 +41,31 @@ export default function JobBoard() {
   const [location, setLocation] = useState<string[]>([]);
   const [country, setCountry] = useState<string[]>([]);
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
+  const [loadingData, setLoadingData] = useState(true);
+  const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
+
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: { jobListings: jobListingsArray = [] } = {},
+  } = useQuery(GET_JOB_LISTINGS, {
+    variables: {
+      experienceLevel:
+        level.length <= 0
+          ? undefined
+          : level.includes("entry-level")
+            ? "entry"
+            : level,
+      locationOption: locationType.length > 0 ? locationType : undefined,
+      positionType: positionType.length > 0 ? positionType : undefined,
+      country: country.length > 0 ? country : undefined,
+    },
+    onCompleted: (data) => {
+      console.log(JSON.stringify(data));
+      console.log(data);
+      setLoadingData(false);
+    },
+  });
 
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,92 +74,26 @@ export default function JobBoard() {
   };
 
   // save jobs to saved-jobs list/page
-  const saveClick = (jobId: any) => {
-    if (!isLoggedIn) {
-      showModal(<LoginPromptModal />);
-      return;
-    }
-    if (fellow?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        savedJobs: fellow.savedJobs.filter((id) => id !== jobId),
-      });
-    } else {
-      setFellow({
-        ...fellow,
-        savedJobs: [...(fellow?.savedJobs || []), jobId],
-      });
-    }
-    hideModal();
-  };
+  // const saveClick = async (jobId: any) => {
+  //   if (!isLoggedIn) {
+  //     showModal(<LoginPromptModal />);
+  //     return;
+  //   }
+  //   hideModal();
 
-  // function for when you use our filtering buttons
-  const filterSearch = (jobs: any) => {
-    const filteredJobs = jobs.filter((job: any) => {
-      const matchesExperience =
-        level.length > 0
-          ? level.includes(job.job?.experienceLevel || "")
-          : true;
-      const matchesLocationType =
-        locationType.length > 0
-          ? locationType.includes(job.job?.locationOption || "")
-          : true;
-      const matchesPositionType =
-        positionType.length > 0
-          ? positionType.includes(job.job?.positionType || "")
-          : true;
-      const matchesCountry =
-        country.length > 0 ? country.includes(job.job?.country || "") : true;
-
-      return (
-        matchesExperience &&
-        matchesLocationType &&
-        matchesPositionType &&
-        matchesCountry
-      );
-    });
-
-    setFilteredJobs(filteredJobs);
-  };
-
-  // whenever input or buttons change, it determines what kind of filtering we do
-  useEffect(() => {
-    if (inputValue.length >= 3) {
-      // filter and make matches out of any card where the jobTitle matches the inputValue
-      // or any of the preferredSkills listed contain any the inputValue
-      const matches =
-        jobListings?.filter(
-          (job) =>
-            job.job?.jobTitle
-              ?.toLowerCase()
-              .includes(inputValue.toLowerCase()) ||
-            job.job?.preferredSkills?.some((skill: string) =>
-              skill.toLowerCase().includes(inputValue.toLowerCase()),
-            ),
-        ) || [];
-
-      if (filters.length > 0 || country.length > 0) {
-        filterSearch(matches);
-      } else {
-        setFilteredJobs(matches);
-      }
-    } else if (filters.length > 0) {
-      filterSearch(jobListings);
-    } else if (country.length > 0) {
-      filterSearch(jobListings);
-    } else {
-      setFilteredJobs([]);
-    }
-  }, [
-    inputValue,
-    filters,
-    positionType,
-    level,
-    pay,
-    location,
-    locationType,
-    country,
-  ]);
+  //   console.log(jobId);
+  //   try {
+  //     const response = await saveJob({
+  //       variables: {
+  //         jobId: jobId,
+  //       },
+  //     });
+  //     console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
+  //   } catch (error) {
+  //     console.error("Signup error:", error);
+  //     // Optionally, you can set an error state here to display to the user
+  //   }
+  // };
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -189,103 +152,16 @@ export default function JobBoard() {
     });
   };
 
-  // rendering job listings depending on the input and filters
   const renderJobListings = () => {
-    const activeJobListings = jobListings?.filter((job: any) => {
-      const activeJob =
-        job.job?.numberOfApps !== job.job?.applicationLimit &&
-        !job.job?.applicants?.includes(fellow?.id);
-      return activeJob;
-    });
-
-    const pendingJobListings = jobListings?.filter((job: any) => {
-      const pendingJob =
-        job.job?.numberOfApps === job.job?.applicationLimit ||
-        job.job?.applicants?.includes(fellow?.id);
-      return pendingJob;
-    });
-
-    const filteredActiveJobListings = filteredJobs?.filter((job: any) => {
-      const activeJob =
-        job.job?.numberOfApps !== job.job?.applicationLimit &&
-        !job.job?.applicants?.includes(fellow?.id);
-      return activeJob;
-      // return job.job?.numberOfApps !== job.job?.applicationLimit;
-    });
-
-    const filteredPendingJobListings = filteredJobs?.filter((job: any) => {
-      const pendingJob =
-        job.job?.numberOfApps === job.job?.applicationLimit ||
-        job.job?.applicants?.includes(fellow?.id);
-      return pendingJob;
-      // return job.job?.numberOfApps === job.job?.applicationLimit;
-    });
-
-    if (inputValue.length < 3 && filters.length === 0 && !viewPendingJobs) {
-      return activeJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (
-      inputValue.length < 3 &&
-      filters.length === 0 &&
-      viewPendingJobs
-    ) {
-      return pendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (filters.length > 0 && !viewPendingJobs) {
-      return filteredActiveJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (filters.length > 0 && viewPendingJobs) {
-      return filteredPendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else if (viewPendingJobs) {
-      return filteredPendingJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    } else {
-      return filteredActiveJobListings?.map((job: any, index: number) => (
-        <JobPost
-          job={job}
-          index={index}
-          colorArray={colorArray}
-          key={job.jobId}
-          saveClick={() => saveClick(job.jobId)}
-        />
-      ));
-    }
+    return jobListingsArray?.map((job: any, index: number) => (
+      <JobPost
+        job={job}
+        index={index}
+        colorArray={colorArray}
+        key={job.id}
+        // saveClick={() => saveClick(job.id)}
+      />
+    ));
   };
 
   useEffect(() => {
@@ -381,9 +257,14 @@ export default function JobBoard() {
       </div>
 
       {/* job listings */}
-      <div className="JobListings flex flex-wrap justify-center gap-8">
-        {renderJobListings()}
-      </div>
+      {loadingData ? (
+        //make loading screen design here
+        <div className="LoadingText text-olive">Loading...</div>
+      ) : (
+        <div className="JobListings flex flex-wrap justify-center gap-8">
+          {renderJobListings()}
+        </div>
+      )}
     </div>
   );
 }

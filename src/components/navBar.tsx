@@ -22,13 +22,14 @@ import SiteButton from "./buttonsAndLabels/siteButton";
 
 export default function NavBar() {
   const { showModal } = useModal();
-  const { currentPage, pageType, accountType, isLoggedIn } = usePageContext();
+  const { currentPage, pageType, accountType, isLoggedIn, isLoadingAccount } =
+    usePageContext();
   const { fellow } = useFellow();
   const [clickedButton, setClickedButton] = useState("");
   const { business } = useBusiness();
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
-  const { dailyLimit } = useFellow();
+  // const { dailyLimit } = useFellow();
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
@@ -37,13 +38,24 @@ export default function NavBar() {
   let avatarDetails;
   if (accountType === "Fellow") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.avatar,
+      (option) => option.title === fellow?.profile?.avatar,
     );
   } else if (accountType === "Business") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === business?.avatar,
+      (option) => option.title === business?.businessProfile?.avatar,
     );
   }
+
+  // useEffect(() => {
+  //   if (accountType == "Fellow") {
+  //     const dailyApplications = fellow?.profile?.dailyApplications?.length;
+  //   }
+  // }, []);
+
+  const dailyApplications = 5;
+  // fellow?.profile?.dailyApplications === undefined
+  //   ? 0
+  //   : fellow?.profile?.dailyApplications?.length;
 
   useEffect(() => {
     // if (currentPage === "profile" && )
@@ -111,8 +123,9 @@ export default function NavBar() {
         } else if (accountType === "Fellow" && isLoggedIn === true) {
           // INDIVIDUAL NAV BAR
           return (
-            <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              {/* {dailyLimit?.count} */}
+            <div
+              className={`NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
+            >
               {/* <SiteLabel aria="dailyApps" variant="hollow" size="small">
                 daily apps: 2/5
               </SiteLabel> */}
@@ -124,7 +137,10 @@ export default function NavBar() {
                 size="extraSmall"
                 addClasses="mt-2 px-3"
               >
-                daily apps: 2/5
+                {dailyApplications >= 5
+                  ? "daily app limit reached"
+                  : `daily apps: ${dailyApplications}/5`}
+                {/* daily apps: {dailyApplications}/5 */}
               </SiteLabel>
               <Link href={"/job-board"}>
                 <NavButton
@@ -246,7 +262,9 @@ export default function NavBar() {
         } else {
           return (
             // STANDARD / MAIN NAV BAR
-            <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
+            <div
+              className={`NavButtonContainer ${isLoadingAccount ? "blur-sm" : ""} hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
+            >
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"

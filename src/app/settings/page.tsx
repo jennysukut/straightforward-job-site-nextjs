@@ -57,7 +57,7 @@ export default function Settings() {
               addClasses="-mt-20"
             >
               <div className="NameAndEmail ml-2 flex flex-col gap-8">
-                <h2 className="Name">Business: {business?.businessName}</h2>
+                <h2 className="Name">Business: {business?.name}</h2>
 
                 <h2 className="Name leading-6">Email: {business?.email}</h2>
               </div>
@@ -85,7 +85,7 @@ export default function Settings() {
               >
                 <div className="NameAndEmail ml-10 flex flex-col gap-8">
                   <h2 className="Name">Name: {fellow?.name}</h2>
-                  <h2 className="Name">Email: {fellow?.email}</h2>
+                  <h2 className="Name">Email: {fellow?.profile?.email}</h2>
                 </div>
               </InfoBox>
               <SiteButton
@@ -109,7 +109,7 @@ export default function Settings() {
                 addClasses="-mt-20"
               >
                 <div className="NameAndEmail ml-2 flex flex-col gap-8">
-                  <h2 className="Name">Business: {business?.businessName}</h2>
+                  <h2 className="Name">Business: {business?.name}</h2>
 
                   <h2 className="Name leading-6">Email: {business?.email}</h2>
                 </div>
@@ -137,7 +137,7 @@ export default function Settings() {
                 <div className="NameAndEmail flex flex-col gap-8">
                   <h2 className="Name">Your Current Subscription:</h2>
                   <h2 className="Name -mt-4 text-2xl">
-                    ${fellow?.subscriptionAmount}
+                    ${fellow?.profile?.subscriptionAmount}
                   </h2>
                   <p className="Amount -mt-6 text-sm font-medium italic">
                     per month
@@ -218,32 +218,33 @@ export default function Settings() {
             </SiteButton>
           </div>
         )}
-        {accountType === "Fellow" && fellow?.subscriptionAmount !== "0" && (
-          <div className="BillingDetails flex flex-col items-center gap-6">
-            <InfoBox
-              aria="billingDetails"
-              variant="hollow"
-              size="profile"
-              width="small"
-              addClasses="items-center text-center self-center mr-40 -mt-20"
-            >
-              <div className="BillingDetails flex flex-col gap-4">
-                <h2 className="Name">Your Billing Details:</h2>
-                {/* I don't know if we should have this section? */}
-                <p className="Name">monthly payments on the 14th</p>
-                <p className="Name -mt-2 italic">with card ending in 0000</p>
-              </div>
-            </InfoBox>
-            <SiteButton
-              aria="editNameEmail"
-              variant="hollow"
-              colorScheme="e5"
-              addClasses="px-8"
-            >
-              update
-            </SiteButton>
-          </div>
-        )}
+        {accountType === "Fellow" &&
+          fellow?.profile?.subscriptionAmount !== "0" && (
+            <div className="BillingDetails flex flex-col items-center gap-6">
+              <InfoBox
+                aria="billingDetails"
+                variant="hollow"
+                size="profile"
+                width="small"
+                addClasses="items-center text-center self-center mr-40 -mt-20"
+              >
+                <div className="BillingDetails flex flex-col gap-4">
+                  <h2 className="Name">Your Billing Details:</h2>
+                  {/* I don't know if we should have this section? */}
+                  <p className="Name">monthly payments on the 14th</p>
+                  <p className="Name -mt-2 italic">with card ending in 0000</p>
+                </div>
+              </InfoBox>
+              <SiteButton
+                aria="editNameEmail"
+                variant="hollow"
+                colorScheme="e5"
+                addClasses="px-8"
+              >
+                update
+              </SiteButton>
+            </div>
+          )}
       </div>
     </div>
   );

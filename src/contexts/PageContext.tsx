@@ -11,6 +11,10 @@ type PageContextType = {
   setAccountType: (type: string) => void;
   isLoggedIn: boolean;
   setIsLoggedIn: (type: boolean) => void;
+  isLoadingAccount: boolean;
+  setIsLoadingAccount: (type: boolean) => void;
+  isLoggingOut: boolean;
+  setIsLoggingOut: (type: boolean) => void;
 };
 
 const PageContext = createContext<PageContextType | undefined>(undefined);
@@ -28,7 +32,12 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   const [accountType, setAccountType] = useState<string>("Business");
 
   // this is obvious - see if someone/a business is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+  // when we first refresh the page and are getting the profile data, we want to be able to blur the navbar with this feature
+  const [isLoadingAccount, setIsLoadingAccount] = useState<boolean>(false);
+
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   return (
     <PageContext.Provider
@@ -41,6 +50,10 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
         setAccountType,
         isLoggedIn,
         setIsLoggedIn,
+        isLoadingAccount,
+        setIsLoadingAccount,
+        isLoggingOut,
+        setIsLoggingOut,
       }}
     >
       {children}

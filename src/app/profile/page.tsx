@@ -1,44 +1,84 @@
 "use client";
 
-import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/contexts/ModalContext";
+import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
+
+import ConfirmLogoutModal from "@/components/modals/confirmLogoutModal";
+import React from "react";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
 export default function Profile() {
   const {
     setCurrentPage,
+    pageType,
     setPageType,
     accountType,
     isLoggedIn,
     setIsLoggedIn,
+    setIsLoggingOut,
+    setAccountType,
   } = usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
+  const { showModal, hideModal } = useModal();
+  const router = useRouter();
+  const [loadingData, setLoadingData] = useState(true);
 
-  // Set the page type to fellow or business here and render different profiles based on this
-  // Once we have signup and login working, we'll be able to grab data on
-  // who's logged in and use that to set these details
+  const logout = () => {
+    setIsLoggingOut(true);
+    console.log("trying to log out from the profile page");
+    showModal(
+      <ConfirmLogoutModal
+        continueLogout={continueLogout}
+        setIsLoggingOut={setIsLoggingOut}
+      />,
+    );
+    router.push(`/`);
+  };
+
+  const continueLogout = () => {
+    removeCookie("accessToken");
+    setIsLoggedIn(false);
+    setAccountType("");
+    hideModal();
+  };
+
   useEffect(() => {
-    if (accountType === "Fellow") {
+    if (accountType === "Fellow" && pageType !== "Fellow") {
       setPageType("Fellow");
       setCurrentPage("fellowProfile");
-    } else if (accountType === "Business") {
+    } else if (accountType === "Business" && pageType !== "Business") {
       setPageType("Business");
       setCurrentPage("businessProfile");
     }
-  }, [setCurrentPage, setPageType, accountType]);
+  }, [isLoggedIn, accountType, pageType, setCurrentPage, setPageType, router]);
+
+  useEffect(() => {
+    setLoadingData(false);
+  }, [fellow, business]);
 
   return (
     <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
-      {/* here, we'll have to look to make sure the id of the current person is used to set their profile info */}
-      {accountType === "Fellow" && <FellowProfile self={fellow} isOwn />}
-      {accountType === "Business" && <BusinessProfile self={business} isOwn />}
+      {loadingData ? (
+        //make loading screen design here
+        <div className="LoadingText text-olive">Loading...</div>
+      ) : (
+        <div className="ProfilePage">
+          {isLoggedIn && accountType === "Fellow" && (
+            <FellowProfile self={fellow} isOwn logout={logout} />
+          )}
+          {isLoggedIn && accountType === "Business" && (
+            <BusinessProfile self={business} isOwn logout={logout} />
+          )}
+        </div>
+      )}
     </div>
   );
 }

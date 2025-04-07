@@ -9,6 +9,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { skillsList } from "@/lib/skillsList";
 import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { ADD_JOB_LISTING_DETAILS_3_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -37,6 +39,9 @@ export default function PostAJobStep3() {
   const [disabledButton, setDisabledButton] = useState(false);
   const [preferredSkills, setPreferredSkills] = useState<string[]>([]);
   const [experienceLevel, setExperienceLevel] = useState<string[]>([]);
+  const [addJobListingDetailsStep3, { loading, error }] = useMutation(
+    ADD_JOB_LISTING_DETAILS_3_MUTATION,
+  );
   const {
     handleSubmit,
     setValue,
@@ -88,17 +93,36 @@ export default function PostAJobStep3() {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
-    setJob({
-      ...job,
-      experienceLevel: experienceLevel,
-      preferredSkills: preferredSkills,
-      moreAboutPosition: data.moreAboutPosition,
-      // jobIsBeingEdited: false,
-    });
-    if (job?.jobIsBeingEdited) {
-      router.push("/listing");
-    } else {
-      router.push("/post-a-job/step4");
+    try {
+      const response = await addJobListingDetailsStep3({
+        variables: {
+          id: job?.id,
+          experienceLevel: experienceLevel,
+          preferredSkills: preferredSkills,
+          moreAboutPosition: data.moreAboutPosition,
+        },
+      });
+
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.addJobListingDetailsStep3,
+      );
+
+      setJob({
+        ...job,
+        experienceLevel: experienceLevel,
+        preferredSkills: preferredSkills,
+        moreAboutPosition: data.moreAboutPosition,
+        beingEdited: false,
+      });
+      if (job?.beingEdited) {
+        router.push("/listing");
+      } else {
+        router.push("/post-a-job/step4");
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -155,6 +179,7 @@ export default function PostAJobStep3() {
             options
             searchData={skillsList}
             width="full"
+            canAddNew
           />
 
           {/*  more about the position input */}
@@ -177,11 +202,11 @@ export default function PostAJobStep3() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && job?.jobIsBeingEdited === true
+              {disabledButton && job?.beingEdited === true
                 ? "Returning To Profile..."
-                : !disabledButton && job?.jobIsBeingEdited === true
+                : !disabledButton && job?.beingEdited === true
                   ? "update"
-                  : disabledButton && job?.jobIsBeingEdited === false
+                  : disabledButton && job?.beingEdited === false
                     ? "Saving Information.."
                     : "continue"}
               {/* {disabledButton ? "Saving Information..." : "continue"} */}

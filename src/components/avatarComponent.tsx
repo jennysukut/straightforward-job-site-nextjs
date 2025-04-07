@@ -4,24 +4,23 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import { useEffect } from "react";
 
 export default function Avatar({
   addClasses,
-  fellow,
   business,
   avatarType,
+  avatar,
 }: any) {
   const { colorOption } = useColors();
 
   let avatarDetails;
   if (avatarType === "Business") {
     avatarDetails = avatarOptions.find(
-      (option) => option.title === business?.avatar,
+      (option) => option.title === business?.businessProfile.avatar,
     );
   } else if (avatarType === "Fellow") {
-    avatarDetails = avatarOptions.find(
-      (option) => option.title === fellow?.avatar,
-    );
+    avatarDetails = avatarOptions.find((option) => option.title === avatar);
   }
 
   return (

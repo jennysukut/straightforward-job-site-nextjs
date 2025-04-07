@@ -8,7 +8,6 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useEffect, useState } from "react";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { useFellows } from "@/contexts/FellowsContext";
 import { useJobListings } from "@/contexts/JobListingsContext";
 
 import { Applications } from "@/contexts/ApplicationsContext";
@@ -23,7 +22,6 @@ const RenderBusinessMessageList = ({
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
   const { business } = useBusiness();
-  const { fellows } = useFellows();
   const { jobListings } = useJobListings();
   const [selectedListing, setSelectedListing] = useState("");
   const [secondaryColorArray, setSecondaryColorArray] = useState<
@@ -65,7 +63,8 @@ const RenderBusinessMessageList = ({
   );
 
   const findApplicantName: any = (id: any) => {
-    const applicant = fellows?.find((fellow) => fellow.id === id);
+    // const applicant = fellows?.find((fellow) => fellow.id === id);
+    const applicant = { name: "Person", smallBio: "smallBio Here" };
     return applicant ? applicant.name : "Unknown";
   };
 

@@ -11,6 +11,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { skillsList } from "@/lib/skillsList";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_1_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -51,11 +53,11 @@ type FormData = z.infer<typeof fellowSchema>;
 export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
-  const { showModal } = useModal();
+  const { hideModal, showModal } = useModal();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails = avatarOptions.find(
-    (option) => option.title === fellow?.avatar,
+    (option) => option.title === fellow?.profile?.avatar,
   );
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
@@ -63,6 +65,12 @@ export default function IndividualSignupPage1() {
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatar, setAvatar] = useState(avatarDetails);
+  const [currentAvatar, setCurrentAvatar] = useState(
+    fellow?.profile?.avatar || "groovy",
+  );
+  const [saveFellowProfilePage1, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_1_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -75,29 +83,55 @@ export default function IndividualSignupPage1() {
     defaultValues: {
       skills: skills,
       jobTitles: jobTitles,
-      country: fellow?.country,
+      country: fellow?.profile?.country,
       languages: languages,
     },
   });
 
+  console.log("current Avatar:", currentAvatar);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
 
-    setFellow({
-      ...fellow,
-      smallBio: data.smallBio,
-      country: data.country,
-      location: data.location,
-      skills: skills,
-      jobTitles: jobTitles,
-      avatar: avatar?.title,
-      languages: languages,
-      profileIsBeingEdited: false,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
+    try {
+      const response = await saveFellowProfilePage1({
+        variables: {
+          smallBio: data.smallBio,
+          country: data.country,
+          location: data.location,
+          skills: skills,
+          jobTitles: jobTitles,
+          avatar: avatar?.title || "checks",
+          languages: languages,
+          profileIsBeingEdited: false,
+        },
+      });
+      // when successful, set the Fellow and push to the next signup page
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage1,
+      ); // Adjust based on your mutation response
+      setFellow({
+        ...fellow,
+        profile: {
+          smallBio: data.smallBio,
+          country: data.country,
+          location: data.location,
+          skills: skills,
+          jobTitles: jobTitles,
+          avatar: currentAvatar,
+          languages: languages,
+        },
+        // profileIsBeingEdited: false,
+      });
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
       router.push("/individual-signup/step2");
+      // }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -136,21 +170,38 @@ export default function IndividualSignupPage1() {
 
   // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
+    hideModal();
     const colors = getRandomColorArray(36);
     setColorArray(colors);
   }, []);
 
   // Setting Details on page from fellowContext
   useEffect(() => {
-    setSkills(Array.isArray(fellow?.skills) ? fellow.skills : []);
-    setJobTitles(Array.isArray(fellow?.jobTitles) ? fellow.jobTitles : []);
-    setLanguages(Array.isArray(fellow?.languages) ? fellow.languages : []);
+    setSkills(
+      Array.isArray(fellow?.profile?.skills) ? fellow.profile?.skills : [],
+    );
+    setJobTitles(
+      Array.isArray(fellow?.profile?.jobTitles)
+        ? fellow.profile?.jobTitles
+        : [],
+    );
+    setLanguages(
+      Array.isArray(fellow?.profile?.languages)
+        ? fellow.profile?.languages
+        : [],
+    );
 
     // Update default values for the form
-    setValue("skills", fellow?.skills || []);
-    setValue("jobTitles", fellow?.jobTitles || []);
-    setValue("languages", fellow?.languages || []);
+    setValue("skills", fellow?.profile?.skills || []);
+    setValue("jobTitles", fellow?.profile?.jobTitles || []);
+    setValue("languages", fellow?.profile?.languages || []);
   }, [fellow, setValue]);
+
+  useEffect(() => {
+    if (avatar) {
+      setCurrentAvatar(avatar.title);
+    }
+  }, [avatar]);
 
   return (
     <div className="IndividualSignupPage flex w-[95vw] max-w-[1600px] flex-grow flex-col items-center justify-center gap-8 self-center pt-6 md:pb-8 md:pt-8">
@@ -173,7 +224,7 @@ export default function IndividualSignupPage1() {
               errors={errors.smallBio}
               register={register}
               registerValue="smallBio"
-              defaultValue={fellow?.smallBio}
+              defaultValue={fellow?.profile?.smallBio}
               required
             />
 
@@ -186,7 +237,7 @@ export default function IndividualSignupPage1() {
               searchData={countries}
               colorArray={colorArray}
               options
-              defaultValue={fellow?.country}
+              defaultValue={fellow?.profile?.country}
               required
             />
 
@@ -197,7 +248,7 @@ export default function IndividualSignupPage1() {
               errors={errors.location}
               register={register}
               registerValue="location"
-              defaultValue={fellow?.location}
+              defaultValue={fellow?.profile?.location}
               addClasses="-mt-2"
               required
             />
@@ -259,6 +310,7 @@ export default function IndividualSignupPage1() {
               options
               searchData={skillsList}
               required
+              canAddNew
             />
           </div>
           <div className="ButtonContainer -mb-6 mt-6 flex justify-end gap-4 self-end">
@@ -269,13 +321,15 @@ export default function IndividualSignupPage1() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {disabledButton && fellow?.profileIsBeingEdited === true
+              {/* {disabledButton && fellow?.profileIsBeingEdited === true
                 ? "Returning To Profile..."
                 : !disabledButton && fellow?.profileIsBeingEdited === true
                   ? "update"
                   : disabledButton && fellow?.profileIsBeingEdited === false
-                    ? "Saving Information.."
-                    : "continue"}{" "}
+                    ? "Saving Information..."
+                    : "continue"}{" "} */}
+
+              {disabledButton ? "Saving Information..." : "continue"}
             </SiteButton>
           </div>
         </div>

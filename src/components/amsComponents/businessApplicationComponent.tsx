@@ -3,12 +3,8 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import { useJobListings } from "@/contexts/JobListingsContext";
-import { useFellow } from "@/contexts/FellowContext";
 import { Notification } from "../buttonsAndLabels/notificationButton";
 import { useModal } from "@/contexts/ModalContext";
-import { useFellows } from "@/contexts/FellowsContext";
-import { useApplications } from "@/contexts/ApplicationsContext";
 
 import Image from "next/image";
 import SiteButton from "../buttonsAndLabels/siteButton";
@@ -38,17 +34,16 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   app,
 }) => {
   const router = useRouter();
-  const { fellows } = useFellows();
   const { showModal } = useModal();
 
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
   const [appClicked, setAppClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState("");
 
-  // defining relevant data
-  const currentApplicant = fellows?.find((fellow: any) => {
-    return fellow.id === app?.applicant;
-  });
+  const currentApplicant = {
+    name: "A Person",
+    smallBio: "smallBio Here",
+  };
 
   //TODO: Here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
   const notification = app.appStatus === "submitted" ? true : false;

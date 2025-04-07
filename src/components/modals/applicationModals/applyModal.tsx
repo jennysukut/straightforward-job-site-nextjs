@@ -5,6 +5,8 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { today } from "@/utils/textUtils";
+import { useMutation } from "@apollo/client";
+import { APPLY_TO_JOB } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAMessageModal from "./addAMessageModal";
@@ -15,36 +17,63 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
   const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { applications, setApplications } = useApplications();
+  const [applyToJob, { loading, error }] = useMutation(APPLY_TO_JOB);
 
-  const apply = () => {
+  const apply = async () => {
     // send details to the database for the application - if it's successful, show the successfulApplicationModal
     // we should make some kind of specific error modal or something here
     // there might be a chance of a job reaching it's limit of applications at the same time an application is trying ot be submitted,
     // so we should make some checks for the backend and make sure we can display correct errors/messages in that case
 
+    try {
+      const response = await applyToJob({
+        variables: {
+          // jobId: jobId,
+          jobId: "2",
+          message: "I'd like this job please!",
+        },
+      });
+      // when successful
+      console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
+      setFellow({
+        ...fellow,
+        profile: {
+          ...fellow?.profile,
+          dailyApplications: {
+            count: fellow?.profile?.dailyApplications?.count + 1,
+          },
+        },
+      });
+      showModal(<SuccessfulApplicationModal />);
+    } catch (error) {
+      console.error("application error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+
     // if the application is successful, do these things:
     //perhaps we should have an "applications" context that's tied to the fellow/business?
     // It might be easier/more efficient that way?
-    setApplications([
-      ...(applications || []),
-      {
-        id: "bleh", //we'll use an id set by the backend here
-        applicant: fellow?.id,
-        message: "test message to see if it causes a notification",
-        jobId: jobId,
-        business: business,
-        businessId: "flip",
-        dateOfApp: today,
-        appStatus: "submitted",
-      },
-    ]);
-    setFellow({
-      ...fellow,
-      dailyApplications: {
-        count: fellow?.dailyApplications?.count + 1,
-      },
-    });
-    showModal(<SuccessfulApplicationModal />);
+
+    // setApplications([
+    //   ...(applications || []),
+    //   {
+    //     id: "bleh", //we'll use an id set by the backend here
+    //     applicant: fellow?.id,
+    //     message: "test message to see if it causes a notification",
+    //     jobId: jobId,
+    //     business: business,
+    //     businessId: "flip",
+    //     dateOfApp: today,
+    //     appStatus: "submitted",
+    //   },
+    // ]);
+    // setFellow({
+    //   ...fellow,
+    //   dailyApplications: {
+    //     count: fellow?.dailyApplications?.count + 1,
+    //   },
+    // });
+    // showModal(<SuccessfulApplicationModal />);
   };
 
   return (
@@ -56,7 +85,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.dailyApplications?.count}/5`}</h4>
+      >{`daily application: ${fellow?.profile?.dailyApplications?.count}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
       >{`We’ll send ${business} your information.`}</p>

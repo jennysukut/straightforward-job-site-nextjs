@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { useMutation } from "@apollo/client";
+import { SAVE_PROFILE_PAGE_4_MUTATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -33,6 +35,9 @@ export default function IndividualSignupPage4() {
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [locationOptions, setLocationOptions] = useState<string[]>([]);
+  const [saveFellowProfilePage4, { loading, error }] = useMutation(
+    SAVE_PROFILE_PAGE_4_MUTATION,
+  );
 
   const {
     handleSubmit,
@@ -72,26 +77,49 @@ export default function IndividualSignupPage4() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    setFellow({
-      ...fellow,
-      passions: data.passions,
-      lookingFor: data.lookingFor,
-      locationOptions: locationOptions,
-      profileIsBeingEdited: false,
-    });
-    if (fellow?.profileIsBeingEdited) {
-      router.push("/profile");
-    } else {
+
+    try {
+      const response = await saveFellowProfilePage4({
+        variables: {
+          passions: data.passions,
+          lookingFor: data.lookingFor,
+          locationOptions: locationOptions,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.saveFellowProfilePage4,
+      );
+
+      setFellow({
+        ...fellow,
+        profile: {
+          ...fellow?.profile,
+          passions: data.passions,
+          lookingFor: data.lookingFor,
+          locationOptions: locationOptions,
+        },
+        // profileIsBeingEdited: false,
+      });
+      // if (fellow?.profileIsBeingEdited) {
+      //   router.push("/profile");
+      // } else {
       router.push("/individual-signup/step5");
+      // }
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
   // Setting Details on page from fellowContext
   useEffect(() => {
     setLocationOptions(
-      Array.isArray(fellow?.locationOptions) ? fellow.locationOptions : [],
+      Array.isArray(fellow?.profile?.locationOptions)
+        ? fellow.profile?.locationOptions
+        : [],
     );
-    setValue("locationOptions", fellow?.locationOptions || []);
+    setValue("locationOptions", fellow?.profile?.locationOptions || []);
   }, []);
 
   return (
@@ -119,7 +147,7 @@ export default function IndividualSignupPage4() {
           errors={errors.lookingFor}
           register={register}
           registerValue="lookingFor"
-          defaultValue={fellow?.lookingFor}
+          defaultValue={fellow?.profile?.lookingFor}
           width="full"
           size="medium"
         />
@@ -145,7 +173,7 @@ export default function IndividualSignupPage4() {
           errors={errors.passions}
           register={register}
           registerValue="passions"
-          defaultValue={fellow?.passions}
+          defaultValue={fellow?.profile?.passions}
           size="medium"
           width="full"
         />
@@ -158,13 +186,15 @@ export default function IndividualSignupPage4() {
             onClick={handleSubmit(onSubmit)}
             disabled={disabledButton}
           >
-            {disabledButton && fellow?.profileIsBeingEdited === true
+            {/* {disabledButton && fellow?.profileIsBeingEdited === true
               ? "Returning To Profile..."
               : !disabledButton && fellow?.profileIsBeingEdited === true
                 ? "update"
                 : disabledButton && fellow?.profileIsBeingEdited === false
                   ? "Saving Information.."
-                  : "continue"}
+                  : "continue"} */}
+
+            {disabledButton ? "Saving Information..." : "continue"}
           </SiteButton>
         </div>
       </div>
