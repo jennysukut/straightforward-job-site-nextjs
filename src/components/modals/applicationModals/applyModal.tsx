@@ -85,7 +85,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.profile?.dailyApplications?.count}/5`}</h4>
+      >{`daily application: ${fellow?.profile?.dailyApplications?.length || 0}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
       >{`We’ll send ${business} your information.`}</p>

@@ -64,27 +64,32 @@ export default function JobListing({
   const [jobSavedStatus, setJobSavedStatus] = useState(
     fellow?.profile?.savedJobs?.includes(id),
   );
+  const [thisId, setThisId] = useState<number | null>(null);
 
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
 
-  let thisId;
-  if (!id) {
-    thisId === job?.id;
-  } else {
-    thisId === id;
-  }
+  useEffect(() => {
+    if (!id) {
+      setThisId(job?.id ?? null);
+    } else {
+      setThisId(id);
+    }
+  }, []);
 
   const appNumber = currentJob?.applications?.length;
+
+  console.log(thisId, "id", id);
 
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
-    variables: { id: thisId },
-    skip: !isLoggedIn || job?.beingEdited,
+    variables: { id: id },
+    skip: !isLoggedIn,
+    // || job?.beingEdited,
     onCompleted: (data) => {
       console.log(data);
       setCurrentJob(data.jobListing);

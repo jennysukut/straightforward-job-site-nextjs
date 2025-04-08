@@ -194,7 +194,11 @@ const ListingTopButtons = ({
         addClasses="mt-3"
         colorScheme="f3"
       >
-        applications: {appNumber}/{currentJob?.applicationLimit}
+        applications:{" "}
+        {currentJob.applications !== undefined
+          ? currentJob.applications.length
+          : 0}
+        /{currentJob?.applicationLimit || 25}
       </SiteLabel>
 
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">

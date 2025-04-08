@@ -518,8 +518,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               >
                 <div className="LocationInfo flex flex-col gap-2">
                   <p className={`Location ml-2 ${titleColor}`}>
-                    Location:
-                    {currentFellow?.profile?.location},{" "}
+                    Location: {currentFellow?.profile?.location},{" "}
                     {currentFellow?.profile?.country}
                   </p>
                 </div>

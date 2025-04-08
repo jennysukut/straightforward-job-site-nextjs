@@ -138,8 +138,8 @@ const JobPost: React.FC<JobPostProps> = ({
       >
         <div className="AppLimitSaveButton -mt-6 flex items-start justify-between pb-8">
           <div className="AppLimit -ml-4 text-xs font-medium italic">
-            {/* {appNumber}/{job?.applicationLimit} apps */}
-            {appNumber}/25 apps
+            {job?.applications === null ? 0 : job.applications.length}/
+            {job?.applicationLimit}
           </div>
           <div className="SaveButton -mr-4 hover:saturate-150">
             {job.saved ? (
@@ -165,9 +165,12 @@ const JobPost: React.FC<JobPostProps> = ({
           <p className="BusinessName font-medium italic">
             with {job.business.name}
           </p>
-          <p className="ExperienceLevel text-sm font-normal">
-            {capitalizeFirstLetter(job.experienceLevel[0] || "junior")} Level
-          </p>
+          {job.experienceLevel !== null && (
+            <p className="ExperienceLevel text-sm font-normal">
+              {capitalizeFirstLetter(job.experienceLevel[0] || "junior")} Level
+            </p>
+          )}
+
           {/* divider */}
           <Image
             src="/listing-divider.svg"

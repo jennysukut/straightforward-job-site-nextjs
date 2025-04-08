@@ -40,6 +40,8 @@ export default function FellowAMS() {
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
 
+  console.log(applications);
+
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
   });
