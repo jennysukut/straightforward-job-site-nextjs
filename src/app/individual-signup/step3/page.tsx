@@ -95,6 +95,8 @@ export default function IndividualSignupPage3() {
   };
 
   const handleSubmit = async () => {
+    setDisabledButton(true);
+
     try {
       const response = await saveFellowProfilePage3({
         variables: {

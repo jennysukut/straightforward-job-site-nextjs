@@ -5,6 +5,8 @@ import React, { createContext, useContext, ReactNode, useState } from "react";
 export interface Fellow {
   id?: string;
   name?: string;
+  dailyApplications?: Record<string, any>;
+  jobApplications?: Record<string, any>;
   profile?: {
     email?: string;
     smallBio?: string;
@@ -35,7 +37,6 @@ export interface Fellow {
     addMoreInfo?: boolean;
     subscriptionAmount?: any;
     savedJobs?: Array<any>;
-    dailyApplications?: Record<string, any>;
   };
 }
 

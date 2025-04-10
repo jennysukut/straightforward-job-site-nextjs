@@ -52,10 +52,10 @@ export default function NavBar() {
   //   }
   // }, []);
 
-  const dailyApplications = 5;
-  // fellow?.profile?.dailyApplications === undefined
-  //   ? 0
-  //   : fellow?.profile?.dailyApplications?.length;
+  const dailyApplications =
+    fellow?.dailyApplications === undefined
+      ? 0
+      : fellow?.dailyApplications?.length;
 
   useEffect(() => {
     // if (currentPage === "profile" && )

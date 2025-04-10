@@ -148,23 +148,23 @@ export default function RejectionMessageOptionsComponent({
   const sendRejection = () => {
     setButtonClicked("submit");
     console.log("trying to send Rejection");
-    if (applications) {
-      setApplications(
-        applications.map((app) =>
-          app.id === currentApp.id
-            ? {
-                ...app,
-                appStatus: "closed",
-                appIsBeingRejected: true,
-                rejectionMessage: title,
-                rejectionDetails: {
-                  message: messages,
-                },
-              }
-            : app,
-        ),
-      );
-    }
+    // if (applications) {
+    //   setApplications(
+    //     applications.map((app) =>
+    //       app.id === currentApp.id
+    //         ? {
+    //             ...app,
+    //             appStatus: "closed",
+    //             appIsBeingRejected: true,
+    //             rejectionMessage: title,
+    //             rejectionDetails: {
+    //               message: messages,
+    //             },
+    //           }
+    //         : app,
+    //     ),
+    //   );
+    // }
     router.push(`/messages/${currentApp.id}`);
     // } else {
     //   setError("details", {

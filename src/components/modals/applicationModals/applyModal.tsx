@@ -28,8 +28,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
     try {
       const response = await applyToJob({
         variables: {
-          // jobId: jobId,
-          jobId: "2",
+          jobId: jobId,
           message: "I'd like this job please!",
         },
       });
@@ -37,11 +36,11 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
       setFellow({
         ...fellow,
+        dailyApplications: {
+          count: fellow?.dailyApplications?.count + 1,
+        },
         profile: {
           ...fellow?.profile,
-          dailyApplications: {
-            count: fellow?.profile?.dailyApplications?.count + 1,
-          },
         },
       });
       showModal(<SuccessfulApplicationModal />);
@@ -85,7 +84,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.profile?.dailyApplications?.length || 0}/5`}</h4>
+      >{`daily application: ${fellow?.dailyApplications?.length || 0}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
       >{`We’ll send ${business} your information.`}</p>

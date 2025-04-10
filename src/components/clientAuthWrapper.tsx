@@ -53,6 +53,8 @@ export default function ClientAuthWrapper({
         setAccountType("Fellow");
         setFellow(data.getMyProfile.fellow);
         setApplications(data.getMyProfile.fellow.jobApplications);
+        // setApplications(data.getMyProfile.fellow.dailyApplications);
+
         // setIsLoadingAccount(false);
         console.log("you're a fellow and you're logged in!");
       } else if (data.getMyProfile.roles.includes("BUSINESS")) {

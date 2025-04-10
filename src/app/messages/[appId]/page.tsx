@@ -2,7 +2,7 @@
 
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useEffect, useRef } from "react";
-import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
+// import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 
 // PAGE RUNDOWN: AppMessages Page is passed an appId to use in displaying messages. It displays only the messages from that application.
 // It finds the application via the Id and passes it into the MessageCenter.
@@ -33,11 +33,11 @@ export default function AppMessages({ params }: any) {
 
   // This is how we scroll to the bottom of messages
   useEffect(() => {
-    if (correspondingApp?.mail && correspondingApp?.mail.length > 0) {
-      setTimeout(() => {
-        scrollToPageBottom();
-      }, 500);
-    }
+    // if (correspondingApp?.mail && correspondingApp?.mail.length > 0) {
+    //   setTimeout(() => {
+    //     scrollToPageBottom();
+    //   }, 500);
+    // }
   }, []);
 
   return (
@@ -47,11 +47,11 @@ export default function AppMessages({ params }: any) {
     >
       {/* since this conversation is accessed through the AMS, relating to a specific app, we'll keep it focused on the conversation at hand with a button to go back to the general messaging center */}
       {/* this'll help with the mobile version as well */}
-      <MessageCenter
+      {/* <MessageCenter
         activeApp={params.appId}
         specificMessages
         messageHeight="h-full"
-      />
+      /> */}
     </div>
   );
 }

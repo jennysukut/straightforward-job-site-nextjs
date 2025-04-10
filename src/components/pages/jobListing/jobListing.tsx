@@ -122,10 +122,13 @@ export default function JobListing({
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
-    const currentApps = applications?.filter((app) => app.jobId === id);
+    const currentApps = applications?.filter(
+      (app) => app?.jobListing?.id === id,
+    );
     console.log(currentApps);
     // Find the application where the applicant matches the fellow's id
-    currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
+    currentApp = "1";
+    // = currentApps?.find((app) => app.applicant === fellow?.id);
   }
 
   const handleEditClick = (url: any) => {
@@ -162,8 +165,7 @@ export default function JobListing({
   // for the fellow aren't at it's limit of 5, they can apply!
 
   const canApply = true;
-  hasMatchingNonNegParams === true &&
-    fellow?.profile?.dailyApplications?.length < 5;
+  hasMatchingNonNegParams === true && fellow?.dailyApplications?.length < 5;
   // && matchingIds;
 
   const saveClick = async (jobId: any) => {

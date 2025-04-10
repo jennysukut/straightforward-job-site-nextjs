@@ -13,6 +13,7 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_1_MUTATION } from "@/graphql/mutations";
+import { placeholderAvatar } from "@/lib/stylingData/avatarOptions";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -56,9 +57,9 @@ export default function IndividualSignupPage1() {
   const { hideModal, showModal } = useModal();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
-  const avatarDetails = avatarOptions.find(
-    (option) => option.title === fellow?.profile?.avatar,
-  );
+  const avatarDetails =
+    avatarOptions.find((option) => option.title === fellow?.profile?.avatar) ||
+    placeholderAvatar;
   const [disabledButton, setDisabledButton] = useState(false);
   const [skills, setSkills] = useState<string[]>([]);
   const [jobTitles, setJobTitles] = useState<string[]>([]);

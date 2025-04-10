@@ -22,6 +22,23 @@ export const GET_MY_PROFILE = gql`
       fellow {
         id
         name
+        jobApplications {
+          id
+          message
+          status
+          jobListing {
+            id
+            jobTitle
+            business {
+              name
+            }
+          }
+        }
+        dailyApplications {
+          id
+          message
+          status
+        }
         profile {
           smallBio
           location
@@ -84,16 +101,6 @@ export const GET_MY_PROFILE = gql`
         }
         savedJobs {
           id
-        }
-        jobApplications {
-          id
-          message
-          status
-        }
-        dailyApplications {
-          id
-          message
-          status
         }
       }
     }

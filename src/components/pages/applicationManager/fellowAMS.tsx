@@ -47,15 +47,15 @@ export default function FellowAMS() {
   });
 
   const currentAppointment = appointments?.find((app: any) => {
-    return app.jobId === currentApp?.jobId;
+    return app.jobId === currentApp?.jobListing?.id;
   });
 
   const selectedJob = jobListings?.find(
-    (job: any) => job.jobId === currentApp?.jobId,
+    (job: any) => job.jobId === currentApp?.jobListing?.id,
   )?.job;
 
   const activeApps = applications?.filter((app: any) => {
-    return app.appStatus !== "closed";
+    return app.status !== "closed";
   });
 
   const retract = () => {
@@ -86,7 +86,7 @@ export default function FellowAMS() {
   const filterApps = (applications: any) => {
     const filteredApps = applications.filter((app: any) => {
       const matchesStatus =
-        appStatus.length > 0 ? appStatus.includes(app.appStatus) : true;
+        appStatus.length > 0 ? appStatus.includes(app.status) : true;
 
       return matchesStatus;
     });
@@ -107,7 +107,7 @@ export default function FellowAMS() {
   };
 
   const viewCompanyDetails = () => {
-    router.push(`/profile/${currentApp?.businessId}`);
+    // router.push(`/profile/${currentApp?.businessId}`);
   };
 
   const goToMessages = () => {
@@ -133,6 +133,7 @@ export default function FellowAMS() {
         .reverse()
         .map((app: any, index: number) => (
           <Application
+            app={app}
             key={app.id}
             id={app.id}
             colorArray={colorArray}
@@ -155,13 +156,14 @@ export default function FellowAMS() {
         .reverse()
         .map((app: any, index: number) => (
           <Application
+            app={app}
             key={app.id}
             id={app.id}
             colorArray={colorArray}
             index={index}
-            jobId={app.jobId}
+            jobId={app.jobListing.id}
             dateOfApp={app.dateOfApp}
-            appStatus={app.appStatus}
+            appStatus={app.status}
             selectedApps={selectedApps}
             setCurrentJob={setCurrentJob}
             handleAdd={handleAdd}
@@ -240,29 +242,6 @@ export default function FellowAMS() {
         </p>
       ) : (
         <div className="AMSContainer flex w-full">
-          {/* <div className="AMSTabOptions max-w-[10%] gap-6">
-            <ButtonOptionsComponent
-              handleAdd={handleAdd}
-              handleDelete={handleDelete}
-              type="altViewChoice"
-              selectedArray={altViewChoice}
-              classesForButtons="-rotate-90"
-              buttons={["calendar", "messages"]}
-              buttonContainerClasses="flex-col gap-20 -mx-8 mt-24"
-            />
-          </div>
-          {altViewChoice === "calendar" && (
-            <CalendarComp
-              size={currentJob ? "small" : ""}
-              addClasses={currentJob ? "pr-0" : ""}
-            />
-          )}
-          {altViewChoice === "messages" && (
-            <div className="MessageCenter h-[80vh] max-h-[120vh] w-full justify-items-center overflow-y-auto px-8">
-              <MessageCenter />
-            </div>
-          )} */}
-
           {(altViewChoice === "" || altViewChoice.length == 0) && (
             <div className="ApplicationList flex w-full flex-col gap-4">
               <div className="ButtonsAndTitle flex w-full flex-col justify-between">

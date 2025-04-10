@@ -6,22 +6,25 @@ import { string } from "zod";
 export interface Applications {
   id?: string;
   message?: string;
-  applicant?: string;
-  jobId?: string;
-  business?: string;
-  businessId?: string;
-  dateOfApp?: any;
-  appStatus?: string;
+  status?: string;
+  // need dateOfApp/createdAt
+  jobListing?: {
+    id?: string;
+    jobTitle?: string;
+    experienceLevel?: Array<string>;
+    positionType?: string;
+    payOption?: string;
+    payscaleMin?: number;
+    payscaleMax?: number;
+    locationOption?: string;
+    city?: string;
+    country?: string;
+    business?: {
+      name?: string;
+      id?: string;
+    };
+  };
   businessNote?: Array<string>;
-  mail?: Array<{
-    id: number;
-    text: Array<string>;
-    sender: string;
-    date: string;
-    timestamp: string;
-    edited: boolean;
-    read: boolean;
-  }>;
   fellowNote?: Array<string>;
   appointments?: Array<{
     interviewStep?: string;
@@ -32,10 +35,9 @@ export interface Applications {
     interviewTime?: string;
   }>;
   appIsBeingRejected?: boolean;
-  rejectionMessage?: any;
+  rejectionMessage?: string;
   // can make rejectionMessage = "sent"?
-  rejectionDetails?: { message: any };
-
+  rejectionDetails?: { message: string };
   highlighted?: boolean;
 }
 

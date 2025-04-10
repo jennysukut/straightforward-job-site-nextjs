@@ -123,6 +123,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
       setCurrentFellow(fellow as FellowProfileData);
       setLoadingData(false);
     }
+    console.log(fellow);
+    console.log("currentFellow:", currentFellow);
   }, []);
 
   const {

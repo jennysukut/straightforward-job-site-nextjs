@@ -18,9 +18,10 @@ export default function Application({ params }: any) {
 
   const currentApp = applications?.find((app: any) => app.id === params.id);
 
-  const currentJob = jobListings?.find(
-    (job: any) => job.jobId === currentApp?.jobId,
-  )?.job;
+  const currentJob = "1";
+  // jobListings?.find(
+  //   (job: any) => job.jobId === currentApp?.jobId,
+  // )?.job;
   // const currentFellow = fellows?.find((fellow: any) => {
   //   return fellow.id === currentApp?.applicant;
   // })?.name;
@@ -36,10 +37,10 @@ export default function Application({ params }: any) {
     <div className="RejectionPage flex flex-grow flex-col items-center gap-8 md:pb-12">
       {accountType === "Business" && (
         <RejectionMessageOptionsComponent
-          jobTitle={currentJob?.jobTitle}
-          applicant={currentFellow}
-          businessName={currentJob?.businessName}
-          interviewer={currentJob?.interviewer}
+          // jobTitle={currentJob?.jobTitle}
+          // applicant={currentFellow}
+          // businessName={currentJob?.businessName}
+          // interviewer={currentJob?.interviewer}
           chosenMessage={chosenMessage}
           currentApp={currentApp}
         />

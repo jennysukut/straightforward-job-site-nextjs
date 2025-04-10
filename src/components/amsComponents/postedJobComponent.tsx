@@ -42,7 +42,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
     const relevantApp = applications?.find(
       (application: any) => application.id === app,
     );
-    const isViewed = relevantApp?.appStatus !== "submitted";
+    const isViewed = relevantApp?.status !== "submitted";
     if (isViewed) {
       viewedApplications.push(relevantApp);
     }

@@ -31,6 +31,8 @@ export default function Profile() {
   const router = useRouter();
   const [loadingData, setLoadingData] = useState(true);
 
+  console.log(fellow);
+
   const logout = () => {
     setIsLoggingOut(true);
     console.log("trying to log out from the profile page");
