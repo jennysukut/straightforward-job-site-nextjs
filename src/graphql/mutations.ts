@@ -345,7 +345,7 @@ export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
 export const ADD_JOB_LISTING_DETAILS_4_MUTATION = gql`
   mutation addJobListingDetailsStep4(
     $id: ID!
-    $responsibilities: [ResponsibilityInput!]!
+    $responsibilities: [String!]!
     $perks: [String!]!
   ) {
     addJobListingDetailsStep4(

@@ -379,8 +379,8 @@ export default function FellowAMS() {
               </SiteButton>
             </div>
           )}
-          <div className="ButtonOptions -mx-2 mt-6 flex flex-wrap justify-evenly gap-2">
-            <SiteButton
+          <div className="ButtonOptions ml-4 mt-6 flex flex-wrap items-end justify-end gap-4">
+            {/* <SiteButton
               variant="hollow"
               colorScheme="b3"
               aria="calendar"
@@ -388,7 +388,7 @@ export default function FellowAMS() {
               isSelected={altViewChoice === "calendar"}
             >
               go to calendar
-            </SiteButton>
+            </SiteButton> */}
             <SiteButton
               variant="hollow"
               colorScheme="f5"

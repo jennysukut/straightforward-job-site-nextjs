@@ -22,7 +22,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { GET_PROFILE, GET_BUSINESS_PROFILE } from "@/graphql/queries";
 import { useQuery } from "@apollo/client";
 import { useBusiness } from "@/contexts/BusinessContext";
-
+import { useApplications } from "@/contexts/ApplicationsContext";
 const LoginSchema = z.object({
   email: z.string().email({ message: "Email Title Required" }),
   password: z.string().min(2),
@@ -34,6 +34,7 @@ export default function LoginModal() {
   const router = useRouter();
   const { replaceModalStack, showModal, hideModal } = useModal();
   const { textColor } = useColorOptions();
+  const { setApplications } = useApplications();
   const { isLoggedIn, setIsLoggedIn, accountType, setAccountType } =
     usePageContext();
   const { fellow, setFellow } = useFellow();
@@ -100,6 +101,7 @@ export default function LoginModal() {
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFellow(result.data.login.fellow);
+        setApplications(result.data.login.fellow.jobApplications);
         // setFetchProfileType("fellow");
       } else if (result.data.login.roles.includes("BUSINESS")) {
         // console.log("id:", result.data.login.id);
