@@ -46,6 +46,7 @@ export interface Job {
   applicationLimit?: string;
   beingEdited?: boolean;
   roundNumber?: string;
+  completed?: string;
 }
 
 interface JobContextType {

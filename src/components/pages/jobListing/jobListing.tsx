@@ -16,6 +16,7 @@ import { SAVE_JOB, EDIT_JOB_LISTING } from "@/graphql/mutations";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
 
+import FinishListingModal from "@/components/modals/postAJobModals/finishListingModal";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -198,6 +199,31 @@ export default function JobListing({
   useEffect(() => {
     editJob();
   }, [canEdit]);
+
+  useEffect(() => {
+    if (isOwn && currentJob && currentJob?.completed !== "published") {
+      // open an alert modal that shows that the listing isn't completed.
+      // Find which stage it's at and pass that through to the modal so when they click on the button to complete,
+      // it redirects them to the correct url and passes in the correct ID
+
+      let redirectUrl;
+      if (currentJob.completed === "create") {
+        redirectUrl = "/post-a-job/step1";
+      } else if (currentJob.completed === "step1") {
+        redirectUrl = "/post-a-job/step2";
+      } else if (currentJob.completed === "step2") {
+        redirectUrl = "/post-a-job/step3";
+      } else if (currentJob.completed === "step3") {
+        redirectUrl = "/post-a-job/step4";
+      } else if (currentJob.completed === "step4") {
+        redirectUrl = "/post-a-job/step5";
+      } else if (currentJob.completed === "step5") {
+        redirectUrl = "listing";
+      }
+
+      showModal(<FinishListingModal jobId={currentJob.id} url={redirectUrl} />);
+    }
+  }, []);
 
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
