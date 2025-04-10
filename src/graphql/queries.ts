@@ -243,6 +243,7 @@ export const GET_JOB_LISTINGS = gql`
       responsibilities
       perks
       saved
+      completed
       interviewProcess {
         id
         stage
@@ -293,6 +294,7 @@ export const GET_JOB_LISTING_BY_ID = gql`
       responsibilities
       perks
       saved
+      completed
       interviewProcess {
         id
         stage

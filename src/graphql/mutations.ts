@@ -289,11 +289,13 @@ export const ADD_JOB_LISTING_DETAILS_1_MUTATION = gql`
     $id: ID!
     $positionSummary: String!
     $nonNegParams: [String!]!
+    $completed: String
   ) {
     addJobListingDetailsStep1(
       id: $id
       positionSummary: $positionSummary
       nonNegParams: $nonNegParams
+      completed: $completed
     )
   }
 `;
@@ -310,6 +312,7 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
     $daysRemote: String!
     $city: String
     $state: String
+    $completed: String
   ) {
     addJobListingDetailsStep2(
       id: $id
@@ -322,6 +325,7 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
       daysRemote: $daysRemote
       city: $city
       state: $state
+      completed: $completed
     )
   }
 `;
@@ -332,12 +336,14 @@ export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
     $experienceLevel: [String!]!
     $preferredSkills: [String!]!
     $moreAboutPosition: String
+    $completed: String
   ) {
     addJobListingDetailsStep3(
       id: $id
       experienceLevel: $experienceLevel
       preferredSkills: $preferredSkills
       moreAboutPosition: $moreAboutPosition
+      completed: $completed
     )
   }
 `;
@@ -347,11 +353,13 @@ export const ADD_JOB_LISTING_DETAILS_4_MUTATION = gql`
     $id: ID!
     $responsibilities: [String!]!
     $perks: [String!]!
+    $completed: String
   ) {
     addJobListingDetailsStep4(
       id: $id
       responsibilities: $responsibilities
       perks: $perks
+      completed: $completed
     )
   }
 `;
@@ -360,8 +368,13 @@ export const ADD_JOB_LISTING_DETAILS_5_MUTATION = gql`
   mutation addJobListingDetailsStep5(
     $id: ID!
     $interviewProcess: [InterviewProcessInput!]!
+    $completed: String
   ) {
-    addJobListingDetailsStep5(id: $id, interviewProcess: $interviewProcess)
+    addJobListingDetailsStep5(
+      id: $id
+      interviewProcess: $interviewProcess
+      completed: $completed
+    )
   }
 `;
 
@@ -370,11 +383,13 @@ export const CREATE_JOB_LISTING_ROUND = gql`
     $id: ID!
     $applicationLimit: Int
     $roundNumber: Int
+    $completed: String
   ) {
     createJobListingRound(
       id: $id
       applicationLimit: $applicationLimit
       roundNumber: $roundNumber
+      completed: $completed
     ) {
       id
       jobTitle
@@ -435,8 +450,8 @@ export const EDIT_JOB_LISTING = gql`
 `;
 
 export const PUBLISH_JOB_LISTING = gql`
-  mutation publishJobListing($id: ID!) {
-    publishJobListing(id: $id) {
+  mutation publishJobListing($id: ID!, $completed: String) {
+    publishJobListing(id: $id, completed: $completed) {
       id
     }
   }
