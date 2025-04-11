@@ -70,20 +70,9 @@ export default function JobListing({
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
-
   const [gotJob, setGotJob] = useState(false);
 
-  useEffect(() => {
-    if (!id) {
-      setThisId(job?.id ?? null);
-    } else {
-      setThisId(id);
-    }
-  }, []);
-
   const appNumber = currentJob?.applications?.length;
-
-  console.log(thisId, "id", id);
 
   const {
     loading: queryLoading,
@@ -97,10 +86,10 @@ export default function JobListing({
       console.log(data);
       setGotJob(true);
       setCurrentJob(data.jobListing);
-      renderJobListingRightColumn();
-      renderJobListingLeftColumn();
+      // renderJobListingRightColumn();
+      // renderJobListingLeftColumn();
       setLoadingData(false);
-      setJob(data.jobListing);
+      // setJob(data.jobListing);
       if (
         data.jobListing.completed !== "published" &&
         data.jobListing.completed !== "appLimit"
@@ -121,6 +110,10 @@ export default function JobListing({
       }
     },
   });
+
+  useEffect(() => {
+    setJob(currentJob);
+  }, [currentJob]);
 
   const editJob = async () => {
     try {
@@ -217,6 +210,14 @@ export default function JobListing({
     }
   }, []);
 
+  useEffect(() => {
+    if (!id) {
+      setThisId(job?.id ?? null);
+    } else {
+      setThisId(id);
+    }
+  }, []);
+
   // useEffect(() => {
   //   editJob();
   // }, [canEdit]);
@@ -237,14 +238,17 @@ export default function JobListing({
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
     // in case they'd like to edit other things
-    if (job?.beingEdited) {
-      setCanEdit(true);
-    }
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
     setPageType("jobListing");
   }, []);
+
+  useEffect(() => {
+    if (job?.beingEdited) {
+      setCanEdit(true);
+    }
+  }, [job]);
 
   // RENDERING FUNCTIONS
   const renderJobListingLeftColumn = () => {
