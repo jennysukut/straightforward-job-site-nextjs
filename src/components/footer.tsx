@@ -2,6 +2,8 @@
 
 import SiteButton from "./buttonsAndLabels/siteButton";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
+import Link from "next/link";
+
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useColors } from "@/contexts/ColorContext";
 import { usePageContext } from "@/contexts/PageContext";
@@ -32,6 +34,11 @@ export default function Footer() {
         <SiteButton variant={variant} colorScheme="b4" aria="About us">
           resources
         </SiteButton>
+        <Link href={"/job-board"}>
+          <SiteButton variant={variant} colorScheme="c4" aria="Job Board">
+            job board
+          </SiteButton>
+        </Link>
       </div>
       <div className="FooterInfo">
         <p className={`Copywrite ${secondaryTextColor} -mb-4 text-xs`}>

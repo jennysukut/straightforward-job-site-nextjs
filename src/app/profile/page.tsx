@@ -75,7 +75,7 @@ export default function Profile() {
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
       ) : (
-        <div className="ProfilePage mr-14 flex justify-center">
+        <div className="ProfilePage flex justify-center self-center">
           {isLoggedIn && accountType === "Fellow" && (
             <FellowProfile self={fellow} isOwn logout={logout} />
           )}

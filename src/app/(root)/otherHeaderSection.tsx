@@ -1,12 +1,16 @@
 import { useModal } from "@/contexts/ModalContext";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { usePageContext } from "@/contexts/PageContext";
+import { useState, useEffect } from "react";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import ButtonContainer from "@/components/buttonsAndLabels/buttonContainer";
 import Image from "next/image";
-import { useState, useEffect } from "react";
 import MotionContainer from "@/components/motionContainer";
-import { usePageContext } from "@/contexts/PageContext";
+import Link from "next/link";
+import SignupOptionsModal from "@/components/modals/signupModals/signupOptionsModal";
+import PostAJobModal from "@/components/modals/postAJobModals/postAJobModal";
 
 function OtherHeaderSection() {
   const descriptorList = ["simple", "honest", "personal", "colorful", "human."];
@@ -15,6 +19,8 @@ function OtherHeaderSection() {
   const { accountType, isLoggedIn } = usePageContext();
   const [currentDescriptor, setCurrentDescriptor] = useState(descriptorList[0]);
   const [isFlipping, setIsFlipping] = useState(false);
+  const [clickedButton, setClickedButton] = useState("");
+  const router = useRouter();
 
   const buttonOption = !isLoggedIn
     ? "Standard"
@@ -70,6 +76,33 @@ function OtherHeaderSection() {
     }
   }, [isFlipping]);
 
+  const buttonClick = (keyword: string) => {
+    if (keyword === "mail/features") {
+      setClickedButton("mail/features");
+      if (!isLoggedIn) {
+        router.push(`/features`);
+      } else {
+        router.push(`/messages`);
+      }
+    } else if (keyword === "different/manage") {
+      setClickedButton("different/manage");
+      if (isLoggedIn) {
+        router.push(`/ams`);
+      } else if (!isLoggedIn) {
+        router.push(`/difference`);
+      }
+    } else if (keyword === "signup/post/explore") {
+      setClickedButton("signup/post/explore");
+      if (!isLoggedIn) {
+        showModal(<SignupOptionsModal />);
+      } else if (accountType === "Fellow") {
+        router.push(`/job-board`);
+      } else if (accountType === "Business") {
+        showModal(<PostAJobModal />);
+      }
+    }
+  };
+
   return (
     <section className="HeaderSection z-10 mt-4 flex w-full flex-col gap-2 self-center align-middle">
       <div className="TitleSection flex justify-between gap-4 self-center">
@@ -113,6 +146,8 @@ function OtherHeaderSection() {
             aria={!isLoggedIn ? "what makes us different?" : "ams"}
             colorScheme="b4"
             size="medium"
+            onClick={() => buttonClick("different/manage")}
+            isSelected={clickedButton === "different/manage"}
           >
             {buttonOption === "Standard" && "what makes us different?"}
             {buttonOption === "Business" && "manage your listings"}
@@ -123,6 +158,8 @@ function OtherHeaderSection() {
             aria={!isLoggedIn ? "features" : "mail"}
             size="medium"
             colorScheme="c4"
+            onClick={() => buttonClick("mail/features")}
+            isSelected={clickedButton === "mail/features"}
           >
             {buttonOption === "Standard" && "check out our features"}
             {(buttonOption === "Business" || buttonOption === "Fellow") &&
@@ -133,6 +170,8 @@ function OtherHeaderSection() {
             aria={!isLoggedIn ? "signup" : "jobs"}
             size="medium"
             colorScheme="b6"
+            onClick={() => buttonClick("signup/post/explore")}
+            isSelected={clickedButton === "signup/post/explore"}
           >
             {buttonOption === "Standard" && "sign up!"}
             {buttonOption === "Business" && "post a job"}

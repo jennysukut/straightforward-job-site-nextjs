@@ -462,7 +462,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               />
             )} */}
           </div>
-          <div className="ProfileRightColumn flex flex-col gap-8">
+          <div className="ProfileRightColumn mr-20 flex flex-col gap-8">
             {/* NAME AND SMALL BIO */}
             <div className="FellowName mr-8">
               <InfoBox

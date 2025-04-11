@@ -36,7 +36,7 @@ const JobPost: React.FC<JobPostProps> = ({
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
-  const { isLoggedIn } = usePageContext();
+  const { isLoggedIn, accountType } = usePageContext();
   const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
 
   const removeSavedJob = () => {
@@ -141,7 +141,27 @@ const JobPost: React.FC<JobPostProps> = ({
             {job?.applications === null ? 0 : job.applications.length}/
             {job?.applicationLimit}
           </div>
-          <div className="SaveButton -mr-4 hover:saturate-150">
+          {accountType === "Fellow" && (
+            <div className="SaveButton -mr-4 hover:saturate-150">
+              {job.saved ? (
+                <SiteButton
+                  aria="addJobsButton"
+                  size="extraSmallCircle"
+                  variant="filled"
+                  onClick={removeSavedJob}
+                  colorScheme={
+                    colorArray[index % colorArray.length] as ButtonColorOption
+                  }
+                  isSelected
+                  addClasses="bg-center"
+                  addImage="bg-[url('/saved-job-icon.svg')]"
+                ></SiteButton>
+              ) : (
+                saveButton
+              )}
+            </div>
+          )}
+          {/* <div className="SaveButton -mr-4 hover:saturate-150">
             {job.saved ? (
               <SiteButton
                 aria="addJobsButton"
@@ -158,7 +178,7 @@ const JobPost: React.FC<JobPostProps> = ({
             ) : (
               saveButton
             )}
-          </div>
+          </div> */}
         </div>
         <div className="JobDetails flex flex-col gap-1 text-center">
           <h2 className="JobTitle mb-1">{job.jobTitle}</h2>
