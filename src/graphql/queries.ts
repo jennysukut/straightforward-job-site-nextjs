@@ -295,6 +295,7 @@ export const GET_JOB_LISTING_BY_ID = gql`
       perks
       saved
       completed
+      applicationLimit
       interviewProcess {
         id
         stage

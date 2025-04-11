@@ -13,12 +13,13 @@ import { CREATE_JOB_LISTING_ROUND } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
+import ApplicationLimitModal from "./applicationLimitModal";
 
 export default function FinishListingModal({ completed }: any) {
   const { job, setJob } = useJob();
   const { textColor, secondaryTextColor } = useColorOptions();
   const { colorOption } = useColors();
-  const { hideModal } = useModal();
+  const { hideModal, showModal } = useModal();
   const router = useRouter();
 
   console.log("completed:", completed);
@@ -43,6 +44,8 @@ export default function FinishListingModal({ completed }: any) {
     console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
+    } else if (redirectUrl === "listing") {
+      showModal(<ApplicationLimitModal />);
     }
   };
 

@@ -19,6 +19,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useMutation } from "@apollo/client";
 import { useJob } from "@/contexts/JobContext";
 import PaymentSuccessfulModal from "@/components/modals/paymentSuccessfulModal";
+import SuccessfullyPublishedModal from "@/components/modals/postAJobModals/successfullyPublishedModal";
 
 const OwnListingTopButtons = ({
   currentJob,
@@ -33,23 +34,29 @@ const OwnListingTopButtons = ({
   const [publishJobListing, { loading, error }] =
     useMutation(PUBLISH_JOB_LISTING);
   const router = useRouter();
+  const [isPublished, setIsPublished] = useState(false);
 
   const publishPost = async () => {
     // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-
     try {
       const response = await publishJobListing({
         variables: {
           id: currentJob.id,
-          completed: "payment",
+          completed: "published",
         },
       });
 
+      setIsPublished(true);
       console.log(
         "Job Listing successfully published, Details:",
         response.data.publishJobListing,
       );
-      showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
+
+      showModal(
+        <SuccessfullyPublishedModal isJobPost jobId={currentJob?.id} />,
+      );
+
+      // showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
 
       setJob({});
     } catch (error) {
@@ -71,6 +78,11 @@ const OwnListingTopButtons = ({
     redirectUrl = "/post-a-job/step5";
   } else if (completed === "step5") {
     redirectUrl = "listing";
+  } else if (
+    completed === "published"
+    // || completed === "payment"
+  ) {
+    setIsPublished(true);
   }
 
   const redirect = () => {
@@ -78,6 +90,8 @@ const OwnListingTopButtons = ({
     console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
+    } else if (redirectUrl === "listing") {
+      showModal(<ApplicationLimitModal />);
     }
   };
 
@@ -122,9 +136,9 @@ const OwnListingTopButtons = ({
         colorScheme="f1"
         addClasses="px-8"
         onClick={publishPost}
-        disabled={incompleteListing}
+        disabled={incompleteListing || isPublished}
       >
-        publish
+        {isPublished ? "already published" : "publish"}
       </SiteButton>
       <SiteButton
         variant="filled"
@@ -145,12 +159,18 @@ const OwnJobBottomButtons = ({
   savingForLater,
   incompleteListing,
   completed,
+  currentJob,
 }: any) => {
   const { showModal } = useModal();
   const router = useRouter();
   const [clickedButton, setClickedButton] = useState("");
+  const { setJob } = useJob();
+  const [publishJobListing, { loading, error }] =
+    useMutation(PUBLISH_JOB_LISTING);
+  const [isPublished, setIsPublished] = useState(false);
 
   let redirectUrl: any;
+
   if (completed === "create") {
     redirectUrl = "/post-a-job/step1";
   } else if (completed === "step1") {
@@ -163,6 +183,11 @@ const OwnJobBottomButtons = ({
     redirectUrl = "/post-a-job/step5";
   } else if (completed === "step5") {
     redirectUrl = "listing";
+  } else if (
+    completed === "published"
+    // || completed === "payment"
+  ) {
+    setIsPublished(true);
   }
 
   const redirect = () => {
@@ -170,6 +195,37 @@ const OwnJobBottomButtons = ({
     console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
+    } else if (redirectUrl === "listing") {
+      showModal(<ApplicationLimitModal />);
+    }
+  };
+
+  const publishPost = async () => {
+    // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+
+    try {
+      const response = await publishJobListing({
+        variables: {
+          id: currentJob.id,
+          completed: "published",
+        },
+      });
+
+      console.log(
+        "Job Listing successfully published, Details:",
+        response.data.publishJobListing,
+      );
+
+      setIsPublished(true);
+      showModal(
+        <SuccessfullyPublishedModal isJobPost jobId={currentJob?.id} />,
+      );
+      // showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
+
+      setJob({});
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
   };
 
@@ -206,9 +262,9 @@ const OwnJobBottomButtons = ({
         onClick={() =>
           showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
         }
-        disabled={incompleteListing}
+        disabled={incompleteListing || isPublished}
       >
-        publish
+        {isPublished ? "already published" : "publish"}
       </SiteButton>
       <SiteButton
         variant="filled"

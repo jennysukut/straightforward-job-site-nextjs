@@ -143,9 +143,11 @@ export default function PostAJobStep5() {
         beingEdited: false,
       });
       if (job?.beingEdited) {
-        router.push("/listing");
+        // router.push(`/listing/${job.id}`);
+        router.push(`/listing`);
       } else {
-        router.push("/listing");
+        // router.push(`/listing/${job?.id}`);
+        router.push(`/listing`);
         showModal(<ApplicationLimitModal jobId={job?.id} />);
       }
     } catch (error) {

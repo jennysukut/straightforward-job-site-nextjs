@@ -451,9 +451,7 @@ export const EDIT_JOB_LISTING = gql`
 
 export const PUBLISH_JOB_LISTING = gql`
   mutation publishJobListing($id: ID!, $completed: String) {
-    publishJobListing(id: $id, completed: $completed) {
-      id
-    }
+    publishJobListing(id: $id, completed: $completed)
   }
 `;
 

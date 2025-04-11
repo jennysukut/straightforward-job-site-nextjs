@@ -101,6 +101,8 @@ export default function JobListing({
       if (
         data.jobListing.completed !== "published" &&
         data.jobListing.completed !== "appLimit"
+        // &&
+        // data.jobListing.completed !== "payment"
       ) {
         console.log(
           "completed status:",
@@ -585,6 +587,7 @@ export default function JobListing({
                 savingForLater={savingForLater}
                 incompleteListing={incompleteListing}
                 completed={currentJob.completed}
+                currentJob={currentJob}
               />
             )}
 
