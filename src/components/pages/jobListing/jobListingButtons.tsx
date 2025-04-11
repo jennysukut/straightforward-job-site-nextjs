@@ -78,11 +78,11 @@ const OwnListingTopButtons = ({
     redirectUrl = "/post-a-job/step5";
   } else if (completed === "step5") {
     redirectUrl = "listing";
-  } else if (
-    completed === "published"
-    // || completed === "payment"
-  ) {
-    setIsPublished(true);
+    // } else if (
+    //   completed === "published"
+    //   // || completed === "payment"
+    // ) {
+    //   setIsPublished(true);
   }
 
   const redirect = () => {
@@ -183,11 +183,11 @@ const OwnJobBottomButtons = ({
     redirectUrl = "/post-a-job/step5";
   } else if (completed === "step5") {
     redirectUrl = "listing";
-  } else if (
-    completed === "published"
-    // || completed === "payment"
-  ) {
-    setIsPublished(true);
+    // } else if (
+    //   completed === "published"
+    //   // || completed === "payment"
+    // ) {
+    //   setIsPublished(true);
   }
 
   const redirect = () => {

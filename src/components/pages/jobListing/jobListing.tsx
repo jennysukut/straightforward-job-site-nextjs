@@ -86,10 +86,7 @@ export default function JobListing({
       console.log(data);
       setGotJob(true);
       setCurrentJob(data.jobListing);
-      // renderJobListingRightColumn();
-      // renderJobListingLeftColumn();
       setLoadingData(false);
-      // setJob(data.jobListing);
       if (
         data.jobListing.completed !== "published" &&
         data.jobListing.completed !== "appLimit"
@@ -216,11 +213,11 @@ export default function JobListing({
     } else {
       setThisId(id);
     }
-  }, []);
+  }, [id, job]);
 
-  // useEffect(() => {
-  //   editJob();
-  // }, [canEdit]);
+  useEffect(() => {
+    editJob();
+  }, [canEdit]);
 
   // Maybe do this after the fetch request and just check it once the data is set?
   // useEffect(() => {
@@ -236,8 +233,6 @@ export default function JobListing({
   // }, []);
 
   useEffect(() => {
-    // if the job is being edited, set the button to stay being pressed
-    // in case they'd like to edit other things
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
