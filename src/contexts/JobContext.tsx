@@ -59,9 +59,7 @@ const JobContext = createContext<JobContextType | undefined>(undefined);
 export const JobProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [job, setJob] = useState<Job | null>({
-    id: 1,
-  });
+  const [job, setJob] = useState<Job | null>({});
 
   return (
     <JobContext.Provider value={{ job, setJob }}>

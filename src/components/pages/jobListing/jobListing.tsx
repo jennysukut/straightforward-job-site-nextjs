@@ -71,6 +71,8 @@ export default function JobListing({
     job?.beingEdited ? false : true,
   );
 
+  const [gotJob, setGotJob] = useState(false);
+
   useEffect(() => {
     if (!id) {
       setThisId(job?.id ?? null);
@@ -89,10 +91,11 @@ export default function JobListing({
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
     variables: { id: id },
-    skip: !isLoggedIn,
+    skip: !isLoggedIn || gotJob,
     // || job?.beingEdited,
     onCompleted: (data) => {
       console.log(data);
+      setGotJob(true);
       setCurrentJob(data.jobListing);
       renderJobListingRightColumn();
       renderJobListingLeftColumn();
@@ -242,17 +245,6 @@ export default function JobListing({
     ShuffleIdealButtonPattern(setThirdColorArray);
     setPageType("jobListing");
   }, []);
-
-  useEffect(() => {
-    console.log(currentJob);
-  }, [currentJob]);
-
-  useEffect(() => {
-    if (savingForLater) {
-      console.log("let's save this for later");
-      // here, we should call the mutation for isPublished, but set it to something for listings in a holding pattern.
-    }
-  }, [savingForLater]);
 
   // RENDERING FUNCTIONS
   const renderJobListingLeftColumn = () => {
