@@ -66,7 +66,7 @@ export default function JobListing({
     fellow?.profile?.savedJobs?.includes(id),
   );
   const [thisId, setThisId] = useState<number | null>(null);
-
+  const [incompleteListing, setIncompleteListing] = useState(false);
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
@@ -98,6 +98,22 @@ export default function JobListing({
       renderJobListingLeftColumn();
       setLoadingData(false);
       setJob(data.jobListing);
+      if (
+        data.jobListing.completed !== "published" &&
+        data.jobListing.completed !== "appLimit"
+      ) {
+        console.log(
+          "completed status:",
+          data.jobListing.completed,
+          "-- timeout to modal set.",
+        );
+        setIncompleteListing(true);
+        setTimeout(() => {
+          showModal(
+            <FinishListingModal completed={data.jobListing.completed} />,
+          );
+        }, 3000);
+      }
     },
   });
 
@@ -196,34 +212,22 @@ export default function JobListing({
     }
   }, []);
 
-  useEffect(() => {
-    editJob();
-  }, [canEdit]);
+  // useEffect(() => {
+  //   editJob();
+  // }, [canEdit]);
 
-  useEffect(() => {
-    if (isOwn && currentJob && currentJob?.completed !== "published") {
-      // open an alert modal that shows that the listing isn't completed.
-      // Find which stage it's at and pass that through to the modal so when they click on the button to complete,
-      // it redirects them to the correct url and passes in the correct ID
-
-      let redirectUrl;
-      if (currentJob.completed === "create") {
-        redirectUrl = "/post-a-job/step1";
-      } else if (currentJob.completed === "step1") {
-        redirectUrl = "/post-a-job/step2";
-      } else if (currentJob.completed === "step2") {
-        redirectUrl = "/post-a-job/step3";
-      } else if (currentJob.completed === "step3") {
-        redirectUrl = "/post-a-job/step4";
-      } else if (currentJob.completed === "step4") {
-        redirectUrl = "/post-a-job/step5";
-      } else if (currentJob.completed === "step5") {
-        redirectUrl = "listing";
-      }
-
-      showModal(<FinishListingModal jobId={currentJob.id} url={redirectUrl} />);
-    }
-  }, []);
+  // Maybe do this after the fetch request and just check it once the data is set?
+  // useEffect(() => {
+  //   console.log("currentJob:", currentJob);
+  //   if (isOwn && currentJob && currentJob?.completed !== "published") {
+  //     // open an alert modal that shows that the listing isn't completed.
+  //     // Find which stage it's at and pass that through to the modal so when they click on the button to complete,
+  //     // it redirects them to the correct url and passes in the correct ID
+  //     setTimeout(() => {
+  //       showModal(<FinishListingModal completed={currentJob.completed} />);
+  //     }, 10000);
+  //   }
+  // }, []);
 
   useEffect(() => {
     // if the job is being edited, set the button to stay being pressed
@@ -537,6 +541,8 @@ export default function JobListing({
                 currentJob={currentJob}
                 canEdit={canEdit}
                 setCanEdit={setCanEdit}
+                incompleteListing={incompleteListing}
+                completed={currentJob.completed}
               />
             )}
 
@@ -577,6 +583,8 @@ export default function JobListing({
                 setCanEdit={setCanEdit}
                 setSavingForLater={setSavingForLater}
                 savingForLater={savingForLater}
+                incompleteListing={incompleteListing}
+                completed={currentJob.completed}
               />
             )}
 

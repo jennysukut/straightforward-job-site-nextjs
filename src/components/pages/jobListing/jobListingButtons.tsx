@@ -20,9 +20,16 @@ import { useMutation } from "@apollo/client";
 import { useJob } from "@/contexts/JobContext";
 import PaymentSuccessfulModal from "@/components/modals/paymentSuccessfulModal";
 
-const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
+const OwnListingTopButtons = ({
+  currentJob,
+  canEdit,
+  setCanEdit,
+  incompleteListing,
+  completed,
+}: any) => {
   const { showModal } = useModal();
   const { setJob, job } = useJob();
+  const [clickedButton, setClickedButton] = useState("");
   const [publishJobListing, { loading, error }] =
     useMutation(PUBLISH_JOB_LISTING);
   const router = useRouter();
@@ -51,9 +58,55 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
     }
   };
 
+  let redirectUrl: any;
+  if (completed === "create") {
+    redirectUrl = "/post-a-job/step1";
+  } else if (completed === "step1") {
+    redirectUrl = "/post-a-job/step2";
+  } else if (completed === "step2") {
+    redirectUrl = "/post-a-job/step3";
+  } else if (completed === "step3") {
+    redirectUrl = "/post-a-job/step4";
+  } else if (completed === "step4") {
+    redirectUrl = "/post-a-job/step5";
+  } else if (completed === "step5") {
+    redirectUrl = "listing";
+  }
+
+  const redirect = () => {
+    setClickedButton("redirect");
+    console.log("need to redirect to the relevant url - ", redirectUrl);
+    if (redirectUrl !== "listing") {
+      router.push(redirectUrl);
+    }
+  };
+
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
-      <SiteButton
+      {incompleteListing ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="complete listing"
+          addClasses="px-8"
+          onClick={redirect}
+          isSelected={clickedButton === "redirect"}
+        >
+          complete listing
+        </SiteButton>
+      ) : (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={() => setCanEdit(!canEdit)}
+          isSelected={canEdit}
+        >
+          {canEdit ? "finish editing" : "edit"}
+        </SiteButton>
+      )}
+      {/* <SiteButton
         variant="filled"
         colorScheme="b4"
         aria="edit"
@@ -62,13 +115,14 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
         isSelected={canEdit}
       >
         {canEdit ? "finish editing" : "edit"}
-      </SiteButton>
+      </SiteButton> */}
       <SiteButton
         aria="publish"
         variant="filled"
         colorScheme="f1"
         addClasses="px-8"
         onClick={publishPost}
+        disabled={incompleteListing}
       >
         publish
       </SiteButton>
@@ -89,20 +143,61 @@ const OwnJobBottomButtons = ({
   setCanEdit,
   setSavingForLater,
   savingForLater,
+  incompleteListing,
+  completed,
 }: any) => {
   const { showModal } = useModal();
+  const router = useRouter();
+  const [clickedButton, setClickedButton] = useState("");
+
+  let redirectUrl: any;
+  if (completed === "create") {
+    redirectUrl = "/post-a-job/step1";
+  } else if (completed === "step1") {
+    redirectUrl = "/post-a-job/step2";
+  } else if (completed === "step2") {
+    redirectUrl = "/post-a-job/step3";
+  } else if (completed === "step3") {
+    redirectUrl = "/post-a-job/step4";
+  } else if (completed === "step4") {
+    redirectUrl = "/post-a-job/step5";
+  } else if (completed === "step5") {
+    redirectUrl = "listing";
+  }
+
+  const redirect = () => {
+    setClickedButton("redirect");
+    console.log("need to redirect to the relevant url - ", redirectUrl);
+    if (redirectUrl !== "listing") {
+      router.push(redirectUrl);
+    }
+  };
+
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-      <SiteButton
-        variant="filled"
-        colorScheme="b6"
-        aria="edit"
-        addClasses="px-8"
-        onClick={() => setCanEdit(!canEdit)}
-        isSelected={canEdit}
-      >
-        {canEdit ? "finish editing" : "edit"}
-      </SiteButton>
+      {incompleteListing ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="complete listing"
+          addClasses="px-8"
+          onClick={redirect}
+          isSelected={clickedButton === "redirect"}
+        >
+          complete listing
+        </SiteButton>
+      ) : (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={() => setCanEdit(!canEdit)}
+          isSelected={canEdit}
+        >
+          {canEdit ? "finish editing" : "edit"}
+        </SiteButton>
+      )}
       <SiteButton
         aria="publish"
         variant="filled"
@@ -111,6 +206,7 @@ const OwnJobBottomButtons = ({
         onClick={() =>
           showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
         }
+        disabled={incompleteListing}
       >
         publish
       </SiteButton>

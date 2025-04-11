@@ -14,17 +14,35 @@ import { CREATE_JOB_LISTING_ROUND } from "@/graphql/mutations";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 
-export default function FinishListingModal(jobId: any, url: string) {
+export default function FinishListingModal({ completed }: any) {
   const { job, setJob } = useJob();
   const { textColor, secondaryTextColor } = useColorOptions();
   const { colorOption } = useColors();
   const { hideModal } = useModal();
   const router = useRouter();
 
+  console.log("completed:", completed);
+  let redirectUrl: any;
+  if (completed === "create") {
+    redirectUrl = "/post-a-job/step1";
+  } else if (completed === "step1") {
+    redirectUrl = "/post-a-job/step2";
+  } else if (completed === "step2") {
+    redirectUrl = "/post-a-job/step3";
+  } else if (completed === "step3") {
+    redirectUrl = "/post-a-job/step4";
+  } else if (completed === "step4") {
+    redirectUrl = "/post-a-job/step5";
+  } else if (completed === "step5") {
+    redirectUrl = "listing";
+  }
+
+  console.log(redirectUrl);
+
   const redirect = () => {
-    console.log("need to redirect to the relevant url");
-    if (url !== "listing") {
-      router.push(url);
+    console.log("need to redirect to the relevant url - ", redirectUrl);
+    if (redirectUrl !== "listing") {
+      router.push(redirectUrl);
     }
   };
 
@@ -39,11 +57,12 @@ export default function FinishListingModal(jobId: any, url: string) {
         per round{" "}
       </p> */}
 
-      <div className="ButtonContainer m-0 -my-4 self-end">
+      <div className="ButtonContainer m-0 -my-4 self-center">
         <SiteButton
           addClasses="w-32"
           variant="hollow"
-          aria="Enter"
+          size="medium"
+          aria="continue"
           colorScheme="b6"
           onClick={redirect}
         >
