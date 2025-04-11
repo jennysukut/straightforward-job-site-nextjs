@@ -5,7 +5,7 @@ import InfoBox from "../informationDisplayComponents/infoBox";
 import SiteButton from "../buttonsAndLabels/siteButton";
 import DeleteConfirmationModal from "../modals/deleteConfirmationModal";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useColors } from "@/contexts/ColorContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
@@ -24,12 +24,7 @@ interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
   saveClick?: any;
 }
 
-const JobPost: React.FC<JobPostProps> = ({
-  job,
-  colorArray,
-  index,
-  // saveClick,
-}) => {
+const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
   const router = useRouter();
   const { colorOption } = useColors();
   const { fellow } = useFellow();
@@ -37,6 +32,7 @@ const JobPost: React.FC<JobPostProps> = ({
   const { applications } = useApplications();
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
   const { isLoggedIn, accountType } = usePageContext();
+  const [isSaved, setIsSaved] = useState(false);
   const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
 
   const removeSavedJob = () => {
@@ -68,22 +64,26 @@ const JobPost: React.FC<JobPostProps> = ({
     }
     hideModal();
 
-    console.log(job.id);
     try {
       const response = await saveJob({
         variables: {
           jobId: job.id,
         },
       });
-      //rerender here to set the saved status of the job?
-      console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
+      //rerender here to set the saved status of the job? // or just update locally?
+      setIsSaved(!isSaved);
+      console.log("saved job successfully", response.data.saveJob);
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
     }
   };
 
-  console.log(job);
+  useEffect(() => {
+    if (job.saved) {
+      setIsSaved(true);
+    }
+  }, [job]);
 
   // here, we need to be able to access the listing via Id I believe?
   const viewDetails = () => {
@@ -143,7 +143,7 @@ const JobPost: React.FC<JobPostProps> = ({
           </div>
           {accountType === "Fellow" && (
             <div className="SaveButton -mr-4 hover:saturate-150">
-              {job.saved ? (
+              {isSaved ? (
                 <SiteButton
                   aria="addJobsButton"
                   size="extraSmallCircle"
