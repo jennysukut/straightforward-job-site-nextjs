@@ -30,13 +30,14 @@ import {
   ListingBottomButtons,
   AppFellowNotes,
   AmsTopButtons,
+  OtherBusinessTopButtons,
 } from "./jobListingButtons";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
 
 export default function JobListing({
-  isOwn,
+  // isOwn,
   hasId,
   id,
   inAms,
@@ -45,7 +46,7 @@ export default function JobListing({
 }: any) {
   const router = useRouter();
 
-  const { setPageType, isLoggedIn } = usePageContext();
+  const { setPageType, isLoggedIn, accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
@@ -53,7 +54,9 @@ export default function JobListing({
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const { applications } = useApplications();
+  const { business } = useBusiness();
 
+  const [isOwn, setIsOwn] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
@@ -104,6 +107,12 @@ export default function JobListing({
             <FinishListingModal completed={data.jobListing.completed} />,
           );
         }, 3000);
+      }
+      if (
+        accountType === "Business" &&
+        data.jobListing.business.id === business?.id
+      ) {
+        setIsOwn(true);
       }
     },
   });
@@ -543,7 +552,7 @@ export default function JobListing({
             {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
 
             {/* fellow buttons */}
-            {!isOwn && (
+            {!isOwn && accountType === "Fellow" && (
               <ListingTopButtons
                 id={id}
                 saveClick={saveClick}
@@ -561,6 +570,11 @@ export default function JobListing({
                 canApply={true}
                 app={currentApp ? currentApp : "no current app here"}
               />
+            )}
+
+            {/* other business buttons */}
+            {!isOwn && accountType === "Business" && (
+              <OtherBusinessTopButtons currentJob={currentJob} />
             )}
 
             {!isOwn && <AppFellowNotes currentApp={currentApp} />}

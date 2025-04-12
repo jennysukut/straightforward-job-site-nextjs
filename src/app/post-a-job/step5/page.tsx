@@ -40,10 +40,11 @@ const jobSchema = z.object({
 type FormData = z.infer<typeof jobSchema>;
 
 export default function PostAJobStep5() {
+  const router = useRouter();
+
   const { job, setJob } = useJob();
   const { textColor, titleColor } = useColorOptions();
   const { showModal } = useModal();
-  const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [interviewProcess, setInterviewProcess] = useState<
@@ -143,11 +144,11 @@ export default function PostAJobStep5() {
         beingEdited: false,
       });
       if (job?.beingEdited) {
-        // router.push(`/listing/${job.id}`);
-        router.push(`/listing`);
+        router.push(`/listing/${job.id}`);
+        // router.push(`/listing`);
       } else {
-        // router.push(`/listing/${job?.id}`);
-        router.push(`/listing`);
+        router.push(`/listing/${job?.id}`);
+        // router.push(`/listing`);
         showModal(<ApplicationLimitModal jobId={job?.id} />);
       }
     } catch (error) {

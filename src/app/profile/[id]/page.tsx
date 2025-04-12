@@ -10,18 +10,10 @@ export default function ListingPage({ params }: any) {
   const { accountType, setCurrentPage, isLoggedIn } = usePageContext();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     router.push("/"); // Redirect to main page if not logged in
-  //   }
-  // }, []);
-
+  // how do I tell if this is an app or not?
   return (
     <div className="ProfilePage flex flex-grow flex-col items-center gap-8 md:pb-12">
-      {
-        // && isLoggedIn
-        <FellowProfile hasId id={params.id} isApp />
-      }
+      {<FellowProfile hasId id={params.id} isApp />}
     </div>
   );
 }

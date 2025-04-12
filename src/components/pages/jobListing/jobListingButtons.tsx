@@ -391,6 +391,123 @@ const ListingBottomButtons = ({
   const router = useRouter();
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
+  const { isLoggedIn, accountType } = usePageContext();
+  const continueRetract = () => {
+    console.log("trying to retract this application");
+    const updatedApplications = applications?.filter(
+      (app) => app.id !== currentApp?.id,
+    );
+    setApplications(updatedApplications || []);
+    hideModal();
+  };
+
+  return (
+    <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
+      <SiteButton
+        variant="filled"
+        colorScheme="c4"
+        aria="edit"
+        addClasses="px-8"
+        onClick={() => router.push(`/business/${currentJob.business.id}`)}
+      >
+        view company details
+      </SiteButton>
+      {!matchingIds && isLoggedIn && accountType === "Fellow" && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="f1"
+          addClasses="px-8"
+          onClick={() =>
+            showModal(
+              <ApplyModal
+                jobTitle={currentJob?.jobTitle}
+                business={currentJob?.businessName}
+                jobId={id}
+              />,
+            )
+          }
+          disabled={canApply === false || matchingIds}
+        >
+          apply for this job
+        </SiteButton>
+      )}
+      {matchingIds && isLoggedIn && (
+        <div className="ApplicationButtons flex flex-col items-end gap-4 self-end">
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="b3"
+            addClasses="px-8"
+            // onClick={}
+          >
+            send a message
+          </SiteButton>
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="f1"
+            addClasses="px-8"
+            // onClick={}
+          >
+            view your application
+          </SiteButton>
+
+          <SiteButton
+            variant="filled"
+            colorScheme="f5"
+            aria="edit"
+            addClasses="px-8"
+            onClick={() =>
+              showModal(
+                <RetractionConfirmationModal
+                  jobTitle={currentJob?.jobTitle}
+                  continueRetract={continueRetract}
+                />,
+              )
+            }
+          >
+            retract
+          </SiteButton>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const OtherBusinessTopButtons = ({ currentJob }: any) => {
+  return (
+    <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
+      <SiteLabel
+        variant="display"
+        aria="appLimit"
+        addClasses="mt-3"
+        colorScheme="f3"
+      >
+        applications:{" "}
+        {currentJob.applications !== undefined
+          ? currentJob.applications.length
+          : 0}
+        /{currentJob?.applicationLimit || 25}
+      </SiteLabel>
+
+      <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
+        round: {currentJob?.roundNumber || "1"}
+      </SiteLabel>
+    </div>
+  );
+};
+
+const OtherBusinessBottomButtons = ({
+  matchingIds,
+  canApply,
+  currentJob,
+  id,
+  currentApp,
+}: any) => {
+  const router = useRouter();
+  const { showModal, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
   const { isLoggedIn } = usePageContext();
   const continueRetract = () => {
     console.log("trying to retract this application");
@@ -548,6 +665,8 @@ export {
   OwnJobBottomButtons,
   ListingTopButtons,
   ListingBottomButtons,
+  OtherBusinessTopButtons,
+  OtherBusinessBottomButtons,
   AppFellowNotes,
   AmsTopButtons,
 };

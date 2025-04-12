@@ -15,6 +15,8 @@ import BusinessProfile from "@/components/pages/businessProfile/businessProfile"
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
 
 export default function Profile() {
+  const router = useRouter();
+
   const {
     setCurrentPage,
     pageType,
@@ -28,10 +30,8 @@ export default function Profile() {
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const { showModal, hideModal } = useModal();
-  const router = useRouter();
-  const [loadingData, setLoadingData] = useState(true);
 
-  console.log(fellow);
+  const [loadingData, setLoadingData] = useState(true);
 
   const logout = () => {
     setIsLoggingOut(true);
