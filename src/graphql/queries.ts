@@ -216,6 +216,7 @@ export const GET_JOB_LISTINGS = gql`
     $locationOption: [String!]
     $positionType: [String!]
     $country: String
+    $isPublished: Boolean
   ) {
     jobListings(
       businessId: $businessId
@@ -224,6 +225,7 @@ export const GET_JOB_LISTINGS = gql`
       locationOption: $locationOption
       positionType: $positionType
       country: $country
+      isPublished: $isPublished
     ) {
       id
       jobTitle

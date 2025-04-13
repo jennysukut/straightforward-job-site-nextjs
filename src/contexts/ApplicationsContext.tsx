@@ -39,10 +39,12 @@ export interface Applications {
   rejectionMessage?: string;
   // can make rejectionMessage = "sent"?
 
-  rejectionDetails?: { message: any;
-  highlighted?: boolean;
-  jobOfferBeingSent?: boolean;
-  appMovingToNextStage?: boolean;
+  rejectionDetails?: {
+    message: any;
+    highlighted?: boolean;
+    jobOfferBeingSent?: boolean;
+    appMovingToNextStage?: boolean;
+  };
 }
 
 interface ApplicationsContextType {

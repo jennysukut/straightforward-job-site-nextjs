@@ -455,6 +455,12 @@ export const PUBLISH_JOB_LISTING = gql`
   }
 `;
 
+export const DELETE_JOB_LISTING = gql`
+  mutation deleteJobListing($id: ID!) {
+    deleteJobListing(id: $id)
+  }
+`;
+
 // APPLICATION MUTATIONS
 
 export const APPLY_TO_JOB = gql`

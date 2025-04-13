@@ -12,7 +12,11 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useMutation } from "@apollo/client";
-import { SAVE_JOB, EDIT_JOB_LISTING } from "@/graphql/mutations";
+import {
+  SAVE_JOB,
+  EDIT_JOB_LISTING,
+  DELETE_JOB_LISTING,
+} from "@/graphql/mutations";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
 
@@ -35,6 +39,7 @@ import {
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
+import DeleteConfirmationModal from "@/components/modals/deleteConfirmationModal";
 
 export default function JobListing({
   // isOwn,
@@ -64,6 +69,8 @@ export default function JobListing({
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
   const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
   const [starOrStopEditingJobListing] = useMutation(EDIT_JOB_LISTING);
+  const [deleteJobListing] = useMutation(DELETE_JOB_LISTING);
+  const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [currentJob, setCurrentJob] = useState({} as Job);
   const [savingForLater, setSavingForLater] = useState<boolean>(false);
   const [jobSavedStatus, setJobSavedStatus] = useState(
@@ -85,7 +92,7 @@ export default function JobListing({
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
     variables: { id: id },
-    skip: !isLoggedIn || gotJob,
+    skip: !isLoggedIn || gotJob || isBeingDeleted,
     onCompleted: (data) => {
       console.log(data);
       setGotJob(true);
@@ -103,11 +110,13 @@ export default function JobListing({
           "-- timeout to modal set.",
         );
         setIncompleteListing(true);
-        setTimeout(() => {
-          showModal(
-            <FinishListingModal completed={data.jobListing.completed} />,
-          );
-        }, 3000);
+        if (!isBeingDeleted) {
+          setTimeout(() => {
+            showModal(
+              <FinishListingModal completed={data.jobListing.completed} />,
+            );
+          }, 2000);
+        }
       }
       if (
         accountType === "Business" &&
@@ -195,7 +204,37 @@ export default function JobListing({
     canApply,
   );
 
-  const saveClick = async (jobId: any) => {
+  const deleteClick = () => {
+    setIsBeingDeleted(true);
+    showModal(
+      <DeleteConfirmationModal
+        continueDelete={deleteListing}
+        item={"this job listing"}
+      />,
+    );
+  };
+
+  console.log(job?.id);
+
+  const deleteListing = async () => {
+    try {
+      const response = await deleteJobListing({
+        variables: {
+          id: job?.id,
+        },
+      });
+      console.log(
+        "save job successful, details:",
+        response.data.deleteJobListing,
+      );
+      hideModal();
+      router.push(`/ams`);
+    } catch (error) {
+      console.error("application error:", error);
+    }
+  };
+
+  const saveClick = async () => {
     try {
       const response = await saveJobListing({
         variables: {
@@ -535,6 +574,7 @@ export default function JobListing({
                 setCanEdit={setCanEdit}
                 incompleteListing={incompleteListing}
                 completed={currentJob.completed}
+                deleteClick={deleteClick}
               />
             )}
 

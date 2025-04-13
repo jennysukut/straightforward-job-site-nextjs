@@ -37,7 +37,6 @@ export default function BusinessAMS() {
     },
   });
 
-  console.log("jobListings Here:", jobListings);
   const renderJobs = () => {
     return jobListings?.map((job: any, index: number) => (
       <PostedJobComponent
@@ -58,17 +57,23 @@ export default function BusinessAMS() {
     <div
       className={`FellowAMSPage flex w-[84%] gap-8 self-center ${textColor} max-w-[1600px]`}
     >
-      <div className="ApplicationList flex w-full flex-col gap-4">
-        <div className="TitleDetails -mb-2 mr-14 text-right">
-          <h1 className="AMSTitle">Your Job Listings</h1>
-          <p className="Details font-semibold italic text-olive">
-            Total Active Jobs: {jobListings.length}
-          </p>
+      {loadingData ? (
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <div className="LoadingText text-center text-olive">Loading...</div>
         </div>
-        <div className="JobListings m-4 flex w-full flex-wrap items-center justify-center gap-14">
-          {renderJobs()}
+      ) : (
+        <div className="ApplicationList flex w-full flex-col gap-4">
+          <div className="TitleDetails -mb-2 mr-14 text-right">
+            <h1 className="AMSTitle">Your Job Listings</h1>
+            <p className="Details font-semibold italic text-olive">
+              Total Active Jobs: {jobListings.length}
+            </p>
+          </div>
+          <div className="JobListings m-4 flex w-full flex-wrap items-center justify-center gap-14">
+            {renderJobs()}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

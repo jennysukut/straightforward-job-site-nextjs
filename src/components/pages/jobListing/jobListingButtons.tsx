@@ -27,6 +27,7 @@ const OwnListingTopButtons = ({
   setCanEdit,
   incompleteListing,
   completed,
+  deleteClick,
 }: any) => {
   const { showModal } = useModal();
   const { setJob, job } = useJob();
@@ -115,16 +116,7 @@ const OwnListingTopButtons = ({
           {canEdit ? "finish editing" : "edit"}
         </SiteButton>
       )}
-      {/* <SiteButton
-        variant="filled"
-        colorScheme="b4"
-        aria="edit"
-        addClasses="px-8"
-        onClick={() => setCanEdit(!canEdit)}
-        isSelected={canEdit}
-      >
-        {canEdit ? "finish editing" : "edit"}
-      </SiteButton> */}
+
       <SiteButton
         aria="publish"
         variant="filled"
@@ -142,6 +134,15 @@ const OwnListingTopButtons = ({
         onClick={() => showModal(<ApplicationLimitModal />)}
       >
         application limit: {currentJob?.applicationLimit || 25}
+      </SiteButton>
+      <SiteButton
+        variant="filled"
+        colorScheme="c5"
+        aria="delete"
+        addClasses="px-8"
+        onClick={deleteClick}
+      >
+        delete post
       </SiteButton>
     </div>
   );

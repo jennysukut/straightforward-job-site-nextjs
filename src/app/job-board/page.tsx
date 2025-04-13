@@ -59,6 +59,7 @@ export default function JobBoard() {
       locationOption: locationType.length > 0 ? locationType : undefined,
       positionType: positionType.length > 0 ? positionType : undefined,
       country: country.length > 0 ? country : undefined,
+      isPublished: true,
     },
     onCompleted: (data) => {
       console.log(JSON.stringify(data));

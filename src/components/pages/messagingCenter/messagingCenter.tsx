@@ -302,12 +302,11 @@ const MessageCenter = ({
     readMesssages();
   }, []);
 
-
   useEffect(() => {
     if (correspondingApp?.appIsBeingRejected) {
       setCurrentMessage(correspondingApp.rejectionDetails?.message.join("\n"));
-    } else if (correspondingApp?.jobOfferBeingSent) {
-      setCurrentMessage("Hey You! We'd like to offer you a job!");
+      // } else if (correspondingApp?.jobOfferBeingSent) {
+      //   setCurrentMessage("Hey You! We'd like to offer you a job!");
     }
   }, []);
 

@@ -6,7 +6,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { JobAMSNotificationButton } from "../buttonsAndLabels/notificationButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import SiteButton from "../buttonsAndLabels/siteButton";
 import InfoBox from "../informationDisplayComponents/infoBox";
@@ -28,9 +28,8 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
-  const { applications } = useApplications();
   const [isClicked, setIsClicked] = useState(false);
-
+  const [notification, setNotification] = useState("");
   // search through the jobListings to find the job with the matching jobId
   const selectedJob = job;
   // we'll need to return the applications as an array, even it's empty?
@@ -38,8 +37,9 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   const previousNumberOfInterviews = 0;
 
   let viewedApplications: any = [];
-  let notification;
   let numberOfInterviews;
+
+  const isUnpublished = job.published === false;
 
   const applicationList = job?.applications?.map((app: any) => {
     const isViewed = app.status !== "submitted";
@@ -47,7 +47,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
       viewedApplications.push(app);
     }
     if (!isViewed) {
-      notification = "unopened applications";
+      setNotification("unopened applications");
     }
 
     const hasInterviews = (app?.appointments?.length || 0) > 0;
@@ -57,15 +57,26 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
       //   ? -previousNumberOfInterviews
       //   : true;
       // if (difference !== -1) {
-      notification = "new appointment";
+      setNotification("new appointment");
       // }
     }
   });
 
   const buttonClick = () => {
     setIsClicked(!isClicked);
-    router.push(`/ams/${id}`);
+    if (isUnpublished) {
+      router.push(`/listing/${id}`);
+    } else {
+      router.push(`/ams/${id}`);
+    }
   };
+
+  useEffect(() => {
+    if (isUnpublished) {
+      console.log("this job", job.jobTitle, "is unpublished");
+      setNotification("this listing is unpublished");
+    }
+  }, []);
 
   return (
     <div className="PostedJob flex flex-col gap-4" key={id}>
@@ -78,9 +89,9 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
         <div className="AppInfo mb-4 flex flex-col justify-between gap-2 text-center">
           <div className="AppLimitInfo -mt-4 ml-2 flex items-start justify-between pb-8">
             <div className="AppLimit -ml-4 text-xs font-medium italic">
-              {appNumbers}/{selectedJob?.applicationLimit} apps
+              {appNumbers}/{selectedJob?.applicationLimit || "?"} apps
             </div>
-            {notification && (
+            {notification !== "" && (
               <JobAMSNotificationButton
                 colorScheme={
                   colorArray[index % colorArray.length] as ButtonColorOption
@@ -124,7 +135,9 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
           addClasses="px-8 py-3"
           isSelected={isClicked}
         >
-          view applications | manage listing
+          {isUnpublished
+            ? "finish listing | manage job post"
+            : "view applications | manage listing"}
         </SiteButton>
       </div>
     </div>
