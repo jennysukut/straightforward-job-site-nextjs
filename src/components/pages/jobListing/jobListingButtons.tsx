@@ -291,10 +291,10 @@ const ListingTopButtons = ({
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">
-        {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
+        {/* {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
           <SiteButton
             size="smallCircle"
-            colorScheme="c4"
+            colorScheme="f1"
             variant="filled"
             aria="details"
             addClasses="text-sm text-center"
@@ -305,20 +305,20 @@ const ListingTopButtons = ({
         )}
         {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
           <SiteLabel
-            colorScheme="c4"
+            colorScheme="f1"
             variant="display"
             size="extraSmall"
             aria="limit details"
-            addClasses="text-sm text-center -mt-2 -mr-1 absolute"
+            addClasses={`text-sm text-center max-w-[17rem] -mt-2 ${!hasMatchingNonNegParams ? "mr-2" : "-mr-1"} absolute`}
             onClick={() => setShowLimitDetails(!showLimitDetails)}
           >
             {!hasMatchingNonNegParams
-              ? "you don't match the non-negotiable parameters of this listing"
+              ? "your skills list doesn't match this job's non-negotiable parameters"
               : atDailyLimit
                 ? "you've reached your daily app limit"
                 : "details here"}
           </SiteLabel>
-        )}
+        )} */}
         {isLoggedIn && (
           <SiteButton
             aria="saveJob"
@@ -348,7 +348,58 @@ const ListingTopButtons = ({
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
-      {!matchingIds && isLoggedIn && (
+
+      <div className="ApplyButtons -mt-1 flex items-start gap-2">
+        {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
+          <SiteButton
+            size="smallCircle"
+            colorScheme="d1"
+            variant="filled"
+            aria="details"
+            addClasses="text-sm text-center"
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            ?
+          </SiteButton>
+        )}
+        {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
+          <SiteLabel
+            colorScheme="d1"
+            variant="display"
+            size="extraSmall"
+            aria="limit details"
+            addClasses={`text-sm text-center mt-2 max-w-[17rem] `}
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            {!hasMatchingNonNegParams
+              ? "your skills list doesn't match this job's non-negotiable parameters"
+              : atDailyLimit
+                ? "you've reached your daily app limit"
+                : "details here"}
+          </SiteLabel>
+        )}
+        {!matchingIds && isLoggedIn && !showLimitDetails && (
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="b4"
+            addClasses="px-8 mt-2"
+            onClick={() =>
+              showModal(
+                <ApplyModal
+                  jobTitle={currentJob?.jobTitle}
+                  business={currentJob?.business.name}
+                  jobId={id}
+                />,
+              )
+            }
+            disabled={canApply === false || matchingIds}
+          >
+            {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
+          </SiteButton>
+        )}
+      </div>
+      {/* {!matchingIds && isLoggedIn && (
         <SiteButton
           aria="publish"
           variant="filled"
@@ -367,7 +418,7 @@ const ListingTopButtons = ({
         >
           {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
         </SiteButton>
-      )}
+      )} */}
       {matchingIds && isLoggedIn && (
         <SiteButton
           variant="filled"
