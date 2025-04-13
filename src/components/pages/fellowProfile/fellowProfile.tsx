@@ -174,7 +174,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
       ) : (
-        <div className="ProfileDetails flex gap-8">
+        <div className="ProfileDetails mr-14 flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}
             {isOwn && !isApp && (

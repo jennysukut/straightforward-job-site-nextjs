@@ -88,13 +88,17 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
     router.push(url);
   };
 
+  const viewOpenJobs = () => {
+    router.push(`/listings/${id}`);
+  };
+
   useEffect(() => {
     setPageType("Business");
     // setCurrentPage("businessProfile");
   }, [setPageType]);
 
   return (
-    <div className="BusinessProfileContainer flex w-[80%] max-w-[1600px] flex-col justify-center gap-8 self-center">
+    <div className="BusinessProfileContainer mr-14 flex w-[80%] max-w-[1600px] flex-col justify-center gap-8 self-center">
       {/* PROFILE DETAILS */}
       {loadingData ? (
         //make loading screen design here
@@ -117,7 +121,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
                   colorScheme="c4"
                   aria="edit"
                   addClasses="px-8"
-                  // onClick={addMoreInfo}
+                  onClick={viewOpenJobs}
                 >
                   view their open jobs
                 </SiteButton>
