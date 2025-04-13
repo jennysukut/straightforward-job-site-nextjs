@@ -318,3 +318,20 @@ export const GET_JOB_LISTING_BY_ID = gql`
     }
   }
 `;
+
+export const GET_MESSAGES = gql`
+  query GetMessages($conversationId: ID!) {
+    messages(conversationId: $conversationId) {
+      app {
+        id
+      }
+      id
+      text
+      sender
+      date
+      timestamp
+      edited
+      read
+    }
+  }
+`;

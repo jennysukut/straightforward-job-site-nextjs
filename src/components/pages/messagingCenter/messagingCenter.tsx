@@ -10,6 +10,9 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
+import { useSocket } from "@/contexts/SocketContext";
+import { useQuery } from "@apollo/client";
+import { GET_MESSAGES } from "@/graphql/queries";
 
 import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
@@ -19,7 +22,10 @@ import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 
 export interface Messages {
-  id: number;
+  app: {
+    id: string;
+  };
+  id: string;
   text: Array<string>;
   sender: string;
   date: string;
@@ -40,6 +46,7 @@ const MessageCenter = ({
   addClasses,
   messageHeight,
   specificMessages,
+  conversationId,
 }: any): JSX.Element => {
   const { accountType } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -48,6 +55,7 @@ const MessageCenter = ({
   const { currentColorScheme, setCurrentColorScheme } = useColors();
   const { fellow } = useFellow();
   const { business } = useBusiness();
+  const { socket, isConnected } = useSocket();
 
   const router = useRouter();
 
@@ -57,6 +65,49 @@ const MessageCenter = ({
   // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
+  const { loading, data } = useQuery(GET_MESSAGES, {
+    variables: { conversationId },
+  });
+
+  // ////Code for testing adding Socket.io to frontend
+
+  // Load initial messages from GraphQL query
+  useEffect(() => {
+    if (data?.messages) {
+      setMessages(data.messages);
+    }
+  }, [data]);
+
+  // Listen for new messages via Socket.io
+  useEffect(() => {
+    if (!socket) return;
+
+    // Join the specific conversation room
+    socket.emit("joinConversation", conversationId);
+
+    // Listen for new messages
+    socket.on("newMessage", (message: Messages) => {
+      setMessages((prev) => [...prev, message]);
+    });
+
+    return () => {
+      socket.off("newMessage");
+      socket.emit("leaveConversation", conversationId);
+    };
+  }, [socket, conversationId]);
+
+  // Function to send a message
+  const sendMessage = (content: string) => {
+    if (!socket || !isConnected) return;
+
+    socket.emit("sendMessage", {
+      conversationId,
+      content,
+      senderId: accountType === "Fellow" ? fellow?.id : business?.id,
+    });
+  };
+
+  // /////// Previous Code
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -99,6 +150,8 @@ const MessageCenter = ({
   // Send A Message!
   const handleSendMessage = (e: any) => {
     e.preventDefault();
+    if (!socket || !isConnected) return;
+
     const sender = accountType === "Fellow" ? "fellow" : "business";
 
     if (currentMessage.trim()) {
@@ -121,34 +174,40 @@ const MessageCenter = ({
         read: false,
       };
 
-      const index: number =
-        applications?.findIndex(
-          (app: any) => app.id === correspondingApp?.id,
-        ) ?? -1;
-      if (index !== -1) {
-        const updatedApp = {
-          ...(applications?.[index] as {
-            mail?: {
-              id: number;
-              text: string;
-              sender: string;
-              date: string;
-              timestamp: string;
-              edited: boolean;
-              read: boolean;
-            }[];
-          }),
-          mail: [...(applications?.[index]?.mail || []), message],
-        };
+      // set the message and send it via socket?
 
-        const updatedApplications = [
-          ...(applications ?? []).slice(0, index),
-          updatedApp,
-          ...(applications ?? []).slice(index + 1),
-        ];
-        setApplications(updatedApplications);
-        setMessages([...messages, message]);
-      }
+      socket.emit("sendMessage", {
+        message,
+      });
+
+      // const index: number =
+      //   applications?.findIndex(
+      //     (app: any) => app.id === correspondingApp?.id,
+      //   ) ?? -1;
+      // if (index !== -1) {
+      //   const updatedApp = {
+      //     ...(applications?.[index] as {
+      //       mail?: {
+      //         id: number;
+      //         text: string;
+      //         sender: string;
+      //         date: string;
+      //         timestamp: string;
+      //         edited: boolean;
+      //         read: boolean;
+      //       }[];
+      //     }),
+      //     mail: [...(applications?.[index]?.mail || []), message],
+      //   };
+
+      //   const updatedApplications = [
+      //     ...(applications ?? []).slice(0, index),
+      //     updatedApp,
+      //     ...(applications ?? []).slice(index + 1),
+      //   ];
+      //   setApplications(updatedApplications);
+      // setMessages([...messages, message]);
+      // }
 
       setCurrentMessage("");
       renderMessages();

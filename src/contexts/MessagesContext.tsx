@@ -4,12 +4,16 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { string } from "zod";
 
 export interface Messages {
-  id: number;
+  app: {
+    id: string;
+  };
+  id: string;
   text: string;
   sender: string;
   date: any;
   timestamp: any;
   edited: boolean;
+  viewed: boolean;
 }
 
 interface MessagesContextType {

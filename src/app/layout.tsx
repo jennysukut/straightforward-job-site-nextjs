@@ -15,6 +15,7 @@ import { ApplicationsProvider } from "@/contexts/ApplicationsContext";
 import { AppointmentsContextProvider } from "@/contexts/AppointmentsContext";
 import { MessagesProvider } from "@/contexts/MessagesContext";
 import { ReportsProvider } from "@/contexts/ReportsContext";
+import { SocketProvider } from "@/contexts/SocketContext";
 import ClientAuthWrapper from "@/components/clientAuthWrapper";
 
 import NavBar from "@/components/navBar";
@@ -52,35 +53,37 @@ export default function RootLayout({
       <body className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-cream">
         <PageProvider>
           <ApolloWrapper>
-            <AppointmentsContextProvider>
-              <MessagesProvider>
-                <ReportsProvider>
-                  <ApplicationsProvider>
-                    <ApplicationProvider>
-                      <JobListingsProvider>
-                        <JobProvider>
-                          <BusinessProvider>
-                            <FellowProvider>
-                              <ColorProvider>
-                                <ModalProvider>
-                                  <ClientAuthWrapper>
-                                    <NavBar />
-                                    <main className="Main flex flex-1 flex-col">
-                                      {children}
-                                    </main>
-                                    <Footer />
-                                  </ClientAuthWrapper>
-                                </ModalProvider>
-                              </ColorProvider>
-                            </FellowProvider>
-                          </BusinessProvider>
-                        </JobProvider>
-                      </JobListingsProvider>
-                    </ApplicationProvider>
-                  </ApplicationsProvider>
-                </ReportsProvider>
-              </MessagesProvider>
-            </AppointmentsContextProvider>
+            <SocketProvider>
+              <AppointmentsContextProvider>
+                <MessagesProvider>
+                  <ReportsProvider>
+                    <ApplicationsProvider>
+                      <ApplicationProvider>
+                        <JobListingsProvider>
+                          <JobProvider>
+                            <BusinessProvider>
+                              <FellowProvider>
+                                <ColorProvider>
+                                  <ModalProvider>
+                                    <ClientAuthWrapper>
+                                      <NavBar />
+                                      <main className="Main flex flex-1 flex-col">
+                                        {children}
+                                      </main>
+                                      <Footer />
+                                    </ClientAuthWrapper>
+                                  </ModalProvider>
+                                </ColorProvider>
+                              </FellowProvider>
+                            </BusinessProvider>
+                          </JobProvider>
+                        </JobListingsProvider>
+                      </ApplicationProvider>
+                    </ApplicationsProvider>
+                  </ReportsProvider>
+                </MessagesProvider>
+              </AppointmentsContextProvider>
+            </SocketProvider>
           </ApolloWrapper>
         </PageProvider>
       </body>
