@@ -46,7 +46,8 @@ export default function JobListing({
 }: any) {
   const router = useRouter();
 
-  const { setPageType, isLoggedIn, accountType } = usePageContext();
+  const { setPageType, isLoggedIn, accountType, setCurrentPage } =
+    usePageContext();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
@@ -234,6 +235,7 @@ export default function JobListing({
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
     setPageType("jobListing");
+    setCurrentPage("jobListing");
   }, []);
 
   useEffect(() => {

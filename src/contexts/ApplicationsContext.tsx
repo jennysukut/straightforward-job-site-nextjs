@@ -24,6 +24,7 @@ export interface Applications {
       id?: string;
     };
   };
+  mail?: Array<any>;
   businessNote?: Array<string>;
   fellowNote?: Array<string>;
   appointments?: Array<{

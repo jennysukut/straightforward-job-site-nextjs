@@ -6,10 +6,10 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
-// import { RenderFellowMessageList } from "@/components/pages/messagingCenter/fellowMessagingComponents";
-// import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/businessMessagingComponents";
+import { RenderFellowMessageList } from "@/components/pages/messagingCenter/fellowMessagingComponents";
+import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/businessMessagingComponents";
 
-// import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
+import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import Image from "next/image";
 
@@ -63,23 +63,25 @@ export default function Messages() {
         <div className="MessageListGroup flex flex-col gap-4">
           {/* message list for fellows */}
 
-          {/* {accountType === "Fellow" && (
+          {accountType === "Fellow" && (
             <RenderFellowMessageList
               colorArray={colorArray}
               activeApp={activeApp}
               showMessages={showMessages}
               setCurrentMessages={setCurrentMessages}
             />
-          )} */}
+          )}
 
-          {/* {accountType === "Business" && (
+          {/* message list for businesses */}
+
+          {accountType === "Business" && (
             <RenderBusinessMessageList
               colorArray={colorArray}
               activeApp={activeApp}
               showMessages={showMessages}
               setCurrentMessages={setCurrentMessages}
             />
-          )} */}
+          )}
         </div>
         <Image
           width={140}
@@ -90,10 +92,10 @@ export default function Messages() {
         ></Image>
       </div>
       <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
-        {/* <MessageCenter
+        <MessageCenter
           activeApp={activeApp}
           messageHeight="max-h-[65vh] min-h-[55vh]"
-        /> */}
+        />
       </div>
     </div>
   );
