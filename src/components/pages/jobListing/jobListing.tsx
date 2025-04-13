@@ -75,7 +75,8 @@ export default function JobListing({
   );
   const [gotJob, setGotJob] = useState(false);
 
-  const appNumber = currentJob?.applications?.length;
+  const appNumber =
+    currentJob?.applications === null ? 0 : currentJob?.applications?.length;
 
   const {
     loading: queryLoading,
@@ -84,7 +85,6 @@ export default function JobListing({
   } = useQuery(GET_JOB_LISTING_BY_ID, {
     variables: { id: id },
     skip: !isLoggedIn || gotJob,
-    // || job?.beingEdited,
     onCompleted: (data) => {
       console.log(data);
       setGotJob(true);
@@ -175,19 +175,24 @@ export default function JobListing({
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
   // make sure they haven't applied before
-
-  // const matchingIds =
-  //   currentJob?.applicants &&
-  //   !currentJob?.applicants?.some(
-  //     (applicant: any) => applicant.id === fellow?.id,
-  //   );
+  const matchingIds = fellow?.jobApplications?.some(
+    (app: any) => app.jobListing.id === currentJob.id,
+  );
 
   // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
 
-  const canApply = true;
-  hasMatchingNonNegParams === true && fellow?.dailyApplications?.length < 5;
-  // && matchingIds;
+  const canApply =
+    hasMatchingNonNegParams === true &&
+    fellow?.dailyApplications?.length < 5 &&
+    matchingIds;
+
+  console.log(
+    "have applied to this before:",
+    matchingIds,
+    "can apply:",
+    canApply,
+  );
 
   const saveClick = async (jobId: any) => {
     try {
@@ -223,23 +228,6 @@ export default function JobListing({
       setThisId(id);
     }
   }, [id, job]);
-
-  useEffect(() => {
-    editJob();
-  }, [canEdit]);
-
-  // Maybe do this after the fetch request and just check it once the data is set?
-  // useEffect(() => {
-  //   console.log("currentJob:", currentJob);
-  //   if (isOwn && currentJob && currentJob?.completed !== "published") {
-  //     // open an alert modal that shows that the listing isn't completed.
-  //     // Find which stage it's at and pass that through to the modal so when they click on the button to complete,
-  //     // it redirects them to the correct url and passes in the correct ID
-  //     setTimeout(() => {
-  //       showModal(<FinishListingModal completed={currentJob.completed} />);
-  //     }, 10000);
-  //   }
-  // }, []);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -556,18 +544,12 @@ export default function JobListing({
               <ListingTopButtons
                 id={id}
                 saveClick={saveClick}
-                // jobSavedStatus={jobSavedStatus}
-                // matchingIds={matchingIds}
-                // appNumber={appNumber}
-                // currentJob={currentJob}
-                // canApply={canApply}
-                // hasMatchingNonNegParams={hasMatchingNonNegParams}
-                hasMatchingNonNegParams={true}
-                jobSavedStatus={false}
-                matchingIds={false}
-                appNumber={0}
+                jobSavedStatus={jobSavedStatus}
+                matchingIds={matchingIds}
+                appNumber={appNumber}
                 currentJob={currentJob}
-                canApply={true}
+                canApply={canApply}
+                hasMatchingNonNegParams={hasMatchingNonNegParams}
                 app={currentApp ? currentApp : "no current app here"}
               />
             )}
@@ -627,10 +609,8 @@ export default function JobListing({
             {/* fellow / apply buttons */}
             {!isOwn && (
               <ListingBottomButtons
-                // matchingIds={matchingIds}
-                // canApply={canApply}
-                matchingIds={false}
-                canApply={true}
+                matchingIds={matchingIds}
+                canApply={canApply}
                 currentJob={currentJob}
                 id={id}
                 currentApp={currentApp}

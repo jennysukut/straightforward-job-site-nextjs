@@ -16,7 +16,7 @@ interface PostedJobComponentProps extends React.HTMLAttributes<HTMLDivElement> {
   id: string;
   colorArray: Array<string>;
   index: any;
-  jobId?: string;
+  job: any;
   dateOfApp?: any;
 }
 
@@ -24,35 +24,35 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
   id,
   colorArray,
   index,
-  jobId,
+  job,
 }) => {
   const router = useRouter();
   const { jobListings } = useJobListings();
   const { applications } = useApplications();
   const [isClicked, setIsClicked] = useState(false);
+
   // search through the jobListings to find the job with the matching jobId
-  const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
-  const appNumbers = selectedJob?.applications?.length;
-  const previousNumberOfInterviews = 1;
+  const selectedJob = job;
+  // we'll need to return the applications as an array, even it's empty?
+  const appNumbers = job?.applications === null ? 0 : 1;
+  const previousNumberOfInterviews = 0;
+
   let viewedApplications: any = [];
   let notification;
   let numberOfInterviews;
 
-  const applicationList = selectedJob?.applications?.map((app) => {
-    const relevantApp = applications?.find(
-      (application: any) => application.id === app,
-    );
-    const isViewed = relevantApp?.status !== "submitted";
+  const applicationList = job?.applications?.map((app: any) => {
+    const isViewed = app.status !== "submitted";
     if (isViewed) {
-      viewedApplications.push(relevantApp);
+      viewedApplications.push(app);
     }
     if (!isViewed) {
       notification = "unopened applications";
     }
 
-    const hasInterviews = (relevantApp?.appointments?.length || 0) > 0;
+    const hasInterviews = (app?.appointments?.length || 0) > 0;
     if (hasInterviews) {
-      numberOfInterviews = relevantApp?.appointments?.length;
+      numberOfInterviews = app?.appointments?.length;
       // const difference = numberOfInterviews
       //   ? -previousNumberOfInterviews
       //   : true;
@@ -64,7 +64,7 @@ const PostedJobComponent: React.FC<PostedJobComponentProps> = ({
 
   const buttonClick = () => {
     setIsClicked(!isClicked);
-    router.push(`/ams/${jobId}`);
+    router.push(`/ams/${id}`);
   };
 
   return (

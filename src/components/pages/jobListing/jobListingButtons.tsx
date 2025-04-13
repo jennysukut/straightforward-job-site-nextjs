@@ -326,7 +326,11 @@ const ListingTopButtons = ({
             onClick={() => saveClick(id)}
             isSelected={jobSavedStatus || matchingIds}
           >
-            {jobSavedStatus === true ? "saved" : "save job"}
+            {jobSavedStatus === true
+              ? "saved"
+              : matchingIds
+                ? "applied"
+                : "save job"}
           </SiteButton>
         )}
       </div>
@@ -337,10 +341,8 @@ const ListingTopButtons = ({
         colorScheme="f3"
       >
         applications:{" "}
-        {currentJob.applications !== undefined
-          ? currentJob.applications.length
-          : 0}
-        /{currentJob?.applicationLimit || 25}
+        {currentJob.applications !== null ? currentJob.applications.length : 0}/
+        {currentJob?.applicationLimit || 25}
       </SiteLabel>
 
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
@@ -356,7 +358,7 @@ const ListingTopButtons = ({
             showModal(
               <ApplyModal
                 jobTitle={currentJob?.jobTitle}
-                business={currentJob?.businessName}
+                business={currentJob?.business.name}
                 jobId={id}
               />,
             )
@@ -485,10 +487,8 @@ const OtherBusinessTopButtons = ({ currentJob }: any) => {
         colorScheme="f3"
       >
         applications:{" "}
-        {currentJob.applications !== undefined
-          ? currentJob.applications.length
-          : 0}
-        /{currentJob?.applicationLimit || 25}
+        {currentJob.applications !== null ? currentJob.applications.length : 0}/
+        {currentJob?.applicationLimit || 25}
       </SiteLabel>
 
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
@@ -602,7 +602,7 @@ const AmsTopButtons = ({ currentJob }: any) => {
         Next Payment: $200 on February 5
       </SiteLabel>
       <SiteLabel colorScheme="b3" aria="applicationNumber" variant="display">
-        Applications: {currentJob?.applications?.length}/
+        Applications: {currentJob?.applications?.length || 0}/
         {currentJob?.applicationLimit}
       </SiteLabel>
       <SiteLabel colorScheme="c4" aria="Interviews" variant="display">

@@ -296,6 +296,11 @@ export const GET_JOB_LISTING_BY_ID = gql`
       saved
       completed
       applicationLimit
+      applications {
+        id
+        message
+        status
+      }
       interviewProcess {
         id
         stage
@@ -313,20 +318,3 @@ export const GET_JOB_LISTING_BY_ID = gql`
     }
   }
 `;
-
-// OTHER FIELDS WE NEED FOR PROFILE
-
-// avatar
-// experience
-// education
-// awards
-// experienceLevels
-// accomplishments
-// passions
-// lookingFor
-// locationOptions
-// hobbies
-// bookOrQuote
-// petDetails
-// links
-// aboutMe
