@@ -1,6 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { stageList } from "@/lib/stageList";
+import { useApplications } from "@/contexts/ApplicationsContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RejectAppModal from "./rejectAppModal";
 
@@ -11,6 +15,10 @@ export default function SetAppStatusModal({
   updateStatus,
 }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
+  const [clickedButton, setClickedButton] = useState("");
+
+  const router = useRouter();
 
   const rejectClick = () => {
     // showModal for rejection confirmation
@@ -21,10 +29,32 @@ export default function SetAppStatusModal({
   };
 
   const nextStage = () => {
+    // find the interviewProcess for the jobListing so we can see how many stages there are
+
     const currentIndex = stageList.findIndex((stage) => stage === appStatus);
     return currentIndex !== -1 && currentIndex < stageList.length - 1
       ? stageList[currentIndex + 1]
       : null;
+  };
+
+  const sendJobOffer = () => {
+    setClickedButton("sendJobOffer");
+
+    if (applications) {
+      setApplications(
+        applications.map((app) =>
+          app.id === application.id
+            ? {
+                ...app,
+                appStatus: "offer",
+                jobOfferBeingSent: true,
+              }
+            : app,
+        ),
+      );
+    }
+    router.push(`/messages/${application.id}`);
+    hideModal();
   };
 
   return (
@@ -59,6 +89,17 @@ export default function SetAppStatusModal({
           }
         >
           reject
+        </SiteButton>
+        <SiteButton
+          variant="hollow"
+          size="large"
+          colorScheme="b3"
+          aria="go back"
+          addClasses="w-[250px]"
+          onClick={() => sendJobOffer()}
+          isSelected={clickedButton === "sendJobOffer"}
+        >
+          make job offer
         </SiteButton>
       </div>
     </div>

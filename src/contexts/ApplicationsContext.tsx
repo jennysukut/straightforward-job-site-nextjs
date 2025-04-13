@@ -38,8 +38,11 @@ export interface Applications {
   appIsBeingRejected?: boolean;
   rejectionMessage?: string;
   // can make rejectionMessage = "sent"?
-  rejectionDetails?: { message: string };
+
+  rejectionDetails?: { message: any;
   highlighted?: boolean;
+  jobOfferBeingSent?: boolean;
+  appMovingToNextStage?: boolean;
 }
 
 interface ApplicationsContextType {
