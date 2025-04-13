@@ -59,7 +59,7 @@ const RenderBusinessMessageList = ({
     });
 
   const appsWithMail = currentApps?.filter(
-    (app) => app.mail && app.mail.length > 0 && app.appStatus !== "closed",
+    (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
   );
 
   const findApplicantName: any = (id: any) => {
@@ -78,10 +78,10 @@ const RenderBusinessMessageList = ({
 
   const renderRelevantMessages = () => {
     const selectedApps = currentApps?.filter(
-      (app) => app.jobId === selectedListing,
+      (app) => app?.jobListing?.id === selectedListing,
     );
     const activeAppsWithMail = selectedApps?.filter(
-      (app) => app.mail && app.mail.length > 0 && app.appStatus !== "closed",
+      (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
     );
 
     const sortedMessages = activeAppsWithMail?.sort((a, b) => {
@@ -160,7 +160,7 @@ const RenderBusinessMessageList = ({
       {currentListings
         ?.filter((job) =>
           appsWithMail?.some(
-            (app) => app.jobId === job.jobId && app.appStatus !== "closed",
+            (app) => app.id === job.jobId && app.status !== "closed",
           ),
         )
         .map((job: any, index: any) => {

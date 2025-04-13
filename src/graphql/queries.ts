@@ -22,6 +22,23 @@ export const GET_MY_PROFILE = gql`
       fellow {
         id
         name
+        jobApplications {
+          id
+          message
+          status
+          jobListing {
+            id
+            jobTitle
+            business {
+              name
+            }
+          }
+        }
+        dailyApplications {
+          id
+          message
+          status
+        }
         profile {
           smallBio
           location
@@ -84,16 +101,6 @@ export const GET_MY_PROFILE = gql`
         }
         savedJobs {
           id
-        }
-        jobApplications {
-          id
-          message
-          status
-        }
-        dailyApplications {
-          id
-          message
-          status
         }
       }
     }
@@ -236,6 +243,7 @@ export const GET_JOB_LISTINGS = gql`
       responsibilities
       perks
       saved
+      completed
       interviewProcess {
         id
         stage
@@ -250,6 +258,17 @@ export const GET_JOB_LISTINGS = gql`
           location
         }
       }
+      published
+      beingEdited
+      completed
+      city
+      state
+      applications {
+        id
+        message
+        status
+      }
+      applicationLimit
     }
   }
 `;
@@ -275,6 +294,13 @@ export const GET_JOB_LISTING_BY_ID = gql`
       responsibilities
       perks
       saved
+      completed
+      applicationLimit
+      applications {
+        id
+        message
+        status
+      }
       interviewProcess {
         id
         stage
@@ -292,20 +318,3 @@ export const GET_JOB_LISTING_BY_ID = gql`
     }
   }
 `;
-
-// OTHER FIELDS WE NEED FOR PROFILE
-
-// avatar
-// experience
-// education
-// awards
-// experienceLevels
-// accomplishments
-// passions
-// lookingFor
-// locationOptions
-// hobbies
-// bookOrQuote
-// petDetails
-// links
-// aboutMe

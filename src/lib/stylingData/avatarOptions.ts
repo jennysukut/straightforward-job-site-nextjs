@@ -1,3 +1,24 @@
+export const placeholderAvatar = {
+  title: "placeholder",
+  img: {
+    standard: "bg-[url('/avatars/placeholder.svg')]",
+    highContrast: "bg-[url('/avatars/hc-placeholder.svg')]",
+  },
+  url: {
+    standard: "/avatars/placeholder.svg",
+    highContrast: "/avatars/hc-placeholder.svg",
+  },
+  shadow: {
+    standard: "bg-orange",
+    highContrast: "bg-almond",
+  },
+  dropShadow: {
+    standard: "drop-shadow-orange",
+    highContrast: "drop-shadow-almond",
+  },
+  colorScheme: "f5",
+};
+
 export const avatarOptions = [
   {
     title: "ant",

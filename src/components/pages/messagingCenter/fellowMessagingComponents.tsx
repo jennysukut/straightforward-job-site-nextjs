@@ -28,7 +28,7 @@ const RenderFellowMessageList = ({
   const currentMsgs = applications
     ?.filter((app: any) => app.applicant === fellow?.id && app.mail.length > 0)
     .sort((a, b) => {
-      const mostRecentA = a.mail?.reduce((latest, message) => {
+      const mostRecentA = a.mail?.reduce((latest: any, message: any) => {
         const messageDate = new Date(`${message.date} ${message.timestamp}`);
         return messageDate > latest ? messageDate : latest;
       }, new Date(0));

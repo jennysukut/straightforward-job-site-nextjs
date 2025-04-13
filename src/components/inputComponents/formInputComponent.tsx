@@ -45,6 +45,7 @@ const FormInputComponent: React.FC<InputComponent> = ({
             width={16}
             height={16}
             onClick={viewFunction}
+            className="cursor-pointer"
           ></Image>
         )}
       </div>

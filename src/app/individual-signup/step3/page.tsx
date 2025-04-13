@@ -95,6 +95,8 @@ export default function IndividualSignupPage3() {
   };
 
   const handleSubmit = async () => {
+    setDisabledButton(true);
+
     try {
       const response = await saveFellowProfilePage3({
         variables: {
@@ -153,7 +155,7 @@ export default function IndividualSignupPage3() {
           <Avatar
             addClasses="self-end -mt-14"
             avatarType="Fellow"
-            fellow={fellow}
+            avatar={fellow?.profile?.avatar}
           />
         </div>
 

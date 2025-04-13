@@ -12,10 +12,11 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useApplication } from "@/contexts/ApplicationContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useMutation } from "@apollo/client";
-import { SAVE_JOB } from "@/graphql/mutations";
+import { SAVE_JOB, EDIT_JOB_LISTING } from "@/graphql/mutations";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
 
+import FinishListingModal from "@/components/modals/postAJobModals/finishListingModal";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -29,13 +30,14 @@ import {
   ListingBottomButtons,
   AppFellowNotes,
   AmsTopButtons,
+  OtherBusinessTopButtons,
 } from "./jobListingButtons";
 
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
 
 export default function JobListing({
-  isOwn,
+  // isOwn,
   hasId,
   id,
   inAms,
@@ -44,7 +46,8 @@ export default function JobListing({
 }: any) {
   const router = useRouter();
 
-  const { setPageType, isLoggedIn } = usePageContext();
+  const { setPageType, isLoggedIn, accountType, setCurrentPage } =
+    usePageContext();
   const { showModal, hideModal } = useModal();
   const { fellow, setFellow } = useFellow();
   const { job, setJob } = useJob();
@@ -52,67 +55,107 @@ export default function JobListing({
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const { applications } = useApplications();
+  const { business } = useBusiness();
 
+  const [isOwn, setIsOwn] = useState(false);
   const [canEdit, setCanEdit] = useState(false);
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
   const [thirdColorArray, setThirdColorArray] = useState(Array<any>);
+  const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
+  const [starOrStopEditingJobListing] = useMutation(EDIT_JOB_LISTING);
+  const [currentJob, setCurrentJob] = useState({} as Job);
+  const [savingForLater, setSavingForLater] = useState<boolean>(false);
   const [jobSavedStatus, setJobSavedStatus] = useState(
     fellow?.profile?.savedJobs?.includes(id),
   );
-  const [saveJobListing, { loading, error }] = useMutation(SAVE_JOB);
-  const [currentJob, setCurrentJob] = useState({} as Job);
-  const [savingForLater, setSavingForLater] = useState<boolean>(false);
+  const [thisId, setThisId] = useState<number | null>(null);
+  const [incompleteListing, setIncompleteListing] = useState(false);
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
+  const [gotJob, setGotJob] = useState(false);
 
-  let thisId;
-  if (!id) {
-    thisId === job?.id;
-  } else {
-    thisId === id;
-  }
+  const appNumber =
+    currentJob?.applications === null ? 0 : currentJob?.applications?.length;
 
   const {
     loading: queryLoading,
     error: queryError,
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
-    variables: { id: 1 },
-    // be sure to update this ID - I've set it to find the old job listing
-    skip: !isLoggedIn || job?.beingEdited,
+    variables: { id: id },
+    skip: !isLoggedIn || gotJob,
     onCompleted: (data) => {
       console.log(data);
+      setGotJob(true);
       setCurrentJob(data.jobListing);
-      renderJobListingRightColumn();
-      renderJobListingLeftColumn();
       setLoadingData(false);
-      setJob(data.jobListing);
+      if (
+        data.jobListing.completed !== "published" &&
+        data.jobListing.completed !== "appLimit"
+        // &&
+        // data.jobListing.completed !== "payment"
+      ) {
+        console.log(
+          "completed status:",
+          data.jobListing.completed,
+          "-- timeout to modal set.",
+        );
+        setIncompleteListing(true);
+        setTimeout(() => {
+          showModal(
+            <FinishListingModal completed={data.jobListing.completed} />,
+          );
+        }, 3000);
+      }
+      if (
+        accountType === "Business" &&
+        data.jobListing.business.id === business?.id
+      ) {
+        setIsOwn(true);
+      }
     },
   });
 
   useEffect(() => {
-    if (isOwn && newPost && job && !id) {
-      setCurrentJob(job);
+    setJob(currentJob);
+  }, [currentJob]);
+
+  const editJob = async () => {
+    try {
+      const response = await starOrStopEditingJobListing({
+        variables: {
+          jobId: job?.id,
+          beingEdited: canEdit,
+          completed: "step5",
+        },
+      });
+      // when successful
+      console.log(
+        "edit job successful, details:",
+        response.data.starOrStopEditingJobListing,
+      );
+    } catch (error) {
+      console.error("Error:", error);
     }
-  }, []);
+  };
 
   let currentApp;
   if (inAms || !isOwn) {
     // Filter applications for the current jobId
-    const currentApps = applications?.filter((app) => app.jobId === id);
+    const currentApps = applications?.filter(
+      (app) => app?.jobListing?.id === id,
+    );
     console.log(currentApps);
     // Find the application where the applicant matches the fellow's id
-    currentApp = currentApps?.find((app) => app.applicant === fellow?.id);
+    currentApp = "1";
+    // = currentApps?.find((app) => app.applicant === fellow?.id);
   }
-
-  const appNumber = currentJob?.applications?.length;
 
   const handleEditClick = (url: any) => {
     setJob({ ...job, beingEdited: true });
-    // plug in the editJob query here
-    // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
+    setCanEdit(true);
     console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
@@ -133,55 +176,75 @@ export default function JobListing({
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
   // make sure they haven't applied before
-  //TODO: Maybe we should make sure they haven't applied some other way?
-
-  // const matchingIds =
-  //   currentJob?.applicants &&
-  //   !currentJob?.applicants?.some(
-  //     (applicant: any) => applicant.id === fellow?.id,
-  //   );
+  const matchingIds = fellow?.jobApplications?.some(
+    (app: any) => app.jobListing.id === currentJob.id,
+  );
 
   // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
   // for the fellow aren't at it's limit of 5, they can apply!
 
-  const canApply = true;
-  hasMatchingNonNegParams === true &&
-    fellow?.profile?.dailyApplications?.length < 5;
-  // && matchingIds;
+  const canApply =
+    hasMatchingNonNegParams === true &&
+    fellow?.dailyApplications?.length < 5 &&
+    matchingIds;
 
-  // TODO: We need an un-save operation
+  console.log(
+    "have applied to this before:",
+    matchingIds,
+    "can apply:",
+    canApply,
+  );
+
   const saveClick = async (jobId: any) => {
-    if (fellow?.profile?.savedJobs?.includes(jobId)) {
-      setFellow({
-        ...fellow,
-        profile: {
-          ...fellow.profile,
-          savedJobs: fellow?.profile?.savedJobs?.filter(
-            (id: any) => id !== jobId,
-          ),
+    try {
+      const response = await saveJobListing({
+        variables: {
+          jobId: job?.id,
         },
       });
-      setJobSavedStatus(false);
-    } else {
-      try {
-        const response = await saveJobListing({
-          variables: {
-            jobId: jobId,
-          },
-        });
-        // when successful
-        console.log(
-          "save job successful, details:",
-          response.data.saveJobListing,
-        );
-      } catch (error) {
-        console.error("application error:", error);
-      }
-      setJobSavedStatus(true);
+      // when successful
+      console.log(
+        "save job successful, details:",
+        response.data.saveJobListing,
+      );
+    } catch (error) {
+      console.error("application error:", error);
     }
+    setJobSavedStatus(true);
+
     hideModal();
   };
 
+  // USE EFFECTS
+  useEffect(() => {
+    if (isOwn && newPost && job && !id) {
+      setCurrentJob(job);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!id) {
+      setThisId(job?.id ?? null);
+    } else {
+      setThisId(id);
+    }
+  }, [id, job]);
+
+  useEffect(() => {
+    ShuffleIdealButtonPattern(setPrimaryColorArray);
+    ShuffleIdealButtonPattern(setSecondaryColorArray);
+    ShuffleIdealButtonPattern(setThirdColorArray);
+    setPageType("jobListing");
+    setCurrentPage("jobListing");
+  }, []);
+
+  useEffect(() => {
+    if (job?.beingEdited) {
+      setCanEdit(true);
+    }
+  }, [job]);
+
+  // RENDERING FUNCTIONS
   const renderJobListingLeftColumn = () => {
     return (
       <div className="LeftColumn flex flex-col gap-8">
@@ -397,16 +460,11 @@ export default function JobListing({
               <ul
                 className={`ResponsibilitiesList ml-8 flex list-disc flex-col gap-4 ${titleColor}`}
               >
-                {currentJob?.responsibilities?.map((item, index) => {
-                  const responsibilityText =
-                    typeof item === "string"
-                      ? item
-                      : item?.responsibility || "";
-
+                {currentJob?.responsibilities?.map((responsibility, index) => {
                   return (
                     <li className="ResponsibilitiesItem" key={index}>
                       <p className="Responsibility text-jade"></p>
-                      {responsibilityText}
+                      {responsibility}
                     </li>
                   );
                 })}
@@ -456,29 +514,6 @@ export default function JobListing({
     );
   };
 
-  useEffect(() => {
-    // if the job is being edited, set the button to stay being pressed
-    // in case they'd like to edit other things
-    if (job?.beingEdited) {
-      setCanEdit(true);
-    }
-    ShuffleIdealButtonPattern(setPrimaryColorArray);
-    ShuffleIdealButtonPattern(setSecondaryColorArray);
-    ShuffleIdealButtonPattern(setThirdColorArray);
-    setPageType("jobListing");
-  }, []);
-
-  useEffect(() => {
-    console.log(currentJob);
-  }, [currentJob]);
-
-  useEffect(() => {
-    if (savingForLater) {
-      console.log("let's save this for later");
-      // here, we should call the mutation for isPublished, but set it to something for listings in a holding pattern.
-    }
-  }, [savingForLater]);
-
   return (
     <div
       className={`JobListingContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
@@ -498,6 +533,8 @@ export default function JobListing({
                 currentJob={currentJob}
                 canEdit={canEdit}
                 setCanEdit={setCanEdit}
+                incompleteListing={incompleteListing}
+                completed={currentJob.completed}
               />
             )}
 
@@ -505,24 +542,23 @@ export default function JobListing({
             {isOwn && inAms && <AmsTopButtons currentJob={currentJob} />}
 
             {/* fellow buttons */}
-            {!isOwn && (
+            {!isOwn && accountType === "Fellow" && (
               <ListingTopButtons
                 id={id}
                 saveClick={saveClick}
-                // jobSavedStatus={jobSavedStatus}
-                // matchingIds={matchingIds}
-                // appNumber={appNumber}
-                // currentJob={currentJob}
-                // canApply={canApply}
-                // hasMatchingNonNegParams={hasMatchingNonNegParams}
-                hasMatchingNonNegParams={true}
-                jobSavedStatus={false}
-                matchingIds={false}
-                appNumber={0}
+                jobSavedStatus={jobSavedStatus}
+                matchingIds={matchingIds}
+                appNumber={appNumber}
                 currentJob={currentJob}
-                canApply={true}
+                canApply={canApply}
+                hasMatchingNonNegParams={hasMatchingNonNegParams}
                 app={currentApp ? currentApp : "no current app here"}
               />
+            )}
+
+            {/* other business buttons */}
+            {!isOwn && accountType === "Business" && (
+              <OtherBusinessTopButtons currentJob={currentJob} />
             )}
 
             {!isOwn && <AppFellowNotes currentApp={currentApp} />}
@@ -538,6 +574,9 @@ export default function JobListing({
                 setCanEdit={setCanEdit}
                 setSavingForLater={setSavingForLater}
                 savingForLater={savingForLater}
+                incompleteListing={incompleteListing}
+                completed={currentJob.completed}
+                currentJob={currentJob}
               />
             )}
 
@@ -572,10 +611,8 @@ export default function JobListing({
             {/* fellow / apply buttons */}
             {!isOwn && (
               <ListingBottomButtons
-                // matchingIds={matchingIds}
-                // canApply={canApply}
-                matchingIds={false}
-                canApply={true}
+                matchingIds={matchingIds}
+                canApply={canApply}
                 currentJob={currentJob}
                 id={id}
                 currentApp={currentApp}

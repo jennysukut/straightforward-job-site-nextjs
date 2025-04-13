@@ -62,19 +62,19 @@ export default function RejectionStep1Modal({ application }: any) {
     const index: number =
       applications?.findIndex((app: any) => app.id === application?.id) ?? -1;
 
-    setApplications(
-      applications?.map((app) =>
-        app.id === application.id
-          ? {
-              ...app,
-              appStatus: "closed",
-              appIsBeingRejected: true,
-              rejectionMessage: "basic",
-              mail: [...(applications?.[index]?.mail || []), message],
-            }
-          : app,
-      ) || [],
-    );
+    // setApplications(
+    //   applications?.map((app) =>
+    //     app.id === application.id
+    //       ? {
+    //           ...app,
+    //           appStatus: "closed",
+    //           appIsBeingRejected: true,
+    //           rejectionMessage: "basic",
+    //           mail: [...(applications?.[index]?.mail || []), message],
+    //         }
+    //       : app,
+    //   ) || [],
+    // );
     hideModal();
   };
 

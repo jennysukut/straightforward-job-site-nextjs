@@ -70,9 +70,11 @@ const MessageCenter = ({
     return app.id === activeApp;
   });
 
-  const correspondingListing = jobListings?.find((jl: any) => {
-    return jl.jobId === correspondingApp?.jobId;
-  });
+  const correspondingListing = "1";
+  // jobListings?.find((jl: any) => {
+
+  //   return jl.jobId === correspondingApp?.jobId;
+  // });
 
   const scrollToBottom = () => {
     const messageContainer = document.getElementById("Messages");
@@ -220,55 +222,55 @@ const MessageCenter = ({
     return applicant ? applicant.name : "Unknown";
   };
 
-  const viewRelevantProfile = () => {
-    setButtonClicked("viewRelevantProfile");
-    if (accountType === "Fellow") {
-      console.log(
-        "need to go to the profile for: ",
-        correspondingApp?.businessId,
-      );
-      router.push(`/profile/${correspondingApp?.businessId}`);
-    } else if (accountType === "Business") {
-      router.push(`/application/${correspondingApp?.id}`);
-      // router.push(`/profile/${correspondingApp?.applicant}`);
-    }
-  };
+  // const viewRelevantProfile = () => {
+  //   setButtonClicked("viewRelevantProfile");
+  //   if (accountType === "Fellow") {
+  //     console.log(
+  //       "need to go to the profile for: ",
+  //       correspondingApp?.businessId,
+  //     );
+  //     router.push(`/profile/${correspondingApp?.businessId}`);
+  //   } else if (accountType === "Business") {
+  //     router.push(`/application/${correspondingApp?.id}`);
+  //     // router.push(`/profile/${correspondingApp?.applicant}`);
+  //   }
+  // };
 
   const expandClick = () => {
     setButtonClicked("expandClick");
     router.push(`/messages/${correspondingApp?.id}`);
   };
 
-  const fileReport = () => {
-    if (accountType === "Business") {
-      const reportee = correspondingApp?.applicant;
-      showModal(
-        <ReportModal
-          id={reportee}
-          nameForReport={findApplicantName(correspondingApp?.applicant)}
-        />,
-      );
-    } else if (accountType === "Fellow") {
-      const reportee = correspondingListing?.job?.businessId;
-      showModal(
-        <ReportModal
-          id={reportee}
-          nameForReport={correspondingListing?.job?.businessName}
-        />,
-      );
-    }
-    setButtonClicked("fileReport");
-    console.log("need to file a report");
-  };
+  // const fileReport = () => {
+  //   if (accountType === "Business") {
+  //     const reportee = correspondingApp?.applicant;
+  //     showModal(
+  //       <ReportModal
+  //         id={reportee}
+  //         nameForReport={findApplicantName(correspondingApp?.applicant)}
+  //       />,
+  //     );
+  //   } else if (accountType === "Fellow") {
+  //     const reportee = correspondingListing?.job?.businessId;
+  //     showModal(
+  //       <ReportModal
+  //         id={reportee}
+  //         nameForReport={correspondingListing?.job?.businessName}
+  //       />,
+  //     );
+  //   }
+  //   setButtonClicked("fileReport");
+  //   console.log("need to file a report");
+  // };
 
-  const viewListing = () => {
-    setButtonClicked("viewListing");
-    if (accountType === "Fellow") {
-      router.push(`/listing/${correspondingApp?.id}`);
-    } else if (accountType === "Business") {
-      router.push(`/ams/${correspondingApp?.jobId}`);
-    }
-  };
+  // const viewListing = () => {
+  //   setButtonClicked("viewListing");
+  //   if (accountType === "Fellow") {
+  //     router.push(`/listing/${correspondingApp?.id}`);
+  //   } else if (accountType === "Business") {
+  //     router.push(`/ams/${correspondingApp?.jobId}`);
+  //   }
+  // };
 
   const readMesssages = () => {
     const updatedMessages = messages.map((message) => {
@@ -299,6 +301,7 @@ const MessageCenter = ({
   useEffect(() => {
     readMesssages();
   }, []);
+
 
   useEffect(() => {
     if (correspondingApp?.appIsBeingRejected) {
@@ -340,7 +343,7 @@ const MessageCenter = ({
               go to mailbox
             </SiteButton>
           )}
-          {(activeApp || specificMessages) && (
+          {/* {(activeApp || specificMessages) && (
             <div className="Title flex flex-col">
               <h2 className="text-right text-emerald">
                 Your Conversation with{" "}
@@ -352,7 +355,7 @@ const MessageCenter = ({
                 regarding the {correspondingListing?.job?.jobTitle} position
               </p>
             </div>
-          )}
+          )} */}
           {/* <div className="Title flex flex-col">
             <h2 className="text-right text-emerald">
               Your Conversation with{" "}
@@ -378,7 +381,7 @@ const MessageCenter = ({
               </p>
             </div>
           )}
-          {activeApp && messages.length < 1 && (
+          {/* {activeApp && messages.length < 1 && (
             <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages with{" "}
@@ -388,7 +391,7 @@ const MessageCenter = ({
                 yet.
               </p>
             </div>
-          )}
+          )} */}
           {sortedDates.map((date) => (
             <div key={date} className="flex w-[100%] flex-col gap-3">
               <div className="Divider mb-2 flex items-center">
@@ -529,7 +532,7 @@ const MessageCenter = ({
         <div
           className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
         >
-          <div
+          {/* <div
             className={`ButtonGroup ${!specificMessages ? "justify-end" : "justify-start"} flex w-[100%] gap-4`}
           >
             <SiteButton
@@ -568,7 +571,7 @@ const MessageCenter = ({
                 ? "set an appointment"
                 : "view appointments"}
             </SiteButton>
-          </div>
+          </div> */}
 
           {specificMessages && (
             <SiteButton

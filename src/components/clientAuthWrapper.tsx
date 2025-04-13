@@ -7,6 +7,7 @@ import { usePageContext } from "@/contexts/PageContext";
 import { GET_MY_PROFILE } from "@/graphql/queries";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useApplications } from "@/contexts/ApplicationsContext";
 
 export default function ClientAuthWrapper({
   children,
@@ -23,6 +24,7 @@ export default function ClientAuthWrapper({
   } = usePageContext();
   const { setFellow } = useFellow();
   const { setBusiness } = useBusiness();
+  const { setApplications } = useApplications();
   const router = useRouter();
 
   useEffect(() => {
@@ -50,6 +52,9 @@ export default function ClientAuthWrapper({
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFellow(data.getMyProfile.fellow);
+        setApplications(data.getMyProfile.fellow.jobApplications);
+        // setApplications(data.getMyProfile.fellow.dailyApplications);
+
         // setIsLoadingAccount(false);
         console.log("you're a fellow and you're logged in!");
       } else if (data.getMyProfile.roles.includes("BUSINESS")) {

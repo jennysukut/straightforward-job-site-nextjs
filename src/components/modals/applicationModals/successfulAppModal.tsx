@@ -18,7 +18,7 @@ export default function SuccessfulApplicationModal({
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const router = useRouter();
-  const appsLeft = 5 - fellow?.profile?.dailyApplications?.count;
+  const appsLeft = 5 - fellow?.dailyApplications?.length || 1;
 
   const goToAms = () => {
     router.push("/ams");

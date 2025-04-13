@@ -72,6 +72,8 @@ export default function Messages() {
             />
           )}
 
+          {/* message list for businesses */}
+
           {accountType === "Business" && (
             <RenderBusinessMessageList
               colorArray={colorArray}

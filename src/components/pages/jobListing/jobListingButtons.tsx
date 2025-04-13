@@ -7,6 +7,7 @@ import PaymentModal from "@/components/modals/paymentModal";
 import ApplyModal from "@/components/modals/applicationModals/applyModal";
 import ApplicationNoteModal from "@/components/modals/applicationModals/applicationNoteModal";
 import RetractionConfirmationModal from "@/components/modals/applicationModals/retractApplicationModal";
+import { PUBLISH_JOB_LISTING } from "@/graphql/mutations";
 
 import { useModal } from "@/contexts/ModalContext";
 import { useRouter } from "next/navigation";
@@ -15,13 +16,106 @@ import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useState } from "react";
 import { useFellow } from "@/contexts/FellowContext";
+import { useMutation } from "@apollo/client";
+import { useJob } from "@/contexts/JobContext";
+import PaymentSuccessfulModal from "@/components/modals/paymentSuccessfulModal";
+import SuccessfullyPublishedModal from "@/components/modals/postAJobModals/successfullyPublishedModal";
 
-const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
+const OwnListingTopButtons = ({
+  currentJob,
+  canEdit,
+  setCanEdit,
+  incompleteListing,
+  completed,
+}: any) => {
   const { showModal } = useModal();
-  // figure out which buttons to use here before they've published a listing - perhaps edits?
+  const { setJob, job } = useJob();
+  const [clickedButton, setClickedButton] = useState("");
+  const [publishJobListing, { loading, error }] =
+    useMutation(PUBLISH_JOB_LISTING);
+  const router = useRouter();
+  const [isPublished, setIsPublished] = useState(false);
+
+  const publishPost = async () => {
+    // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+    try {
+      const response = await publishJobListing({
+        variables: {
+          id: currentJob.id,
+          completed: "published",
+        },
+      });
+
+      setIsPublished(true);
+      console.log(
+        "Job Listing successfully published, Details:",
+        response.data.publishJobListing,
+      );
+
+      showModal(
+        <SuccessfullyPublishedModal isJobPost jobId={currentJob?.id} />,
+      );
+
+      // showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
+
+      setJob({});
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
+  let redirectUrl: any;
+  if (completed === "create") {
+    redirectUrl = "/post-a-job/step1";
+  } else if (completed === "step1") {
+    redirectUrl = "/post-a-job/step2";
+  } else if (completed === "step2") {
+    redirectUrl = "/post-a-job/step3";
+  } else if (completed === "step3") {
+    redirectUrl = "/post-a-job/step4";
+  } else if (completed === "step4") {
+    redirectUrl = "/post-a-job/step5";
+  } else if (completed === "step5") {
+    redirectUrl = "listing";
+  }
+
+  const redirect = () => {
+    setClickedButton("redirect");
+    console.log("need to redirect to the relevant url - ", redirectUrl);
+    if (redirectUrl !== "listing") {
+      router.push(redirectUrl);
+    } else if (redirectUrl === "listing") {
+      showModal(<ApplicationLimitModal />);
+    }
+  };
+
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
-      <SiteButton
+      {incompleteListing ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="complete listing"
+          addClasses="px-8"
+          onClick={redirect}
+          isSelected={clickedButton === "redirect"}
+        >
+          complete listing
+        </SiteButton>
+      ) : (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={() => setCanEdit(!canEdit)}
+          isSelected={canEdit}
+        >
+          {canEdit ? "finish editing" : "edit"}
+        </SiteButton>
+      )}
+      {/* <SiteButton
         variant="filled"
         colorScheme="b4"
         aria="edit"
@@ -30,17 +124,16 @@ const OwnListingTopButtons = ({ currentJob, canEdit, setCanEdit }: any) => {
         isSelected={canEdit}
       >
         {canEdit ? "finish editing" : "edit"}
-      </SiteButton>
+      </SiteButton> */}
       <SiteButton
         aria="publish"
         variant="filled"
         colorScheme="f1"
         addClasses="px-8"
-        onClick={() =>
-          showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-        }
+        onClick={publishPost}
+        disabled={incompleteListing || isPublished}
       >
-        publish
+        {isPublished ? "already published" : "publish"}
       </SiteButton>
       <SiteButton
         variant="filled"
@@ -59,20 +152,98 @@ const OwnJobBottomButtons = ({
   setCanEdit,
   setSavingForLater,
   savingForLater,
+  incompleteListing,
+  completed,
+  currentJob,
 }: any) => {
   const { showModal } = useModal();
+  const router = useRouter();
+  const [clickedButton, setClickedButton] = useState("");
+  const { setJob } = useJob();
+  const [publishJobListing, { loading, error }] =
+    useMutation(PUBLISH_JOB_LISTING);
+  const [isPublished, setIsPublished] = useState(false);
+
+  let redirectUrl: any;
+
+  if (completed === "create") {
+    redirectUrl = "/post-a-job/step1";
+  } else if (completed === "step1") {
+    redirectUrl = "/post-a-job/step2";
+  } else if (completed === "step2") {
+    redirectUrl = "/post-a-job/step3";
+  } else if (completed === "step3") {
+    redirectUrl = "/post-a-job/step4";
+  } else if (completed === "step4") {
+    redirectUrl = "/post-a-job/step5";
+  } else if (completed === "step5") {
+    redirectUrl = "listing";
+  }
+
+  const redirect = () => {
+    setClickedButton("redirect");
+    console.log("need to redirect to the relevant url - ", redirectUrl);
+    if (redirectUrl !== "listing") {
+      router.push(redirectUrl);
+    } else if (redirectUrl === "listing") {
+      showModal(<ApplicationLimitModal />);
+    }
+  };
+
+  const publishPost = async () => {
+    // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
+
+    try {
+      const response = await publishJobListing({
+        variables: {
+          id: currentJob.id,
+          completed: "published",
+        },
+      });
+
+      console.log(
+        "Job Listing successfully published, Details:",
+        response.data.publishJobListing,
+      );
+
+      setIsPublished(true);
+      showModal(
+        <SuccessfullyPublishedModal isJobPost jobId={currentJob?.id} />,
+      );
+      // showModal(<PaymentSuccessfulModal isJobPost jobId={currentJob?.id} />);
+
+      setJob({});
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+  };
+
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-      <SiteButton
-        variant="filled"
-        colorScheme="b6"
-        aria="edit"
-        addClasses="px-8"
-        onClick={() => setCanEdit(!canEdit)}
-        isSelected={canEdit}
-      >
-        {canEdit ? "finish editing" : "edit"}
-      </SiteButton>
+      {incompleteListing ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="complete listing"
+          addClasses="px-8"
+          onClick={redirect}
+          isSelected={clickedButton === "redirect"}
+        >
+          complete listing
+        </SiteButton>
+      ) : (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={() => setCanEdit(!canEdit)}
+          isSelected={canEdit}
+        >
+          {canEdit ? "finish editing" : "edit"}
+        </SiteButton>
+      )}
       <SiteButton
         aria="publish"
         variant="filled"
@@ -81,8 +252,9 @@ const OwnJobBottomButtons = ({
         onClick={() =>
           showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
         }
+        disabled={incompleteListing || isPublished}
       >
-        publish
+        {isPublished ? "already published" : "publish"}
       </SiteButton>
       <SiteButton
         variant="filled"
@@ -92,7 +264,7 @@ const OwnJobBottomButtons = ({
         onClick={() => setSavingForLater(!savingForLater)}
         isSelected={savingForLater}
       >
-        save for later
+        save
       </SiteButton>
     </div>
   );
@@ -114,15 +286,15 @@ const ListingTopButtons = ({
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
 
-  const atDailyLimit = fellow?.profile?.dailyApplications?.count === 5;
+  const atDailyLimit = fellow?.dailyApplications?.count === 5;
 
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">
-        {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
+        {/* {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
           <SiteButton
             size="smallCircle"
-            colorScheme="c4"
+            colorScheme="f1"
             variant="filled"
             aria="details"
             addClasses="text-sm text-center"
@@ -133,20 +305,20 @@ const ListingTopButtons = ({
         )}
         {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
           <SiteLabel
-            colorScheme="c4"
+            colorScheme="f1"
             variant="display"
             size="extraSmall"
             aria="limit details"
-            addClasses="text-sm text-center -mt-2 -mr-1 absolute"
+            addClasses={`text-sm text-center max-w-[17rem] -mt-2 ${!hasMatchingNonNegParams ? "mr-2" : "-mr-1"} absolute`}
             onClick={() => setShowLimitDetails(!showLimitDetails)}
           >
             {!hasMatchingNonNegParams
-              ? "you don't match the non-negotiable parameters of this listing"
+              ? "your skills list doesn't match this job's non-negotiable parameters"
               : atDailyLimit
                 ? "you've reached your daily app limit"
                 : "details here"}
           </SiteLabel>
-        )}
+        )} */}
         {isLoggedIn && (
           <SiteButton
             aria="saveJob"
@@ -154,7 +326,11 @@ const ListingTopButtons = ({
             onClick={() => saveClick(id)}
             isSelected={jobSavedStatus || matchingIds}
           >
-            {jobSavedStatus === true ? "saved" : "save job"}
+            {jobSavedStatus === true
+              ? "saved"
+              : matchingIds
+                ? "applied"
+                : "save job"}
           </SiteButton>
         )}
       </div>
@@ -164,13 +340,66 @@ const ListingTopButtons = ({
         addClasses="mt-3"
         colorScheme="f3"
       >
-        applications: {appNumber}/{currentJob?.applicationLimit}
+        applications:{" "}
+        {currentJob.applications !== null ? currentJob.applications.length : 0}/
+        {currentJob?.applicationLimit || 25}
       </SiteLabel>
 
       <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
         round: {currentJob?.roundNumber || "1"}
       </SiteLabel>
-      {!matchingIds && isLoggedIn && (
+
+      <div className="ApplyButtons -mt-1 flex items-start gap-2">
+        {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
+          <SiteButton
+            size="smallCircle"
+            colorScheme="d1"
+            variant="filled"
+            aria="details"
+            addClasses="text-sm text-center"
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            ?
+          </SiteButton>
+        )}
+        {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
+          <SiteLabel
+            colorScheme="d1"
+            variant="display"
+            size="extraSmall"
+            aria="limit details"
+            addClasses={`text-sm text-center mt-2 max-w-[17rem] `}
+            onClick={() => setShowLimitDetails(!showLimitDetails)}
+          >
+            {!hasMatchingNonNegParams
+              ? "your skills list doesn't match this job's non-negotiable parameters"
+              : atDailyLimit
+                ? "you've reached your daily app limit"
+                : "details here"}
+          </SiteLabel>
+        )}
+        {!matchingIds && isLoggedIn && !showLimitDetails && (
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="b4"
+            addClasses="px-8 mt-2"
+            onClick={() =>
+              showModal(
+                <ApplyModal
+                  jobTitle={currentJob?.jobTitle}
+                  business={currentJob?.business.name}
+                  jobId={id}
+                />,
+              )
+            }
+            disabled={canApply === false || matchingIds}
+          >
+            {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
+          </SiteButton>
+        )}
+      </div>
+      {/* {!matchingIds && isLoggedIn && (
         <SiteButton
           aria="publish"
           variant="filled"
@@ -180,7 +409,7 @@ const ListingTopButtons = ({
             showModal(
               <ApplyModal
                 jobTitle={currentJob?.jobTitle}
-                business={currentJob?.businessName}
+                business={currentJob?.business.name}
                 jobId={id}
               />,
             )
@@ -189,7 +418,7 @@ const ListingTopButtons = ({
         >
           {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
         </SiteButton>
-      )}
+      )} */}
       {matchingIds && isLoggedIn && (
         <SiteButton
           variant="filled"
@@ -206,6 +435,121 @@ const ListingTopButtons = ({
 };
 
 const ListingBottomButtons = ({
+  matchingIds,
+  canApply,
+  currentJob,
+  id,
+  currentApp,
+}: any) => {
+  const router = useRouter();
+  const { showModal, hideModal } = useModal();
+  const { applications, setApplications } = useApplications();
+  const { isLoggedIn, accountType } = usePageContext();
+  const continueRetract = () => {
+    console.log("trying to retract this application");
+    const updatedApplications = applications?.filter(
+      (app) => app.id !== currentApp?.id,
+    );
+    setApplications(updatedApplications || []);
+    hideModal();
+  };
+
+  return (
+    <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
+      <SiteButton
+        variant="filled"
+        colorScheme="c4"
+        aria="edit"
+        addClasses="px-8"
+        onClick={() => router.push(`/business/${currentJob.business.id}`)}
+      >
+        view company details
+      </SiteButton>
+      {!matchingIds && isLoggedIn && accountType === "Fellow" && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="f1"
+          addClasses="px-8"
+          onClick={() =>
+            showModal(
+              <ApplyModal
+                jobTitle={currentJob?.jobTitle}
+                business={currentJob?.businessName}
+                jobId={id}
+              />,
+            )
+          }
+          disabled={canApply === false || matchingIds}
+        >
+          apply for this job
+        </SiteButton>
+      )}
+      {matchingIds && isLoggedIn && (
+        <div className="ApplicationButtons flex flex-col items-end gap-4 self-end">
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="b3"
+            addClasses="px-8"
+            // onClick={}
+          >
+            send a message
+          </SiteButton>
+          <SiteButton
+            aria="publish"
+            variant="filled"
+            colorScheme="f1"
+            addClasses="px-8"
+            // onClick={}
+          >
+            view your application
+          </SiteButton>
+
+          <SiteButton
+            variant="filled"
+            colorScheme="f5"
+            aria="edit"
+            addClasses="px-8"
+            onClick={() =>
+              showModal(
+                <RetractionConfirmationModal
+                  jobTitle={currentJob?.jobTitle}
+                  continueRetract={continueRetract}
+                />,
+              )
+            }
+          >
+            retract
+          </SiteButton>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const OtherBusinessTopButtons = ({ currentJob }: any) => {
+  return (
+    <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
+      <SiteLabel
+        variant="display"
+        aria="appLimit"
+        addClasses="mt-3"
+        colorScheme="f3"
+      >
+        applications:{" "}
+        {currentJob.applications !== null ? currentJob.applications.length : 0}/
+        {currentJob?.applicationLimit || 25}
+      </SiteLabel>
+
+      <SiteLabel variant="display" aria="roundNumber" colorScheme="b3">
+        round: {currentJob?.roundNumber || "1"}
+      </SiteLabel>
+    </div>
+  );
+};
+
+const OtherBusinessBottomButtons = ({
   matchingIds,
   canApply,
   currentJob,
@@ -309,7 +653,7 @@ const AmsTopButtons = ({ currentJob }: any) => {
         Next Payment: $200 on February 5
       </SiteLabel>
       <SiteLabel colorScheme="b3" aria="applicationNumber" variant="display">
-        Applications: {currentJob?.applications?.length}/
+        Applications: {currentJob?.applications?.length || 0}/
         {currentJob?.applicationLimit}
       </SiteLabel>
       <SiteLabel colorScheme="c4" aria="Interviews" variant="display">
@@ -372,6 +716,8 @@ export {
   OwnJobBottomButtons,
   ListingTopButtons,
   ListingBottomButtons,
+  OtherBusinessTopButtons,
+  OtherBusinessBottomButtons,
   AppFellowNotes,
   AmsTopButtons,
 };

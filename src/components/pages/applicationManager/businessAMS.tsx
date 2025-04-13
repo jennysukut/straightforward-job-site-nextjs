@@ -6,7 +6,9 @@ import { useModal } from "@/contexts/ModalContext";
 import { Job } from "@/contexts/JobContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { useJobListings } from "@/contexts/JobListingsContext";
+import { JobListing, useJobListings } from "@/contexts/JobListingsContext";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTINGS } from "@/graphql/queries";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import PostedJobComponent from "@/components/amsComponents/postedJobComponent";
@@ -14,38 +16,42 @@ import PostedJobComponent from "@/components/amsComponents/postedJobComponent";
 export default function BusinessAMS() {
   const { textColor } = useColorOptions();
   const { business } = useBusiness();
-  const { jobListings } = useJobListings();
+  // const { jobListings } = useJobListings();
 
+  const [loadingData, setLoadingData] = useState(true);
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filteredJobs, setFilteredJobs] = useState<string[]>([]);
+  const [jobListings, setJobListings] = useState<[{}]>([{}]);
 
-  const filterJobs = (jobList: any) => {
-    const filteredJobs = jobList.filter((job: any) => {
-      const matchesBusiness = job.job.businessId === business?.id;
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: { jobListings: jobListingsArray = [] } = {},
+  } = useQuery(GET_JOB_LISTINGS, {
+    variables: { businessId: business?.id },
+    onCompleted: (data) => {
+      console.log(JSON.stringify(data));
+      console.log(data);
+      setLoadingData(false);
+      setJobListings(data.jobListings);
+    },
+  });
 
-      return matchesBusiness;
-    });
-    setFilteredJobs(filteredJobs);
-  };
-
+  console.log("jobListings Here:", jobListings);
   const renderJobs = () => {
-    return filteredJobs?.map((job: any, index: number) => (
+    return jobListings?.map((job: any, index: number) => (
       <PostedJobComponent
-        key={job.jobId}
-        id={job.jobId}
+        key={job.id}
+        id={job.id}
         colorArray={colorArray}
         index={index}
-        jobId={job.jobId}
+        job={job}
       />
     ));
   };
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
-  }, []);
-
-  useEffect(() => {
-    filterJobs(jobListings);
   }, []);
 
   return (
@@ -56,7 +62,7 @@ export default function BusinessAMS() {
         <div className="TitleDetails -mb-2 mr-14 text-right">
           <h1 className="AMSTitle">Your Job Listings</h1>
           <p className="Details font-semibold italic text-olive">
-            Total Active Jobs: {filteredJobs.length}
+            Total Active Jobs: {jobListings.length}
           </p>
         </div>
         <div className="JobListings m-4 flex w-full flex-wrap items-center justify-center gap-14">

@@ -123,6 +123,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
       setCurrentFellow(fellow as FellowProfileData);
       setLoadingData(false);
     }
+    console.log(fellow);
+    console.log("currentFellow:", currentFellow);
   }, []);
 
   const {
@@ -166,13 +168,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   return (
     <div
-      className={`ProfileContainer flex w-[84%] max-w-[1600px] flex-col gap-8 md:w-[75%] ${textColor}`}
+      className={`ProfileContainer mr-14 flex w-[80%] max-w-[1600px] flex-col gap-8 self-center ${textColor}`}
     >
       {loadingData ? (
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
       ) : (
-        <div className="ProfileDetails flex gap-8">
+        <div className="ProfileDetails mr-14 flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}
             {isOwn && !isApp && (
@@ -475,7 +477,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                   <Avatar
                     addClasses="self-start min-w-[60px]"
                     avatarType="Fellow"
-                    avatar={currentFellow.profile?.avatar}
+                    avatar={currentFellow.profile?.avatar || "checks"}
                   />
                   <div className="NameBioContainer">
                     <h1 className="Name">
@@ -483,7 +485,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                     </h1>
                     <p className="SmallBio min-w-[20vw] pt-4 leading-6">
                       {currentFellow?.profile?.smallBio ||
-                        "Small Bio Placeholder - When filled out, the small bio & details for the fellow will go here!"}
+                        `Your small bio goes here. Click on the "add more info" button to continue filling out your details.`}
                     </p>
                   </div>
                 </div>
@@ -507,21 +509,23 @@ const FellowProfile: React.FC<FellowProfile> = ({
               />
             )} */}
 
-            <InfoBox
-              variant="hollow"
-              aria="location"
-              size="profile"
-              width="medium"
-              canEdit={canEdit}
-              editClick={() => handleEditClick("/individual-signup/step1")}
-            >
-              <div className="LocationInfo flex flex-col gap-2">
-                <p className={`Location ml-2 ${titleColor}`}>
-                  Location: {currentFellow?.profile?.location},{" "}
-                  {currentFellow?.profile?.country}
-                </p>
-              </div>
-            </InfoBox>
+            {fellow?.profile?.location && (
+              <InfoBox
+                variant="hollow"
+                aria="location"
+                size="profile"
+                width="medium"
+                canEdit={canEdit}
+                editClick={() => handleEditClick("/individual-signup/step1")}
+              >
+                <div className="LocationInfo flex flex-col gap-2">
+                  <p className={`Location ml-2 ${titleColor}`}>
+                    Location: {currentFellow?.profile?.location},{" "}
+                    {currentFellow?.profile?.country}
+                  </p>
+                </div>
+              </InfoBox>
+            )}
 
             {currentFellow?.profile?.locationOptions && (
               <InfoBox

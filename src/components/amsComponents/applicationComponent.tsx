@@ -9,6 +9,7 @@ import SiteButton from "../buttonsAndLabels/siteButton";
 import ShuffleIdealButtonPattern from "../buttonsAndLabels/shuffleIdealButtonPattern";
 
 interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
+  app: any;
   id: string;
   colorArray: Array<string>;
   index: any;
@@ -26,6 +27,7 @@ interface ApplicationProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Application: React.FC<ApplicationProps> = ({
+  app,
   id,
   colorArray,
   index,
@@ -45,7 +47,6 @@ const Application: React.FC<ApplicationProps> = ({
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
 
   // search through the jobListings to find the job with the matching jobId
-  const selectedJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
   const jobClicked = selectedApps?.includes(id);
 
   const buttonClick = (id: string) => {
@@ -55,7 +56,7 @@ const Application: React.FC<ApplicationProps> = ({
       setSelectedColor("");
     } else {
       handleAdd("selectedApps", id);
-      setCurrentJob(selectedJob);
+      setCurrentJob(app.jobListing);
       setSelectedColor(colorArray[index % colorArray.length]);
     }
   };
@@ -87,10 +88,10 @@ const Application: React.FC<ApplicationProps> = ({
         >
           <div className="AppInfo flex justify-between">
             <p className="TitleAndBusiness text-md">
-              {`${selectedJob?.jobTitle} | ${selectedJob?.businessName}`}
+              {`${app?.jobListing.jobTitle} | ${app?.jobListing.business.name}`}
             </p>
             <p className="Details self-center text-sm">
-              {currentJob ? `${appStatus}` : `${dateOfApp} | ${appStatus}`}
+              {currentJob ? `${app.status}` : `${dateOfApp} | ${app.status}`}
             </p>
           </div>
         </SiteButton>

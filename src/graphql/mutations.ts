@@ -267,8 +267,20 @@ export const SAVE_BUSINESS_PROFILE_PAGE_2_MUTATION = gql`
 // JOB LISTING CREATION MUTATIONS
 
 export const CREATE_JOB_LISTING_MUTATION = gql`
-  mutation createJobListing($jobTitle: String!, $positionType: String!) {
-    createJobListing(jobTitle: $jobTitle, positionType: $positionType)
+  mutation createJobListing(
+    $jobTitle: String!
+    $positionType: String!
+    $beingEdited: Boolean
+    $published: Boolean
+    $completed: String
+  ) {
+    createJobListing(
+      jobTitle: $jobTitle
+      positionType: $positionType
+      beingEdited: $beingEdited
+      published: $published
+      completed: $completed
+    )
   }
 `;
 
@@ -277,11 +289,13 @@ export const ADD_JOB_LISTING_DETAILS_1_MUTATION = gql`
     $id: ID!
     $positionSummary: String!
     $nonNegParams: [String!]!
+    $completed: String
   ) {
     addJobListingDetailsStep1(
       id: $id
       positionSummary: $positionSummary
       nonNegParams: $nonNegParams
+      completed: $completed
     )
   }
 `;
@@ -296,6 +310,9 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
     $idealCandidate: String!
     $daysInOffice: String!
     $daysRemote: String!
+    $city: String
+    $state: String
+    $completed: String
   ) {
     addJobListingDetailsStep2(
       id: $id
@@ -306,6 +323,9 @@ export const ADD_JOB_LISTING_DETAILS_2_MUTATION = gql`
       idealCandidate: $idealCandidate
       daysInOffice: $daysInOffice
       daysRemote: $daysRemote
+      city: $city
+      state: $state
+      completed: $completed
     )
   }
 `;
@@ -316,12 +336,14 @@ export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
     $experienceLevel: [String!]!
     $preferredSkills: [String!]!
     $moreAboutPosition: String
+    $completed: String
   ) {
     addJobListingDetailsStep3(
       id: $id
       experienceLevel: $experienceLevel
       preferredSkills: $preferredSkills
       moreAboutPosition: $moreAboutPosition
+      completed: $completed
     )
   }
 `;
@@ -329,13 +351,15 @@ export const ADD_JOB_LISTING_DETAILS_3_MUTATION = gql`
 export const ADD_JOB_LISTING_DETAILS_4_MUTATION = gql`
   mutation addJobListingDetailsStep4(
     $id: ID!
-    $responsibilities: [ResponsibilityInput!]!
+    $responsibilities: [String!]!
     $perks: [String!]!
+    $completed: String
   ) {
     addJobListingDetailsStep4(
       id: $id
       responsibilities: $responsibilities
       perks: $perks
+      completed: $completed
     )
   }
 `;
@@ -344,8 +368,13 @@ export const ADD_JOB_LISTING_DETAILS_5_MUTATION = gql`
   mutation addJobListingDetailsStep5(
     $id: ID!
     $interviewProcess: [InterviewProcessInput!]!
+    $completed: String
   ) {
-    addJobListingDetailsStep5(id: $id, interviewProcess: $interviewProcess)
+    addJobListingDetailsStep5(
+      id: $id
+      interviewProcess: $interviewProcess
+      completed: $completed
+    )
   }
 `;
 
@@ -354,11 +383,13 @@ export const CREATE_JOB_LISTING_ROUND = gql`
     $id: ID!
     $applicationLimit: Int
     $roundNumber: Int
+    $completed: String
   ) {
     createJobListingRound(
       id: $id
       applicationLimit: $applicationLimit
       roundNumber: $roundNumber
+      completed: $completed
     ) {
       id
       jobTitle
@@ -401,6 +432,26 @@ export const CREATE_JOB_LISTING_ROUND = gql`
       published
       beingEdited
     }
+  }
+`;
+
+export const EDIT_JOB_LISTING = gql`
+  mutation starOrStopEditingJobListing(
+    $id: ID!
+    $beingEdited: Boolean!
+    $completed: String
+  ) {
+    starOrStopEditingJobListing(
+      id: $id
+      beingEdited: $beingEdited
+      completed: $completed
+    )
+  }
+`;
+
+export const PUBLISH_JOB_LISTING = gql`
+  mutation publishJobListing($id: ID!, $completed: String) {
+    publishJobListing(id: $id, completed: $completed)
   }
 `;
 

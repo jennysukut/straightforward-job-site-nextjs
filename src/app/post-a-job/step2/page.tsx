@@ -145,7 +145,9 @@ export default function PostAJobStep2() {
           idealCandidate: data.idealCandidate,
           daysInOffice: data.daysInOffice || "",
           daysRemote: data.daysRemote || "",
-          // add the city state info here
+          city: data.city || "",
+          state: data.state || "",
+          completed: "step2",
         },
       });
 
@@ -164,7 +166,8 @@ export default function PostAJobStep2() {
         daysInOffice: data.daysInOffice,
         daysRemote: data.daysRemote,
         beingEdited: false,
-        // add the city state info here
+        city: data.city,
+        state: data.state,
       });
       if (job?.beingEdited) {
         router.push("/listing");
