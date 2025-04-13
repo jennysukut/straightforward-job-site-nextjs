@@ -168,7 +168,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
             )}
           </div>
 
-          <div className="ProfileRightColumn mr-20 flex flex-col gap-8">
+          <div className="ProfileRightColumn flex flex-col gap-8">
             {/* Name And Small Bio */}
             <div className="BusinessName mr-8">
               <InfoBox

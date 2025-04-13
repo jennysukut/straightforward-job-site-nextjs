@@ -70,20 +70,20 @@ export default function Profile() {
   }, [fellow, business]);
 
   return (
-    <div className="Profile flex flex-grow flex-col items-center gap-8 md:pb-12 md:pt-3">
-      {loadingData ? (
+    <div className="Profile flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
+      {/* {loadingData ? (
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
-      ) : (
-        <div className="ProfilePage flex justify-center self-center">
-          {isLoggedIn && accountType === "Fellow" && (
-            <FellowProfile self={fellow} isOwn logout={logout} />
-          )}
-          {isLoggedIn && accountType === "Business" && (
-            <BusinessProfile self={business} isOwn logout={logout} />
-          )}
-        </div>
+      ) : ( */}
+      {/* <div className="ProfilePage flex justify-center self-center"> */}
+      {isLoggedIn && accountType === "Fellow" && (
+        <FellowProfile self={fellow} isOwn logout={logout} />
       )}
+      {isLoggedIn && accountType === "Business" && (
+        <BusinessProfile self={business} isOwn logout={logout} />
+      )}
+      {/* </div> */}
+      {/* )} */}
     </div>
   );
 }

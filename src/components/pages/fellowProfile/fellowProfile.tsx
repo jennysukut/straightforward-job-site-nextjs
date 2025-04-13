@@ -168,7 +168,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   return (
     <div
-      className={`ProfileContainer flex w-[80%] max-w-[1600px] flex-col gap-8 self-center ${textColor}`}
+      className={`ProfileContainer mr-14 flex w-[80%] max-w-[1600px] flex-col gap-8 self-center ${textColor}`}
     >
       {loadingData ? (
         //make loading screen design here
@@ -462,7 +462,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               />
             )} */}
           </div>
-          <div className="ProfileRightColumn mr-20 flex flex-col gap-8">
+          <div className="ProfileRightColumn flex flex-col gap-8">
             {/* NAME AND SMALL BIO */}
             <div className="FellowName mr-8">
               <InfoBox
