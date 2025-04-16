@@ -31,7 +31,7 @@ export default function ClientAuthWrapper({
     if (isLoggedIn) {
       setIsLoadingAccount(false);
     }
-  }, []);
+  }, [isLoggedIn, setIsLoadingAccount]);
 
   const {
     data: queryData,
@@ -47,21 +47,16 @@ export default function ClientAuthWrapper({
       if (data.getMyProfile === null) {
         console.log("looks like you're not logged in");
         setIsLoggedIn(false);
-        // setIsLoadingAccount(false);
       } else if (data.getMyProfile.roles.includes("FELLOW")) {
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFellow(data.getMyProfile.fellow);
         setApplications(data.getMyProfile.fellow.jobApplications);
-        // setApplications(data.getMyProfile.fellow.dailyApplications);
-
-        // setIsLoadingAccount(false);
         console.log("you're a fellow and you're logged in!");
       } else if (data.getMyProfile.roles.includes("BUSINESS")) {
         setIsLoggedIn(true);
         setAccountType("Business");
         setBusiness(data.getMyProfile.business);
-        // setIsLoadingAccount(false);
         console.log("you're a business and you're logged in!");
       }
       setIsLoadingAccount(false);

@@ -42,7 +42,6 @@ import { Job } from "@/contexts/JobContext";
 import DeleteConfirmationModal from "@/components/modals/deleteConfirmationModal";
 
 export default function JobListing({
-  // isOwn,
   hasId,
   id,
   inAms,
@@ -129,7 +128,7 @@ export default function JobListing({
 
   useEffect(() => {
     setJob(currentJob);
-  }, [currentJob]);
+  }, [setJob, currentJob]);
 
   const editJob = async () => {
     try {
@@ -172,6 +171,7 @@ export default function JobListing({
   const checkNonNegParamsMatch = () => {
     if (!currentJob?.nonNegParams || !fellow) return false;
     const { country, languages = [], skills = [] } = fellow?.profile || {};
+
     // Check if all non negotiable parameters have a match in country, languages, or skills
     return currentJob.nonNegParams.every(
       (param) =>
@@ -180,6 +180,8 @@ export default function JobListing({
         skills.includes(param),
     );
   };
+
+  console.log("daily applications:", fellow?.dailyApplications?.length);
 
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
@@ -195,7 +197,7 @@ export default function JobListing({
   const canApply =
     hasMatchingNonNegParams === true &&
     fellow?.dailyApplications?.length < 5 &&
-    matchingIds;
+    !matchingIds;
 
   console.log(
     "have applied to this before:",
@@ -213,8 +215,6 @@ export default function JobListing({
       />,
     );
   };
-
-  console.log(job?.id);
 
   const deleteListing = async () => {
     try {
@@ -259,7 +259,7 @@ export default function JobListing({
     if (isOwn && newPost && job && !id) {
       setCurrentJob(job);
     }
-  }, []);
+  }, [isOwn, id, job, newPost]);
 
   useEffect(() => {
     if (!id) {
@@ -275,7 +275,7 @@ export default function JobListing({
     ShuffleIdealButtonPattern(setThirdColorArray);
     setPageType("jobListing");
     setCurrentPage("jobListing");
-  }, []);
+  }, [setCurrentPage, setPageType]);
 
   useEffect(() => {
     if (job?.beingEdited) {
@@ -436,10 +436,17 @@ export default function JobListing({
           editClick={() => handleEditClick("/post-a-job/step2")}
         >
           <div className="LocationPayDetailsInfo flex flex-col gap-4">
-            <h2 className="LocationPayDetailsTitle mb-4 pl-2">
-              {`Location:`} {currentJob?.business?.businessProfile?.location},{" "}
-              {currentJob?.business?.businessProfile?.country}
-            </h2>
+            {currentJob.locationOption !== "remote" ? (
+              <h2 className="LocationPayDetailsTitle mb-2 pl-2 leading-8">
+                {`Location:`} {currentJob?.city}, {currentJob?.state}
+              </h2>
+            ) : (
+              <h2 className="LocationPayDetailsTitle mb-4 pl-2">
+                {`Location:`} {currentJob?.business?.businessProfile?.location},{" "}
+                {currentJob?.business?.businessProfile?.country}
+              </h2>
+            )}
+
             {currentJob?.locationOption && (
               <h2 className="LocationOptionTitle mb-4 pl-2">
                 {`Location Type:`}{" "}

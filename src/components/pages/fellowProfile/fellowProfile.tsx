@@ -94,25 +94,23 @@ const FellowProfile: React.FC<FellowProfile> = ({
   let currentApp: any;
   let currentJob: any;
 
-  // if (isApp) {
-  //   currentApp = applications?.find((app) => app.id === appId);
-  //   currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
-  // }
+  if (isApp) {
+    currentApp = applications?.find((app) => app.id === appId);
+    currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
+  }
 
   // useEffect(() => {
   //   if (
   //     accountType === "Business" &&
   //     currentApp &&
-  //     currentApp.appStatus === "submitted"
+  //     currentApp.status === "submitted"
   //   ) {
   //     // TODO: Update appStatus when ween by the business with a query
   //     console.log(currentApp, "being marked as viewed");
   //     // currentApp.appStatus === "viewed";
-
   //     const updatedApplications = (applications || []).map((app) =>
   //       app.id === currentApp.id ? { ...app, appStatus: "viewed" } : app,
   //     );
-
   //     setApplications(updatedApplications);
   //     //update the app appStatus from "submitted" to viewed - if it's in "submitted"
   //   }
@@ -123,9 +121,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
       setCurrentFellow(fellow as FellowProfileData);
       setLoadingData(false);
     }
-    console.log(fellow);
-    console.log("currentFellow:", currentFellow);
-  }, []);
+  }, [fellow, isOwn]);
 
   const {
     data: queryData,

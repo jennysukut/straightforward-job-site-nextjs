@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { usePageContext } from "@/contexts/PageContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFellow } from "@/contexts/FellowContext";
 import { useMutation } from "@apollo/client";
 import { useJob } from "@/contexts/JobContext";
@@ -67,6 +67,7 @@ const OwnListingTopButtons = ({
   };
 
   let redirectUrl: any;
+
   if (completed === "create") {
     redirectUrl = "/post-a-job/step1";
   } else if (completed === "step1") {
@@ -91,9 +92,21 @@ const OwnListingTopButtons = ({
     }
   };
 
+  const manageListing = (key: string) => {
+    console.log("trying to manage listing by going to ams");
+    setClickedButton(key);
+    router.push(`/ams/${currentJob.id}`);
+  };
+
+  useEffect(() => {
+    if (!incompleteListing) {
+      setIsPublished(true);
+    }
+  }, [incompleteListing]);
+
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
-      {incompleteListing ? (
+      {incompleteListing && !isPublished ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"
@@ -103,6 +116,17 @@ const OwnListingTopButtons = ({
           isSelected={clickedButton === "redirect"}
         >
           complete listing
+        </SiteButton>
+      ) : isPublished ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={() => manageListing("ams")}
+          isSelected={clickedButton === "ams"}
+        >
+          view applications
         </SiteButton>
       ) : (
         <SiteButton
@@ -117,33 +141,52 @@ const OwnListingTopButtons = ({
         </SiteButton>
       )}
 
-      <SiteButton
-        aria="publish"
-        variant="filled"
-        colorScheme="f1"
-        addClasses="px-8"
-        onClick={publishPost}
-        disabled={incompleteListing || isPublished}
-      >
-        {isPublished ? "already published" : "publish"}
-      </SiteButton>
+      {!isPublished && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="f1"
+          addClasses="px-8"
+          onClick={publishPost}
+        >
+          publish
+        </SiteButton>
+      )}
+
+      {isPublished && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="f1"
+          addClasses="px-8"
+          onClick={() => manageListing("appCount")}
+          isSelected={clickedButton === "appCount"}
+        >
+          current apps: {currentJob?.applications.length || 0}
+        </SiteButton>
+      )}
+
       <SiteButton
         variant="filled"
         aria="apps"
         colorScheme="b1"
+        addClasses="px-8"
         onClick={() => showModal(<ApplicationLimitModal />)}
       >
         application limit: {currentJob?.applicationLimit || 25}
       </SiteButton>
-      <SiteButton
-        variant="filled"
-        colorScheme="c5"
-        aria="delete"
-        addClasses="px-8"
-        onClick={deleteClick}
-      >
-        delete post
-      </SiteButton>
+
+      {!isPublished && (
+        <SiteButton
+          variant="filled"
+          colorScheme="c5"
+          aria="delete"
+          addClasses="px-8"
+          onClick={deleteClick}
+        >
+          delete post
+        </SiteButton>
+      )}
     </div>
   );
 };
@@ -167,19 +210,21 @@ const OwnJobBottomButtons = ({
 
   let redirectUrl: any;
 
-  if (completed === "create") {
-    redirectUrl = "/post-a-job/step1";
-  } else if (completed === "step1") {
-    redirectUrl = "/post-a-job/step2";
-  } else if (completed === "step2") {
-    redirectUrl = "/post-a-job/step3";
-  } else if (completed === "step3") {
-    redirectUrl = "/post-a-job/step4";
-  } else if (completed === "step4") {
-    redirectUrl = "/post-a-job/step5";
-  } else if (completed === "step5") {
-    redirectUrl = "listing";
-  }
+  useEffect(() => {
+    if (completed === "create") {
+      redirectUrl = "/post-a-job/step1";
+    } else if (completed === "step1") {
+      redirectUrl = "/post-a-job/step2";
+    } else if (completed === "step2") {
+      redirectUrl = "/post-a-job/step3";
+    } else if (completed === "step3") {
+      redirectUrl = "/post-a-job/step4";
+    } else if (completed === "step4") {
+      redirectUrl = "/post-a-job/step5";
+    } else if (completed === "step5") {
+      redirectUrl = "listing";
+    }
+  }, []);
 
   const redirect = () => {
     setClickedButton("redirect");
@@ -220,9 +265,21 @@ const OwnJobBottomButtons = ({
     }
   };
 
+  const manageListing = () => {
+    console.log("trying to manage listing by going to ams");
+    setClickedButton("ams");
+    router.push(`/ams/${currentJob.id}`);
+  };
+
+  useEffect(() => {
+    if (!incompleteListing) {
+      setIsPublished(true);
+    }
+  }, []);
+
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-      {incompleteListing ? (
+      {incompleteListing && !isPublished ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"
@@ -232,6 +289,17 @@ const OwnJobBottomButtons = ({
           isSelected={clickedButton === "redirect"}
         >
           complete listing
+        </SiteButton>
+      ) : isPublished ? (
+        <SiteButton
+          variant="filled"
+          colorScheme="b4"
+          aria="edit"
+          addClasses="px-8"
+          onClick={manageListing}
+          isSelected={clickedButton === "ams"}
+        >
+          manage post
         </SiteButton>
       ) : (
         <SiteButton
@@ -245,28 +313,17 @@ const OwnJobBottomButtons = ({
           {canEdit ? "finish editing" : "edit"}
         </SiteButton>
       )}
-      <SiteButton
-        aria="publish"
-        variant="filled"
-        colorScheme="f1"
-        addClasses="px-8"
-        onClick={() =>
-          showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-        }
-        disabled={incompleteListing || isPublished}
-      >
-        {isPublished ? "already published" : "publish"}
-      </SiteButton>
-      <SiteButton
-        variant="filled"
-        colorScheme="c1"
-        aria="saveForLater"
-        addClasses="px-8"
-        onClick={() => setSavingForLater(!savingForLater)}
-        isSelected={savingForLater}
-      >
-        save
-      </SiteButton>
+      {!isPublished && (
+        <SiteButton
+          aria="publish"
+          variant="filled"
+          colorScheme="f1"
+          addClasses="px-8"
+          onClick={publishPost}
+        >
+          publish
+        </SiteButton>
+      )}
     </div>
   );
 };

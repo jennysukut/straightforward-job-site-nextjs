@@ -12,7 +12,7 @@ export default function AMSJobPage({ params }: any) {
 
   useEffect(() => {
     setCurrentPage("listing");
-  }, []);
+  }, [setCurrentPage]);
 
   // Here, we'll need to check to make sure the jobId listed is owned by the business that's currently logged in.
   // If it is, we'll show the AMS page for the job. If not, we can throw an error message.
@@ -32,7 +32,7 @@ export default function AMSJobPage({ params }: any) {
       )}
       {!isLoggedIn && (
         <div className="LogInPrompt max-w-[40vw] text-center">
-          <p className="prompt text-olive">{`It looks like you're not logged in. Be sure to set up an account and log in to keep track of your applications with our fantastical application management system!`}</p>
+          <p className="prompt text-olive">{`It looks like you're not logged in. Be sure to set up an account and log in to keep track of your applications.`}</p>
         </div>
       )}
     </div>

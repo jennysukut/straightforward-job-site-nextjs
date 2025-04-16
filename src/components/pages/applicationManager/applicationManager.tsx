@@ -3,12 +3,13 @@
 import { useEffect, useState, useCallback } from "react";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useModal } from "@/contexts/ModalContext";
-import { useApplications } from "@/contexts/ApplicationsContext";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
-import { useJobListings } from "@/contexts/JobListingsContext";
-import { debounce } from "lodash";
+import { useJob } from "@/contexts/JobContext";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTING_BY_ID } from "@/graphql/queries";
+import { Job } from "@/contexts/JobContext";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import AddHandler from "@/components/handlers/addHandler";
@@ -20,11 +21,10 @@ import JobListing from "../jobListing/jobListing";
 export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
 
-  const { jobListings } = useJobListings();
   const { textColor } = useColorOptions();
   const { showModal, hideModal } = useModal();
-  const { applications } = useApplications();
   const { appointments } = useAppointments();
+  const { job } = useJob();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
@@ -32,20 +32,27 @@ export default function ApplicationManager({ jobId }: any) {
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
   const [altViewChoice, setAltViewChoice] = useState("");
   const [filteredApps, setFilteredApps] = useState<string[]>([]);
+  const [currentJob, setCurrentJob] = useState({} as Job);
+  const [loadingData, setLoadingData] = useState(true);
+  const [currentApplications, setCurrentApplications] = useState([]);
 
-  // define relevant details
-  const currentJob = jobListings?.find((job: any) => job.jobId === jobId)?.job;
-  const currentApp = applications?.find((app: any) => {
-    return app.id === selectedApps;
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: queryData,
+  } = useQuery(GET_JOB_LISTING_BY_ID, {
+    variables: { id: jobId },
+    // skip: !isLoggedIn,
+    onCompleted: (data) => {
+      setCurrentJob(data.jobListing);
+      setLoadingData(false);
+      setCurrentApplications(data.jobListing.applications);
+    },
   });
 
-  let currentApplications: any = [];
-  const relevantApps = applications?.filter(
-    (application: any) => application.jobId === jobId,
-  );
-  if (relevantApps) {
-    currentApplications.push(...relevantApps);
-  }
+  const currentApp = currentApplications?.find((app: any) => {
+    return app.id === selectedApps;
+  });
 
   const activeApps: any = currentApplications.filter((app: any) => {
     return app.appStatus !== "closed";
@@ -76,6 +83,7 @@ export default function ApplicationManager({ jobId }: any) {
             index={index}
             app={app}
             appStatus={app.appStatus}
+            currentApplicant={app.fellow}
           />
         ));
     } else {
@@ -90,6 +98,7 @@ export default function ApplicationManager({ jobId }: any) {
             index={index}
             app={app}
             appStatus={app.appStatus}
+            currentApplicant={app.fellow}
           />
         ));
     }
@@ -144,53 +153,47 @@ export default function ApplicationManager({ jobId }: any) {
   useEffect(() => {
     console.log("using the filters useEffect in the ams");
     if (filters.length > 0) {
-      filterApps(applications);
+      filterApps(currentApplications);
       setSelectedApps([]);
     }
-  }, [appStatus, applications]);
+  }, [filters, filterApps, appStatus, currentApplications]);
+
+  console.log(currentJob);
 
   return (
     <div
-      className={`ApplicationManagerPage w-[84%] self-center ${textColor} -mt-8 max-w-[1600px]`}
+      className={`ApplicationManagerPage w-[85%] self-center ${textColor} -mt-8 max-w-[1600px]`}
     >
       {
         <div className="AMSContainer flex">
-          {" "}
-          {altViewChoice === "details" && (
-            <div className="Details flex w-full flex-col items-center gap-4">
-              <div className="JobDetails">
-                <JobListing
-                  isOwn
-                  hasId
-                  id={jobId}
-                  inAms
-                  setAltViewChoice={setAltViewChoice}
-                />
-              </div>
-            </div>
-          )}
-          {(altViewChoice === "" ||
-            altViewChoice.length == 0 ||
-            altViewChoice === "ams") && (
-            <div className="ApplicationList flex w-full flex-col items-center gap-4">
-              <div className="ButtonsAndTitle flex w-full flex-col justify-between">
-                <div className="TitleSubtitle -mb-8 mr-8 text-right">
-                  <button onClick={() => setAltViewChoice("details")}>
-                    <h1 className="Title">{currentJob?.jobTitle}</h1>
-                  </button>
-                  <p className="Subtitle text-medium italic text-emerald">
-                    Round {currentJob?.roundNumber || 1}:{" "}
-                    {currentApplications.length} Applications
-                  </p>
+          <div className="ApplicationList flex w-full flex-col items-center gap-4">
+            <div className="ButtonsAndTitle flex w-full flex-col justify-between">
+              <div className="TitleSubtitle -mb-8 mr-8 text-right">
+                <button onClick={() => router.push(`/listing/${jobId}`)}>
+                  <h1 className="Title pb-1">{currentJob?.jobTitle}</h1>
+                </button>
+                <p className="Subtitle text-medium italic text-emerald">
+                  Round {currentJob?.roundNumber || 1}:{" "}
+                  {currentApplications.length} Applications
+                </p>
+                {currentApplications.length > 0 && (
                   <p className="activeClosedInfo mt-1 text-sm italic text-olive">
                     {activeApps.length} active &{" "}
                     {Number(currentApplications.length) -
                       Number(activeApps.length)}{" "}
                     closed
                   </p>
-                </div>
+                )}
+                {/* <p className="activeClosedInfo mt-1 text-sm italic text-olive">
+                  {activeApps.length} active &{" "}
+                  {Number(currentApplications.length) -
+                    Number(activeApps.length)}{" "}
+                  closed
+                </p> */}
+              </div>
 
-                {/* application status filter */}
+              {/* application status filter */}
+              {currentApplications.length >= 1 && (
                 <div className="FilterButtons max-w[100%] -mb-8 ml-6 flex flex-wrap items-center">
                   <TieredButtonOptionsComponent
                     type="filters"
@@ -223,14 +226,20 @@ export default function ApplicationManager({ jobId }: any) {
                     secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
                   />
                 </div>
-              </div>
-              <div
-                className={`Applications flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
-              >
-                {renderApplications()}
-              </div>
+              )}
             </div>
-          )}
+            <div
+              className={`Applications flex flex-col gap-4 overflow-x-hidden overflow-y-visible p-4`}
+            >
+              {currentApplications.length <= 0 ? (
+                <p className="NoApplications mt-28 self-center align-middle italic text-olive">
+                  There are no current applications for this job post.
+                </p>
+              ) : (
+                renderApplications()
+              )}
+            </div>
+          </div>
         </div>
       }
     </div>

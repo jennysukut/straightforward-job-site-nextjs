@@ -22,6 +22,7 @@ interface BusinessApplicationProps
   appStatus?: string;
   app?: any;
   highlighted?: boolean;
+  currentApplicant: any;
 }
 
 // TODO: Make Notification Messages for each of these apps
@@ -32,6 +33,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   index,
   appStatus,
   app,
+  currentApplicant,
 }) => {
   const router = useRouter();
   const { showModal } = useModal();
@@ -40,13 +42,13 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const [appClicked, setAppClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState("");
 
-  const currentApplicant = {
-    name: "A Person",
-    smallBio: "smallBio Here",
-  };
+  // const currentApplicant = {
+  //   name: "A Person",
+  //   smallBio: "smallBio Here",
+  // };
 
   //TODO: Here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
-  const notification = app.appStatus === "submitted" ? true : false;
+  const notification = app.status === "submitted" ? true : false;
 
   // functions
   const viewApplication = () => {
@@ -86,7 +88,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
-      <div className="MainAppButtons flex items-center justify-start gap-4">
+      <div className="MainAppButtons -ml-4 flex items-center justify-start gap-4">
         <div className="NotificationSpace w-4">
           {/* TODO: Set Types of Notifications and plug them in here */}
           {notification && <Notification message="new interview request" />}
@@ -99,7 +101,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               colorArray[index % colorArray.length] as ButtonColorOption
             }
             size="wide"
-            addClasses="w-[77vw]"
+            addClasses="w-[82vw]"
             onClick={() => setAppClicked(!appClicked)}
             isSelected={appClicked}
           >
@@ -107,11 +109,11 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               <p className="TitleAndBusiness flex max-w-[70%] gap-2 text-[1rem]">
                 {currentApplicant?.name} |
                 <span className="SmallBio max-w-[65%] overflow-hidden truncate">
-                  {currentApplicant?.smallBio}
+                  {currentApplicant?.profile.smallBio}
                 </span>
               </p>
               <p className="Details flex gap-2 self-center text-sm">
-                {app.dateOfApp} | {appStatus}
+                {app.dateOfApp || "date of app"} | {app.status}
               </p>
             </div>
           </SiteButton>

@@ -204,11 +204,13 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
           )}
           {job.locationOption === "on-site" && (
             <p className="LocationOption">
-              On-Site: {job.business.businessProfile.country}
+              On-Site: {job.city}, {job.state}
             </p>
           )}
           {job.locationOption === "hybrid" && (
-            <p className="LocationOption">Hybrid</p>
+            <p className="LocationOption">
+              Hybrid: {job.city}, {job.state}
+            </p>
           )}
           <p className="PositionType font-normal italic">
             {capitalizeFirstLetter(job.positionType || "")} Position

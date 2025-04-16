@@ -297,11 +297,27 @@ export const GET_JOB_LISTING_BY_ID = gql`
       perks
       saved
       completed
+      published
+      city
+      state
       applicationLimit
       applications {
         id
         message
         status
+        notes
+        fellow {
+          id
+          name
+          profile {
+            smallBio
+          }
+        }
+        appIsBeingRejected
+        rejectionMessage
+        rejectionDetails
+        highlighted
+        jobOfferBeingSent
       }
       interviewProcess {
         id
