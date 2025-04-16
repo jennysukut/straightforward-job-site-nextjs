@@ -14,8 +14,8 @@ export default function Application({ params }: any) {
   }, []);
 
   return (
-    <div className="OwnAppProfilePage flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
-      <FellowProfile self={fellow} isOwn isApp appId={params.id} />
+    <div className="AppProfilePage flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
+      <FellowProfile hasId id={params.fellowId} isApp appId={params.id} />
     </div>
   );
 }

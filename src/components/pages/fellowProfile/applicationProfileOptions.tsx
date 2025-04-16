@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
 const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
   const [clickedButton, setClickedButton] = useState("");
@@ -27,7 +28,7 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
       if (application.id === app.id) {
         return {
           ...application,
-          appStatus: status,
+          status: status,
         };
       }
       return application;
@@ -43,7 +44,7 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
 
   return (
     <div className="BusinessAppButtonsContainer -mt-28 flex flex-col items-end gap-4 self-end">
-      {/* {app.appStatus === "closed" && (
+      {app.status === "closed" && (
         <SiteButton
           variant="hollow"
           colorScheme="c4"
@@ -54,33 +55,33 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         >
           {clickedButton === "backToAms" ? "loading..." : "back to manager"}
         </SiteButton>
-      )} */}
-      {/* <SiteButton
+      )}
+      <SiteButton
         variant="filled"
-        colorScheme={app.appStatus === "closed" ? "b3" : "b5"}
+        colorScheme={app.status === "closed" ? "b3" : "b5"}
         // colorScheme="b5"
         aria="Contact"
         addClasses="px-8"
-        // disabled={app.appStatus === "closed"}
+        // disabled={app.status === "closed"}
         onClick={goToMessages}
         isSelected={clickedButton === "goToMessages"}
       >
         {clickedButton === "goToMessages"
           ? "loading..."
-          : app.appStatus === "closed"
+          : app.status === "closed"
             ? "mail history"
             : "message"}
       </SiteButton>
       <SiteButton
         variant="filled"
-        colorScheme={app.appStatus === "closed" ? "c1" : "e5"}
+        colorScheme={app.status === "closed" ? "c1" : "e5"}
         aria="edit"
         addClasses="px-8"
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
         {app.BusinessNote && app.businessNote.length > 0
           ? "add another note"
-          : app.appStatus === "closed"
+          : app.status === "closed"
             ? "add post-close note"
             : "add a note"}
       </SiteButton>
@@ -89,11 +90,11 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
-        disabled={app.appStatus === "closed"}
+        disabled={app.status === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
-              appStatus={app.appStatus}
+              appStatus={app.status}
               applicant={applicant}
               updateStatus={updateStatus}
               showRejectOptions={showRejectOptions}
@@ -102,8 +103,8 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
           )
         }
       >
-        status: {app.appStatus}
-      </SiteButton> */}
+        status: {app.status}
+      </SiteButton>
     </div>
   );
 };
@@ -117,7 +118,7 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
       if (application.id === app.id) {
         return {
           ...application,
-          appStatus: status,
+          status: status,
         };
       }
       return application;
@@ -128,16 +129,16 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
 
   return (
     <div className="AppBottomButtonContainer flex flex-col items-end gap-4 self-end">
-      {/* <SiteButton
+      <SiteButton
         variant="filled"
         colorScheme="c4"
         aria="Contact"
         addClasses="px-8"
-        disabled={app.appStatus === "closed"}
+        disabled={app.status === "closed"}
         onClick={() =>
           showModal(
             <SetAppStatusModal
-              appStatus={app.appStatus}
+              appStatus={app.status}
               applicant={applicant}
               updateStatus={updateStatus}
             />,
@@ -145,16 +146,16 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         }
       >
         {" "}
-        {app.appStatus === "closed" ? "app closed" : "move to next stage"}
+        {app.status === "closed" ? "app closed" : "move to next stage"}
       </SiteButton>
 
       <SiteButton
         variant="filled"
-        colorScheme={app.appStatus === "closed" ? "f5" : "b6"}
+        colorScheme={app.status === "closed" ? "f5" : "b6"}
         // colorScheme="b6"
         aria="edit"
         addClasses="px-8"
-        // disabled={app.appStatus === "closed"}
+        // disabled={app.status === "closed"}
         onClick={() => showModal(<ApplicationNoteModal app={app} />)}
       >
         {app.BusinessNote && app.businessNote.length > 0
@@ -166,11 +167,11 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
         colorScheme="f3"
         aria="edit"
         addClasses="px-8"
-        disabled={app.appStatus === "closed"}
+        disabled={app.status === "closed"}
         onClick={() => showModal(<RejectAppModal applicant={applicant} />)}
       >
-        {app.appStatus === "closed" ? "rejected" : "reject"}
-      </SiteButton> */}
+        {app.status === "closed" ? "rejected" : "reject"}
+      </SiteButton>
     </div>
   );
 };
@@ -179,7 +180,7 @@ const AppFellowNotes = ({ currentApp }: any) => {
   const { showModal } = useModal();
   return (
     <div className="BusinessNotes flex flex-col gap-4">
-      {/* <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
+      <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
       {currentApp.businessNote.map((note: string, index: number) => {
         return (
           <InfoBox
@@ -197,29 +198,33 @@ const AppFellowNotes = ({ currentApp }: any) => {
           </InfoBox>
         );
       })}
-      <div className="Divider mt-6 h-[3px] w-[90%] self-center rounded-full bg-jade opacity-80"></div> */}
+      <div className="Divider mt-6 h-[3px] w-[90%] self-center rounded-full bg-jade opacity-80"></div>
     </div>
   );
 };
 
-const AppMessage = ({ avatarDetails, currentFellow, currentApp }: any) => {
+const AppMessage = ({ avatar, currentFellow, currentApp }: any) => {
+  // TODO: Get avatar option from parameters, then find it's corresponding colorScheme
+  const avatarDetails = avatarOptions.find((option) => {
+    return option.title === avatar;
+  });
+
   if (currentApp.message) {
     return (
-      <div className=""></div>
-      // <InfoBox
-      //   variant="filled"
-      //   aria="appMessage"
-      //   size="profile"
-      //   width="medium"
-      //   colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
-      // >
-      //   <div className="AppMessage flex flex-col gap-2">
-      //     <p className={`MessageTitle mb-2 ml-2`}>
-      //       Message To You From {currentFellow?.name}:
-      //     </p>
-      //     <p className={`Message ml-2 indent-10`}>{currentApp?.message}</p>
-      //   </div>
-      // </InfoBox>
+      <InfoBox
+        variant="filled"
+        aria="appMessage"
+        size="profile"
+        width="medium"
+        colorScheme={avatarDetails?.colorScheme as ButtonColorOption}
+      >
+        <div className="AppMessage flex flex-col gap-2">
+          <p className={`MessageTitle mb-2 ml-2`}>
+            Message To You From {currentFellow?.name}:
+          </p>
+          <p className={`Message ml-2 indent-10`}>{currentApp?.message}</p>
+        </div>
+      </InfoBox>
     );
   }
 };

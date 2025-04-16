@@ -336,3 +336,87 @@ export const GET_JOB_LISTING_BY_ID = gql`
     }
   }
 `;
+
+export const GET_APPLICATION_BY_ID = gql`
+  query getApplication($id: ID!) {
+    getApplication(id: $id) {
+      id
+      message
+      status
+      jobListing {
+        id
+        jobTitle
+      }
+      notes
+      fellow {
+        id
+        name
+        profile {
+          smallBio
+          location
+          country
+          languages
+          skills
+          jobTitles
+          experience {
+            id
+            title
+            companyName
+            yearDetails
+            details
+          }
+          education {
+            id
+            degree
+            school
+            fieldOfStudy
+          }
+          awards {
+            id
+            awardTitle
+            givenBy
+            awardDetails
+          }
+          experienceLevels {
+            id
+            experienceLevel
+            expLevelSkill
+            skillYears
+          }
+          accomplishments {
+            id
+            accTitle
+            accDetails
+          }
+          passions
+          lookingFor
+          locationOptions
+          hobbies {
+            id
+            hobbyTitle
+            howLong
+          }
+          bookOrQuote {
+            id
+            bookOrQuote
+            author
+          }
+          petDetails
+          links {
+            id
+            linkType
+            link
+          }
+          aboutMe
+          avatar
+          name
+        }
+      }
+      appIsBeingRejected
+      rejectionMessage
+      rejectionDetails
+      highlighted
+      jobOfferBeingSent
+    }
+  }
+`;

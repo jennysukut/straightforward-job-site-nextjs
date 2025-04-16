@@ -53,9 +53,10 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   // functions
   const viewApplication = () => {
     setButtonClicked("viewApplication");
-    router.push(`/application/${id}`);
+    router.push(`/application/${app.id}/${app.fellow.id}`);
   };
 
+  console.log(app);
   //TODO: figure out what to do with highlighting?
   const highlight = () => {
     setButtonClicked("highlight");

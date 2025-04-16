@@ -8,7 +8,7 @@ import { useJobListings } from "@/contexts/JobListingsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useQuery } from "@apollo/client";
-import { GET_PROFILE } from "@/graphql/queries";
+import { GET_PROFILE, GET_APPLICATION_BY_ID } from "@/graphql/queries";
 
 import {
   OwnFellowTopButtons,
@@ -51,19 +51,38 @@ interface FellowProfileData {
     country?: string;
     languages?: string[];
     jobTitles?: string[];
-    experience: any[];
-    awards: any[];
-    experienceLevels: any[];
-    accomplishments: any[];
-    passions: string[];
-    lookingFor: string;
-    locationOptions: string[];
-    hobbies: any[];
-    bookOrQuote: any[];
-    petDetails: string;
-    links: any[];
-    aboutMe: string;
+    experience?: any[];
+    awards?: any[];
+    experienceLevels?: any[];
+    accomplishments?: any[];
+    passions?: string[];
+    lookingFor?: string;
+    locationOptions?: string[];
+    hobbies?: any[];
+    bookOrQuote?: any[];
+    petDetails?: string;
+    links?: any[];
+    aboutMe?: string;
   };
+}
+
+interface ApplicationData {
+  appIsBeingRejected?: Boolean;
+  fellow?: any;
+  highlighted?: Boolean;
+  id?: String;
+  jobListing?: any;
+  jobOfferBeingSent?: Boolean;
+  message?: String;
+  notes?: Array<string>;
+  rejectionDetails?: any;
+  rejectionMessage?: any;
+  status?: string;
+}
+
+interface JobData {
+  id?: String;
+  jobTitle?: String;
 }
 
 const FellowProfile: React.FC<FellowProfile> = ({
@@ -80,8 +99,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const { fellow, setFellow } = useFellow();
   const { setPageType, accountType } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
-  const { applications, setApplications } = useApplications();
-  const { jobListings } = useJobListings();
   const { showModal } = useModal();
 
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
@@ -90,14 +107,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [canEdit, setCanEdit] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [currentFellow, setCurrentFellow] = useState<FellowProfileData>({});
-
-  let currentApp: any;
-  let currentJob: any;
-
-  if (isApp) {
-    currentApp = applications?.find((app) => app.id === appId);
-    currentJob = jobListings?.find((job) => job.jobId === currentApp.jobId);
-  }
+  const [currentApp, setCurrentApp] = useState<ApplicationData>({});
+  const [currentJob, setCurrentJob] = useState<JobData>({});
 
   // useEffect(() => {
   //   if (
@@ -123,13 +134,25 @@ const FellowProfile: React.FC<FellowProfile> = ({
     }
   }, [fellow, isOwn]);
 
+  const { data: app } = useQuery(GET_APPLICATION_BY_ID, {
+    variables: { id },
+    skip: !isApp,
+    onCompleted: (data) => {
+      console.log("calling GET_APPLICATION_BY_ID query:", data);
+      setCurrentFellow(data.getApplication.fellow);
+      setCurrentApp(data.getApplication);
+      setCurrentJob(data.getApplication.jobListing);
+      setLoadingData(false);
+    },
+  });
+
   const {
     data: queryData,
     loading: queryLoading,
     error: queryError,
   } = useQuery(GET_PROFILE, {
     variables: { id },
-    skip: !id || isOwn,
+    skip: !id || isOwn || isApp,
     onCompleted: (data) => {
       console.log("calling GET_PROFILE query:", data);
       // setCurrentFellow(data.fellow);
@@ -140,7 +163,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   });
 
   const viewJobDetails = () => {
-    router.push(`/listing/${currentApp.jobId}`);
+    router.push(`/listing/${currentApp.id}`);
   };
 
   const handleEditClick = (url: any) => {
@@ -155,6 +178,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
     // setFellow({ ...fellow, addMoreInfo: true });
     router.push("/individual-signup/step1");
   };
+
+  useEffect(() => {
+    console.log("currentApp:", currentApp);
+  }, [currentApp]);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -173,7 +200,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
         <div className="ProfileDetails mr-14 flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}
-            {isOwn && !isApp && (
+            {/* {isOwn && !isApp && (
               <OwnFellowTopButtons
                 setCanEdit={setCanEdit}
                 canEdit={canEdit}
@@ -187,7 +214,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 currentApp={currentApp}
                 currentJob={currentJob}
               />
-            )}
+            )} */}
 
             {!isOwn && isApp && (
               <AppFellowTopButtons
@@ -437,26 +464,28 @@ const FellowProfile: React.FC<FellowProfile> = ({
             )}
 
             {/* BOTTOM BUTTON OPTIONS */}
-            {/* {isOwn && !isApp && (
+            {isOwn && !isApp && (
               <OwnFellowBottomButtons
                 setCanEdit={setCanEdit}
                 canEdit={canEdit}
                 addMoreInfo={addMoreInfo}
               />
             )}
-            {isOwn && isApp && (
+
+            {/* {isOwn && isApp && (
               <OwnFellowAppBottomButtons
                 avatarDetails={avatarDetails}
                 router={router}
                 viewJobDetails={viewJobDetails}
               />
-            )}
+            )} */}
+
             {!isOwn && isApp && (
               <AppFellowBottomButtons
                 app={currentApp}
                 applicant={currentFellow.name}
               />
-            )} */}
+            )}
           </div>
           <div className="ProfileRightColumn flex flex-col gap-8">
             {/* NAME AND SMALL BIO */}
@@ -497,13 +526,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
             )} */}
 
             {/* APP MESSAGE TO BUSINESS */}
-            {/* {isApp && !isOwn && (
+            {isApp && !isOwn && (
               <AppMessage
-                avatarDetails={avatarDetails}
+                avatar={currentFellow?.profile?.avatar}
                 currentFellow={currentFellow}
                 currentApp={currentApp}
               />
-            )} */}
+            )}
 
             {fellow?.profile?.location && (
               <InfoBox
