@@ -73,7 +73,7 @@ const MessageCenter = ({
     error: queryError,
     data: queryData,
   } = useQuery(GET_CONVERSATION_BY_ID, {
-    variables: { id: "2" },
+    variables: { id: activeConvo },
     skip: !isLoggedIn,
     onCompleted: (data) => {
       console.log("using the GET_CONVERSATION_BY_ID query:", data);
@@ -83,6 +83,7 @@ const MessageCenter = ({
       );
       setMessages(filteredMessages);
       console.log(filteredMessages);
+      setLoadingData(false);
     },
   });
 
@@ -315,13 +316,17 @@ const MessageCenter = ({
   // }, []);
 
   return (
-    <div
-      className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between self-center`}
-      id="messagingCenter"
-    >
-      <div className="Messages flex w-[100%] flex-col self-center align-top">
-        <div className={`TitleArea flex justify-between align-middle`}>
-          {/* {!specificMessages && activeApp && (
+    <div className="MessagingCenterPage h-full w-full">
+      {loadingData ? (
+        <p className="LoadingData">loading...</p>
+      ) : (
+        <div
+          className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between self-center`}
+          id="messagingCenter"
+        >
+          <div className="Messages flex w-[100%] flex-col self-center align-top">
+            <div className={`TitleArea flex justify-between align-middle`}>
+              {/* {!specificMessages && activeApp && (
             <div className="ExpandOption flex gap-2 self-start align-middle">
               <SiteButton
                 aria="expandButton"
@@ -335,18 +340,18 @@ const MessageCenter = ({
               />
             </div>
           )} */}
-          {specificMessages && (
-            <SiteButton
-              variant="hollow"
-              aria="go to mail"
-              colorScheme="b4"
-              addClasses="mt-4"
-              onClick={() => router.push(`/messages`)}
-            >
-              go to mailbox
-            </SiteButton>
-          )}
-          {/* {(activeApp || specificMessages) && (
+              {specificMessages && (
+                <SiteButton
+                  variant="hollow"
+                  aria="go to mail"
+                  colorScheme="b4"
+                  addClasses="mt-4"
+                  onClick={() => router.push(`/messages`)}
+                >
+                  go to mailbox
+                </SiteButton>
+              )}
+              {/* {(activeApp || specificMessages) && (
             <div className="Title flex flex-col">
               <h2 className="text-right text-emerald">
                 Your Conversation with{" "}
@@ -359,7 +364,7 @@ const MessageCenter = ({
               </p>
             </div>
           )} */}
-          {/* <div className="Title flex flex-col">
+              {/* <div className="Title flex flex-col">
             <h2 className="text-right text-emerald">
               Your Conversation with{" "}
               {accountType === "Fellow"
@@ -370,14 +375,14 @@ const MessageCenter = ({
               regarding the {correspondingListing?.job?.jobTitle} position
             </p>
           </div> */}
-        </div>
+            </div>
 
-        {/* Messages */}
-        <div
-          // className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
-          id="Messages"
-        >
-          {/* {!activeApp && (
+            {/* Messages */}
+            <div
+              // className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
+              id="Messages"
+            >
+              {/* {!activeApp && (
             <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages yet.
@@ -385,7 +390,7 @@ const MessageCenter = ({
             </div>
           )} */}
 
-          {/* {activeApp && messages.length < 1 && (
+              {/* {activeApp && messages.length < 1 && (
             <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages with{" "}
@@ -396,35 +401,37 @@ const MessageCenter = ({
               </p>
             </div>
           )} */}
-          {sortedDates.map((date) => (
-            <div key={date} className="flex w-[100%] flex-col gap-3">
-              <div className="Divider mb-2 flex items-center">
-                <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
-                <p className="mx-3 text-center text-sm text-olive">{date}</p>
-                <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
-              </div>
-              {groupedMessages[date].map((message, messageIndex) => {
-                const isOwn =
-                  (!message.fromBusiness && accountType === "Fellow") ||
-                  (message.fromBusiness && accountType === "Business");
-                return (
-                  <div
-                    key={message.id}
-                    className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
-                  >
-                    <InfoBox
-                      colorScheme={
-                        (currentColorScheme || "b3") as ButtonColorOption
-                      }
-                      variant={isOwn ? "filled" : "hollow"}
-                      aria={"testing" + messageIndex}
-                      size="message"
-                    >
+              {sortedDates.map((date) => (
+                <div key={date} className="flex w-[100%] flex-col gap-3">
+                  <div className="Divider mb-2 flex items-center">
+                    <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
+                    <p className="mx-3 text-center text-sm text-olive">
+                      {date}
+                    </p>
+                    <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
+                  </div>
+                  {groupedMessages[date].map((message, messageIndex) => {
+                    const isOwn =
+                      (!message.fromBusiness && accountType === "Fellow") ||
+                      (message.fromBusiness && accountType === "Business");
+                    return (
                       <div
-                        className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
+                        key={message.id}
+                        className={`Message ${isOwn ? "self-end" : "self-start"} flex flex-col gap-4`}
                       >
-                        {message.text}
-                        {/* {message.text.map((paragraph, paraIndex) => (
+                        <InfoBox
+                          colorScheme={
+                            (currentColorScheme || "b3") as ButtonColorOption
+                          }
+                          variant={isOwn ? "filled" : "hollow"}
+                          aria={"testing" + messageIndex}
+                          size="message"
+                        >
+                          <div
+                            className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
+                          >
+                            {message.text}
+                            {/* {message.text.map((paragraph, paraIndex) => (
                           <p
                             key={`${messageIndex}-${paraIndex}`}
                             className={`MessageText px-1 pl-1 focus:outline-none ${paraIndex < message.text.length - 1 ? "mb-2" : ""} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
@@ -432,18 +439,18 @@ const MessageCenter = ({
                             {paragraph}
                           </p>
                         ))} */}
-                      </div>
-                    </InfoBox>
+                          </div>
+                        </InfoBox>
 
-                    <div
-                      className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : "self-start"} items-center`}
-                    >
-                      {/* {isOwn && message.edited && (
+                        <div
+                          className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : "self-start"} items-center`}
+                        >
+                          {/* {isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-olive opacity-50">
                           edited |
                         </p>
                       )} */}
-                      {/* {isOwn && message.read === true && (
+                          {/* {isOwn && message.read === true && (
                         <div className="ReadDetails flex gap-1">
                           <Image
                             src="/message-read.svg"
@@ -457,27 +464,27 @@ const MessageCenter = ({
                           </p>
                         </div>
                       )} */}
-                      <p
-                        className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
-                      >
-                        {/* {message.timestamp} */}
-                      </p>
-                      {isOwn && (
-                        <Image
-                          src="/edit-pencil.svg"
-                          alt="edit"
-                          width={12}
-                          height={12}
-                          className="opacity-50 hover:opacity-80"
-                          onClick={() => editMessage(message.id)}
-                        />
-                      )}
-                      {/* {!isOwn && message.edited && (
+                          <p
+                            className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
+                          >
+                            {/* {message.timestamp} */}
+                          </p>
+                          {isOwn && (
+                            <Image
+                              src="/edit-pencil.svg"
+                              alt="edit"
+                              width={12}
+                              height={12}
+                              className="opacity-50 hover:opacity-80"
+                              onClick={() => editMessage(message.id)}
+                            />
+                          )}
+                          {/* {!isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-jade opacity-50">
                           | edited
                         </p>
                       )} */}
-                      {/* {!isOwn && message.read === true && (
+                          {/* {!isOwn && message.read === true && (
                         <div className="ReadDetails flex gap-1">
                           <p className="ReadNotification text-xs text-jade opacity-50">
                             |{" "}
@@ -491,53 +498,53 @@ const MessageCenter = ({
                           />
                         </div>
                       )} */}
-                    </div>
-                  </div>
-                );
-              })}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </div>
 
-      <div className="InputAndButtons">
-        {/* Message Input */}
-        <form
-          onSubmit={handleSendMessage}
-          className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
-          id="MessageInput"
-        >
-          <InfoBox
-            variant="hollow"
-            size="note"
-            aria="messageInput"
-            width="full"
-          >
-            <textarea
-              value={currentMessage}
-              onChange={(e) => setCurrentMessage(e.target.value)}
-              placeholder="Your message..."
-              className="min-h-[100px] w-full bg-transparent pr-2 leading-6 text-emerald placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
-            />
-          </InfoBox>
+          <div className="InputAndButtons">
+            {/* Message Input */}
+            <form
+              onSubmit={handleSendMessage}
+              className="MessageInput mt-10 flex items-center justify-center gap-4 border-t-2 border-dotted border-olive border-opacity-25 p-4 align-baseline"
+              id="MessageInput"
+            >
+              <InfoBox
+                variant="hollow"
+                size="note"
+                aria="messageInput"
+                width="full"
+              >
+                <textarea
+                  value={currentMessage}
+                  onChange={(e) => setCurrentMessage(e.target.value)}
+                  placeholder="Your message..."
+                  className="min-h-[50px] w-full bg-transparent pr-2 leading-6 text-emerald placeholder:text-jade placeholder:text-opacity-50 focus:outline-none"
+                />
+              </InfoBox>
 
-          <SiteButton
-            type="submit"
-            variant="filled"
-            colorScheme="c5"
-            aria="send"
-            size="medium"
-            addClasses="px-8 py-[.6rem]"
-          >
-            send
-          </SiteButton>
-        </form>
+              <SiteButton
+                type="submit"
+                variant="filled"
+                colorScheme="c5"
+                aria="send"
+                size="medium"
+                addClasses="px-8 py-[.6rem]"
+              >
+                send
+              </SiteButton>
+            </form>
 
-        {/* Button Options After Messages */}
-        <div
-          className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
-        >
-          {/* <div
+            {/* Button Options After Messages */}
+            <div
+              className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
+            >
+              {/* <div
             className={`ButtonGroup ${!specificMessages ? "justify-end" : "justify-start"} flex w-[100%] gap-4`}
           >
             <SiteButton
@@ -578,18 +585,20 @@ const MessageCenter = ({
             </SiteButton>
           </div> */}
 
-          {specificMessages && (
-            <SiteButton
-              aria="mail"
-              variant="filled"
-              colorScheme="b6"
-              onClick={() => router.push(`/messages`)}
-            >
-              mailbox
-            </SiteButton>
-          )}
+              {specificMessages && (
+                <SiteButton
+                  aria="mail"
+                  variant="filled"
+                  colorScheme="b6"
+                  onClick={() => router.push(`/messages`)}
+                >
+                  mailbox
+                </SiteButton>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

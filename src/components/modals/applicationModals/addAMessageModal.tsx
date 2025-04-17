@@ -8,6 +8,8 @@ import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useApplication } from "@/contexts/ApplicationContext";
+import { useMutation } from "@apollo/client";
+import { APPLY_TO_JOB } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -23,6 +25,7 @@ type FormData = z.infer<typeof AppMessageSchema>;
 
 export default function AddAMessageModal({ business, jobId }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
+  const [applyToJob, { loading, error }] = useMutation(APPLY_TO_JOB);
 
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
@@ -37,26 +40,33 @@ export default function AddAMessageModal({ business, jobId }: any) {
   });
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    setApplication({
-      id: "testapp",
-      applicant: fellow?.id,
-      message: data.message,
-      business: business,
-      jobId: jobId,
-      dateOfApp: "12.20.2024",
-      appStatus: "submitted",
-    });
-    setFellow({
-      ...fellow,
-      profile: {
-        ...fellow?.profile,
-        // dailyApplications: {
-        //   count: fellow?.profile?.dailyApplications?.count + 1,
-        // },
-      },
-    });
-    showModal(<SuccessfulApplicationModal />);
     setDisabledButton(true);
+
+    try {
+      const response = await applyToJob({
+        variables: {
+          jobId: jobId,
+          message: data.message,
+        },
+      });
+      // when successful
+      console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
+      setFellow({
+        ...fellow,
+        dailyApplications: {
+          count: fellow?.dailyApplications?.count + 1,
+        },
+        profile: {
+          ...fellow?.profile,
+        },
+      });
+      showModal(<SuccessfulApplicationModal />);
+    } catch (error) {
+      console.error("application error:", error);
+      setDisabledButton(false);
+
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   return (

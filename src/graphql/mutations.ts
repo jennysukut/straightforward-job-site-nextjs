@@ -464,7 +464,7 @@ export const DELETE_JOB_LISTING = gql`
 // APPLICATION MUTATIONS
 
 export const APPLY_TO_JOB = gql`
-  mutation applyToJob($jobId: ID!, $message: String!) {
+  mutation applyToJob($jobId: ID!, $message: String) {
     applyToJob(jobId: $jobId, message: $message)
   }
 `;

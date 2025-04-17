@@ -347,6 +347,7 @@ export const GET_APPLICATION_BY_ID = gql`
         id
         jobTitle
       }
+
       notes
       fellow {
         id
@@ -434,6 +435,22 @@ export const GET_CONVERSATION_BY_ID = gql`
         seenAt
         text
         fromBusiness
+      }
+      jobApplication {
+        id
+        status
+        fellow {
+          id
+          name
+        }
+        jobListing {
+          id
+          jobTitle
+          business {
+            id
+            name
+          }
+        }
       }
     }
   }

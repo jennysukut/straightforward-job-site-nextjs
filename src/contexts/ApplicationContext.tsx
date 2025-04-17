@@ -6,11 +6,16 @@ import { string } from "zod";
 export interface Application {
   id?: string;
   message?: string;
-  applicant?: string;
-  jobId?: string;
-  business?: string;
-  dateOfApp?: string;
-  appStatus?: string;
+  status?: string;
+  jobListing?: {
+    id: string;
+    jobTitle: string;
+  };
+  fellow?: {
+    id: string;
+    name: string;
+  };
+  // dateOfApp?: string;
 }
 
 interface ApplicationContextType {

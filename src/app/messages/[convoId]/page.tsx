@@ -1,7 +1,7 @@
 "use client";
 
-import { useApplications } from "@/contexts/ApplicationsContext";
 import { useEffect, useRef } from "react";
+
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 
 // PAGE RUNDOWN: AppMessages Page is passed an appId to use in displaying messages. It displays only the messages from that application.
@@ -11,7 +11,6 @@ import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 // TODO: Make sure this URL conversation is restricted to either of the parties involved or an admin?
 
 export default function AppMessages({ params }: any) {
-  const { applications } = useApplications();
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToPageBottom = () => {
