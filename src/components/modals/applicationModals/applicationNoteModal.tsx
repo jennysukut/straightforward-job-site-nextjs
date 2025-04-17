@@ -11,6 +11,8 @@ import { useApplication } from "@/contexts/ApplicationContext";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
+import { useMutation } from "@apollo/client";
+import { KEEP_NOTES } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -43,6 +45,7 @@ export default function ApplicationNoteModal({
   } = useForm<FormData>({
     resolver: zodResolver(ApplicationNoteSchema),
   });
+  const [keepNotes, { loading, error }] = useMutation(KEEP_NOTES);
 
   const clickDelete = (event: any) => {
     event.preventDefault();
@@ -80,6 +83,22 @@ export default function ApplicationNoteModal({
   console.log(app);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    try {
+      const response = await keepNotes({
+        variables: {
+          jobApplicationId: app.id,
+          notes: data.note,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.keepNotes,
+      );
+    } catch (error) {
+      console.error("Signup error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
+
     const updatedApplications = applications?.map((application) => {
       if (application.id === app.id) {
         if (accountType === "Fellow") {

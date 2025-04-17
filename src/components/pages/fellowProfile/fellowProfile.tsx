@@ -85,6 +85,23 @@ interface JobData {
   jobTitle?: String;
 }
 
+interface NoteData {
+  businessNote: Boolean;
+  createdAt: any;
+  deleted: Boolean;
+  deletedAt: any;
+  details: String;
+  fellowNote: Boolean;
+  id: string;
+  updatedAt: string;
+  version: number;
+}
+
+interface RelevantNoteData {
+  id: string;
+  details: String;
+}
+
 const FellowProfile: React.FC<FellowProfile> = ({
   hasId,
   id,
@@ -109,6 +126,8 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [currentFellow, setCurrentFellow] = useState<FellowProfileData>({});
   const [currentApp, setCurrentApp] = useState<ApplicationData>({});
   const [currentJob, setCurrentJob] = useState<JobData>({});
+  const [appNotes, setAppNotes] = useState(Array<NoteData>);
+  const [relevantNotes, setRelevantNotes] = useState(Array<RelevantNoteData>);
 
   // useEffect(() => {
   //   if (
@@ -127,13 +146,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (isOwn) {
-      setCurrentFellow(fellow as FellowProfileData);
-      setLoadingData(false);
-    }
-  }, [fellow, isOwn]);
-
   const { data: app } = useQuery(GET_APPLICATION_BY_ID, {
     variables: { id },
     skip: !isApp,
@@ -143,8 +155,31 @@ const FellowProfile: React.FC<FellowProfile> = ({
       setCurrentApp(data.getApplication);
       setCurrentJob(data.getApplication.jobListing);
       setLoadingData(false);
+      if (data.getApplication.notes) {
+        const parsedNotes = data.getApplication.notes.map((note: any) =>
+          JSON.parse(note || ""),
+        ); // Parse each note
+        setAppNotes(parsedNotes);
+      }
     },
   });
+
+  useEffect(() => {
+    if (accountType === "Business" && appNotes.length > 0) {
+      // Filter appNotes for business notes and extract details and id
+      const filteredNotes = appNotes
+        .filter((note) => note.businessNote) // Keep only business notes
+        .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
+      setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
+    } else if (accountType === "Fellow" && appNotes.length > 0) {
+      // Filter appNotes for business notes and extract details and id
+      const filteredNotes = appNotes
+        .filter((note) => note.fellowNote) // Keep only business notes
+        .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
+
+      setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
+    }
+  }, [appNotes]);
 
   const {
     data: queryData,
@@ -166,6 +201,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
     router.push(`/listing/${currentApp.id}`);
   };
 
+  useEffect(() => {
+    if (isOwn) {
+      setCurrentFellow(fellow as FellowProfileData);
+      setLoadingData(false);
+    }
+  }, [fellow, isOwn]);
+
   const handleEditClick = (url: any) => {
     // setFellow({ ...fellow, profileIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
@@ -178,10 +220,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
     // setFellow({ ...fellow, addMoreInfo: true });
     router.push("/individual-signup/step1");
   };
-
-  useEffect(() => {
-    console.log("currentApp:", currentApp);
-  }, [currentApp]);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -224,12 +262,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
             )}
 
             {/* Business Note On App */}
-            {/* {!isOwn &&
-              isApp &&
-              currentApp.businessNote &&
-              currentApp.businessNote.length > 0 && (
-                <AppFellowNotes currentApp={currentApp} />
-              )} */}
+            {!isOwn && isApp && appNotes && appNotes.length > 0 && (
+              // currentApp.businessNote &&
+              // currentApp.businessNote.length > 0
+              <AppFellowNotes currentApp={currentApp} notes={relevantNotes} />
+            )}
 
             {/* SKILLS DETAILS */}
             <InfoBox

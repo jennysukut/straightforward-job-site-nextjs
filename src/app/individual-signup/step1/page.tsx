@@ -66,9 +66,7 @@ export default function IndividualSignupPage1() {
   const [languages, setLanguages] = useState<string[]>([]);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const [avatar, setAvatar] = useState(avatarDetails);
-  const [currentAvatar, setCurrentAvatar] = useState(
-    fellow?.profile?.avatar || "groovy",
-  );
+  const [currentAvatar, setCurrentAvatar] = useState(fellow?.profile?.avatar);
   const [saveFellowProfilePage1, { loading, error }] = useMutation(
     SAVE_PROFILE_PAGE_1_MUTATION,
   );
@@ -88,8 +86,6 @@ export default function IndividualSignupPage1() {
       languages: languages,
     },
   });
-
-  console.log("current Avatar:", currentAvatar);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
@@ -111,7 +107,7 @@ export default function IndividualSignupPage1() {
       console.log(
         "Details saved successfully, Details:",
         response.data.saveFellowProfilePage1,
-      ); // Adjust based on your mutation response
+      );
       setFellow({
         ...fellow,
         profile: {

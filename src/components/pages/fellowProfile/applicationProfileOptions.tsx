@@ -176,25 +176,28 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
   );
 };
 
-const AppFellowNotes = ({ currentApp }: any) => {
+const AppFellowNotes = ({ currentApp, notes }: any) => {
   const { showModal } = useModal();
+  console.log(notes);
   return (
     <div className="BusinessNotes flex flex-col gap-4">
       <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
-      {currentApp.businessNote.map((note: string, index: number) => {
+      {notes.map((note: { id: string; details: string }) => {
         return (
           <InfoBox
-            key={index}
+            key={note.id}
             variant="hollow"
             aria="businessNote"
             size="note"
             canEdit
             addClasses="text-midnight"
             editClick={() =>
-              showModal(<ApplicationNoteModal app={currentApp} note={note} />)
+              showModal(
+                <ApplicationNoteModal app={currentApp} note={note.details} />,
+              )
             }
           >
-            {note}
+            {note.details}
           </InfoBox>
         );
       })}
