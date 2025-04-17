@@ -417,6 +417,24 @@ export const GET_APPLICATION_BY_ID = gql`
       rejectionDetails
       highlighted
       jobOfferBeingSent
+      conversation {
+        id
+      }
+    }
+  }
+`;
+
+export const GET_CONVERSATION_BY_ID = gql`
+  query getConversation($id: ID!) {
+    getConversation(id: $id) {
+      id
+      messages {
+        id
+        deliveredAt
+        seenAt
+        text
+        fromBusiness
+      }
     }
   }
 `;

@@ -10,6 +10,8 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
+import { useQuery } from "@apollo/client";
+import { GET_CONVERSATION_BY_ID } from "@/graphql/queries";
 
 import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
@@ -36,7 +38,7 @@ export interface Messages {
 type RejectionOptionKey = keyof typeof rejectionOptions;
 
 const MessageCenter = ({
-  activeApp,
+  activeConvo,
   addClasses,
   messageHeight,
   specificMessages,
@@ -57,6 +59,21 @@ const MessageCenter = ({
   // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
+  const [loadingData, setLoadingData] = useState(true);
+
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: queryData,
+  } = useQuery(GET_CONVERSATION_BY_ID, {
+    variables: { id: "2" },
+    // skip: !isLoggedIn,
+    onCompleted: (data) => {
+      // setLoadingData(false);
+      console.log("using the GET_CONVERSATION_BY_ID query:", data);
+      // setCurrentMessage(data.conversation);
+    },
+  });
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -66,9 +83,9 @@ const MessageCenter = ({
     }
   })?.colorScheme;
 
-  const correspondingApp = applications?.find((app: any) => {
-    return app.id === activeApp;
-  });
+  // const correspondingApp = applications?.find((app: any) => {
+  //   return app.id === activeApp;
+  // });
 
   const correspondingListing = "1";
   // jobListings?.find((jl: any) => {
@@ -83,18 +100,18 @@ const MessageCenter = ({
     }
   };
 
-  const renderMessages = useCallback(() => {
-    if (activeApp) {
-      const selectedApp: any = applications?.find((app: any) => {
-        return app.id === activeApp;
-      });
-      setSelectedApp(selectedApp);
-      setMessages(selectedApp.mail);
-    } else {
-      // do I need to have an else statement?
-      //what if there isn't an active app?
-    }
-  }, [activeApp, applications]);
+  // const renderMessages = useCallback(() => {
+  //   if (activeApp) {
+  //     const selectedApp: any = applications?.find((app: any) => {
+  //       return app.id === activeApp;
+  //     });
+  //     setSelectedApp(selectedApp);
+  //     setMessages(selectedApp.mail);
+  //   } else {
+  //     // do I need to have an else statement?
+  //     //what if there isn't an active app?
+  //   }
+  // }, [activeApp, applications]);
 
   // Send A Message!
   const handleSendMessage = (e: any) => {
@@ -121,10 +138,11 @@ const MessageCenter = ({
         read: false,
       };
 
-      const index: number =
-        applications?.findIndex(
-          (app: any) => app.id === correspondingApp?.id,
-        ) ?? -1;
+      const index = -1;
+      // const index: number =
+      //   applications?.findIndex(
+      //     (app: any) => app.id === correspondingApp?.id,
+      //   ) ?? -1;
       if (index !== -1) {
         const updatedApp = {
           ...(applications?.[index] as {
@@ -151,7 +169,7 @@ const MessageCenter = ({
       }
 
       setCurrentMessage("");
-      renderMessages();
+      // renderMessages();
     }
   };
 
@@ -211,7 +229,7 @@ const MessageCenter = ({
     );
 
     // update the message using a server call to update the messages, then rerender
-    renderMessages();
+    // renderMessages();
     scrollToBottom();
     hideModal();
   };
@@ -238,7 +256,7 @@ const MessageCenter = ({
 
   const expandClick = () => {
     setButtonClicked("expandClick");
-    router.push(`/messages/${correspondingApp?.id}`);
+    // router.push(`/messages/${correspondingApp?.id}`);
   };
 
   // const fileReport = () => {
@@ -286,12 +304,12 @@ const MessageCenter = ({
     // setMessages(updatedMessages);
   };
 
-  useEffect(() => {
-    renderMessages();
-    if (currentMessage === "" && messages.length !== 0) {
-      scrollToBottom();
-    }
-  }, [currentMessage, activeApp, groupedMessages]);
+  // useEffect(() => {
+  //   renderMessages();
+  //   if (currentMessage === "" && messages.length !== 0) {
+  //     scrollToBottom();
+  //   }
+  // }, [currentMessage, activeApp, groupedMessages]);
 
   useEffect(() => {
     setCurrentColorScheme(currentAvatarChoice || "b2");
@@ -302,13 +320,13 @@ const MessageCenter = ({
     readMesssages();
   }, []);
 
-  useEffect(() => {
-    if (correspondingApp?.appIsBeingRejected) {
-      setCurrentMessage(correspondingApp.rejectionDetails?.message.join("\n"));
-      // } else if (correspondingApp?.jobOfferBeingSent) {
-      //   setCurrentMessage("Hey You! We'd like to offer you a job!");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (correspondingApp?.appIsBeingRejected) {
+  //     setCurrentMessage(correspondingApp.rejectionDetails?.message.join("\n"));
+  //     // } else if (correspondingApp?.jobOfferBeingSent) {
+  //     //   setCurrentMessage("Hey You! We'd like to offer you a job!");
+  //   }
+  // }, []);
 
   return (
     <div
@@ -317,7 +335,7 @@ const MessageCenter = ({
     >
       <div className="Messages flex w-[100%] flex-col self-center align-top">
         <div className={`TitleArea flex justify-between align-middle`}>
-          {!specificMessages && activeApp && (
+          {/* {!specificMessages && activeApp && (
             <div className="ExpandOption flex gap-2 self-start align-middle">
               <SiteButton
                 aria="expandButton"
@@ -330,7 +348,7 @@ const MessageCenter = ({
                 isSelected={buttonClicked === "expandClick"}
               />
             </div>
-          )}
+          )} */}
           {specificMessages && (
             <SiteButton
               variant="hollow"
@@ -370,16 +388,17 @@ const MessageCenter = ({
 
         {/* Messages */}
         <div
-          className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
+          // className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
           id="Messages"
         >
-          {!activeApp && (
+          {/* {!activeApp && (
             <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages yet.
               </p>
             </div>
-          )}
+          )} */}
+
           {/* {activeApp && messages.length < 1 && (
             <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
