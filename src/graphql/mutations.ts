@@ -495,6 +495,18 @@ export const SAVE_JOB = gql`
   }
 `;
 
+export const SEND_MESSAGE = gql`
+  mutation sendMessage($conversationId: ID!, $text: String) {
+    sendMessage(conversationId: $conversationId, text: $text) {
+      id
+      deliveredAt
+      seenAt
+      text
+      fromBusiness
+    }
+  }
+`;
+
 // GET & UPDATE PROFILE MUTATIONS - OLDER
 export const GET_FELLOW_PROFILE = gql`
   query GetFellowProfile {

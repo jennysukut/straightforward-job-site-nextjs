@@ -12,6 +12,8 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
 import { useQuery } from "@apollo/client";
 import { GET_CONVERSATION_BY_ID } from "@/graphql/queries";
+import { useMutation } from "@apollo/client";
+import { SEND_MESSAGE } from "@/graphql/mutations";
 
 import ReportModal from "@/components/modals/reportingModals/reportingModal";
 import React from "react";
@@ -22,12 +24,15 @@ import SiteButton from "../../buttonsAndLabels/siteButton";
 
 export interface Messages {
   id: number;
+  deliveredAt: any;
+  seenAt: any;
   text: Array<string>;
-  sender: string;
-  date: string;
-  timestamp: string;
-  edited: boolean;
-  read: boolean;
+  fromBusiness: Boolean;
+  // sender: string;
+  // date: string;
+  // timestamp: string;
+  // edited: boolean;
+  // read: boolean;
 }
 
 // We need to make the message center display something about initial contact is the message array doesn't have anything in it.
@@ -43,7 +48,7 @@ const MessageCenter = ({
   messageHeight,
   specificMessages,
 }: any): JSX.Element => {
-  const { accountType } = usePageContext();
+  const { accountType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
@@ -60,6 +65,8 @@ const MessageCenter = ({
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
+  const [sendMessage, { loading, error }] = useMutation(SEND_MESSAGE);
+  const [paragraphs, setParagraphs] = useState([""]);
 
   const {
     loading: queryLoading,
@@ -67,11 +74,15 @@ const MessageCenter = ({
     data: queryData,
   } = useQuery(GET_CONVERSATION_BY_ID, {
     variables: { id: "2" },
-    // skip: !isLoggedIn,
+    skip: !isLoggedIn,
     onCompleted: (data) => {
-      // setLoadingData(false);
       console.log("using the GET_CONVERSATION_BY_ID query:", data);
-      // setCurrentMessage(data.conversation);
+      // Filter messages to only include those with non-null text
+      const filteredMessages = data.getConversation.messages.filter(
+        (message: Messages) => message.text !== null,
+      );
+      setMessages(filteredMessages);
+      console.log(filteredMessages);
     },
   });
 
@@ -101,76 +112,51 @@ const MessageCenter = ({
   };
 
   // const renderMessages = useCallback(() => {
-  //   if (activeApp) {
-  //     const selectedApp: any = applications?.find((app: any) => {
-  //       return app.id === activeApp;
-  //     });
-  //     setSelectedApp(selectedApp);
+  //   // if (activeApp) {
+  //   //   const selectedApp: any = applications?.find((app: any) => {
+  //   //     return app.id === activeApp;
+  //   //   });
+  //   //   setSelectedApp(selectedApp);
   //     setMessages(selectedApp.mail);
-  //   } else {
+  //   // } else {
   //     // do I need to have an else statement?
   //     //what if there isn't an active app?
-  //   }
+  //   // }
   // }, [activeApp, applications]);
 
   // Send A Message!
-  const handleSendMessage = (e: any) => {
+  const handleSendMessage = async (e: any) => {
     e.preventDefault();
-    const sender = accountType === "Fellow" ? "fellow" : "business";
-
-    if (currentMessage.trim()) {
-      // Split the message into paragraphs based on newlines
-      const paragraphs = currentMessage
-        .split("\n")
-        .map((para) => para.trim())
-        .filter((para) => para.length > 0);
-
-      const message = {
-        id: messages.length + 1,
-        text: paragraphs,
-        sender: sender,
-        date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
-        timestamp: `${new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}`,
-        edited: false,
-        read: false,
-      };
-
-      const index = -1;
-      // const index: number =
-      //   applications?.findIndex(
-      //     (app: any) => app.id === correspondingApp?.id,
-      //   ) ?? -1;
-      if (index !== -1) {
-        const updatedApp = {
-          ...(applications?.[index] as {
-            mail?: {
-              id: number;
-              text: string;
-              sender: string;
-              date: string;
-              timestamp: string;
-              edited: boolean;
-              read: boolean;
-            }[];
-          }),
-          mail: [...(applications?.[index]?.mail || []), message],
-        };
-
-        const updatedApplications = [
-          ...(applications ?? []).slice(0, index),
-          updatedApp,
-          ...(applications ?? []).slice(index + 1),
-        ];
-        setApplications(updatedApplications);
-        setMessages([...messages, message]);
-      }
-
-      setCurrentMessage("");
-      // renderMessages();
+    try {
+      const response = await sendMessage({
+        variables: {
+          conversationId: activeConvo,
+          text: currentMessage,
+        },
+      });
+      console.log(
+        "Message sent successfully, Details:",
+        response.data.sendMessage,
+      );
+      setMessages([...messages, response.data.sendMessage]);
+    } catch (error) {
+      console.error("Message Sending error:", error);
+      // Optionally, you can set an error state here to display to the user
     }
+
+    // const sender = accountType === "Fellow" ? "fellow" : "business";
+
+    // if (currentMessage.trim()) {
+    //   // Split the message into paragraphs based on newlines
+    // const currentParagraphs = currentMessage
+    //   .split("\n")
+    //   .map((para) => para.trim())
+    //   .filter((para) => para.length > 0);
+
+    // }
+
+    setCurrentMessage("");
+    // renderMessages();
   };
 
   // Group Messages Together
@@ -290,19 +276,19 @@ const MessageCenter = ({
   //   }
   // };
 
-  const readMesssages = () => {
-    const updatedMessages = messages.map((message) => {
-      const isOwn =
-        (message.sender === "fellow" && accountType === "Fellow") ||
-        (message.sender === "business" && accountType === "Business");
-      if (!isOwn) {
-        return { ...message, read: true }; // Mark as read if it's not the user's message
-      }
-      return message; // Keep the existing message
-    });
-    console.log(updatedMessages);
-    // setMessages(updatedMessages);
-  };
+  // const readMesssages = () => {
+  //   const updatedMessages = messages.map((message) => {
+  //     const isOwn =
+  //       (!message.fromBusiness && accountType === "Fellow") ||
+  //       (message.fromBusiness && accountType === "Business");
+  //     if (!isOwn) {
+  //       return { ...message, read: true }; // Mark as read if it's not the user's message
+  //     }
+  //     return message; // Keep the existing message
+  //   });
+  //   console.log(updatedMessages);
+  //   // setMessages(updatedMessages);
+  // };
 
   // useEffect(() => {
   //   renderMessages();
@@ -316,9 +302,9 @@ const MessageCenter = ({
   }, [currentAvatarChoice, setCurrentColorScheme]);
 
   // useEffect to mark messages from other person as "read" - we should do this directly with the server
-  useEffect(() => {
-    readMesssages();
-  }, []);
+  // useEffect(() => {
+  //   readMesssages();
+  // }, []);
 
   // useEffect(() => {
   //   if (correspondingApp?.appIsBeingRejected) {
@@ -419,8 +405,8 @@ const MessageCenter = ({
               </div>
               {groupedMessages[date].map((message, messageIndex) => {
                 const isOwn =
-                  (message.sender === "fellow" && accountType === "Fellow") ||
-                  (message.sender === "business" && accountType === "Business");
+                  (!message.fromBusiness && accountType === "Fellow") ||
+                  (message.fromBusiness && accountType === "Business");
                 return (
                   <div
                     key={message.id}
@@ -431,32 +417,33 @@ const MessageCenter = ({
                         (currentColorScheme || "b3") as ButtonColorOption
                       }
                       variant={isOwn ? "filled" : "hollow"}
-                      aria={message.text[0]}
+                      aria={"testing" + messageIndex}
                       size="message"
                     >
                       <div
                         className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
                       >
-                        {message.text.map((paragraph, paraIndex) => (
+                        {message.text}
+                        {/* {message.text.map((paragraph, paraIndex) => (
                           <p
                             key={`${messageIndex}-${paraIndex}`}
                             className={`MessageText px-1 pl-1 focus:outline-none ${paraIndex < message.text.length - 1 ? "mb-2" : ""} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
                           >
                             {paragraph}
                           </p>
-                        ))}
+                        ))} */}
                       </div>
                     </InfoBox>
 
                     <div
                       className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : "self-start"} items-center`}
                     >
-                      {isOwn && message.edited && (
+                      {/* {isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-olive opacity-50">
                           edited |
                         </p>
-                      )}
-                      {isOwn && message.read === true && (
+                      )} */}
+                      {/* {isOwn && message.read === true && (
                         <div className="ReadDetails flex gap-1">
                           <Image
                             src="/message-read.svg"
@@ -469,11 +456,11 @@ const MessageCenter = ({
                             |{" "}
                           </p>
                         </div>
-                      )}
+                      )} */}
                       <p
                         className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
                       >
-                        {message.timestamp}
+                        {/* {message.timestamp} */}
                       </p>
                       {isOwn && (
                         <Image
@@ -485,12 +472,12 @@ const MessageCenter = ({
                           onClick={() => editMessage(message.id)}
                         />
                       )}
-                      {!isOwn && message.edited && (
+                      {/* {!isOwn && message.edited && (
                         <p className="EditedNotification text-xs text-jade opacity-50">
                           | edited
                         </p>
-                      )}
-                      {!isOwn && message.read === true && (
+                      )} */}
+                      {/* {!isOwn && message.read === true && (
                         <div className="ReadDetails flex gap-1">
                           <p className="ReadNotification text-xs text-jade opacity-50">
                             |{" "}
@@ -503,7 +490,7 @@ const MessageCenter = ({
                             className="ml-1 mt-[0.1rem] w-auto opacity-80"
                           />
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 );
