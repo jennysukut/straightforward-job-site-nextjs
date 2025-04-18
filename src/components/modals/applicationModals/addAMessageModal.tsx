@@ -53,12 +53,17 @@ export default function AddAMessageModal({ business, jobId }: any) {
       console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
       setFellow({
         ...fellow,
-        dailyApplications: {
-          count: fellow?.dailyApplications?.count + 1,
-        },
-        profile: {
-          ...fellow?.profile,
-        },
+        dailyApplications: [
+          ...(fellow?.dailyApplications || []),
+          {
+            id: response.data.applyToJob,
+            message: data.message,
+            status: "submitted",
+          },
+        ],
+        // profile: {
+        //   ...fellow?.profile,
+        // },
       });
       showModal(<SuccessfulApplicationModal />);
     } catch (error) {

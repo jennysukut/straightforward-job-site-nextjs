@@ -14,18 +14,21 @@ import { CREATE_JOB_LISTING_ROUND } from "@/graphql/mutations";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import SiteLabel from "@/components/buttonsAndLabels/siteLabel";
 
-export default function ApplicationLimitModal(isBeingUpdated: any, jobId: any) {
+export default function ApplicationLimitModal({ currentLimit }: any) {
   const { job, setJob } = useJob();
   const { textColor, secondaryTextColor } = useColorOptions();
   const { colorOption } = useColors();
   const { setPageType } = usePageContext();
   const { hideModal } = useModal();
+  const [disabledButton, setDisabledButton] = useState(false);
   const [applicationLimit, setApplicationLimit] = useState("25");
   const [createJobListingRound, { loading, error }] = useMutation(
     CREATE_JOB_LISTING_ROUND,
   );
 
   const handleSubmit = async () => {
+    setDisabledButton(true);
+
     try {
       const response = await createJobListingRound({
         variables: {
@@ -52,6 +55,13 @@ export default function ApplicationLimitModal(isBeingUpdated: any, jobId: any) {
       // Optionally, you can set an error state here to display to the user
     }
   };
+
+  useEffect(() => {
+    if (currentLimit) {
+      console.log("appLimit:", currentLimit);
+      setApplicationLimit(currentLimit);
+    }
+  }, []);
 
   useEffect(() => {
     setPageType("Business");
@@ -90,8 +100,13 @@ export default function ApplicationLimitModal(isBeingUpdated: any, jobId: any) {
           aria="Enter"
           colorScheme="b6"
           onClick={handleSubmit}
+          isSelected={disabledButton}
         >
-          select
+          {disabledButton && !currentLimit
+            ? "Generating..."
+            : disabledButton && currentLimit
+              ? "Updating..."
+              : "select"}
         </SiteButton>
       </div>
     </div>

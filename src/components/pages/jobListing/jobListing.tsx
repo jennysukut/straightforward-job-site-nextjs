@@ -97,12 +97,7 @@ export default function JobListing({
       setGotJob(true);
       setCurrentJob(data.jobListing);
       setLoadingData(false);
-      if (
-        data.jobListing.completed !== "published" &&
-        data.jobListing.completed !== "appLimit"
-        // &&
-        // data.jobListing.completed !== "payment"
-      ) {
+      if (data.jobListing.published === false) {
         setIncompleteListing(true);
         if (!isBeingDeleted && isOwn) {
           setTimeout(() => {
@@ -160,7 +155,9 @@ export default function JobListing({
   };
 
   const checkNonNegParamsMatch = () => {
-    if (!currentJob?.nonNegParams || !fellow) return false;
+    if (!fellow) return false;
+    if (!currentJob.nonNegParams) return true;
+
     const { country, languages = [], skills = [] } = fellow?.profile || {};
 
     // Check if all non negotiable parameters have a match in country, languages, or skills
@@ -180,12 +177,9 @@ export default function JobListing({
     (app: any) => app.jobListing.id === currentJob.id,
   );
 
-  // if it matches parameters, hasn't met applicationLimit, if the fellow has applied, and the dailyApplications
-  // for the fellow aren't at it's limit of 5, they can apply!
-
   const canApply =
     hasMatchingNonNegParams === true &&
-    fellow?.dailyApplications?.length < 5 &&
+    (fellow?.dailyApplications?.length || 0) < 5 &&
     !matchingIds;
 
   const deleteClick = () => {
@@ -297,7 +291,7 @@ export default function JobListing({
                 );
               })
             ) : (
-              <p>No non-negotiable parameters available.</p>
+              <p className="OpenJob italic text-olive">This is an open job!</p>
             )}
           </div>
         </InfoBox>

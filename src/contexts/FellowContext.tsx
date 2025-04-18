@@ -5,7 +5,7 @@ import React, { createContext, useContext, ReactNode, useState } from "react";
 export interface Fellow {
   id?: string;
   name?: string;
-  dailyApplications?: Record<string, any>;
+  dailyApplications?: Array<{ id: string; message: string; status: string }>;
   jobApplications?: Record<string, any>;
   profile?: {
     email?: string;

@@ -19,7 +19,7 @@ export default function SuccessfulApplicationModal({
   const { application } = useApplication();
   const router = useRouter();
 
-  const appsLeft = 5 - fellow?.dailyApplications?.length || 4;
+  const appsLeft = 5 - (fellow?.dailyApplications?.length || 0);
 
   const goToAms = () => {
     router.push("/ams");

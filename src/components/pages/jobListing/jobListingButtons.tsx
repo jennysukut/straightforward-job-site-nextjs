@@ -38,6 +38,7 @@ const OwnListingTopButtons = ({
   const [isPublished, setIsPublished] = useState(false);
 
   const publishPost = async () => {
+    setClickedButton("publish");
     // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
     try {
       const response = await publishJobListing({
@@ -106,7 +107,7 @@ const OwnListingTopButtons = ({
 
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
-      {incompleteListing && !isPublished ? (
+      {incompleteListing && !isPublished && completed !== "appLimit" ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"
@@ -148,8 +149,9 @@ const OwnListingTopButtons = ({
           colorScheme="f1"
           addClasses="px-8"
           onClick={publishPost}
+          isSelected={clickedButton === "publish"}
         >
-          publish
+          {clickedButton === "publish" ? "Publishing..." : "publish"}
         </SiteButton>
       )}
 
@@ -165,16 +167,33 @@ const OwnListingTopButtons = ({
           current apps: {currentJob?.applications.length || 0}
         </SiteButton>
       )}
-
-      <SiteButton
-        variant="filled"
-        aria="apps"
-        colorScheme="b1"
-        addClasses="px-8"
-        onClick={() => showModal(<ApplicationLimitModal />)}
-      >
-        application limit: {currentJob?.applicationLimit || 25}
-      </SiteButton>
+      {!isPublished && (
+        <SiteButton
+          variant="filled"
+          aria="apps"
+          colorScheme="b1"
+          addClasses="px-8"
+          onClick={() =>
+            showModal(
+              <ApplicationLimitModal
+                currentLimit={currentJob.applicationLimit}
+              />,
+            )
+          }
+        >
+          application limit: {currentJob?.applicationLimit || 25}
+        </SiteButton>
+      )}
+      {isPublished && (
+        <SiteLabel
+          variant="display"
+          aria="appLimit"
+          colorScheme="b1"
+          addClasses="px-8"
+        >
+          application limit: {currentJob?.applicationLimit || 25}
+        </SiteLabel>
+      )}
 
       {!isPublished && (
         <SiteButton
@@ -194,8 +213,6 @@ const OwnListingTopButtons = ({
 const OwnJobBottomButtons = ({
   canEdit,
   setCanEdit,
-  setSavingForLater,
-  savingForLater,
   incompleteListing,
   completed,
   currentJob,
@@ -238,7 +255,7 @@ const OwnJobBottomButtons = ({
 
   const publishPost = async () => {
     // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
-
+    setClickedButton("publish");
     try {
       const response = await publishJobListing({
         variables: {
@@ -279,7 +296,7 @@ const OwnJobBottomButtons = ({
 
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-      {incompleteListing && !isPublished ? (
+      {incompleteListing && !isPublished && completed !== "appLimit" ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"
@@ -320,8 +337,9 @@ const OwnJobBottomButtons = ({
           colorScheme="f1"
           addClasses="px-8"
           onClick={publishPost}
+          isSelected={clickedButton === "publish"}
         >
-          publish
+          {clickedButton === "publish" ? "Publishing..." : "publish"}
         </SiteButton>
       )}
     </div>
@@ -344,7 +362,7 @@ const ListingTopButtons = ({
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
 
-  const atDailyLimit = fellow?.dailyApplications?.count === 5;
+  const atDailyLimit = fellow?.dailyApplications?.length === 5;
 
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">

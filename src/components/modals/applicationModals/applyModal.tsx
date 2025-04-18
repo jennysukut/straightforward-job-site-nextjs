@@ -34,12 +34,13 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       console.log("application successful, details:", response.data.applyToJob);
       setFellow({
         ...fellow,
-        dailyApplications: {
-          count: fellow?.dailyApplications?.count + 1,
-        },
-        profile: {
-          ...fellow?.profile,
-        },
+        dailyApplications: [
+          ...(fellow?.dailyApplications || []),
+          { id: response.data.applyToJob, message: "", status: "submitted" },
+        ],
+        // profile: {
+        //   ...fellow?.profile,
+        // },
       });
       showModal(<SuccessfulApplicationModal />);
     } catch (error) {
@@ -61,11 +62,11 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       >{`daily application: ${fellow?.dailyApplications?.length || 0}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
-      >{`We’ll send ${business} your information.`}</p>
+      >{`We'll send ${business} your information.`}</p>
 
       <p
         className={`Details ${titleColor} text-center`}
-      >{`If you’d like to add a message or include additional information, just use the button below!`}</p>
+      >{`If you'd like to add a message or include additional information, just use the button below!`}</p>
       <div className="Buttons mt-4 flex flex-row items-start gap-4">
         <SiteButton
           variant="hollow"

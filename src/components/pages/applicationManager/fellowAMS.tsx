@@ -10,7 +10,7 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
 import { useJobListings } from "@/contexts/JobListingsContext";
-
+import { useFellow } from "@/contexts/FellowContext";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import AddHandler from "@/components/handlers/addHandler";
@@ -30,6 +30,7 @@ export default function FellowAMS() {
   const { applications, setApplications } = useApplications();
   const { appointments } = useAppointments();
   const { jobListings, setJobListings } = useJobListings();
+  const { fellow } = useFellow();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [filters, setFilters] = useState<string[]>([]);
@@ -58,6 +59,8 @@ export default function FellowAMS() {
   const activeApps = applications?.filter((app: any) => {
     return app.status !== "closed";
   });
+
+  console.log("daily applications:", fellow?.dailyApplications);
 
   const retract = () => {
     setClickedButton("retract");
@@ -246,7 +249,7 @@ export default function FellowAMS() {
       ) : (
         <div className="AMSContainer flex w-full">
           <div className="ApplicationList flex w-full flex-col gap-4">
-            <div className="ButtonsAndTitle flex w-full flex-col justify-between">
+            <div className="ButtonsAndTitle flex w-full flex-col justify-between pt-6">
               <h1 className="AMSTitle mr-8 text-right">Your Applications</h1>
               <p className="Subtitle -mb-8 mr-8 text-right italic text-olive">
                 {activeApps?.length} active | {applications?.length} total
