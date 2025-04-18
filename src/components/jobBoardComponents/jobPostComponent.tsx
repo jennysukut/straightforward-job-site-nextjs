@@ -33,6 +33,7 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
   const { isLoggedIn, accountType } = usePageContext();
   const [isSaved, setIsSaved] = useState(false);
+  const [savedClick, setSavedClick] = useState(false);
   const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
 
   const removeSavedJob = () => {
@@ -58,12 +59,13 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
   }
 
   const saveClick = async () => {
+    setIsSaved(!isSaved);
+
     if (!isLoggedIn) {
       showModal(<LoginPromptModal />);
       return;
     }
     hideModal();
-
     try {
       const response = await saveJob({
         variables: {
@@ -71,10 +73,12 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
         },
       });
       //rerender here to set the saved status of the job? // or just update locally?
-      setIsSaved(!isSaved);
+      // setIsSaved(!isSaved);
       console.log("saved job successfully", response.data.saveJob);
     } catch (error) {
       console.error("Signup error:", error);
+      setIsSaved(!isSaved);
+
       // Optionally, you can set an error state here to display to the user
     }
   };
