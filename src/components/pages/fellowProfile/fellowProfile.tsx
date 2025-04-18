@@ -9,6 +9,8 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useModal } from "@/contexts/ModalContext";
 import { useQuery } from "@apollo/client";
 import { GET_PROFILE, GET_APPLICATION_BY_ID } from "@/graphql/queries";
+import { useMutation } from "@apollo/client";
+import { UPDATE_STATUS } from "@/graphql/mutations";
 
 import {
   OwnFellowTopButtons,
@@ -29,6 +31,7 @@ import SiteLabel from "../../buttonsAndLabels/siteLabel";
 import Avatar from "../../avatarComponent";
 import ShuffleIdealButtonPattern from "../../buttonsAndLabels/shuffleIdealButtonPattern";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
+import { update } from "lodash";
 
 interface FellowProfile {
   hasId?: boolean;
@@ -129,6 +132,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [appNotes, setAppNotes] = useState(Array<NoteData>);
   const [relevantNotes, setRelevantNotes] = useState(Array<RelevantNoteData>);
   const [newNote, setNewNote] = useState(false);
+  const [updateStatus, { loading, error }] = useMutation(UPDATE_STATUS);
 
   // useEffect(() => {
   //   if (
@@ -235,10 +239,32 @@ const FellowProfile: React.FC<FellowProfile> = ({
     router.push("/individual-signup/step1");
   };
 
+  const setStatus = async (newStatus: string) => {
+    console.log("trying to update the app's status");
+
+    try {
+      const response = await updateStatus({
+        variables: {
+          appId: currentApp.id,
+          status: newStatus,
+        },
+      });
+      console.log(
+        "Status updated successfully, Details:",
+        response.data.addJobListingDetailsStep2,
+      );
+      setCurrentApp({ ...currentApp, status: newStatus });
+      // if it's successful, update the front-end to reflect "viewed" status
+    } catch (error) {
+      console.error("Update error:", error);
+    }
+  };
+
   useEffect(() => {
     if (isApp && currentApp.status === "submitted") {
       console.log("this app has been submitted, will be marking it as viewed.");
       // code here to update status from submitted to "viewed"
+      setStatus("viewed");
     }
   }, [currentApp]);
 
