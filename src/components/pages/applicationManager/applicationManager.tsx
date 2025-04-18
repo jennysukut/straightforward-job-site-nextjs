@@ -164,7 +164,11 @@ export default function ApplicationManager({ jobId }: any) {
     <div
       className={`ApplicationManagerPage w-[85%] self-center ${textColor} -mt-8 max-w-[1600px]`}
     >
-      {
+      {loadingData ? (
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <div className="LoadingText text-center text-olive">Loading...</div>
+        </div>
+      ) : (
         <div className="AMSContainer flex">
           <div className="ApplicationList flex w-full flex-col items-center gap-4">
             <div className="ButtonsAndTitle flex w-full flex-col justify-between">
@@ -241,7 +245,7 @@ export default function ApplicationManager({ jobId }: any) {
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 }

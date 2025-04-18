@@ -158,13 +158,14 @@ const FellowProfile: React.FC<FellowProfile> = ({
         setCurrentApp(data.getApplication);
         setCurrentJob(data.getApplication.jobListing);
         setLoadingData(false);
+        setNewNote(false);
+
         if (data.getApplication.notes) {
           const parsedNotes = data.getApplication.notes.map((note: any) =>
             JSON.parse(note || ""),
           ); // Parse each note
           setAppNotes(parsedNotes);
         }
-        setNewNote(false);
       },
     },
   );
@@ -175,8 +176,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
       refetchApplication();
     }
   }, [newNote]);
-
-  console.log("relevantNotes:", relevantNotes);
 
   useEffect(() => {
     if (accountType === "Business" && appNotes.length > 0) {
@@ -235,6 +234,13 @@ const FellowProfile: React.FC<FellowProfile> = ({
     // setFellow({ ...fellow, addMoreInfo: true });
     router.push("/individual-signup/step1");
   };
+
+  useEffect(() => {
+    if (isApp && currentApp.status === "submitted") {
+      console.log("this app has been submitted, will be marking it as viewed.");
+      // code here to update status from submitted to "viewed"
+    }
+  }, [currentApp]);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
