@@ -129,7 +129,7 @@ export default function IndividualSignupPage4() {
       <div className="PopulateProfileContainer flex w-[84%] max-w-[1600px] flex-col justify-center gap-10 sm:gap-8 md:w-[75%]">
         <div className="HeaderContainer flex justify-between">
           <h2 className={`OptionalTitle text-lg ${titleColor}`}>
-            optional: work-related details
+            work-related details
           </h2>
           <div className="AvatarContainer self-end pr-6">
             <Avatar

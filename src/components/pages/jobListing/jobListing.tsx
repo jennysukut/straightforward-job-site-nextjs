@@ -103,13 +103,8 @@ export default function JobListing({
         // &&
         // data.jobListing.completed !== "payment"
       ) {
-        console.log(
-          "completed status:",
-          data.jobListing.completed,
-          "-- timeout to modal set.",
-        );
         setIncompleteListing(true);
-        if (!isBeingDeleted) {
+        if (!isBeingDeleted && isOwn) {
           setTimeout(() => {
             showModal(
               <FinishListingModal completed={data.jobListing.completed} />,
@@ -149,22 +144,18 @@ export default function JobListing({
     }
   };
 
+  // identify the related application
   let currentApp;
   if (inAms || !isOwn) {
-    // Filter applications for the current jobId
-    const currentApps = applications?.filter(
-      (app) => app?.jobListing?.id === id,
+    // Filter a fellow's applications for the current jobId
+    const currentApp = fellow?.jobApplications?.find(
+      (app: any) => app?.jobListing?.id === id,
     );
-    console.log(currentApps);
-    // Find the application where the applicant matches the fellow's id
-    currentApp = "1";
-    // = currentApps?.find((app) => app.applicant === fellow?.id);
   }
 
   const handleEditClick = (url: any) => {
     setJob({ ...job, beingEdited: true });
     setCanEdit(true);
-    console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
 
@@ -181,8 +172,6 @@ export default function JobListing({
     );
   };
 
-  console.log("daily applications:", fellow?.dailyApplications?.length);
-
   //meets minimum requirements to apply
   const hasMatchingNonNegParams = checkNonNegParamsMatch();
 
@@ -198,13 +187,6 @@ export default function JobListing({
     hasMatchingNonNegParams === true &&
     fellow?.dailyApplications?.length < 5 &&
     !matchingIds;
-
-  console.log(
-    "have applied to this before:",
-    matchingIds,
-    "can apply:",
-    canApply,
-  );
 
   const deleteClick = () => {
     setIsBeingDeleted(true);

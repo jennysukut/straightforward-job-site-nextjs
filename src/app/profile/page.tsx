@@ -69,7 +69,7 @@ export default function Profile() {
   return (
     <div className="Profile flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
       {isLoggedIn && accountType === "Fellow" && (
-        <FellowProfile self={fellow} isOwn logout={logout} />
+        <FellowProfile self={fellow} isOwn logout={logout} id={fellow?.id} />
       )}
       {isLoggedIn && accountType === "Business" && (
         <BusinessProfile self={business} isOwn logout={logout} />

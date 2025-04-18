@@ -185,9 +185,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
     data: queryData,
     loading: queryLoading,
     error: queryError,
+    refetch: refetchProfile,
   } = useQuery(GET_PROFILE, {
     variables: { id },
-    skip: !id || isOwn || isApp,
+    skip: !id || isApp,
     onCompleted: (data) => {
       console.log("calling GET_PROFILE query:", data);
       // setCurrentFellow(data.fellow);
@@ -197,16 +198,16 @@ const FellowProfile: React.FC<FellowProfile> = ({
     },
   });
 
+  useEffect(() => {
+    // Refetch data when the component mounts or when the id changes
+    if (id) {
+      refetchProfile();
+    }
+  }, [id, refetchProfile]);
+
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.id}`);
   };
-
-  useEffect(() => {
-    if (isOwn) {
-      setCurrentFellow(fellow as FellowProfileData);
-      setLoadingData(false);
-    }
-  }, [fellow, isOwn]);
 
   const handleEditClick = (url: any) => {
     // setFellow({ ...fellow, profileIsBeingEdited: true });
@@ -238,7 +239,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
         <div className="ProfileDetails mr-14 flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}
-            {/* {isOwn && !isApp && (
+            {isOwn && !isApp && (
               <OwnFellowTopButtons
                 setCanEdit={setCanEdit}
                 canEdit={canEdit}
@@ -252,7 +253,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 currentApp={currentApp}
                 currentJob={currentJob}
               />
-            )} */}
+            )}
 
             {!isOwn && isApp && (
               <AppFellowTopButtons

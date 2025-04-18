@@ -487,6 +487,38 @@ export const SCHEDULE_APPOINTMENTS = gql`
   }
 `;
 
+export const REJECT_APPLICATION = gql`
+  mutation rejectApp(
+    $appId: ID!
+    $rejectionMessage: String
+    $rejectionDetails: String
+  ) {
+    rejectApp(
+      appId: $appId
+      rejectionMessage: $rejectionMessage
+      rejectionDetails: $rejectionDetails
+    )
+  }
+`;
+
+export const HIGHLIGHT_APP = gql`
+  mutation highlightApp($appId: ID!) {
+    highlightApp(appId: $appId)
+  }
+`;
+
+export const UPDATE_STATUS = gql`
+  mutation updateStatus($appId: ID!, $status: String) {
+    updateStatus(appId: $appId, status: $status)
+  }
+`;
+
+export const SEND_OFFER = gql`
+  mutation sendJobOffer($appId: ID!) {
+    sendJobOffer(appId: $appId)
+  }
+`;
+
 // OTHER MUTATIONS
 
 export const SAVE_JOB = gql`

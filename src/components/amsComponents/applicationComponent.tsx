@@ -43,8 +43,8 @@ const Application: React.FC<ApplicationProps> = ({
   currentJob,
 }) => {
   const router = useRouter();
-  const { jobListings } = useJobListings();
   const [betterColorArray, setBetterColorArray] = useState(Array<any>);
+  const [clickedButton, setClickedButton] = useState("");
 
   // search through the jobListings to find the job with the matching jobId
   const jobClicked = selectedApps?.includes(id);
@@ -62,11 +62,20 @@ const Application: React.FC<ApplicationProps> = ({
   };
 
   const viewListing = () => {
+    setClickedButton("viewListing");
     router.push(`/ams/listing/${jobId}`);
   };
 
-  const viewApplication = () => {
-    router.push(`/application/${id}`);
+  // const viewApplication = () => {
+  //   setClickedButton("viewApplication");
+  //   router.push(`/application/${id}`);
+  // };
+
+  console.log("app:", app);
+  const viewCompany = () => {
+    setClickedButton("viewCompanyDetails");
+    // viewCompanyDetails();
+    router.push(`/business/${app.jobListing.business.id}`);
   };
 
   useEffect(() => {
@@ -98,12 +107,13 @@ const Application: React.FC<ApplicationProps> = ({
       </div>
 
       {jobClicked && (
-        <div className="SecondaryButtons mb-1 mt-1 flex gap-6 self-center">
+        <div className="SecondaryButtons mb-1 mt-1 flex gap-6 self-end pr-4">
           <SiteButton
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[0]}
             onClick={viewListing}
+            isSelected={clickedButton === "viewListing"}
           >
             view listing
           </SiteButton>
@@ -111,18 +121,20 @@ const Application: React.FC<ApplicationProps> = ({
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[1]}
-            onClick={viewCompanyDetails}
+            onClick={viewCompany}
+            isSelected={clickedButton === "viewCompanyDetails"}
           >
-            company page
+            go to company page
           </SiteButton>
-          <SiteButton
+          {/* <SiteButton
             aria="viewDetails"
             variant="hollow"
             colorScheme={betterColorArray[2]}
             onClick={viewApplication}
+            isSelected={clickedButton === "viewApplication"}
           >
             your application
-          </SiteButton>
+          </SiteButton> */}
         </div>
       )}
     </div>

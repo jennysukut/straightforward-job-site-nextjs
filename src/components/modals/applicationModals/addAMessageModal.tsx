@@ -76,7 +76,10 @@ export default function AddAMessageModal({ business, jobId }: any) {
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
         {`Your Message To ${business}`}
       </Dialog.Title>
-      <form onSubmit={handleSubmit(onSubmit)} className="AppMessageForm">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="AppMessageForm flex flex-col gap-4"
+      >
         <InputComponent
           type="text"
           placeholderText="Your Message Here..."

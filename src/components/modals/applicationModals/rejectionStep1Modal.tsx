@@ -3,9 +3,12 @@ import { useModal } from "@/contexts/ModalContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
 import { useState, useEffect } from "react";
+import { useMutation } from "@apollo/client";
+import { REJECT_APPLICATION } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RejectionOptionsModal from "./rejectionOptionsModal";
+import { reject } from "lodash";
 
 type RejectionOptionKey = keyof typeof rejectionOptions;
 
@@ -17,6 +20,7 @@ export default function RejectionStep1Modal({ application }: any) {
     jobTitle: "JobTitle",
     businessName: "BusinessName",
   });
+  const [rejectApp, { loading, error }] = useMutation(REJECT_APPLICATION);
 
   const generateRejectionMessages = (
     optionKey: keyof typeof rejectionOptions,
@@ -34,48 +38,65 @@ export default function RejectionStep1Modal({ application }: any) {
     });
   };
 
-  const sendBasicRejection = () => {
+  const sendBasicRejection = async () => {
     //send a message from this business using the template text
     //update application to appStatus "closed"
-
-    console.log(
-      "sending a basic rejection message & closing app: ",
-      application,
-    );
-
     const rejectionMessage = generateRejectionMessages("basic", applicantInfo);
-    console.log(rejectionMessage);
 
-    const message = {
-      id: 127836742634,
-      text: rejectionMessage,
-      sender: "business",
-      date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
-      timestamp: `${new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      })}`,
-      edited: false,
-      read: false,
-    };
+    try {
+      const response = await rejectApp({
+        variables: {
+          appId: application.id,
+          rejectionMessage: rejectionMessage,
+          // rejectionDetails:
+        },
+      });
 
-    const index: number =
-      applications?.findIndex((app: any) => app.id === application?.id) ?? -1;
+      console.log(
+        "Details updated successfully, Details:",
+        response.data.rejectApp,
+      );
 
-    // setApplications(
-    //   applications?.map((app) =>
-    //     app.id === application.id
-    //       ? {
-    //           ...app,
-    //           appStatus: "closed",
-    //           appIsBeingRejected: true,
-    //           rejectionMessage: "basic",
-    //           mail: [...(applications?.[index]?.mail || []), message],
-    //         }
-    //       : app,
-    //   ) || [],
-    // );
-    hideModal();
+      console.log(
+        "sending a basic rejection message & closing app: ",
+        application,
+      );
+
+      // send the basic rejection message here?
+
+      // const message = {
+      //   id: 127836742634,
+      //   text: rejectionMessage,
+      //   sender: "business",
+      //   date: `${new Date().toLocaleDateString("en-US", { month: "long", day: "2-digit" })}`,
+      //   timestamp: `${new Date().toLocaleTimeString([], {
+      //     hour: "2-digit",
+      //     minute: "2-digit",
+      //   })}`,
+      //   edited: false,
+      //   read: false,
+      // };
+
+      // const index: number =
+      //   applications?.findIndex((app: any) => app.id === application?.id) ?? -1;
+
+      // setApplications(
+      //   applications?.map((app) =>
+      //     app.id === application.id
+      //       ? {
+      //           ...app,
+      //           appStatus: "closed",
+      //           appIsBeingRejected: true,
+      //           rejectionMessage: "basic",
+      //           mail: [...(applications?.[index]?.mail || []), message],
+      //         }
+      //       : app,
+      //   ) || [],
+      // );
+      hideModal();
+    } catch (error) {
+      console.error("delete error:", error);
+    }
   };
 
   useEffect(() => {

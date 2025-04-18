@@ -39,6 +39,7 @@ export default function FellowAMS() {
   const [currentJob, setCurrentJob] = useState<Job | undefined>(undefined);
   const [selectedColor, setSelectedColor] = useState("");
   const [altViewChoice, setAltViewChoice] = useState("");
+  const [clickedButton, setClickedButton] = useState("");
 
   console.log(applications);
 
@@ -59,6 +60,7 @@ export default function FellowAMS() {
   });
 
   const retract = () => {
+    setClickedButton("retract");
     showModal(
       <RetractionConfirmationModal
         continueRetract={continueRetract}
@@ -111,6 +113,7 @@ export default function FellowAMS() {
   };
 
   const goToMessages = () => {
+    setClickedButton("goToMessages");
     router.push(`/messages/${currentApp?.id}`);
   };
 
@@ -242,57 +245,55 @@ export default function FellowAMS() {
         </p>
       ) : (
         <div className="AMSContainer flex w-full">
-          {(altViewChoice === "" || altViewChoice.length == 0) && (
-            <div className="ApplicationList flex w-full flex-col gap-4">
-              <div className="ButtonsAndTitle flex w-full flex-col justify-between">
-                <h1 className="AMSTitle mr-8 text-right">Your Applications</h1>
-                <p className="Subtitle -mb-8 mr-8 text-right italic text-olive">
-                  {activeApps?.length} active | {applications?.length} total
-                </p>
+          <div className="ApplicationList flex w-full flex-col gap-4">
+            <div className="ButtonsAndTitle flex w-full flex-col justify-between">
+              <h1 className="AMSTitle mr-8 text-right">Your Applications</h1>
+              <p className="Subtitle -mb-8 mr-8 text-right italic text-olive">
+                {activeApps?.length} active | {applications?.length} total
+              </p>
 
-                {/* application status filter */}
-                <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
-                  <TieredButtonOptionsComponent
-                    type="filters"
-                    selectedArray={filters}
-                    setArray={setFilters}
-                    addClasses="flex-wrap mb-2"
-                    buttons={[
-                      {
-                        title:
-                          appStatus.length > 1
-                            ? `status: ${appStatus}`
-                            : "application status",
-                        initialTitle: "application status",
-                        type: "appStatus",
-                        array: appStatus,
-                        options: [
-                          "submitted",
-                          "viewed",
-                          "stage 1",
-                          "stage 2",
-                          "stage 3",
-                          "offer",
-                          "closed",
-                        ],
-                      },
-                    ]}
-                    horizontalSecondaryButtons
-                    handleAdd={handleAdd}
-                    handleDelete={handleDelete}
-                    secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
-                  />
-                </div>
-              </div>
-              <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
-                <div
-                  className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-visible p-4`}
-                >
-                  {renderApplications()}
-                </div>
+              {/* application status filter */}
+              <div className="FilterButtons max-w[100%] -mb-8 flex flex-wrap items-center">
+                <TieredButtonOptionsComponent
+                  type="filters"
+                  selectedArray={filters}
+                  setArray={setFilters}
+                  addClasses="flex-wrap mb-2"
+                  buttons={[
+                    {
+                      title:
+                        appStatus.length > 1
+                          ? `status: ${appStatus}`
+                          : "application status",
+                      initialTitle: "application status",
+                      type: "appStatus",
+                      array: appStatus,
+                      options: [
+                        "submitted",
+                        "viewed",
+                        "stage 1",
+                        "stage 2",
+                        "stage 3",
+                        "offer",
+                        "closed",
+                      ],
+                    },
+                  ]}
+                  horizontalSecondaryButtons
+                  handleAdd={handleAdd}
+                  handleDelete={handleDelete}
+                  secondaryButtonClasses="mt-1 justify-start flex-wrap -mb-4"
+                />
               </div>
             </div>
-          )}
+            <div className="JobApplications flex w-full flex-col justify-between gap-6 pt-3">
+              <div
+                className={`Applications ${currentJob ? "-mt-2 h-[25.5rem]" : "-mt-4 h-[26rem]"} flex w-full flex-col gap-4 overflow-x-auto overflow-y-visible p-4`}
+              >
+                {renderApplications()}
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -320,13 +321,15 @@ export default function FellowAMS() {
               <p className="BusinessName font-medium italic">
                 with {currentJob?.business?.name}
               </p>
-
-              <p className="ExperienceLevel text-sm font-normal">
-                {capitalizeFirstLetter(
-                  currentJob?.experienceLevel?.[0] || "junior",
-                )}{" "}
-                Level
-              </p>
+              {currentJob.experienceLevel !== null &&
+                currentJob.experienceLevel !== undefined && (
+                  <p className="ExperienceLevel text-sm font-normal">
+                    {capitalizeFirstLetter(
+                      currentJob.experienceLevel[0] || "junior",
+                    )}{" "}
+                    Level
+                  </p>
+                )}
 
               <Image
                 src="/listing-divider.svg"
@@ -340,7 +343,7 @@ export default function FellowAMS() {
               )}
               {currentJob?.locationOption === "on-site" && (
                 <p className="LocationOption">
-                  On-Site: {currentJob?.business?.businessProfile?.country}
+                  On-Site: {currentJob?.city}, {currentJob?.state}
                 </p>
               )}
               {currentJob?.locationOption === "hybrid" && (
@@ -394,16 +397,20 @@ export default function FellowAMS() {
               colorScheme="f5"
               aria="message"
               onClick={goToMessages}
+              isSelected={clickedButton === "goToMessages"}
             >
-              messages
+              {clickedButton === "goToMessages"
+                ? "going to messages..."
+                : "messages"}
             </SiteButton>
             <SiteButton
               variant="hollow"
               colorScheme="d3"
               aria="retract"
               onClick={retract}
+              isSelected={clickedButton === "retract"}
             >
-              retract
+              {clickedButton === "retract" ? "retracting..." : "retract"}
             </SiteButton>
           </div>
         </div>

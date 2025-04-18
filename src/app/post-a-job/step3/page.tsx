@@ -21,9 +21,7 @@ import LabelGeneratorAndDisplayComp from "@/components/buttonsAndLabels/labelGen
 
 const jobSchema = z.object({
   experienceLevel: z.string(),
-  preferredSkills: z
-    .array(z.string())
-    .min(1, { message: "You Must Have At Least 1 Skill Listed" }),
+  preferredSkills: z.array(z.string()).optional(),
   moreAboutPosition: z
     .string()
     .min(3, { message: "Please Provide More Details About This Position" }),

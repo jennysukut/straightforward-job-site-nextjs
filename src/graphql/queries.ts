@@ -29,7 +29,18 @@ export const GET_MY_PROFILE = gql`
           jobListing {
             id
             jobTitle
+            positionType
+            positionSummary
+            nonNegParams
+            payscaleMin
+            payscaleMax
+            payOption
+            locationOption
+            city
+            state
+            experienceLevel
             business {
+              id
               name
             }
           }
