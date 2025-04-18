@@ -3,10 +3,8 @@
 import { useEffect, useState } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
-import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useModal } from "@/contexts/ModalContext";
-import { countries } from "@/lib/countriesList";
 import { JobListing } from "@/contexts/JobListingsContext";
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTINGS } from "@/graphql/queries";
@@ -19,14 +17,10 @@ import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import AddHandler from "@/components/handlers/addHandler";
 import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
-import InputComponentWithLabelOptions from "@/components/inputComponents/inputComponentWithLabelOptions";
-import SiteButton from "@/components/buttonsAndLabels/siteButton";
-import LoginPromptModal from "@/components/modals/logInPromptModal";
 
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
   const { textColor, inputColors } = useColorOptions();
-  // const { jobListings } = useJobListings();
   const { currentPage, setCurrentPage, isLoggedIn } = usePageContext();
   const { hideModal, showModal } = useModal();
 
@@ -43,6 +37,7 @@ export default function JobBoard() {
   const [viewPendingJobs, setViewPendingJobs] = useState<boolean>(false);
   const [loadingData, setLoadingData] = useState(true);
   const [saveJob, { loading, error }] = useMutation(SAVE_JOB);
+  const [locationInputValue, setLocationInputValue] = useState("");
 
   const {
     loading: queryLoading,
@@ -68,33 +63,26 @@ export default function JobBoard() {
     },
   });
 
+  console.log("filters:", filters);
+
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setInputValue(value);
   };
 
-  // save jobs to saved-jobs list/page
-  // const saveClick = async (jobId: any) => {
-  //   if (!isLoggedIn) {
-  //     showModal(<LoginPromptModal />);
-  //     return;
-  //   }
-  //   hideModal();
+  // location input
+  const handleLocationInput: any = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const value = event.target.value;
+    setLocationInputValue(value);
+  };
 
-  //   console.log(jobId);
-  //   try {
-  //     const response = await saveJob({
-  //       variables: {
-  //         jobId: jobId,
-  //       },
-  //     });
-  //     console.log("saved job successfully", response.data.saveJob); // Adjust based on your mutation response
-  //   } catch (error) {
-  //     console.error("Signup error:", error);
-  //     // Optionally, you can set an error state here to display to the user
-  //   }
-  // };
+  const searchLocation = () => {
+    console.log("searching location:", locationInputValue);
+    setLocationInputValue("");
+  };
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (
@@ -154,6 +142,15 @@ export default function JobBoard() {
   };
 
   const renderJobListings = () => {
+    if (jobListingsArray.length < 1) {
+      return (
+        <div className="NoListingsDetail flex h-[30vh] w-[100%] flex-col justify-center">
+          <p className="NoListingsHere italic text-olive">
+            No listings match those parameters.
+          </p>
+        </div>
+      );
+    }
     return jobListingsArray?.map((job: any, index: number) => (
       <JobPost
         job={job}
@@ -170,6 +167,12 @@ export default function JobBoard() {
     setCurrentPage("jobs");
   }, []);
 
+  useEffect(() => {
+    if (filters.length > 1) {
+      setLoadingData(true);
+    }
+  }, [filters]);
+
   return (
     <div
       className={`JobBoardPage flex flex-grow flex-col items-center gap-8 self-center md:pb-12 ${textColor} w-[84%] max-w-[1600px]`}
@@ -183,6 +186,7 @@ export default function JobBoard() {
           width="large"
           addClasses="flex"
           canSearch
+          shadowSize="small"
         >
           <input
             type="text"
@@ -193,59 +197,67 @@ export default function JobBoard() {
         </InfoBox>
 
         {/* filter options  */}
-        <div className="FilterButtons -mb-6 flex items-start gap-6 self-start">
-          <TieredButtonOptionsComponent
-            type="filters"
-            title="filters:"
-            buttons={[
-              {
-                title: level.length > 1 ? level : "level",
-                initialTitle: "level",
-                type: "level",
-                array: level,
-                options: ["entry-level", "junior", "senior"],
-              },
-              {
-                title: locationType.length > 1 ? locationType : "location type",
-                initialTitle: "location type",
-                type: "locationType",
-                array: locationType,
-                options: ["remote", "on-site", "hybrid"],
-              },
-              {
-                title: positionType.length > 1 ? positionType : "position type",
-                initialTitle: "position type",
-                type: "positionType",
-                array: positionType,
-                options: ["full-time", "part-time", "contract"],
-              },
-            ]}
-            selectedArray={filters}
-            handleAdd={handleAdd}
-            handleDelete={handleDelete}
-            classesForButtons="px-6"
-            setArray={setFilters}
-            addClasses="mt-2"
-          />
-
-          {/* country input */}
-          <div className="PayAndCountryFilters mt-2 flex gap-4">
-            <InputComponentWithLabelOptions
+        <div className="Filters flex w-full justify-between justify-items-start align-top">
+          <div className="FilterButtons -mb-6 flex items-start gap-6 self-start">
+            <TieredButtonOptionsComponent
+              type="filters"
+              title="filters:"
+              buttons={[
+                {
+                  title: level.length > 1 ? level : "level",
+                  initialTitle: "level",
+                  type: "level",
+                  array: level,
+                  options: ["entry-level", "junior", "senior"],
+                },
+                {
+                  title:
+                    locationType.length > 1 ? locationType : "location type",
+                  initialTitle: "location type",
+                  type: "locationType",
+                  array: locationType,
+                  options: ["remote", "on-site", "hybrid"],
+                },
+                {
+                  title:
+                    positionType.length > 1 ? positionType : "position type",
+                  initialTitle: "position type",
+                  type: "positionType",
+                  array: positionType,
+                  options: ["full-time", "part-time", "contract"],
+                },
+              ]}
+              selectedArray={filters}
               handleAdd={handleAdd}
-              placeholder="Location Country"
-              name="country"
-              searchData={countries}
-              colorArray={colorArray}
-              options
-              size="tiny"
-              textSize="small"
-              width="extraSmall"
-              optionsContainerClasses="max-w-[20vw]"
+              handleDelete={handleDelete}
+              classesForButtons="px-6"
+              setArray={setFilters}
+              addClasses="mt-2"
             />
+          </div>
+          {/* location input */}
+          {/*  */}
+          <div className="PayAndCountryFilters mt-2 flex gap-4 self-start pr-2">
+            <InfoBox
+              variant="hollow"
+              size="tiny"
+              aria="locationSearch"
+              addClasses="flex drop-shadow-smJade"
+              canSearch
+              searchClick={searchLocation}
+            >
+              <input
+                type="text"
+                placeholder="Location"
+                className={`w-full bg-transparent text-sm ${inputColors} focus:outline-none`}
+                onChange={handleLocationInput}
+              />
+            </InfoBox>
           </div>
         </div>
       </div>
-      <div className="ActivePendingButtons -mt-8 mr-14 self-end">
+
+      {/* <div className="ActivePendingButtons -mt-8 mr-14 self-end">
         <SiteButton
           colorScheme="b1"
           variant="hollow"
@@ -255,12 +267,12 @@ export default function JobBoard() {
         >
           {viewPendingJobs === true ? "view open jobs" : "view pending jobs"}
         </SiteButton>
-      </div>
+      </div> */}
 
       {/* job listings */}
       {loadingData ? (
         //make loading screen design here
-        <div className="LoadingText text-olive">Loading...</div>
+        <div className="LoadingText text-olive">Searching...</div>
       ) : (
         <div className="JobListings flex flex-wrap justify-center gap-8">
           {renderJobListings()}

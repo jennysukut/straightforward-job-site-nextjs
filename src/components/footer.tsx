@@ -31,9 +31,9 @@ export default function Footer() {
         <SiteButton variant={variant} colorScheme="e6" aria="about">
           about
         </SiteButton>
-        <SiteButton variant={variant} colorScheme="b4" aria="About us">
+        {/* <SiteButton variant={variant} colorScheme="b4" aria="About us">
           resources
-        </SiteButton>
+        </SiteButton> */}
         <Link href={"/job-board"}>
           <SiteButton variant={variant} colorScheme="c4" aria="Job Board">
             job board

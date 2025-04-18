@@ -171,26 +171,26 @@ export default function NavBar() {
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="d1"
-                  title="mail"
+                  title="mailbox"
                   clickedButton={clickedButton || currentPage}
                 />
               </Link>
-              <Link href={"/calendar"}>
+              {/* <Link href={"/calendar"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="b3"
                   title="calendar"
                   clickedButton={clickedButton || currentPage}
                 />
-              </Link>
-              <Link href={"/settings"}>
+              </Link> */}
+              {/* <Link href={"/settings"}>
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="c4"
                   title="settings"
                   clickedButton={clickedButton || currentPage}
                 />
-              </Link>
+              </Link> */}
               <Link href={"/profile"}>
                 <NavButton
                   onClick={handleNavButtonClick}
@@ -208,14 +208,14 @@ export default function NavBar() {
           // BUSINESS NAV BAR
           return (
             <div className="NavButtonContainer hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8">
-              <Link href="/calendar">
+              {/* <Link href="/calendar">
                 <NavButton
                   onClick={handleNavButtonClick}
                   colorScheme="b4"
                   title="calendar"
                   clickedButton={clickedButton || currentPage}
                 />
-              </Link>
+              </Link> */}
               <Link href={"/messages"}>
                 <NavButton
                   onClick={handleNavButtonClick}
