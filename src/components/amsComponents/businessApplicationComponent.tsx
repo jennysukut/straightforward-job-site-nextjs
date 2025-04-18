@@ -56,15 +56,17 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
     router.push(`/application/${app.id}/${app.fellow.id}`);
   };
 
+  let highlighted = false;
+
   console.log(app);
   //TODO: figure out what to do with highlighting?
   const highlight = () => {
     setButtonClicked("highlight");
     // add and remove highlights directly with the server
     if (app.highlighted === true) {
-      app.highlighted === false;
+      highlighted = false;
     } else {
-      app.highlighted === true;
+      highlighted = true;
     }
   };
 
@@ -90,7 +92,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   return (
     <div className="Application flex w-full flex-col gap-3" key={id}>
       <div className="MainAppButtons -ml-4 flex items-center justify-start gap-4">
-        <div className="NotificationSpace w-4">
+        <div className="NotificationSpace w-4 pl-2">
           {/* TODO: Set Types of Notifications and plug them in here */}
           {notification && <Notification message="new interview request" />}
         </div>
@@ -168,7 +170,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
               variant="hollow"
               colorScheme={betterColorArray[3]}
               onClick={highlight}
-              // isSelected={buttonClicked === "highlight"}
+              isSelected={buttonClicked === "highlight"}
             >
               {app.highlighted === true ? "remove highlight" : "highlight"}
             </SiteButton>

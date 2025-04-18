@@ -31,6 +31,7 @@ export default function ApplicationNoteModal({
   app,
   note,
   unclickButton,
+  setNewNote,
 }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
@@ -80,9 +81,8 @@ export default function ApplicationNoteModal({
     hideModal();
   };
 
-  console.log(app);
-
   const onSubmit: SubmitHandler<FormData> = async (data) => {
+    setDisabledButton(true);
     try {
       const response = await keepNotes({
         variables: {
@@ -94,8 +94,10 @@ export default function ApplicationNoteModal({
         "Details saved successfully, Details:",
         response.data.keepNotes,
       );
+      setNewNote(true);
     } catch (error) {
       console.error("Signup error:", error);
+      setDisabledButton(false);
       // Optionally, you can set an error state here to display to the user
     }
 

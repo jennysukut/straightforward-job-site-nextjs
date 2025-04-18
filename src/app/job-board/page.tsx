@@ -152,13 +152,7 @@ export default function JobBoard() {
       );
     }
     return jobListingsArray?.map((job: any, index: number) => (
-      <JobPost
-        job={job}
-        index={index}
-        colorArray={colorArray}
-        key={job.id}
-        // saveClick={() => saveClick(job.id)}
-      />
+      <JobPost job={job} index={index} colorArray={colorArray} key={job.id} />
     ));
   };
 

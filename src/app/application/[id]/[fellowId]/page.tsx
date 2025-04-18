@@ -13,6 +13,8 @@ export default function Application({ params }: any) {
     setCurrentPage("application");
   }, []);
 
+  console.log(params);
+
   return (
     <div className="AppProfilePage flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
       <FellowProfile hasId id={params.fellowId} isApp appId={params.id} />

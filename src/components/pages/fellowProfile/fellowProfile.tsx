@@ -128,6 +128,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [currentJob, setCurrentJob] = useState<JobData>({});
   const [appNotes, setAppNotes] = useState(Array<NoteData>);
   const [relevantNotes, setRelevantNotes] = useState(Array<RelevantNoteData>);
+  const [newNote, setNewNote] = useState(false);
 
   // useEffect(() => {
   //   if (
@@ -146,23 +147,36 @@ const FellowProfile: React.FC<FellowProfile> = ({
   //   }
   // }, []);
 
-  const { data: app } = useQuery(GET_APPLICATION_BY_ID, {
-    variables: { id },
-    skip: !isApp,
-    onCompleted: (data) => {
-      console.log("calling GET_APPLICATION_BY_ID query:", data);
-      setCurrentFellow(data.getApplication.fellow);
-      setCurrentApp(data.getApplication);
-      setCurrentJob(data.getApplication.jobListing);
-      setLoadingData(false);
-      if (data.getApplication.notes) {
-        const parsedNotes = data.getApplication.notes.map((note: any) =>
-          JSON.parse(note || ""),
-        ); // Parse each note
-        setAppNotes(parsedNotes);
-      }
+  const { data: app, refetch: refetchApplication } = useQuery(
+    GET_APPLICATION_BY_ID,
+    {
+      variables: { id: appId },
+      skip: !isApp,
+      onCompleted: (data) => {
+        console.log("calling GET_APPLICATION_BY_ID query:", data);
+        setCurrentFellow(data.getApplication.fellow);
+        setCurrentApp(data.getApplication);
+        setCurrentJob(data.getApplication.jobListing);
+        setLoadingData(false);
+        if (data.getApplication.notes) {
+          const parsedNotes = data.getApplication.notes.map((note: any) =>
+            JSON.parse(note || ""),
+          ); // Parse each note
+          setAppNotes(parsedNotes);
+        }
+        setNewNote(false);
+      },
     },
-  });
+  );
+
+  useEffect(() => {
+    if (isApp && appId && newNote === true) {
+      // Refetch the query whenever newNote changes
+      refetchApplication();
+    }
+  }, [newNote]);
+
+  console.log("relevantNotes:", relevantNotes);
 
   useEffect(() => {
     if (accountType === "Business" && appNotes.length > 0) {
@@ -179,7 +193,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
       setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
     }
-  }, [appNotes]);
+  }, [appNotes, newNote]);
 
   const {
     data: queryData,
@@ -200,7 +214,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   useEffect(() => {
     // Refetch data when the component mounts or when the id changes
-    if (id) {
+    if (id && !isApp) {
       refetchProfile();
     }
   }, [id, refetchProfile]);
@@ -259,6 +273,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               <AppFellowTopButtons
                 app={currentApp}
                 applicant={currentFellow.name}
+                setNewNote={setNewNote}
               />
             )}
 

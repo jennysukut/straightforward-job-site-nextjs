@@ -12,7 +12,12 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 
-const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
+const AppFellowTopButtons = ({
+  app,
+  applicant,
+  showRejectOptions,
+  setNewNote,
+}: any) => {
   const [clickedButton, setClickedButton] = useState("");
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
@@ -77,7 +82,9 @@ const AppFellowTopButtons = ({ app, applicant, showRejectOptions }: any) => {
         colorScheme={app.status === "closed" ? "c1" : "e5"}
         aria="edit"
         addClasses="px-8"
-        onClick={() => showModal(<ApplicationNoteModal app={app} />)}
+        onClick={() =>
+          showModal(<ApplicationNoteModal app={app} setNewNote={setNewNote} />)
+        }
       >
         {app.BusinessNote && app.businessNote.length > 0
           ? "add another note"
@@ -180,7 +187,7 @@ const AppFellowNotes = ({ currentApp, notes }: any) => {
   const { showModal } = useModal();
   console.log(notes);
   return (
-    <div className="BusinessNotes flex flex-col gap-4">
+    <div className="BusinessNotes mt-2 flex flex-col gap-4">
       <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
       {notes.map((note: { id: string; details: string }) => {
         return (
