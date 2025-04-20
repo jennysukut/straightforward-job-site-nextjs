@@ -162,41 +162,60 @@ const FellowProfile: React.FC<FellowProfile> = ({
         setCurrentApp(data.getApplication);
         setCurrentJob(data.getApplication.jobListing);
         setLoadingData(false);
-        setNewNote(false);
 
-        if (data.getApplication.notes) {
-          const parsedNotes = data.getApplication.notes.map((note: any) =>
-            JSON.parse(note || ""),
-          ); // Parse each note
-          setAppNotes(parsedNotes);
-        }
+        // if (data.getApplication.notes) {
+        const parsedNotes = data.getApplication.notes.map((note: any) =>
+          JSON.parse(note || ""),
+        ); // Parse each note
+        console.log("parsedNotes:", parsedNotes);
+        setAppNotes(parsedNotes);
+        // }
+        setNewNote(false);
       },
     },
   );
 
+  const updateAppNotes = async () => {
+    try {
+      const { data } = await refetchApplication(); // Wait for refetch to complete
+      const parsedNotes = data.getApplication.notes.map((note: any) =>
+        JSON.parse(note || ""),
+      ); // Parse each note
+      console.log("new parsedNotes after refetch:", parsedNotes);
+      setAppNotes(parsedNotes); // Update appNotes with new parsed notes
+      setNewNote(false);
+    } catch (error) {
+      console.error("Error refetching application:", error);
+    }
+  };
+
   useEffect(() => {
     if (isApp && appId && newNote === true) {
       // Refetch the query whenever newNote changes
-      refetchApplication();
+      updateAppNotes();
     }
-  }, [newNote]);
+  }, [newNote, isApp, appId, updateAppNotes]);
 
   useEffect(() => {
     if (accountType === "Business" && appNotes.length > 0) {
       // Filter appNotes for business notes and extract details and id
+      console.log("this is a business and I'm sorting the relevant notes");
       const filteredNotes = appNotes
         .filter((note) => note.businessNote) // Keep only business notes
         .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
       setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
     } else if (accountType === "Fellow" && appNotes.length > 0) {
       // Filter appNotes for business notes and extract details and id
+      console.log(
+        "this is a fellow account and I'm sorting the relevant notes",
+      );
       const filteredNotes = appNotes
         .filter((note) => note.fellowNote) // Keep only business notes
         .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
 
       setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
     }
-  }, [appNotes, newNote]);
+  }, [appNotes, newNote, accountType]);
 
   const {
     data: queryData,
@@ -215,13 +234,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
     },
   });
 
-  useEffect(() => {
-    // Refetch data when the component mounts or when the id changes
-    if (id && !isApp) {
-      refetchProfile();
-    }
-  }, [id, refetchProfile]);
-
+  // will we need this function here?
   const viewJobDetails = () => {
     router.push(`/listing/${currentApp.id}`);
   };
@@ -266,13 +279,20 @@ const FellowProfile: React.FC<FellowProfile> = ({
       // code here to update status from submitted to "viewed"
       setStatus("viewed");
     }
-  }, [currentApp]);
+  }, [currentApp, isApp, setStatus]);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
     ShuffleIdealButtonPattern(setThirdColorArray);
   }, []);
+
+  useEffect(() => {
+    // Refetch data when the component mounts or when the id changes
+    if (id && !isApp) {
+      refetchProfile();
+    }
+  }, [id, refetchProfile, isApp]);
 
   return (
     <div
@@ -309,10 +329,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
               />
             )}
 
-            {/* Business Note On App */}
             {!isOwn && isApp && appNotes && appNotes.length > 0 && (
-              // currentApp.businessNote &&
-              // currentApp.businessNote.length > 0
               <AppFellowNotes currentApp={currentApp} notes={relevantNotes} />
             )}
 

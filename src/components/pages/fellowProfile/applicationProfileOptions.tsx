@@ -28,19 +28,19 @@ const AppFellowTopButtons = ({
     router.push(`/messages/${app.id}`);
   };
 
-  const updateStatus = (status: any) => {
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        return {
-          ...application,
-          status: status,
-        };
-      }
-      return application;
-    });
-    setApplications(updatedApplications || []);
-    hideModal();
-  };
+  // const updateStatus = (status: any) => {
+  //   const updatedApplications = applications?.map((application) => {
+  //     if (application.id === app.id) {
+  //       return {
+  //         ...application,
+  //         status: status,
+  //       };
+  //     }
+  //     return application;
+  //   });
+  //   setApplications(updatedApplications || []);
+  //   hideModal();
+  // };
 
   const backToAms = () => {
     setClickedButton("backToAms");
@@ -103,7 +103,7 @@ const AppFellowTopButtons = ({
             <SetAppStatusModal
               appStatus={app.status}
               applicant={applicant}
-              updateStatus={updateStatus}
+              // updateStatus={updateStatus}
               showRejectOptions={showRejectOptions}
               application={app}
             />,
@@ -185,7 +185,6 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
 
 const AppFellowNotes = ({ currentApp, notes }: any) => {
   const { showModal } = useModal();
-  console.log(notes);
   return (
     <div className="BusinessNotes mt-2 flex flex-col gap-4">
       <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
