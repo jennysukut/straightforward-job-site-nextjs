@@ -479,6 +479,7 @@ export const EDIT_NOTE = gql`
   mutation editNote($noteId: ID!, $note: String!) {
     editNote(noteId: $noteId, note: $note) {
       id
+      createdAt
       note
       madeByBusiness
       madeByFellow

@@ -149,7 +149,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
             >
               view this application
             </SiteButton>
-            <SiteButton
+            {/* <SiteButton
               aria="view notes"
               variant="hollow"
               colorScheme={betterColorArray[1]}
@@ -160,7 +160,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
                 : app.businessNote && app.businessNote.length > 1
                   ? "view your notes"
                   : "add a note"}
-            </SiteButton>
+            </SiteButton> */}
             <SiteButton
               aria="go to messages"
               variant="hollow"

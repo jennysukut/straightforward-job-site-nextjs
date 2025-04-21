@@ -80,69 +80,49 @@ export default function ApplicationNoteModal({
     }
   };
 
+  useEffect(() => {
+    console.log("let's see if there's a note:", note);
+  }, []);
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    try {
-      const response = await keepNotes({
-        variables: {
-          jobApplicationId: app.id,
-          notes: data.note,
-        },
-      });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.keepNotes,
-      );
-      setNewNote(true);
-    } catch (error) {
-      console.error("Signup error:", error);
-      setDisabledButton(false);
-      // Optionally, you can set an error state here to display to the user
+    if (note) {
+      // try editing note here
+      console.log("need to update this note:", note);
+      try {
+        const response = await editNote({
+          variables: {
+            noteId: noteId,
+            note: data.note,
+          },
+        });
+        console.log(response.data.editNote);
+        setNewNote(true);
+      } catch (error) {
+        console.error("Signup error:", error);
+        setDisabledButton(false);
+        // Optionally, you can set an error state here to display to the user
+      }
+    } else {
+      try {
+        const response = await keepNotes({
+          variables: {
+            jobApplicationId: app.id,
+            notes: data.note,
+          },
+        });
+        console.log(
+          "Details saved successfully, Details:",
+          response.data.keepNotes,
+        );
+        setNewNote(true);
+      } catch (error) {
+        console.error("Signup error:", error);
+        setDisabledButton(false);
+        // Optionally, you can set an error state here to display to the user
+      }
     }
 
-    // const updatedApplications = applications?.map((application) => {
-    //   if (application.id === app.id) {
-    //     if (accountType === "Fellow") {
-    //       const existingNotes = [...(application.fellowNote || [])];
-    //       if (note) {
-    //         // If editing an existing note, find and update it
-    //         const noteIndex = existingNotes.indexOf(note);
-    //         if (noteIndex !== -1) {
-    //           existingNotes[noteIndex] = data.note;
-    //         }
-    //       } else {
-    //         // If adding a new note, append it
-    //         existingNotes.push(data.note);
-    //         if (unclickButton) {
-    //           unclickButton();
-    //         }
-    //       }
-    //       return {
-    //         ...application,
-    //         fellowNote: existingNotes,
-    //       };
-    //     } else if (accountType === "Business") {
-    //       const existingNotes = [...(application.businessNote || [])];
-    //       if (note) {
-    //         // If editing an existing note, find and update it
-    //         const noteIndex = existingNotes.indexOf(note);
-    //         if (noteIndex !== -1) {
-    //           existingNotes[noteIndex] = data.note;
-    //         }
-    //       } else {
-    //         // If adding a new note, append it
-    //         existingNotes.push(data.note);
-    //       }
-    //       return {
-    //         ...application,
-    //         businessNote: existingNotes,
-    //       };
-    //     }
-    //   }
-    //   return application;
-    // });
-
-    // setApplications(updatedApplications || []);
     hideModal();
     setDisabledButton(true);
   };
