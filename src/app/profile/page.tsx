@@ -27,8 +27,8 @@ export default function Profile() {
     setIsLoggingOut,
     setAccountType,
   } = usePageContext();
-  const { fellow } = useFellow();
-  const { business } = useBusiness();
+  const { fellow, setFellow } = useFellow();
+  const { business, setBusiness } = useBusiness();
   const { showModal, hideModal } = useModal();
 
   const [loadingData, setLoadingData] = useState(true);
@@ -48,7 +48,10 @@ export default function Profile() {
   const continueLogout = () => {
     removeCookie("accessToken");
     setIsLoggedIn(false);
+    setFellow({});
+    setBusiness({});
     setAccountType("");
+    router.push(`/`);
     hideModal();
   };
 

@@ -42,8 +42,6 @@ export default function FellowAMS() {
   const [altViewChoice, setAltViewChoice] = useState("");
   const [clickedButton, setClickedButton] = useState("");
 
-  console.log(applications);
-
   const currentApp = applications?.find((app: any) => {
     return app.id === selectedApps;
   });
@@ -59,8 +57,6 @@ export default function FellowAMS() {
   const activeApps = applications?.filter((app: any) => {
     return app.status !== "closed";
   });
-
-  console.log("daily applications:", fellow?.dailyApplications);
 
   const retract = () => {
     setClickedButton("retract");

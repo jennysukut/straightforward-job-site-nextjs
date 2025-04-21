@@ -43,6 +43,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
         // },
       });
       showModal(<SuccessfulApplicationModal />);
+      setFellow({ ...fellow, newApplication: true });
     } catch (error) {
       console.error("application error:", error);
       setDisabledButton(false);
@@ -59,7 +60,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       </Dialog.Title>
       <h4
         className={`DailyLimit font-medium italic ${secondaryTextColor}`}
-      >{`daily application: ${fellow?.dailyApplications?.length || 0}/5`}</h4>
+      >{`daily application: ${(fellow?.dailyApplications?.length || 0) + 1}/5`}</h4>
       <p
         className={`Details ${titleColor} text-center`}
       >{`We'll send ${business} your information.`}</p>

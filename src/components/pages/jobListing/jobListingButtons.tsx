@@ -25,7 +25,6 @@ const OwnListingTopButtons = ({
   currentJob,
   canEdit,
   setCanEdit,
-  incompleteListing,
   completed,
   deleteClick,
   isPublished,
@@ -102,7 +101,7 @@ const OwnListingTopButtons = ({
 
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
-      {incompleteListing && !isPublished && completed !== "appLimit" ? (
+      {!isPublished && completed !== "appLimit" ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"
@@ -208,7 +207,6 @@ const OwnListingTopButtons = ({
 const OwnJobBottomButtons = ({
   canEdit,
   setCanEdit,
-  incompleteListing,
   completed,
   currentJob,
   isPublished,
@@ -249,6 +247,10 @@ const OwnJobBottomButtons = ({
     }
   };
 
+  useEffect(() => {
+    console.log(isPublished);
+  }, [isPublished]);
+
   const publishPost = async () => {
     // showModal(<PaymentModal subscriptionAmount="400" isJobPost />)
     setClickedButton("publish");
@@ -286,7 +288,7 @@ const OwnJobBottomButtons = ({
 
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">
-      {incompleteListing && !isPublished && completed !== "appLimit" ? (
+      {!isPublished && completed !== "appLimit" ? (
         <SiteButton
           variant="filled"
           colorScheme="b4"

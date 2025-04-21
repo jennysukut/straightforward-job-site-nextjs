@@ -168,12 +168,12 @@ const AppFellowBottomButtons = ({ app, applicant }: any) => {
   );
 };
 
-const AppFellowNotes = ({ currentApp, notes }: any) => {
+const AppNotes = ({ currentApp, notes, setNewNote }: any) => {
   const { showModal } = useModal();
   return (
     <div className="BusinessNotes mt-2 flex flex-col gap-4">
       <h2 className="YourNotes -mb-2 -mt-8 ml-4">Your Notes:</h2>
-      {notes.map((note: { id: string; details: string }) => {
+      {notes.map((note: { id: string; note: string }) => {
         return (
           <InfoBox
             key={note.id}
@@ -184,11 +184,16 @@ const AppFellowNotes = ({ currentApp, notes }: any) => {
             addClasses="text-midnight"
             editClick={() =>
               showModal(
-                <ApplicationNoteModal app={currentApp} note={note.details} />,
+                <ApplicationNoteModal
+                  app={currentApp}
+                  note={note.note}
+                  noteId={note.id}
+                  setNewNote={setNewNote}
+                />,
               )
             }
           >
-            {note.details}
+            {note.note}
           </InfoBox>
         );
       })}
@@ -223,9 +228,4 @@ const AppMessage = ({ avatar, currentFellow, currentApp }: any) => {
   }
 };
 
-export {
-  AppFellowTopButtons,
-  AppFellowBottomButtons,
-  AppFellowNotes,
-  AppMessage,
-};
+export { AppFellowTopButtons, AppFellowBottomButtons, AppNotes, AppMessage };

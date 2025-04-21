@@ -12,7 +12,7 @@ import { useAppointments } from "@/contexts/AppointmentsContext";
 import { usePageContext } from "@/contexts/PageContext";
 import { useApplications } from "@/contexts/ApplicationsContext";
 import { useMutation } from "@apollo/client";
-import { KEEP_NOTES } from "@/graphql/mutations";
+import { KEEP_NOTES, EDIT_NOTE, DELETE_NOTE } from "@/graphql/mutations";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -32,6 +32,7 @@ export default function ApplicationNoteModal({
   note,
   unclickButton,
   setNewNote,
+  noteId,
 }: any) {
   const [disabledButton, setDisabledButton] = useState(false);
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
@@ -47,6 +48,8 @@ export default function ApplicationNoteModal({
     resolver: zodResolver(ApplicationNoteSchema),
   });
   const [keepNotes, { loading, error }] = useMutation(KEEP_NOTES);
+  const [editNote] = useMutation(EDIT_NOTE);
+  const [deleteNote] = useMutation(DELETE_NOTE);
 
   const clickDelete = (event: any) => {
     event.preventDefault();
@@ -58,27 +61,23 @@ export default function ApplicationNoteModal({
     );
   };
 
-  const confirmDelete = () => {
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        if (accountType === "Fellow") {
-          return {
-            ...application,
-            fellowNote: application.fellowNote?.filter((n) => n !== note) || [],
-          };
-        } else if (accountType === "Business") {
-          return {
-            ...application,
-            businessNote:
-              application.businessNote?.filter((n) => n !== note) || [],
-          };
-        }
-      }
-      return application;
-    });
-
-    setApplications(updatedApplications || []);
-    hideModal();
+  const confirmDelete = async () => {
+    try {
+      const response = await deleteNote({
+        variables: {
+          noteId: noteId,
+        },
+      });
+      console.log(
+        "Details saved successfully, Details:",
+        response.data.deleteNote,
+      );
+      setNewNote(true);
+      hideModal();
+    } catch (error) {
+      console.error("deletion error:", error);
+      // Optionally, you can set an error state here to display to the user
+    }
   };
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
@@ -101,49 +100,49 @@ export default function ApplicationNoteModal({
       // Optionally, you can set an error state here to display to the user
     }
 
-    const updatedApplications = applications?.map((application) => {
-      if (application.id === app.id) {
-        if (accountType === "Fellow") {
-          const existingNotes = [...(application.fellowNote || [])];
-          if (note) {
-            // If editing an existing note, find and update it
-            const noteIndex = existingNotes.indexOf(note);
-            if (noteIndex !== -1) {
-              existingNotes[noteIndex] = data.note;
-            }
-          } else {
-            // If adding a new note, append it
-            existingNotes.push(data.note);
-            if (unclickButton) {
-              unclickButton();
-            }
-          }
-          return {
-            ...application,
-            fellowNote: existingNotes,
-          };
-        } else if (accountType === "Business") {
-          const existingNotes = [...(application.businessNote || [])];
-          if (note) {
-            // If editing an existing note, find and update it
-            const noteIndex = existingNotes.indexOf(note);
-            if (noteIndex !== -1) {
-              existingNotes[noteIndex] = data.note;
-            }
-          } else {
-            // If adding a new note, append it
-            existingNotes.push(data.note);
-          }
-          return {
-            ...application,
-            businessNote: existingNotes,
-          };
-        }
-      }
-      return application;
-    });
+    // const updatedApplications = applications?.map((application) => {
+    //   if (application.id === app.id) {
+    //     if (accountType === "Fellow") {
+    //       const existingNotes = [...(application.fellowNote || [])];
+    //       if (note) {
+    //         // If editing an existing note, find and update it
+    //         const noteIndex = existingNotes.indexOf(note);
+    //         if (noteIndex !== -1) {
+    //           existingNotes[noteIndex] = data.note;
+    //         }
+    //       } else {
+    //         // If adding a new note, append it
+    //         existingNotes.push(data.note);
+    //         if (unclickButton) {
+    //           unclickButton();
+    //         }
+    //       }
+    //       return {
+    //         ...application,
+    //         fellowNote: existingNotes,
+    //       };
+    //     } else if (accountType === "Business") {
+    //       const existingNotes = [...(application.businessNote || [])];
+    //       if (note) {
+    //         // If editing an existing note, find and update it
+    //         const noteIndex = existingNotes.indexOf(note);
+    //         if (noteIndex !== -1) {
+    //           existingNotes[noteIndex] = data.note;
+    //         }
+    //       } else {
+    //         // If adding a new note, append it
+    //         existingNotes.push(data.note);
+    //       }
+    //       return {
+    //         ...application,
+    //         businessNote: existingNotes,
+    //       };
+    //     }
+    //   }
+    //   return application;
+    // });
 
-    setApplications(updatedApplications || []);
+    // setApplications(updatedApplications || []);
     hideModal();
     setDisabledButton(true);
   };

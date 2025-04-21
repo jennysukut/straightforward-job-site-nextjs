@@ -77,7 +77,6 @@ export default function JobListing({
     fellow?.profile?.savedJobs?.includes(id),
   );
   const [thisId, setThisId] = useState<number | null>(null);
-  const [incompleteListing, setIncompleteListing] = useState(false);
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
@@ -99,7 +98,6 @@ export default function JobListing({
       setCurrentJob(data.jobListing);
       setLoadingData(false);
       if (data.jobListing.published === false) {
-        setIncompleteListing(true);
         setIsPublished(false);
         if (!isBeingDeleted && isOwn) {
           setTimeout(() => {
@@ -557,7 +555,6 @@ export default function JobListing({
                 currentJob={currentJob}
                 canEdit={canEdit}
                 setCanEdit={setCanEdit}
-                incompleteListing={incompleteListing}
                 completed={currentJob.completed}
                 deleteClick={deleteClick}
                 isPublished={isPublished}
@@ -599,11 +596,10 @@ export default function JobListing({
               <OwnJobBottomButtons
                 canEdit={canEdit}
                 setCanEdit={setCanEdit}
-                setSavingForLater={setSavingForLater}
-                savingForLater={savingForLater}
-                incompleteListing={incompleteListing}
                 completed={currentJob.completed}
                 currentJob={currentJob}
+                isPublished={isPublished}
+                setIsPublished={setIsPublished}
               />
             )}
 

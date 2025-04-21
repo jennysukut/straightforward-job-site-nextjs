@@ -23,7 +23,7 @@ import {
   AppFellowTopButtons,
   AppFellowBottomButtons,
   AppMessage,
-  AppFellowNotes,
+  AppNotes,
 } from "./applicationProfileOptions";
 
 import InfoBox from "../../informationDisplayComponents/infoBox";
@@ -89,20 +89,17 @@ interface JobData {
 }
 
 interface NoteData {
-  businessNote: Boolean;
-  createdAt: any;
-  deleted: Boolean;
-  deletedAt: any;
-  details: String;
-  fellowNote: Boolean;
   id: string;
-  updatedAt: string;
-  version: number;
+  note: Array<string>;
+  madeByBusiness: Boolean;
+  madeByFellow: Boolean;
 }
 
 interface RelevantNoteData {
   id: string;
-  details: String;
+  note: Array<string>;
+  madeByBusiness: Boolean;
+  madeByFellow: Boolean;
 }
 
 const FellowProfile: React.FC<FellowProfile> = ({
@@ -163,26 +160,19 @@ const FellowProfile: React.FC<FellowProfile> = ({
         setCurrentJob(data.getApplication.jobListing);
         setLoadingData(false);
 
-        // if (data.getApplication.notes) {
-        const parsedNotes = data.getApplication.notes.map((note: any) =>
-          JSON.parse(note || ""),
-        ); // Parse each note
-        console.log("parsedNotes:", parsedNotes);
-        setAppNotes(parsedNotes);
-        // }
+        if (data.getApplication.notes.length > 0) {
+          console.log("notes:", data.getApplication.notes);
+          setAppNotes(data.getApplication.notes);
+        }
         setNewNote(false);
       },
     },
   );
 
-  const updateAppNotes = async () => {
+  const updateAppNotes: any = async () => {
     try {
       const { data } = await refetchApplication(); // Wait for refetch to complete
-      const parsedNotes = data.getApplication.notes.map((note: any) =>
-        JSON.parse(note || ""),
-      ); // Parse each note
-      console.log("new parsedNotes after refetch:", parsedNotes);
-      setAppNotes(parsedNotes); // Update appNotes with new parsed notes
+      setAppNotes(data.getApplication.notes);
       setNewNote(false);
     } catch (error) {
       console.error("Error refetching application:", error);
@@ -194,28 +184,24 @@ const FellowProfile: React.FC<FellowProfile> = ({
       // Refetch the query whenever newNote changes
       updateAppNotes();
     }
-  }, [newNote, isApp, appId, updateAppNotes]);
+  }, [newNote, isApp, appId]);
 
   useEffect(() => {
     if (accountType === "Business" && appNotes.length > 0) {
       // Filter appNotes for business notes and extract details and id
-      console.log("this is a business and I'm sorting the relevant notes");
-      const filteredNotes = appNotes
-        .filter((note) => note.businessNote) // Keep only business notes
-        .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
+      const filteredNotes = appNotes.filter(
+        (note) => note.madeByBusiness === true,
+      ); // Keep only business notes
       setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
     } else if (accountType === "Fellow" && appNotes.length > 0) {
       // Filter appNotes for business notes and extract details and id
-      console.log(
-        "this is a fellow account and I'm sorting the relevant notes",
-      );
-      const filteredNotes = appNotes
-        .filter((note) => note.fellowNote) // Keep only business notes
-        .map((note) => ({ id: note.id, details: note.details })); // Extract id and details
+      const filteredNotes = appNotes.filter(
+        (note) => note.madeByFellow === false,
+      ); // Keep only business notes
 
       setRelevantNotes(filteredNotes); // Set the filtered notes to relevantNotes state
     }
-  }, [appNotes, newNote, accountType]);
+  }, [newNote, appNotes, accountType]);
 
   const {
     data: queryData,
@@ -335,7 +321,11 @@ const FellowProfile: React.FC<FellowProfile> = ({
             )}
 
             {!isOwn && isApp && appNotes && appNotes.length > 0 && (
-              <AppFellowNotes currentApp={currentApp} notes={relevantNotes} />
+              <AppNotes
+                currentApp={currentApp}
+                notes={relevantNotes}
+                setNewNote={setNewNote}
+              />
             )}
 
             {/* SKILLS DETAILS */}

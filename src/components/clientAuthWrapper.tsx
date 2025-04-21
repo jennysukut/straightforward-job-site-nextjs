@@ -20,9 +20,10 @@ export default function ClientAuthWrapper({
     setIsLoggedIn,
     setAccountType,
     setIsLoadingAccount,
+    accountType,
     isLoggingOut,
   } = usePageContext();
-  const { setFellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { setBusiness } = useBusiness();
   const { setApplications } = useApplications();
   const router = useRouter();
@@ -33,10 +34,21 @@ export default function ClientAuthWrapper({
     }
   }, [isLoggedIn, setIsLoadingAccount]);
 
+  useEffect(() => {
+    if (
+      isLoggedIn &&
+      accountType === "fellow" &&
+      fellow?.newApplication === true
+    ) {
+      console.log("there's a new application - we should refetch their info");
+    }
+  }, [fellow]);
+
   const {
     data: queryData,
     loading: queryLoading,
     error: queryError,
+    refetch: refetchProfile,
   } = useQuery(GET_MY_PROFILE, {
     skip: isLoggedIn || isLoggingOut,
     onCompleted: (data) => {

@@ -475,6 +475,23 @@ export const KEEP_NOTES = gql`
   }
 `;
 
+export const EDIT_NOTE = gql`
+  mutation editNote($noteId: ID!, $note: String!) {
+    editNote(noteId: $noteId, note: $note) {
+      id
+      note
+      madeByBusiness
+      madeByFellow
+    }
+  }
+`;
+
+export const DELETE_NOTE = gql`
+  mutation deleteNote($noteId: ID!) {
+    deleteNote(noteId: $noteId)
+  }
+`;
+
 export const SCHEDULE_APPOINTMENTS = gql`
   mutation scheduleAppointments(
     $jobApplicationId: ID!
