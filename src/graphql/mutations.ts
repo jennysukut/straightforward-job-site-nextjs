@@ -554,6 +554,7 @@ export const SEND_MESSAGE = gql`
   mutation sendMessage($conversationId: ID!, $text: [String!]!) {
     sendMessage(conversationId: $conversationId, text: $text) {
       id
+      createdAt
       deliveredAt
       seenAt
       text

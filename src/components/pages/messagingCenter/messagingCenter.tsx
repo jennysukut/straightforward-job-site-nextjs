@@ -95,13 +95,12 @@ const MessageCenter = ({
     }
   })?.colorScheme;
 
+  // You can grab the correspondingApp and corresponding listing data from the GET_CONVO_BY_ID
   // const correspondingApp = applications?.find((app: any) => {
-  //   return app.id === activeApp;
+  //   return app.id === activeConvo;
   // });
-
   const correspondingListing = "1";
   // jobListings?.find((jl: any) => {
-
   //   return jl.jobId === correspondingApp?.jobId;
   // });
 
@@ -113,9 +112,9 @@ const MessageCenter = ({
   };
 
   // const renderMessages = useCallback(() => {
-  //   // if (activeApp) {
+  //   // if (activeConvo) {
   //   //   const selectedApp: any = applications?.find((app: any) => {
-  //   //     return app.id === activeApp;
+  //   //     return app.id === activeConvo;
   //   //   });
   //   //   setSelectedApp(selectedApp);
   //     setMessages(selectedApp.mail);
@@ -123,11 +122,24 @@ const MessageCenter = ({
   //     // do I need to have an else statement?
   //     //what if there isn't an active app?
   //   // }
-  // }, [activeApp, applications]);
+  // }, [activeConvo, applications]);
 
   // Send A Message!
   const handleSendMessage = async (e: any) => {
     e.preventDefault();
+    console.log("trying to send message");
+    setButtonClicked("send");
+
+    if (currentMessage.trim()) {
+      // Split the message into paragraphs based on newlines
+      const currentParagraphs = currentMessage
+        .split("\n")
+        .map((para) => para.trim())
+        .filter((para) => para.length > 0);
+
+      console.log(currentParagraphs);
+    }
+
     try {
       const response = await sendMessage({
         variables: {
@@ -140,24 +152,13 @@ const MessageCenter = ({
         response.data.sendMessage,
       );
       setMessages([...messages, response.data.sendMessage]);
+      setCurrentMessage("");
+      setButtonClicked("");
     } catch (error) {
       console.error("Message Sending error:", error);
+      setButtonClicked("");
       // Optionally, you can set an error state here to display to the user
     }
-
-    // const sender = accountType === "Fellow" ? "fellow" : "business";
-
-    // if (currentMessage.trim()) {
-    //   // Split the message into paragraphs based on newlines
-    // const currentParagraphs = currentMessage
-    //   .split("\n")
-    //   .map((para) => para.trim())
-    //   .filter((para) => para.length > 0);
-
-    // }
-
-    setCurrentMessage("");
-    // renderMessages();
   };
 
   // Group Messages Together
@@ -167,7 +168,7 @@ const MessageCenter = ({
   if (messages && messages.length > 0) {
     groupedMessages = messages.reduce(
       (acc: { [key: string]: typeof messages }, message: any) => {
-        const date = message.date;
+        const date = message.createdAt;
         if (!acc[date]) {
           acc[date] = [];
         }
@@ -219,12 +220,6 @@ const MessageCenter = ({
     // renderMessages();
     scrollToBottom();
     hideModal();
-  };
-
-  const findApplicantName: any = (id: any) => {
-    // const applicant = fellows?.find((fellow) => fellow.id === id);
-    const applicant = { name: "Person", smallBio: "smallBio here" };
-    return applicant ? applicant.name : "Unknown";
   };
 
   // const viewRelevantProfile = () => {
@@ -296,7 +291,7 @@ const MessageCenter = ({
   //   if (currentMessage === "" && messages.length !== 0) {
   //     scrollToBottom();
   //   }
-  // }, [currentMessage, activeApp, groupedMessages]);
+  // }, [currentMessage, activeConvo, groupedMessages]);
 
   useEffect(() => {
     setCurrentColorScheme(currentAvatarChoice || "b2");
@@ -315,6 +310,46 @@ const MessageCenter = ({
   //   }
   // }, []);
 
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const makeDateReadable = (date: any) => {
+    const currentDate = new Date(date);
+
+    // Extract the month, day, and year
+    const month = monthNames[currentDate.getUTCMonth()]; // Get the full month name
+    const day = currentDate.getUTCDate();
+    const year = currentDate.getUTCFullYear();
+    // .toString().slice(-2); // Get last two digits of the year
+
+    // Format the date as "M.D.YY"
+    const formattedDate = `${month} ${day}, ${year}`;
+    return formattedDate;
+  };
+
+  const getMessageTime = (date: any) => {
+    const currentDate = new Date(date);
+
+    const hours = currentDate.getUTCHours();
+    const minutes = currentDate.getUTCMinutes();
+    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
+    const ampm = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
+    return `${formattedHours}:${formattedMinutes} ${ampm}`; // Format as "HH:MM AM/PM"
+  };
+
   return (
     <div className="MessagingCenterPage h-full w-full">
       {loadingData ? (
@@ -326,44 +361,46 @@ const MessageCenter = ({
         >
           <div className="Messages flex w-[100%] flex-col self-center align-top">
             <div className={`TitleArea flex justify-between align-middle`}>
-              {/* {!specificMessages && activeApp && (
-            <div className="ExpandOption flex gap-2 self-start align-middle">
-              <SiteButton
-                aria="expandButton"
-                size="smallCircle"
-                variant="filled"
-                colorScheme={(currentColorScheme as ButtonColorOption) || "b3"}
-                addImage="bg-[url('/expand-icon.svg')] bg-center bg-no-repeat"
-                addClasses={`mt-2 -ml-6`}
-                onClick={expandClick}
-                isSelected={buttonClicked === "expandClick"}
-              />
-            </div>
-          )} */}
+              {!specificMessages && activeConvo && (
+                <div className="ExpandOption flex gap-2 self-start align-middle">
+                  <SiteButton
+                    aria="expandButton"
+                    size="smallCircle"
+                    variant="filled"
+                    colorScheme={
+                      (currentColorScheme as ButtonColorOption) || "b3"
+                    }
+                    addImage="bg-[url('/expand-icon.svg')] bg-center bg-no-repeat"
+                    addClasses={`mt-2 -ml-6`}
+                    onClick={expandClick}
+                    isSelected={buttonClicked === "expandClick"}
+                  />
+                </div>
+              )}
               {specificMessages && (
                 <SiteButton
                   variant="hollow"
                   aria="go to mail"
                   colorScheme="b4"
-                  addClasses="mt-4"
+                  addClasses="mt-4 mb-3"
                   onClick={() => router.push(`/messages`)}
                 >
                   go to mailbox
                 </SiteButton>
               )}
-              {/* {(activeApp || specificMessages) && (
-            <div className="Title flex flex-col">
-              <h2 className="text-right text-emerald">
-                Your Conversation with{" "}
-                {accountType === "Fellow"
-                  ? correspondingListing?.job?.businessName
-                  : findApplicantName(correspondingApp?.applicant)}
-              </h2>
-              <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
-                regarding the {correspondingListing?.job?.jobTitle} position
-              </p>
-            </div>
-          )} */}
+              {/* {(activeConvo || specificMessages) && (
+                <div className="Title flex flex-col">
+                  <h2 className="text-right text-emerald">
+                    Your Conversation with{" "}
+                    {accountType === "Fellow"
+                      ? correspondingListing?.job?.businessName
+                      : findApplicantName(correspondingApp?.applicant)}
+                  </h2>
+                  <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
+                    regarding the {correspondingListing?.job?.jobTitle} position
+                  </p>
+                </div>
+              )} */}
               {/* <div className="Title flex flex-col">
             <h2 className="text-right text-emerald">
               Your Conversation with{" "}
@@ -379,10 +416,10 @@ const MessageCenter = ({
 
             {/* Messages */}
             <div
-              // className={`Messages -mr-6 ${messageHeight} ${!activeApp ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
+              // className={`Messages -mr-6 ${messageHeight} ${!activeConvo ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
               id="Messages"
             >
-              {/* {!activeApp && (
+              {/* {!activeConvo && (
             <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages yet.
@@ -390,7 +427,7 @@ const MessageCenter = ({
             </div>
           )} */}
 
-              {/* {activeApp && messages.length < 1 && (
+              {/* {activeConvo && messages.length < 1 && (
             <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
               <p className="NoMessagesText text-center italic text-olive">
                 There are no messages with{" "}
@@ -406,7 +443,9 @@ const MessageCenter = ({
                   <div className="Divider mb-2 flex items-center">
                     <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
                     <p className="mx-3 text-center text-sm text-olive">
-                      {date}
+                      {/* TODO: turn this date to something easier to read */}
+                      {/* {date} */}
+                      {makeDateReadable(date)}
                     </p>
                     <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
                   </div>
@@ -430,15 +469,15 @@ const MessageCenter = ({
                           <div
                             className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
                           >
-                            {message.text}
-                            {/* {message.text.map((paragraph, paraIndex) => (
-                          <p
-                            key={`${messageIndex}-${paraIndex}`}
-                            className={`MessageText px-1 pl-1 focus:outline-none ${paraIndex < message.text.length - 1 ? "mb-2" : ""} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
-                          >
-                            {paragraph}
-                          </p>
-                        ))} */}
+                            {/* {message.text} */}
+                            {message.text.map((paragraph, paraIndex) => (
+                              <p
+                                key={`${messageIndex}-${paraIndex}`}
+                                className={`MessageText px-1 pl-1 focus:outline-none ${paraIndex < message.text.length - 1 ? "mb-2" : ""} ${!isOwn ? "text-midnight" : ""} text-[.95rem]`}
+                              >
+                                {paragraph}
+                              </p>
+                            ))}
                           </div>
                         </InfoBox>
 
@@ -467,6 +506,7 @@ const MessageCenter = ({
                           <p
                             className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
                           >
+                            {getMessageTime(date)}
                             {/* {message.timestamp} */}
                           </p>
                           {isOwn && (
@@ -535,8 +575,10 @@ const MessageCenter = ({
                 aria="send"
                 size="medium"
                 addClasses="px-8 py-[.6rem]"
+                isSelected={buttonClicked === "send"}
               >
-                send
+                {buttonClicked === "send" ? "sending..." : "send"}
+                {/* send */}
               </SiteButton>
             </form>
 

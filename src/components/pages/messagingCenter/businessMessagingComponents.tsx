@@ -23,7 +23,6 @@ const RenderBusinessMessageList = ({
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
   const { business } = useBusiness();
-  const { jobListings } = useJobListings();
   const [selectedListing, setSelectedListing] = useState("");
   const [secondaryColorArray, setSecondaryColorArray] = useState<
     CurrentSchemeType[]
