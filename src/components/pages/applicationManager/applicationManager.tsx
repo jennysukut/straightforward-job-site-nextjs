@@ -151,14 +151,11 @@ export default function ApplicationManager({ jobId }: any) {
 
   // use filters
   useEffect(() => {
-    console.log("using the filters useEffect in the ams");
     if (filters.length > 0) {
       filterApps(currentApplications);
       setSelectedApps([]);
     }
   }, [filters, filterApps, appStatus, currentApplications]);
-
-  console.log(currentJob);
 
   return (
     <div

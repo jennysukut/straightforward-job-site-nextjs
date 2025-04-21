@@ -42,7 +42,6 @@ export default function AddResponsibilityModal({
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data);
     if (canDelete) {
       handleUpdate(type, data, itemInfo.id);
     } else {
@@ -68,8 +67,6 @@ export default function AddResponsibilityModal({
   };
 
   const continueDelete = () => {
-    console.log("handling deletion");
-    console.log(type, itemInfo.id);
     handleDelete(type, itemInfo.id);
     hideModal();
   };

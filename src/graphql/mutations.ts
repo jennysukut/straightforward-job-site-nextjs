@@ -550,7 +550,7 @@ export const SAVE_JOB = gql`
 `;
 
 export const SEND_MESSAGE = gql`
-  mutation sendMessage($conversationId: ID!, $text: String) {
+  mutation sendMessage($conversationId: ID!, $text: [String!]!) {
     sendMessage(conversationId: $conversationId, text: $text) {
       id
       deliveredAt

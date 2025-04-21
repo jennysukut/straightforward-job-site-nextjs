@@ -61,7 +61,6 @@ export default function SetAppStatusModal({
 
   const setStatus = async () => {
     setClickedButton("nextStage");
-    console.log("trying to update the app's status:", nextStage());
     const status = nextStage();
     try {
       const response = await updateStatus({

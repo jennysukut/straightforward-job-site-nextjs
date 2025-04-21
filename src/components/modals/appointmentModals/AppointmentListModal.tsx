@@ -55,8 +55,6 @@ const AppointmentListModal: React.FC<AppointmentDetailsModalProps> = ({
     ShuffleIdealButtonPattern(setBetterColorArray);
   }, []);
 
-  console.log(apps);
-
   return (
     <div
       className={`AppointmentModal flex w-full flex-col gap-3 ${textColor} max-w-[40vw]`}

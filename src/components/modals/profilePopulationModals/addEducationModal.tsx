@@ -70,7 +70,6 @@ export default function AddEducationModal({
   };
 
   const continueDelete = () => {
-    console.log("handling deletion");
     handleDelete(type, itemInfo.id);
     hideModal();
   };

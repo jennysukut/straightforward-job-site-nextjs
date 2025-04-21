@@ -47,6 +47,7 @@ export interface Job {
   beingEdited?: boolean;
   roundNumber?: string;
   completed?: string;
+  saved?: Boolean;
 }
 
 interface JobContextType {

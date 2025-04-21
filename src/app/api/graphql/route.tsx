@@ -6,7 +6,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const accessToken = cookies().get("accessToken")?.value;
-    console.log(accessToken);
     const response = await fetch(process.env.API_URL as string, {
       method: "POST",
       headers: {

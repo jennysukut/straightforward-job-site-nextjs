@@ -22,7 +22,6 @@ export default function FinishListingModal({ completed }: any) {
   const { hideModal, showModal } = useModal();
   const router = useRouter();
 
-  console.log("completed:", completed);
   let redirectUrl: any;
   if (completed === "create") {
     redirectUrl = "/post-a-job/step1";
@@ -38,10 +37,7 @@ export default function FinishListingModal({ completed }: any) {
     redirectUrl = "listing";
   }
 
-  console.log(redirectUrl);
-
   const redirect = () => {
-    console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
     } else if (redirectUrl === "listing") {

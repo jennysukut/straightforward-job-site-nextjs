@@ -57,13 +57,9 @@ export default function JobBoard() {
       isPublished: true,
     },
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
-      console.log(data);
       setLoadingData(false);
     },
   });
-
-  console.log("filters:", filters);
 
   // search bar input
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {

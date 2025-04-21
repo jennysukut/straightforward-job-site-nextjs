@@ -58,7 +58,6 @@ export default function ApplicationLimitModal({ currentLimit }: any) {
 
   useEffect(() => {
     if (currentLimit) {
-      console.log("appLimit:", currentLimit);
       setApplicationLimit(currentLimit);
     }
   }, []);

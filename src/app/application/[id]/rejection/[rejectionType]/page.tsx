@@ -31,8 +31,6 @@ export default function Application({ params }: any) {
     setChosenMessage(params.rejectionType);
   }, []);
 
-  console.log(chosenMessage);
-
   return (
     <div className="RejectionPage flex flex-grow flex-col items-center gap-8 md:pb-12">
       {accountType === "Business" && (

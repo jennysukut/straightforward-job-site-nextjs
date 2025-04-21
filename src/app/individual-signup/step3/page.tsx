@@ -81,7 +81,6 @@ export default function IndividualSignupPage3() {
     type: "award" | "experienceLevel" | "accomplishment",
     id: any,
   ) => {
-    console.log("trying to delete");
     DeleteHandler({
       item: id,
       type,

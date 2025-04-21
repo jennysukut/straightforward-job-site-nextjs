@@ -11,6 +11,7 @@ import { useAppointments } from "@/contexts/AppointmentsContext";
 import { useRouter } from "next/navigation";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { useFellow } from "@/contexts/FellowContext";
+
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import AddHandler from "@/components/handlers/addHandler";
@@ -57,6 +58,7 @@ export default function FellowAMS() {
   const activeApps = applications?.filter((app: any) => {
     return app.status !== "closed";
   });
+
 
   const retract = () => {
     setClickedButton("retract");

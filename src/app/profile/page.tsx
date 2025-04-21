@@ -53,6 +53,7 @@ export default function Profile() {
     setAccountType("");
     router.push(`/`);
     hideModal();
+    // window.location.reload();
   };
 
   useEffect(() => {

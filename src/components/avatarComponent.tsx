@@ -1,10 +1,9 @@
 import Image from "next/image";
-import { useFellow } from "@/contexts/FellowContext";
-import { useBusiness } from "@/contexts/BusinessContext";
-import { usePageContext } from "@/contexts/PageContext";
 import { useColors } from "@/contexts/ColorContext";
-import { avatarOptions } from "@/lib/stylingData/avatarOptions";
-import { useEffect } from "react";
+import {
+  avatarOptions,
+  placeholderAvatar,
+} from "@/lib/stylingData/avatarOptions";
 
 export default function Avatar({
   addClasses,
@@ -16,11 +15,14 @@ export default function Avatar({
 
   let avatarDetails;
   if (avatarType === "Business") {
-    avatarDetails = avatarOptions.find(
-      (option) => option.title === business?.businessProfile.avatar,
-    );
+    avatarDetails =
+      avatarOptions.find(
+        (option) => option.title === business?.businessProfile.avatar,
+      ) || placeholderAvatar;
   } else if (avatarType === "Fellow") {
-    avatarDetails = avatarOptions.find((option) => option.title === avatar);
+    avatarDetails =
+      avatarOptions.find((option) => option.title === avatar) ||
+      placeholderAvatar;
   }
 
   return (

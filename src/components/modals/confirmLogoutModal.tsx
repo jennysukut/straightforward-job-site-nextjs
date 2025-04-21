@@ -1,7 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 import SiteButton from "../buttonsAndLabels/siteButton";
 
 export default function ConfirmLogoutModal({
@@ -10,8 +10,11 @@ export default function ConfirmLogoutModal({
 }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const [clickedButton, setClickedButton] = useState("");
+  const router = useRouter();
+
   const logout = () => {
     setClickedButton("logout");
+    router.push(`/`);
     continueLogout();
   };
 

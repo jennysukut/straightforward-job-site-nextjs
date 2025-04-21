@@ -23,7 +23,10 @@ import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdea
 
 import { countries } from "@/lib/countriesList";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import { avatarOptions } from "@/lib/stylingData/avatarOptions";
+import {
+  avatarOptions,
+  placeholderAvatar,
+} from "@/lib/stylingData/avatarOptions";
 type CurrentSchemeType = ButtonColorOption;
 
 const businessSchema = z.object({
@@ -48,13 +51,16 @@ export default function BusinessSignupPage1() {
   const { setIsLoggedIn } = usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
-  const avatarDetails = avatarOptions.find(
-    (option) => option.title === business?.businessProfile?.avatar,
-  );
+  const avatarDetails =
+    avatarOptions.find(
+      (option) => option.title === business?.businessProfile?.avatar,
+    ) || placeholderAvatar;
   const [avatar, setAvatar] = useState(avatarDetails);
   const [saveBusinessProfilePage1, { loading, error }] = useMutation(
     SAVE_BUSINESS_PROFILE_PAGE_1_MUTATION,
   );
+
+  console.log("avatarDetails:", avatarDetails, business?.businessProfile);
 
   const {
     handleSubmit,
@@ -71,7 +77,6 @@ export default function BusinessSignupPage1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data);
 
     try {
       const response = await saveBusinessProfilePage1({

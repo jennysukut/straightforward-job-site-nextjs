@@ -66,15 +66,23 @@ const Application: React.FC<ApplicationProps> = ({
     router.push(`/ams/listing/${jobId}`);
   };
 
+  const date = new Date(app.createdAt);
+
+  // Extract the month, day, and year
+  const month = date.getUTCMonth() + 1; // Months are zero-based
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear().toString().slice(-2); // Get last two digits of the year
+
+  // Format the date as "M.D.YY"
+  const formattedDate = `${month}.${day}.${year}`;
+
   // const viewApplication = () => {
   //   setClickedButton("viewApplication");
   //   router.push(`/application/${id}`);
   // };
 
-  console.log("app:", app);
   const viewCompany = () => {
     setClickedButton("viewCompanyDetails");
-    // viewCompanyDetails();
     router.push(`/business/${app.jobListing.business.id}`);
   };
 
@@ -100,7 +108,9 @@ const Application: React.FC<ApplicationProps> = ({
               {`${app?.jobListing.jobTitle} | ${app?.jobListing.business.name}`}
             </p>
             <p className="Details self-center text-sm">
-              {currentJob ? `${app.status}` : `${dateOfApp} | ${app.status}`}
+              {currentJob
+                ? `${app.status}`
+                : `${formattedDate} | ${app.status}`}
             </p>
           </div>
         </SiteButton>

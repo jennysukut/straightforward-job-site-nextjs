@@ -26,6 +26,7 @@ export const GET_MY_PROFILE = gql`
           id
           message
           status
+          createdAt
           jobListing {
             id
             jobTitle
@@ -190,6 +191,7 @@ export const GET_PROFILE = gql`
         id
         message
         status
+        createdAt
       }
       dailyApplications {
         id
@@ -278,6 +280,7 @@ export const GET_JOB_LISTINGS = gql`
       state
       applications {
         id
+        createdAt
         message
         status
         fellow {
@@ -289,6 +292,9 @@ export const GET_JOB_LISTINGS = gql`
           messages {
             id
             text
+            createdAt
+            deliveredAt
+            seenAt
           }
         }
       }
@@ -325,6 +331,7 @@ export const GET_JOB_LISTING_BY_ID = gql`
       applicationLimit
       applications {
         id
+        createdAt
         message
         status
         notes {
@@ -368,6 +375,7 @@ export const GET_APPLICATION_BY_ID = gql`
   query getApplication($id: ID!) {
     getApplication(id: $id) {
       id
+      createdAt
       message
       status
       jobListing {
@@ -463,6 +471,7 @@ export const GET_CONVERSATION_BY_ID = gql`
       id
       messages {
         id
+        createdAt
         deliveredAt
         seenAt
         text
@@ -471,6 +480,7 @@ export const GET_CONVERSATION_BY_ID = gql`
       jobApplication {
         id
         status
+        createdAt
         fellow {
           id
           name

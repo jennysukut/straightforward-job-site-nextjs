@@ -42,10 +42,16 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
   const [appClicked, setAppClicked] = useState(false);
   const [buttonClicked, setButtonClicked] = useState("");
 
-  // const currentApplicant = {
-  //   name: "A Person",
-  //   smallBio: "smallBio Here",
-  // };
+  // reformatting date
+  const date = new Date(app.createdAt);
+
+  // Extract the month, day, and year
+  const month = date.getUTCMonth() + 1; // Months are zero-based
+  const day = date.getUTCDate();
+  const year = date.getUTCFullYear().toString().slice(-2); // Get last two digits of the year
+
+  // Format the date as "M.D.YY"
+  const formattedDate = `${month}.${day}.${year}`;
 
   //TODO: Here is the place where we set our parameters for notifications - we'll need to have one for new messages, appointment requests, and simply new applications
   const notification = app.status === "submitted" ? true : false;
@@ -58,7 +64,6 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
 
   let highlighted = false;
 
-  console.log(app);
   //TODO: figure out what to do with highlighting?
   const highlight = () => {
     setButtonClicked("highlight");
@@ -116,7 +121,7 @@ const BusinessApplication: React.FC<BusinessApplicationProps> = ({
                 </span>
               </p>
               <p className="Details flex gap-2 self-center text-sm">
-                {app.dateOfApp || "date of app"} | {app.status}
+                {formattedDate || "date of app"} | {app.status}
               </p>
             </div>
           </SiteButton>

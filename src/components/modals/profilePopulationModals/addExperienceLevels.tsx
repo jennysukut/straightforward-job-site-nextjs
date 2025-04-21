@@ -61,7 +61,6 @@ export default function AddExperienceLevelModal({
   };
 
   const continueDelete = () => {
-    console.log("handling deletion");
     handleDelete(type, itemInfo.id);
     hideModal();
   };

@@ -32,17 +32,13 @@ export default function IndividualBusinessListings({ params }: any) {
   } = useQuery(GET_JOB_LISTINGS, {
     variables: { businessId: params.businessId },
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
-      console.log(data);
       setLoadingData(false);
       setBusinessName(data.jobListings[0].business.name);
     },
   });
 
-  console.log(businessName);
   // make this saveClick function call the like-job thing
   const saveClick = async (id: any) => {
-    console.log(id);
     try {
       const result = await saveJob({ variables: { jobId: id } });
 

@@ -9,7 +9,6 @@ export default function RetractionApplicationStep3Modal({
   const { showModal, goBack, hideModal } = useModal();
 
   const finalRetractStep = (buttonText: any) => {
-    console.log(buttonText);
     continueRetract();
   };
 

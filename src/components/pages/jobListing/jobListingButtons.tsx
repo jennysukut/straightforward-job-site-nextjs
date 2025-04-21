@@ -359,34 +359,6 @@ const ListingTopButtons = ({
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
       <div className="OptionalTopButtons flex items-start gap-2">
-        {/* {isLoggedIn && !canApply && !matchingIds && !showLimitDetails && (
-          <SiteButton
-            size="smallCircle"
-            colorScheme="f1"
-            variant="filled"
-            aria="details"
-            addClasses="text-sm text-center"
-            onClick={() => setShowLimitDetails(!showLimitDetails)}
-          >
-            ?
-          </SiteButton>
-        )}
-        {isLoggedIn && !canApply && !matchingIds && showLimitDetails && (
-          <SiteLabel
-            colorScheme="f1"
-            variant="display"
-            size="extraSmall"
-            aria="limit details"
-            addClasses={`text-sm text-center max-w-[17rem] -mt-2 ${!hasMatchingNonNegParams ? "mr-2" : "-mr-1"} absolute`}
-            onClick={() => setShowLimitDetails(!showLimitDetails)}
-          >
-            {!hasMatchingNonNegParams
-              ? "your skills list doesn't match this job's non-negotiable parameters"
-              : atDailyLimit
-                ? "you've reached your daily app limit"
-                : "details here"}
-          </SiteLabel>
-        )} */}
         {isLoggedIn && (
           <SiteButton
             aria="saveJob"
@@ -487,7 +459,7 @@ const ListingTopButtons = ({
           {matchingIds ? "applied" : !canApply ? "cannot apply" : "apply now"}
         </SiteButton>
       )} */}
-      {matchingIds && isLoggedIn && (
+      {/* {matchingIds && isLoggedIn && (
         <SiteButton
           variant="filled"
           colorScheme="b6"
@@ -497,7 +469,7 @@ const ListingTopButtons = ({
         >
           create a note
         </SiteButton>
-      )}
+      )} */}
     </div>
   );
 };
@@ -564,7 +536,7 @@ const ListingBottomButtons = ({
           >
             send a message
           </SiteButton>
-          <SiteButton
+          {/* <SiteButton
             aria="publish"
             variant="filled"
             colorScheme="f1"
@@ -589,7 +561,7 @@ const ListingBottomButtons = ({
             }
           >
             retract
-          </SiteButton>
+          </SiteButton> */}
         </div>
       )}
     </div>

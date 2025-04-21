@@ -47,8 +47,6 @@ export default function Messages() {
     variables: { businessId: business?.id },
     // skip: loadingData === false || accountType === "Fellow" || !isLoggedIn,
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
-      console.log("calling a query -", data);
       setJobListings(data.jobListings);
       setLoadingData(false);
     },

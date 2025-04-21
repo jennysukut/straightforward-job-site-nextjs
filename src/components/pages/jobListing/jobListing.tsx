@@ -73,9 +73,7 @@ export default function JobListing({
   const [isBeingDeleted, setIsBeingDeleted] = useState(false);
   const [currentJob, setCurrentJob] = useState({} as Job);
   const [savingForLater, setSavingForLater] = useState<boolean>(false);
-  const [jobSavedStatus, setJobSavedStatus] = useState(
-    fellow?.profile?.savedJobs?.includes(id),
-  );
+  const [isSaved, setIsSaved] = useState(false);
   const [thisId, setThisId] = useState<number | null>(null);
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
@@ -97,6 +95,9 @@ export default function JobListing({
       setGotJob(true);
       setCurrentJob(data.jobListing);
       setLoadingData(false);
+      if (data.jobListing.saved === true) {
+        setIsSaved(true);
+      }
       if (data.jobListing.published === false) {
         setIsPublished(false);
         if (!isBeingDeleted && isOwn) {
@@ -225,7 +226,7 @@ export default function JobListing({
     } catch (error) {
       console.error("application error:", error);
     }
-    setJobSavedStatus(true);
+    setIsSaved(true);
 
     hideModal();
   };
@@ -245,6 +246,8 @@ export default function JobListing({
     }
   }, [id, job]);
 
+  console.log("currentJob:", currentJob);
+
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
     ShuffleIdealButtonPattern(setSecondaryColorArray);
@@ -258,6 +261,12 @@ export default function JobListing({
       setCanEdit(true);
     }
   }, [job]);
+
+  useEffect(() => {
+    if (currentJob.saved) {
+      setIsSaved(true);
+    }
+  }, [currentJob]);
 
   // RENDERING FUNCTIONS
   const renderJobListingLeftColumn = () => {
@@ -570,7 +579,7 @@ export default function JobListing({
               <ListingTopButtons
                 id={id}
                 saveClick={saveClick}
-                jobSavedStatus={jobSavedStatus}
+                jobSavedStatus={isSaved}
                 matchingIds={matchingIds}
                 appNumber={appNumber}
                 currentJob={currentJob}
