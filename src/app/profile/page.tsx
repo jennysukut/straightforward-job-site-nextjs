@@ -7,7 +7,7 @@ import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
-import { removeCookie } from "@/components/buttonsAndLabels/logoutButton";
+import { LOGOUT } from "@/components/buttonsAndLabels/logoutButton";
 
 import ConfirmLogoutModal from "@/components/modals/confirmLogoutModal";
 import React from "react";
@@ -45,15 +45,16 @@ export default function Profile() {
     router.push(`/`);
   };
 
-  const continueLogout = () => {
-    removeCookie("accessToken");
+  const continueLogout = async () => {
+    console.log("Logging out..."); // Log to confirm the function is called
+    await LOGOUT(); // Ensure this is awaited if it's an async function
+    console.log("removeCookie function called."); // Log after calling removeCookie
     setIsLoggedIn(false);
     setFellow({});
     setBusiness({});
     setAccountType("");
     router.push(`/`);
     hideModal();
-    // window.location.reload();
   };
 
   useEffect(() => {

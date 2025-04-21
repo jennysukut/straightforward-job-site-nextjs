@@ -2,6 +2,12 @@
 
 import { cookies } from "next/headers";
 
-export async function removeCookie(cookieName: any) {
-  cookies().set(cookieName, "", { maxAge: 0 });
+export async function LOGOUT() {
+  console.log(`Attempting to remove cookie: "accessToken"`);
+
+  cookies().set("accessToken", "", {
+    httpOnly: true,
+    maxAge: 0,
+    sameSite: "strict",
+  });
 }
