@@ -14,7 +14,7 @@ export default function SetAppStatusModal({
   application,
   applicant,
   appStatus,
-  // updateStatus,
+  setNewStatus,
 }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
@@ -62,18 +62,19 @@ export default function SetAppStatusModal({
   const setStatus = async () => {
     setClickedButton("nextStage");
     console.log("trying to update the app's status:", nextStage());
-
+    const status = nextStage();
     try {
       const response = await updateStatus({
         variables: {
           appId: application.id,
-          status: nextStage,
+          status: status,
         },
       });
       console.log(
         "Status updated successfully, Details:",
         response.data.updateStatus,
       );
+      setNewStatus(status);
       hideModal();
       //choose what to do for each status update and plug in here
     } catch (error) {

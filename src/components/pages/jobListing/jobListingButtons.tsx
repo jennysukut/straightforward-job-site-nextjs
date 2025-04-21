@@ -28,6 +28,8 @@ const OwnListingTopButtons = ({
   incompleteListing,
   completed,
   deleteClick,
+  isPublished,
+  setIsPublished,
 }: any) => {
   const { showModal } = useModal();
   const { setJob, job } = useJob();
@@ -35,7 +37,6 @@ const OwnListingTopButtons = ({
   const [publishJobListing, { loading, error }] =
     useMutation(PUBLISH_JOB_LISTING);
   const router = useRouter();
-  const [isPublished, setIsPublished] = useState(false);
 
   const publishPost = async () => {
     setClickedButton("publish");
@@ -98,12 +99,6 @@ const OwnListingTopButtons = ({
     setClickedButton(key);
     router.push(`/ams/${currentJob.id}`);
   };
-
-  useEffect(() => {
-    if (!incompleteListing) {
-      setIsPublished(true);
-    }
-  }, [incompleteListing]);
 
   return (
     <div className="BusinessTopButtons -mb-2 -mt-20 flex flex-col items-end gap-4 self-end">
@@ -216,6 +211,8 @@ const OwnJobBottomButtons = ({
   incompleteListing,
   completed,
   currentJob,
+  isPublished,
+  setIsPublished,
 }: any) => {
   const { showModal } = useModal();
   const router = useRouter();
@@ -223,7 +220,6 @@ const OwnJobBottomButtons = ({
   const { setJob } = useJob();
   const [publishJobListing, { loading, error }] =
     useMutation(PUBLISH_JOB_LISTING);
-  const [isPublished, setIsPublished] = useState(false);
 
   let redirectUrl: any;
 
@@ -287,12 +283,6 @@ const OwnJobBottomButtons = ({
     setClickedButton("ams");
     router.push(`/ams/${currentJob.id}`);
   };
-
-  useEffect(() => {
-    if (!incompleteListing) {
-      setIsPublished(true);
-    }
-  }, []);
 
   return (
     <div className="EditButtonContainer flex flex-col items-end gap-4 self-end">

@@ -280,6 +280,17 @@ export const GET_JOB_LISTINGS = gql`
         id
         message
         status
+        fellow {
+          id
+          name
+        }
+        conversation {
+          id
+          messages {
+            id
+            text
+          }
+        }
       }
       applicationLimit
     }
@@ -316,7 +327,12 @@ export const GET_JOB_LISTING_BY_ID = gql`
         id
         message
         status
-        notes
+        notes {
+          id
+          note
+          madeByBusiness
+          madeByFellow
+        }
         fellow {
           id
           name
@@ -359,7 +375,12 @@ export const GET_APPLICATION_BY_ID = gql`
         jobTitle
       }
 
-      notes
+      notes {
+        id
+        note
+        madeByBusiness
+        madeByFellow
+      }
       fellow {
         id
         name

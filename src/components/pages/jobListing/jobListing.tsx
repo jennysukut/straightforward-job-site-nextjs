@@ -62,6 +62,7 @@ export default function JobListing({
   const { business } = useBusiness();
 
   const [isOwn, setIsOwn] = useState(false);
+  const [isPublished, setIsPublished] = useState(true);
   const [canEdit, setCanEdit] = useState(false);
   const [primaryColorArray, setPrimaryColorArray] = useState(Array<any>);
   const [secondaryColorArray, setSecondaryColorArray] = useState(Array<any>);
@@ -99,6 +100,7 @@ export default function JobListing({
       setLoadingData(false);
       if (data.jobListing.published === false) {
         setIncompleteListing(true);
+        setIsPublished(false);
         if (!isBeingDeleted && isOwn) {
           setTimeout(() => {
             showModal(
@@ -558,6 +560,8 @@ export default function JobListing({
                 incompleteListing={incompleteListing}
                 completed={currentJob.completed}
                 deleteClick={deleteClick}
+                isPublished={isPublished}
+                setIsPublished={setIsPublished}
               />
             )}
 

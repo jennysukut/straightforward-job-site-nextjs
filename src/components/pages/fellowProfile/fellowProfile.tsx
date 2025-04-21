@@ -273,13 +273,17 @@ const FellowProfile: React.FC<FellowProfile> = ({
     }
   };
 
+  const setNewStatus = (status: string) => {
+    setCurrentApp({ ...currentApp, status: status });
+  };
+
   useEffect(() => {
     if (isApp && currentApp.status === "submitted") {
       console.log("this app has been submitted, will be marking it as viewed.");
       // code here to update status from submitted to "viewed"
       setStatus("viewed");
     }
-  }, [currentApp, isApp, setStatus]);
+  }, [currentApp, isApp]);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -326,6 +330,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 app={currentApp}
                 applicant={currentFellow.name}
                 setNewNote={setNewNote}
+                setNewStatus={setNewStatus}
               />
             )}
 

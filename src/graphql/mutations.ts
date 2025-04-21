@@ -508,7 +508,7 @@ export const HIGHLIGHT_APP = gql`
 `;
 
 export const UPDATE_STATUS = gql`
-  mutation updateStatus($appId: ID!, $status: String) {
+  mutation updateStatus($appId: ID!, $status: String!) {
     updateStatus(appId: $appId, status: $status) {
       id
       message

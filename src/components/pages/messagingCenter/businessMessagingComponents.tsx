@@ -18,6 +18,7 @@ const RenderBusinessMessageList = ({
   activeApp,
   showMessages,
   setCurrentMessages,
+  currentListings,
 }: any) => {
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
@@ -28,14 +29,30 @@ const RenderBusinessMessageList = ({
     CurrentSchemeType[]
   >([]);
 
-  const currentListings = jobListings?.filter(
-    (listing) => listing?.job?.businessId === business?.id,
-  );
-
-  const activeListing = currentListings?.find((listing) => {
+  const activeListing = currentListings?.find((listing: any) => {
     return listing?.job?.applications?.includes(activeApp);
   });
 
+  useEffect(() => {
+    console.log("currentListings:", currentListings);
+  }, [currentListings]);
+
+  const listingsWithConversations = currentListings.filter((listing: any) =>
+    listing.applications?.some(
+      (app: any) =>
+        app.conversation.messages.length >= 1 && app.appStatus !== "closed",
+    ),
+  );
+
+  const activeAppsWithConversations = listingsWithConversations.map(
+    (listing: any) =>
+      listing.applications.filter(
+        (app: any) =>
+          app.appStatus !== "closed" && app.conversation.messages.length >= 1,
+      ),
+  );
+
+  // I'll need to filter once I get the dates and timestamps for each of the messages
   const currentApps = applications
     ?.filter(
       (app: any) =>
@@ -58,10 +75,6 @@ const RenderBusinessMessageList = ({
       return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
     });
 
-  const appsWithMail = currentApps?.filter(
-    (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
-  );
-
   const findApplicantName: any = (id: any) => {
     // const applicant = fellows?.find((fellow) => fellow.id === id);
     const applicant = { name: "Person", smallBio: "smallBio Here" };
@@ -77,36 +90,39 @@ const RenderBusinessMessageList = ({
   };
 
   const renderRelevantMessages = () => {
-    const selectedApps = currentApps?.filter(
-      (app) => app?.jobListing?.id === selectedListing,
-    );
-    const activeAppsWithMail = selectedApps?.filter(
-      (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
-    );
+    // const selectedApps = currentApps?.filter(
+    //   (app) => app?.jobListing?.id === selectedListing,
+    // );
+    // const activeAppsWithMail = selectedApps?.filter(
+    //   (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
+    // );
 
-    const sortedMessages = activeAppsWithMail?.sort((a, b) => {
-      const mostRecentA = a.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
+    // const sortedMessages = activeAppsWithMail?.sort((a, b) => {
+    //   const mostRecentA = a.mail?.reduce((latest, message) => {
+    //     const messageDate = new Date(`${message.date} ${message.timestamp}`);
+    //     return messageDate > latest ? messageDate : latest;
+    //   }, new Date(0));
 
-      const mostRecentB = b.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
+    //   const mostRecentB = b.mail?.reduce((latest, message) => {
+    //     const messageDate = new Date(`${message.date} ${message.timestamp}`);
+    //     return messageDate > latest ? messageDate : latest;
+    //   }, new Date(0));
 
-      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
-    });
+    //   return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
+    // });
 
-    return sortedMessages?.map((app: any, index: number) => {
-      const recentMessages = app.mail?.filter(
-        (message: any) => message.sender === "fellow",
-      );
-      const messageStatus = recentMessages
-        ? recentMessages[recentMessages.length - 1].read === true
-          ? "read"
-          : "new"
-        : "no messages";
+    return listingsWithConversations.map((job: any, index: number) => {
+      // if the message was sent by someone else, we can mark it as read, but we should probably try to work that out in the backend
+
+      // return sortedMessages?.map((app: any, index: number) => {
+      //   const recentMessages = app.mail?.filter(
+      //     (message: any) => message.sender === "fellow",
+      //   );
+      //   const messageStatus = recentMessages
+      //     ? recentMessages[recentMessages.length - 1].read === true
+      //       ? "read"
+      //       : "new"
+      //     : "no messages";
 
       // TODO: sort messages by most recent message
 
@@ -124,18 +140,20 @@ const RenderBusinessMessageList = ({
                 index % secondaryColorArray.length
               ] as ButtonColorOption
             }
-            onClick={() => showMessages(app.id)}
-            isSelected={activeApp === app.id}
+            onClick={() => showMessages(job.application.id)}
+            isSelected={activeApp === job.application.id}
           >
             <p className="ApplicantName w-[50%] overflow-hidden truncate text-left text-[0.8rem]">
-              {findApplicantName(app.applicant)}
+              {job.application.fellow.name} | {job.application.id}
+              {/* {findApplicantName(app.applicant)} */}
             </p>
             {/* TODO: Find relevant mail numbers */}
             {/* Probably just set this to "read" or "unread"?? */}
 
             <p className="Details">
-              | {messageStatus}
-              {/* {app.mail.length || 0} total | 1 new */}
+              | messageStatus
+              {/* {messageStatus} */}
+              {job.application.conversation.messages.length || 0} total | 1 new
             </p>
           </SiteButton>
         </div>
@@ -157,39 +175,34 @@ const RenderBusinessMessageList = ({
 
   return (
     <div className="MessageListGroup flex max-h-[90vh] flex-col gap-4 overflow-y-auto overflow-x-visible p-3">
-      {currentListings
-        ?.filter((job) =>
-          appsWithMail?.some(
-            (app) => app.id === job.jobId && app.status !== "closed",
-          ),
-        )
-        .map((job: any, index: any) => {
-          return (
-            <div key={index} className="ListingGroup flex flex-col gap-3">
-              <SiteButton
-                variant="hollow"
-                aria="current job listings with mail"
-                addClasses="w-[30vw] flex justify-between py-3"
-                colorScheme={
-                  colorArray[index % colorArray.length] as ButtonColorOption
-                }
-                onClick={() => expandListingMessages(job.jobId)}
-                isSelected={selectedListing === job.jobId}
-              >
-                <p className="Title w-[50%] overflow-hidden truncate text-left text-[.9rem]">
-                  {job.job.jobTitle}
-                </p>
+      <h2 className="ActiveConversations text-center">Active Conversations</h2>
+      {listingsWithConversations.map((job: any, index: any) => {
+        return (
+          <div key={index} className="ListingGroup flex flex-col gap-3">
+            <SiteButton
+              variant="hollow"
+              aria="current job listings with mail"
+              addClasses="w-[30vw] flex justify-between py-3"
+              colorScheme={
+                colorArray[index % colorArray.length] as ButtonColorOption
+              }
+              onClick={() => expandListingMessages(job.id)}
+              isSelected={selectedListing === job.id}
+            >
+              <p className="Title w-[50%] overflow-hidden truncate text-left text-[.9rem]">
+                {job.jobTitle}
+              </p>
 
-                <p className="Details">| ? active messages</p>
-              </SiteButton>
-              {selectedListing === job.jobId && (
-                <div className="RelevantMessages flex max-h-[90vh] flex-col gap-3 overflow-y-auto overflow-x-visible px-3 pb-2 pt-1">
-                  {renderRelevantMessages()}
-                </div>
-              )}
-            </div>
-          );
-        })}
+              <p className="Details">| ? active messages</p>
+            </SiteButton>
+            {selectedListing === job.id && (
+              <div className="RelevantMessages flex max-h-[90vh] flex-col gap-3 overflow-y-auto overflow-x-visible px-3 pb-2 pt-1">
+                {renderRelevantMessages()}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

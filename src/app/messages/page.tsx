@@ -8,6 +8,9 @@ import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
 import { useJobListings } from "@/contexts/JobListingsContext";
 import { RenderFellowMessageList } from "@/components/pages/messagingCenter/fellowMessagingComponents";
 import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/businessMessagingComponents";
+import { useQuery } from "@apollo/client";
+import { GET_JOB_LISTINGS } from "@/graphql/queries";
+import { useBusiness } from "@/contexts/BusinessContext";
 
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
@@ -25,15 +28,31 @@ type CurrentSchemeType = ButtonColorOption;
 // activeApp is then passed into the MessageCenter, which will display the active Messages related to the activeApp application.
 
 export default function Messages() {
-  const { accountType } = usePageContext();
+  const { accountType, isLoggedIn } = usePageContext();
   const { fellow } = useFellow();
-  const { jobListings } = useJobListings();
+  const { business } = useBusiness();
   const { applications } = useApplications();
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
+  const [jobListings, setJobListings] = useState<[]>([]);
   const [activeApp, setActiveApp] = useState("");
   const [currentMessages, setCurrentMessages] = useState(Array<any>);
-
+  const [loadingData, setLoadingData] = useState(true);
   // Find the current Applications and sort them via the date of their latest messages, so the most recent messages are displayed at the top
+
+  const {
+    loading: queryLoading,
+    error: queryError,
+    data: { jobListings: jobListingsArray = [] } = {},
+  } = useQuery(GET_JOB_LISTINGS, {
+    variables: { businessId: business?.id },
+    // skip: loadingData === false || accountType === "Fellow" || !isLoggedIn,
+    onCompleted: (data) => {
+      console.log(JSON.stringify(data));
+      console.log("calling a query -", data);
+      setJobListings(data.jobListings);
+      setLoadingData(false);
+    },
+  });
 
   const showMessages = (id: any) => {
     if (activeApp === id) {
@@ -80,6 +99,7 @@ export default function Messages() {
               activeApp={activeApp}
               showMessages={showMessages}
               setCurrentMessages={setCurrentMessages}
+              currentListings={jobListings}
             />
           )}
         </div>

@@ -17,6 +17,7 @@ const AppFellowTopButtons = ({
   applicant,
   showRejectOptions,
   setNewNote,
+  setNewStatus,
 }: any) => {
   const [clickedButton, setClickedButton] = useState("");
   const { showModal, hideModal } = useModal();
@@ -27,20 +28,6 @@ const AppFellowTopButtons = ({
     setClickedButton("goToMessages");
     router.push(`/messages/${app.id}`);
   };
-
-  // const updateStatus = (status: any) => {
-  //   const updatedApplications = applications?.map((application) => {
-  //     if (application.id === app.id) {
-  //       return {
-  //         ...application,
-  //         status: status,
-  //       };
-  //     }
-  //     return application;
-  //   });
-  //   setApplications(updatedApplications || []);
-  //   hideModal();
-  // };
 
   const backToAms = () => {
     setClickedButton("backToAms");
@@ -64,10 +51,8 @@ const AppFellowTopButtons = ({
       <SiteButton
         variant="filled"
         colorScheme={app.status === "closed" ? "b3" : "b5"}
-        // colorScheme="b5"
         aria="Contact"
         addClasses="px-8"
-        // disabled={app.status === "closed"}
         onClick={goToMessages}
         isSelected={clickedButton === "goToMessages"}
       >
@@ -103,7 +88,7 @@ const AppFellowTopButtons = ({
             <SetAppStatusModal
               appStatus={app.status}
               applicant={applicant}
-              // updateStatus={updateStatus}
+              setNewStatus={setNewStatus}
               showRejectOptions={showRejectOptions}
               application={app}
             />,

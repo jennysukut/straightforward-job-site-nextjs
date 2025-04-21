@@ -73,6 +73,7 @@ export default function NavBar() {
             src="/sfjs-updated-logo.svg"
             width={229}
             height={75}
+            priority={true}
             alt="Straightforward Job Site logo"
           />
         )}
