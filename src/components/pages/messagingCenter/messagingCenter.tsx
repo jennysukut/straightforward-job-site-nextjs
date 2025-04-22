@@ -78,9 +78,12 @@ const MessageCenter = ({
     onCompleted: (data) => {
       console.log("using the GET_CONVERSATION_BY_ID query:", data);
       // Filter messages to only include those with non-null text
-      const filteredMessages = data.getConversation.messages.filter(
-        (message: Messages) => message.text !== null,
-      );
+      const filteredMessages = data.getConversation.messages
+        .filter((message: Messages) => message.text !== null)
+        .map((message: Messages) => ({
+          ...message,
+          text: message.text.flatMap((text: string) => text.split("\n")), // Split by double newlines for paragraphs
+        }));
       setMessages(filteredMessages);
       console.log(filteredMessages);
       setLoadingData(false);
@@ -136,8 +139,6 @@ const MessageCenter = ({
         .split("\n")
         .map((para) => para.trim())
         .filter((para) => para.length > 0);
-
-      console.log(currentParagraphs);
     }
 
     try {
@@ -151,6 +152,13 @@ const MessageCenter = ({
         "Message sent successfully, Details:",
         response.data.sendMessage,
       );
+      // const mappedMessage = response.data.sendMessage.map(
+      //   (message: Messages) => ({
+      //     ...message,
+      //     text: message.text.flatMap((text: string) => text.split("\n")), // Split by newlines for paragraphs
+      //   }),
+      // );
+      // setMessages([...messages, mappedMessage]);
       setMessages([...messages, response.data.sendMessage]);
       setCurrentMessage("");
       setButtonClicked("");
@@ -168,7 +176,7 @@ const MessageCenter = ({
   if (messages && messages.length > 0) {
     groupedMessages = messages.reduce(
       (acc: { [key: string]: typeof messages }, message: any) => {
-        const date = message.createdAt;
+        const date = new Date(message.createdAt).toISOString().split("T")[0]; // Get only the date part
         if (!acc[date]) {
           acc[date] = [];
         }
@@ -469,7 +477,6 @@ const MessageCenter = ({
                           <div
                             className={`Messages ${message.text.length > 1 ? "my-2" : ""} flex flex-col gap-2`}
                           >
-                            {/* {message.text} */}
                             {message.text.map((paragraph, paraIndex) => (
                               <p
                                 key={`${messageIndex}-${paraIndex}`}
