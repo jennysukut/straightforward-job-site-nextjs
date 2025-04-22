@@ -485,6 +485,8 @@ const ListingBottomButtons = ({
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
   const { isLoggedIn, accountType } = usePageContext();
+  const [clickedButton, setClickedButton] = useState("");
+
   const continueRetract = () => {
     console.log("trying to retract this application");
     const updatedApplications = applications?.filter(
@@ -494,6 +496,17 @@ const ListingBottomButtons = ({
     hideModal();
   };
 
+  console.log("currentApp:", currentApp);
+
+  const goToBusinessProfile = () => {
+    setClickedButton("GoToBusiness");
+    router.push(`/business/${currentJob.business.id}`);
+  };
+  const sendMessage = () => {
+    setClickedButton("message");
+    router.push(`/messages/${currentApp?.id}`);
+  };
+
   return (
     <div className="FellowButtonsContainer flex flex-col items-end gap-4 self-end">
       <SiteButton
@@ -501,7 +514,8 @@ const ListingBottomButtons = ({
         colorScheme="c4"
         aria="edit"
         addClasses="px-8"
-        onClick={() => router.push(`/business/${currentJob.business.id}`)}
+        onClick={goToBusinessProfile}
+        isSelected={clickedButton === "GoToBusiness"}
       >
         view company details
       </SiteButton>
@@ -532,7 +546,8 @@ const ListingBottomButtons = ({
             variant="filled"
             colorScheme="b3"
             addClasses="px-8"
-            // onClick={}
+            onClick={sendMessage}
+            isSelected={clickedButton === "message"}
           >
             send a message
           </SiteButton>
