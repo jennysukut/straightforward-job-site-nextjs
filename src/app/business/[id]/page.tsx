@@ -9,6 +9,7 @@ export default function ListingPage({ params }: any) {
   const { accountType, setCurrentPage } = usePageContext();
   const router = useRouter();
 
+  // I don't think we'll need this - we'll want people who are perusing to be able to see business profiles
   // useEffect(() => {
   //   if (!isLoggedIn) {
   //     router.push("/"); // Redirect to main page if not logged in

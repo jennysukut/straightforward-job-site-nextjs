@@ -71,6 +71,12 @@ export default function Profile() {
     setLoadingData(false);
   }, [fellow, business]);
 
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/"); // Redirect to main page if not logged in
+    }
+  }, []);
+
   return (
     <div className="Profile flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
       {isLoggedIn && accountType === "Fellow" && (

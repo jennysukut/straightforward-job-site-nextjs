@@ -13,6 +13,10 @@ export default function ListingPage({ params }: any) {
         <JobListing isOwn hasId id={params.jobId} />
       )}
       {accountType === "Fellow" && <JobListing hasId id={params.jobId} />}
+      {accountType !== "Fellow" && accountType !== "Business" && (
+        // set not logged in parameters here so we'll know what buttons to show?
+        <JobListing hasId id={params.jobId} />
+      )}
     </div>
   );
 }
