@@ -9,7 +9,6 @@ export default function BusinessSignupPages({ children }: any) {
 
   useEffect(() => {
     setPageType("Business Signup");
-    setCurrentPage("businessSignup");
   }, []);
 
   return <>{children}</>;

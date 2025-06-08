@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,7 +29,7 @@ type FormData = z.infer<typeof businessSchema>;
 export default function BusinessSignupPage2() {
   const { business, setBusiness } = useBusiness();
   const { textColor } = useColorOptions();
-  const { setIsLoggedIn } = usePageContext();
+  const { setIsLoggedIn, setCurrentPage } = usePageContext();
   const router = useRouter();
   const [disabledButton, setDisabledButton] = useState(false);
   const [saveBusinessProfilePage2, { loading, error }] = useMutation(
@@ -44,6 +44,10 @@ export default function BusinessSignupPage2() {
     resolver: zodResolver(businessSchema),
     defaultValues: {},
   });
+
+  useEffect(() => {
+    setCurrentPage("2");
+  }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);

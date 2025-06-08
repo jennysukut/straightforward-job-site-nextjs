@@ -11,6 +11,7 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useMutation } from "@apollo/client";
 import { ADD_JOB_LISTING_DETAILS_5_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import DeleteHandler from "@/components/handlers/deleteHandler";
@@ -45,6 +46,7 @@ export default function PostAJobStep5() {
   const { job, setJob } = useJob();
   const { textColor, titleColor } = useColorOptions();
   const { showModal } = useModal();
+  const { setCurrentPage } = usePageContext();
 
   const [disabledButton, setDisabledButton] = useState(false);
   const [interviewProcess, setInterviewProcess] = useState<
@@ -158,6 +160,8 @@ export default function PostAJobStep5() {
   };
 
   useEffect(() => {
+    setCurrentPage("5");
+
     setInterviewProcess(
       Array.isArray(job?.interviewProcess) ? job?.interviewProcess : [],
     );

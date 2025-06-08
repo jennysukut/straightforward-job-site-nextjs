@@ -109,7 +109,7 @@ export default function NavBar() {
                   <ProgressBar
                     current={Number(currentPage)}
                     total={6}
-                    fillColor="bg-peach"
+                    fillColor="bg-olive"
                     fillOpacity="opacity-50"
                   />
                   <p className="ProgressBarStatus mt-2 pr-1 text-end text-xs italic opacity-50">
@@ -123,18 +123,44 @@ export default function NavBar() {
           // JOB CREATION NAV BAR
           return (
             <div className="TellUsAboutYou">
-              <p className="TellAboutYouTitle">
+              <p className="TellAboutYouTitle mx-2 mb-2 text-sm">
                 tell us more about your open position!
               </p>
+              {currentPage !== "" && (
+                <div className="Progress">
+                  <ProgressBar
+                    current={Number(currentPage)}
+                    total={5}
+                    fillColor="bg-orange"
+                    fillOpacity="opacity-50"
+                  />
+                  <p className="ProgressBarStatus mt-2 pr-1 text-end text-xs italic opacity-50">
+                    step {currentPage}/5
+                  </p>
+                </div>
+              )}
             </div>
           );
         } else if (pageType === "Business Signup") {
           // BUSINESS SIGNUP NAV BAR
           return (
             <div className="TellUsAboutYou">
-              <p className="TellAboutYouTitle">
+              <p className="TellAboutYouTitle mx-2 mb-2 text-sm">
                 tell us more about your business!
               </p>
+              {currentPage !== "" && (
+                <div className="Progress">
+                  <ProgressBar
+                    current={Number(currentPage)}
+                    total={2}
+                    fillColor="bg-olive"
+                    fillOpacity="opacity-50"
+                  />
+                  <p className="ProgressBarStatus mt-2 pr-1 text-end text-xs italic opacity-50">
+                    step {currentPage}/2
+                  </p>
+                </div>
+              )}
             </div>
           );
         } else if (accountType === "Fellow" && isLoggedIn === true) {

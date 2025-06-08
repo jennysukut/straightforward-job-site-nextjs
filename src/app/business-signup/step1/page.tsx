@@ -48,7 +48,7 @@ export default function BusinessSignupPage1() {
   const { hideModal, showModal } = useModal();
   const { textColor, titleColor } = useColorOptions();
   const { colorOption } = useColors();
-  const { setIsLoggedIn } = usePageContext();
+  const { setIsLoggedIn, setCurrentPage } = usePageContext();
   const [disabledButton, setDisabledButton] = useState(false);
   const [colorArray, setColorArray] = useState<CurrentSchemeType[]>([]);
   const avatarDetails =
@@ -128,6 +128,7 @@ export default function BusinessSignupPage1() {
 
   // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
+    setCurrentPage("1");
     hideModal();
     ShuffleIdealButtonPattern(setColorArray);
   }, []);

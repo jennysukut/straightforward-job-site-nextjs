@@ -9,7 +9,6 @@ export default function PostAJobPages({ children }: any) {
 
   useEffect(() => {
     setPageType("Job Creation");
-    setCurrentPage("jobCreation");
   }, []);
 
   return <>{children}</>;

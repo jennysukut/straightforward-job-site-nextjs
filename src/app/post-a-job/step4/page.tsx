@@ -10,6 +10,7 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useMutation } from "@apollo/client";
 import { ADD_JOB_LISTING_DETAILS_4_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import DeleteHandler from "@/components/handlers/deleteHandler";
@@ -35,6 +36,7 @@ type FormData = z.infer<typeof jobSchema>;
 export default function PostAJobStep4() {
   const { job, setJob } = useJob();
   const { textColor, titleColor } = useColorOptions();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -127,6 +129,8 @@ export default function PostAJobStep4() {
   };
 
   useEffect(() => {
+    setCurrentPage("4");
+
     setResponsibilities(
       Array.isArray(job?.responsibilities) ? job?.responsibilities : [],
     );

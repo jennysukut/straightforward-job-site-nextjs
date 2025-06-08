@@ -11,6 +11,7 @@ import { useJob } from "@/contexts/JobContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useMutation } from "@apollo/client";
 import { ADD_JOB_LISTING_DETAILS_3_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -32,6 +33,7 @@ type FormData = z.infer<typeof jobSchema>;
 export default function PostAJobStep3() {
   const { job, setJob } = useJob();
   const { textColor, titleColor } = useColorOptions();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -126,6 +128,8 @@ export default function PostAJobStep3() {
   };
 
   useEffect(() => {
+    setCurrentPage("3");
+
     setPreferredSkills(
       Array.isArray(job?.preferredSkills) ? job?.preferredSkills : [],
     );
