@@ -55,10 +55,9 @@ export default function JobBoard() {
       positionType: positionType.length > 0 ? positionType : undefined,
       country: country.length > 0 ? country : undefined,
       isPublished: true,
-      searchBar: inputValue !== "" ? inputValue : undefined,
-      // set location here
+      searchbar:
+        inputValue !== "" && inputValue.length > 3 ? inputValue : undefined,
     },
-    // skip: inputValue === "",
     onCompleted: (data) => {
       setLoadingData(false);
     },

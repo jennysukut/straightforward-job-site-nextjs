@@ -240,7 +240,7 @@ export const GET_JOB_LISTINGS = gql`
       positionType: $positionType
       country: $country
       isPublished: $isPublished
-      searchBar: $searchBar
+      searchbar: $searchbar
     ) {
       id
       jobTitle
