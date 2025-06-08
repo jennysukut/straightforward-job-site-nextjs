@@ -14,6 +14,7 @@ import SignupOptionsModal from "./modals/signupModals/signupOptionsModal";
 import NavButton from "./buttonsAndLabels/navButton";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
+import ProgressBar from "./progressBar";
 
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
@@ -99,8 +100,23 @@ export default function NavBar() {
         if (pageType === "Individual Signup") {
           // INDIVIDUAL SIGNUP NAV BAR
           return (
-            <div className="TellUsAboutYou">
-              <p className="TellAboutYouTitle">tell us more about you!</p>
+            <div className="TellUsAboutYou self-end">
+              <p className="TellAboutYouTitle mx-2 mb-2 text-sm">
+                tell us more about you!
+              </p>
+              {currentPage !== "" && (
+                <div className="Progress">
+                  <ProgressBar
+                    current={Number(currentPage)}
+                    total={6}
+                    fillColor="bg-peach"
+                    fillOpacity="opacity-50"
+                  />
+                  <p className="ProgressBarStatus mt-2 pr-1 text-end text-xs italic opacity-50">
+                    step {currentPage}/6
+                  </p>
+                </div>
+              )}
             </div>
           );
         } else if (pageType === "Job Creation") {

@@ -5,6 +5,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_2_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddExperienceModal from "@/components/modals/profilePopulationModals/addExperienceModal";
@@ -17,6 +18,7 @@ import UpdateHandler from "@/components/handlers/updateHandler";
 
 export default function IndividualSignupPage2() {
   const { fellow, setFellow } = useFellow();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -119,6 +121,7 @@ export default function IndividualSignupPage2() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
+    setCurrentPage("2");
     setExperienceDetails(
       Array.isArray(fellow?.profile?.experience)
         ? fellow.profile?.experience

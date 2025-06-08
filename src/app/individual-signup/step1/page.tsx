@@ -14,6 +14,7 @@ import { useColors } from "@/contexts/ColorContext";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_1_MUTATION } from "@/graphql/mutations";
 import { placeholderAvatar } from "@/lib/stylingData/avatarOptions";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AvatarModal from "@/components/modals/chooseAvatarModal";
@@ -55,6 +56,7 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { hideModal, showModal } = useModal();
+  const { setCurrentPage } = usePageContext();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails =
@@ -167,6 +169,7 @@ export default function IndividualSignupPage1() {
 
   // generating two separate random color arrays to loop through for our labels
   useEffect(() => {
+    setCurrentPage("1");
     hideModal();
     const colors = getRandomColorArray(36);
     setColorArray(colors);

@@ -32,9 +32,10 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage6() {
   const { fellow, setFellow } = useFellow();
-  const { setAccountType, setIsLoggedIn } = usePageContext();
+  const { setAccountType, setIsLoggedIn, setCurrentPage } = usePageContext();
   const { showModal } = useModal();
   const { textColor } = useColorOptions();
+
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -145,6 +146,7 @@ export default function IndividualSignupPage6() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
+    setCurrentPage("6");
     setLinks(
       Array.isArray(fellow?.profile?.links) ? fellow.profile?.links : [],
     );

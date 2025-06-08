@@ -11,6 +11,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_5_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import PopulateDisplayField from "@/components/informationDisplayComponents/populateDisplayField";
@@ -34,6 +35,7 @@ type FormData = z.infer<typeof fellowSchema>;
 export default function IndividualSignupPage5() {
   const { fellow, setFellow } = useFellow();
   const { textColor } = useColorOptions();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -149,6 +151,8 @@ export default function IndividualSignupPage5() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
+    setCurrentPage("5");
+
     setHobbies(
       Array.isArray(fellow?.profile?.hobbies) ? fellow.profile?.hobbies : [],
     );

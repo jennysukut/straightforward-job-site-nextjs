@@ -6,6 +6,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_3_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import Image from "next/image";
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
@@ -20,6 +21,7 @@ import AddHandler from "@/components/handlers/addHandler";
 
 export default function IndividualSignupPage3() {
   const { fellow, setFellow } = useFellow();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
 
   const [disabledButton, setDisabledButton] = useState(false);
@@ -132,6 +134,7 @@ export default function IndividualSignupPage3() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
+    setCurrentPage("3");
     setAwards(
       Array.isArray(fellow?.profile?.awards) ? fellow.profile?.awards : [],
     );

@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useMutation } from "@apollo/client";
 import { SAVE_PROFILE_PAGE_4_MUTATION } from "@/graphql/mutations";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import InputComponent from "@/components/inputComponents/inputComponent";
@@ -30,6 +31,7 @@ type FormData = z.infer<typeof fellowSchema>;
 
 export default function IndividualSignupPage4() {
   const { fellow, setFellow } = useFellow();
+  const { setCurrentPage } = usePageContext();
   const router = useRouter();
   const { textColor, titleColor } = useColorOptions();
 
@@ -114,6 +116,8 @@ export default function IndividualSignupPage4() {
 
   // Setting Details on page from fellowContext
   useEffect(() => {
+    setCurrentPage("4");
+
     setLocationOptions(
       Array.isArray(fellow?.profile?.locationOptions)
         ? fellow.profile?.locationOptions

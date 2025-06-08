@@ -140,7 +140,7 @@ export default function JobBoard() {
   };
 
   const renderJobListings = () => {
-    if (jobListingsArray.length < 1) {
+    if (jobListingsArray.length < 1 && loadingData === false) {
       return (
         <div className="NoListingsDetail flex h-[30vh] w-[100%] flex-col justify-center">
           <p className="NoListingsHere italic text-olive">
