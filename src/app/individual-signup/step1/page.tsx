@@ -34,7 +34,8 @@ type CurrentSchemeType = ButtonColorOption;
 const fellowSchema = z.object({
   smallBio: z
     .string()
-    .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" }),
+    .min(5, { message: "Your Small Bio Must Be More Than 5 Letters" })
+    .max(255, { message: "Your Small Bio Must Be 255 Characters Of Less" }),
   country: z.string().min(3, { message: "Your Country is Required" }),
   location: z
     .string()

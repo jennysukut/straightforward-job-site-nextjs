@@ -1,15 +1,13 @@
-export const sendFellowSignupEmail = async (
+export const sendFellowVerificationEmail = async (
   email: string,
   name: string,
-  betaTester: boolean,
 ) => {
-  const firstName = name.split(" ")[0];
-  await fetch("/api/emails/signupEmails/fellowSignupEmail", {
+  // const firstName = name.split(" ")[0];
+  await fetch("/api/emails/emailVerification", {
     method: "POST",
     body: JSON.stringify({
       email: email,
-      firstName: firstName,
-      betaTester: betaTester,
+      name: name,
     }),
   }).catch((err) => {
     console.log(err);

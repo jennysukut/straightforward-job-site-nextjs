@@ -12,6 +12,8 @@ import { GET_PROFILE, GET_APPLICATION_BY_ID } from "@/graphql/queries";
 import { useMutation } from "@apollo/client";
 import { UPDATE_STATUS } from "@/graphql/mutations";
 
+import { sendFellowVerificationEmail } from "@/utils/emailUtils";
+
 import {
   OwnFellowTopButtons,
   OwnFellowBottomButtons,
@@ -284,6 +286,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
     }
   }, [id, refetchProfile, isApp]);
 
+  const email = () => {
+    sendFellowVerificationEmail("jennysukut@gmail.com", "Jenny Sukut");
+  };
+
   return (
     <div
       className={`ProfileContainer mr-14 flex w-[80%] max-w-[1600px] flex-col gap-8 self-center ${textColor}`}
@@ -327,6 +333,15 @@ const FellowProfile: React.FC<FellowProfile> = ({
                 setNewNote={setNewNote}
               />
             )}
+
+            <SiteButton
+              variant="filled"
+              onClick={email}
+              aria="testEmail"
+              colorScheme="b4"
+            >
+              send test email
+            </SiteButton>
 
             {/* SKILLS DETAILS */}
             <InfoBox
