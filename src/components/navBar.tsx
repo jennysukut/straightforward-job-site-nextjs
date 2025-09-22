@@ -59,7 +59,6 @@ export default function NavBar() {
       : fellow?.dailyApplications?.length;
 
   useEffect(() => {
-    // if (currentPage === "profile" && )
     setClickedButton(currentPage);
   }, [currentPage]);
 

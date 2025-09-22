@@ -34,16 +34,6 @@ export default function ClientAuthWrapper({
     }
   }, [isLoggedIn, setIsLoadingAccount]);
 
-  useEffect(() => {
-    if (
-      isLoggedIn &&
-      accountType === "fellow" &&
-      fellow?.newApplication === true
-    ) {
-      console.log("there's a new application - we should refetch their info");
-    }
-  }, [fellow]);
-
   const {
     data: queryData,
     loading: queryLoading,
@@ -76,6 +66,18 @@ export default function ClientAuthWrapper({
       // could maybe just do a general setIsLoadingAccount(false) here?
     },
   });
+
+  useEffect(() => {
+    console.log("newApplication:", fellow?.newApplication);
+    if (
+      isLoggedIn &&
+      accountType !== "Business" &&
+      fellow?.newApplication === true
+    ) {
+      console.log("there's a new application - we should refetch their info");
+      refetchProfile();
+    }
+  }, [fellow]);
 
   return <>{children}</>;
 }

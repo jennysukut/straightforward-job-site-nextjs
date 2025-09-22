@@ -34,16 +34,13 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
       console.log("application successful, details:", response.data.applyToJob);
       setFellow({
         ...fellow,
+        newApplication: true,
         dailyApplications: [
           ...(fellow?.dailyApplications || []),
           { id: response.data.applyToJob, message: "", status: "submitted" },
         ],
-        // profile: {
-        //   ...fellow?.profile,
-        // },
       });
       showModal(<SuccessfulApplicationModal />);
-      setFellow({ ...fellow, newApplication: true });
     } catch (error) {
       console.error("application error:", error);
       setDisabledButton(false);

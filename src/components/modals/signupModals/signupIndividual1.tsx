@@ -8,6 +8,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
+import { usePageContext } from "@/contexts/PageContext";
 
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import { FELLOW_SIGNUP_MUTATION } from "@/graphql/mutations";
@@ -41,6 +42,7 @@ export default function SignupModalIndividual1() {
   const [signupFellow, { loading, error }] = useMutation(
     FELLOW_SIGNUP_MUTATION,
   );
+  const { setMyID } = usePageContext();
   const { titleColor, textColor } = useColorOptions();
   const [seePassword, setSeePassword] = useState(false);
   const [disabledButton, setDisabledButton] = useState(false);
@@ -71,10 +73,10 @@ export default function SignupModalIndividual1() {
       });
       // when successful, set the Felow and push to the signup pages
       console.log("Signup successful, ID:", response.data.signupFellow); // Adjust based on your mutation response
+      setMyID(response.data.signupFellow);
       setFellow({
         ...fellow,
         name: data.name,
-        // email: data.email,
       });
       router.push("/individual-signup/step1");
     } catch (error) {

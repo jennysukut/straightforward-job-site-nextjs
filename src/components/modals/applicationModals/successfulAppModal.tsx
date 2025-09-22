@@ -4,7 +4,7 @@ import { useFellow } from "@/contexts/FellowContext";
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { useRouter } from "next/navigation";
 import { useApplication } from "@/contexts/ApplicationContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import AddAMessageModal from "./addAMessageModal";
@@ -17,11 +17,13 @@ export default function SuccessfulApplicationModal({
   const { fellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
+  const [clickedButton, setClickedButton] = useState("");
   const router = useRouter();
 
   const appsLeft = 5 - (fellow?.dailyApplications?.length || 0);
 
   const goToAms = () => {
+    setClickedButton("goToAms");
     router.push("/ams");
     setTimeout(() => {
       hideModal();
@@ -29,6 +31,7 @@ export default function SuccessfulApplicationModal({
   };
 
   const backToSearch = () => {
+    setClickedButton("backToSearch");
     router.push("/job-board");
     setTimeout(() => {
       hideModal();
@@ -59,6 +62,7 @@ export default function SuccessfulApplicationModal({
           colorScheme="b3"
           aria="go back"
           onClick={goToAms}
+          isSelected={clickedButton === "goToAms"}
         >
           application manager
         </SiteButton>
@@ -69,6 +73,7 @@ export default function SuccessfulApplicationModal({
             colorScheme="f1"
             aria="go back"
             onClick={backToSearch}
+            isSelected={clickedButton === "backToSearch"}
           >
             back to job search
           </SiteButton>

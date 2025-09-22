@@ -74,7 +74,6 @@ export default function JobListing({
   const [currentJob, setCurrentJob] = useState({} as Job);
   const [savingForLater, setSavingForLater] = useState<boolean>(false);
   const [isSaved, setIsSaved] = useState(false);
-  const [thisId, setThisId] = useState<number | null>(null);
   const [loadingData, setLoadingData] = useState(
     job?.beingEdited ? false : true,
   );
@@ -237,14 +236,6 @@ export default function JobListing({
       setCurrentJob(job);
     }
   }, [isOwn, id, job, newPost]);
-
-  useEffect(() => {
-    if (!id) {
-      setThisId(job?.id ?? null);
-    } else {
-      setThisId(id);
-    }
-  }, [id, job]);
 
   console.log("currentJob:", currentJob);
 

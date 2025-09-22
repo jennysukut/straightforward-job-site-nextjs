@@ -116,7 +116,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const router = useRouter();
 
   const { fellow, setFellow } = useFellow();
-  const { setPageType, accountType } = usePageContext();
+  const { setPageType, accountType, justGotHere, myID } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { showModal } = useModal();
 
@@ -132,6 +132,18 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [relevantNotes, setRelevantNotes] = useState(Array<RelevantNoteData>);
   const [newNote, setNewNote] = useState(false);
   const [updateStatus, { loading, error }] = useMutation(UPDATE_STATUS);
+  const [relevantID, setRelevantID] = useState("");
+
+  useEffect(() => {
+    console.log("MYID:", myID);
+    if (id) {
+      setRelevantID(id);
+    } else if (myID !== "") {
+      setRelevantID(myID);
+      // setRelevantID("31");
+      // THIS WORKS! Set this ID here using the signupIndiv1 response "successful signup" detail
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (
@@ -211,11 +223,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
     error: queryError,
     refetch: refetchProfile,
   } = useQuery(GET_PROFILE, {
-    variables: { id },
-    skip: !id || isApp,
+    variables: { id: relevantID },
+    skip: (!id && !myID) || isApp,
     onCompleted: (data) => {
       console.log("calling GET_PROFILE query:", data);
-      // setCurrentFellow(data.fellow);
       setCurrentFellow({ ...data.fellow, avatar: data.fellow.profile.avatar });
       console.log("currentFellow:", currentFellow);
       setLoadingData(false);
@@ -281,7 +292,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   useEffect(() => {
     // Refetch data when the component mounts or when the id changes
-    if (id && !isApp) {
+    if ((id || justGotHere) && !isApp) {
       refetchProfile();
     }
   }, [id, refetchProfile, isApp]);
@@ -334,14 +345,14 @@ const FellowProfile: React.FC<FellowProfile> = ({
               />
             )}
 
-            <SiteButton
+            {/* <SiteButton
               variant="filled"
               onClick={email}
               aria="testEmail"
               colorScheme="b4"
             >
               send test email
-            </SiteButton>
+            </SiteButton> */}
 
             {/* SKILLS DETAILS */}
             <InfoBox

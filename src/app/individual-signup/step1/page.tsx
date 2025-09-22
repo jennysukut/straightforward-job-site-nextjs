@@ -57,7 +57,7 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { hideModal, showModal } = useModal();
-  const { setCurrentPage } = usePageContext();
+  const { setCurrentPage, setJustGotHere } = usePageContext();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails =
@@ -111,6 +111,7 @@ export default function IndividualSignupPage1() {
         "Details saved successfully, Details:",
         response.data.saveFellowProfilePage1,
       );
+      setJustGotHere(true);
       setFellow({
         ...fellow,
         profile: {

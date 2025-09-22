@@ -128,15 +128,8 @@ export default function IndividualSignupPage6() {
 
       setAccountType("Fellow");
       setIsLoggedIn(true);
-      setFellow({
-        ...fellow,
-        profile: {
-          links: links,
-          aboutMe: data.aboutMe,
-          // profileIsBeingEdited: false,
-          addMoreInfo: false,
-        },
-      });
+      //call the GetMyProfile query??
+      // Get ID from DB and set the ID here so the profile will load correctly
       router.push("/profile");
     } catch (error) {
       console.error("Signup error:", error);

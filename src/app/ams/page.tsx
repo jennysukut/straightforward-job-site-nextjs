@@ -10,7 +10,7 @@ export default function AMS() {
   const { accountType, isLoggedIn, setCurrentPage } = usePageContext();
 
   useEffect(() => {
-    setCurrentPage("application manager");
+    setCurrentPage("applications");
   }, []);
 
   return (

@@ -58,6 +58,7 @@ export const GET_MY_PROFILE = gql`
           languages
           skills
           jobTitles
+          stepsCompleted
           experience {
             id
             title
