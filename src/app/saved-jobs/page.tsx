@@ -27,15 +27,18 @@ export default function SavedJobs() {
   const {
     loading: queryLoading,
     error: queryError,
+    refetch: refetchSavedJobs,
     data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
     variables: { isSaved: true },
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
-      console.log(data);
       setLoadingData(false);
     },
   });
+
+  useEffect(() => {
+    refetchSavedJobs();
+  }, [fellow]);
 
   // make this saveClick function call the like-job thing
   const saveClick = async (id: any) => {

@@ -27,7 +27,7 @@ interface JobPostProps extends React.HTMLAttributes<HTMLDivElement> {
 const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
   const router = useRouter();
   const { colorOption } = useColors();
-  const { fellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { showModal, hideModal } = useModal();
   const { applications } = useApplications();
   const [viewMoreClicked, setViewMoreClicked] = useState(false);
@@ -74,7 +74,8 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
       });
       //rerender here to set the saved status of the job? // or just update locally?
       // setIsSaved(!isSaved);
-      console.log("saved job successfully", response.data.saveJob);
+      console.log("saved job successfully", response.data);
+      setFellow({ ...fellow, newSave: true });
     } catch (error) {
       console.error("Signup error:", error);
       setIsSaved(!isSaved);

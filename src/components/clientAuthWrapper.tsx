@@ -68,16 +68,15 @@ export default function ClientAuthWrapper({
   });
 
   useEffect(() => {
-    console.log("newApplication:", fellow?.newApplication);
     if (
       isLoggedIn &&
       accountType !== "Business" &&
-      fellow?.newApplication === true
+      (fellow?.newApplication === true || fellow?.newSave === true)
     ) {
-      console.log("there's a new application - we should refetch their info");
+      console.log("there's new stuff - we should refetch their info");
       refetchProfile();
     }
-  }, [fellow]);
+  }, [fellow?.newApplication, fellow?.newSave]);
 
   return <>{children}</>;
 }

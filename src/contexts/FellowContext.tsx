@@ -8,6 +8,7 @@ export interface Fellow {
   dailyApplications?: Array<{ id: string; message: string; status: string }>;
   jobApplications?: Record<string, any>;
   newApplication?: Boolean;
+  newSave?: Boolean;
   profile?: {
     email?: string;
     smallBio?: string;
