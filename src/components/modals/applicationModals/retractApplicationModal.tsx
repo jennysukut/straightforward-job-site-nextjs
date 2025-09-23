@@ -1,5 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useModal } from "@/contexts/ModalContext";
+import { useEffect } from "react";
 
 import SiteButton from "@/components/buttonsAndLabels/siteButton";
 import RetractionApplicationStep2Modal from "./retractApplicationStep2Modal";
@@ -7,13 +8,19 @@ import RetractionApplicationStep2Modal from "./retractApplicationStep2Modal";
 export default function RetractionConfirmationModal({
   continueRetract,
   jobTitle,
+  business,
+  setClickedButton,
 }: any) {
   const { showModal, goBack, hideModal } = useModal();
+
+  useEffect(() => {
+    setClickedButton("");
+  }, []);
 
   return (
     <div className="DeleteConfirmationModal flex w-[350px] flex-col items-center gap-4">
       <Dialog.Title className="Title w-full text-center text-xl font-bold">
-        {`retract your application for ${jobTitle}?`}
+        {`Retract your application for ${jobTitle} with ${business}?`}
       </Dialog.Title>
       <div className="SignupButtons mt-4 flex flex-col items-start gap-y-4">
         <SiteButton

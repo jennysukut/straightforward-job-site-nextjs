@@ -143,9 +143,10 @@ export default function JobListing({
   let currentApp;
   if (inAms || !isOwn) {
     // Filter a fellow's applications for the current jobId
-    const currentApp = fellow?.jobApplications?.find(
+    const thisApp = fellow?.jobApplications?.find(
       (app: any) => app?.jobListing?.id === id,
     );
+    currentApp = thisApp.id;
   }
 
   const handleEditClick = (url: any) => {

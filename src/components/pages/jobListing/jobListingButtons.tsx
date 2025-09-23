@@ -353,12 +353,19 @@ const ListingTopButtons = ({
   const { showModal } = useModal();
   const { isLoggedIn } = usePageContext();
   const [showLimitDetails, setShowLimitDetails] = useState(false);
+  const [clickedButton, setClickedButton] = useState("");
+  const router = useRouter();
 
   const atDailyLimit = fellow?.dailyApplications?.length === 5;
 
+  const goToAms = () => {
+    setClickedButton("goToAms");
+    router.push("/ams");
+  };
+
   return (
     <div className="FellowTopButtons -mb-2 -mt-20 flex flex-col items-end gap-1 self-end">
-      <div className="OptionalTopButtons flex items-start gap-2">
+      <div className="OptionalTopButtons flex flex-col items-end gap-2">
         {isLoggedIn && (
           <SiteButton
             aria="saveJob"
@@ -366,11 +373,23 @@ const ListingTopButtons = ({
             onClick={() => saveClick(id)}
             isSelected={jobSavedStatus || matchingIds}
           >
-            {jobSavedStatus === true
+            {jobSavedStatus === true && !matchingIds
               ? "saved"
               : matchingIds
                 ? "applied"
                 : "save job"}
+          </SiteButton>
+        )}
+
+        {isLoggedIn && matchingIds && (
+          <SiteButton
+            aria="goToAms"
+            colorScheme="b4"
+            onClick={() => goToAms()}
+            isSelected={clickedButton === "goToAms"}
+            addClasses="mt-2"
+          >
+            {clickedButton === "goToAms" ? "going to manager..." : "manage app"}
           </SiteButton>
         )}
       </div>
@@ -496,15 +515,13 @@ const ListingBottomButtons = ({
     hideModal();
   };
 
-  console.log("currentApp:", currentApp);
-
   const goToBusinessProfile = () => {
     setClickedButton("GoToBusiness");
     router.push(`/business/${currentJob.business.id}`);
   };
   const sendMessage = () => {
     setClickedButton("message");
-    router.push(`/messages/${currentApp?.id}`);
+    router.push(`/messages/${currentApp}`);
   };
 
   return (

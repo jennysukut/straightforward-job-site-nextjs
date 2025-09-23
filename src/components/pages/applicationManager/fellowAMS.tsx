@@ -59,13 +59,15 @@ export default function FellowAMS() {
     return app.status !== "closed";
   });
 
-
   const retract = () => {
     setClickedButton("retract");
     showModal(
       <RetractionConfirmationModal
         continueRetract={continueRetract}
-        jobTitle={selectedJob?.jobTitle}
+        // find job title here
+        jobTitle={currentJob?.jobTitle}
+        business={currentJob?.business?.name}
+        setClickedButton={setClickedButton}
       />,
     );
   };
@@ -227,8 +229,9 @@ export default function FellowAMS() {
   useEffect(() => {
     if (filters.length > 0) {
       filterApps(applications);
-      setSelectedApps([]);
-      setCurrentJob(undefined);
+      // these were deselecting the selected apps and removing the currentJob with any active filter
+      // setSelectedApps([]);
+      // setCurrentJob(undefined);
     }
   }, [applications, filters, appStatus, filterApps]);
 
