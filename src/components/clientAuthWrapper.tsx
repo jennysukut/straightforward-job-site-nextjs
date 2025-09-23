@@ -71,12 +71,18 @@ export default function ClientAuthWrapper({
     if (
       isLoggedIn &&
       accountType !== "Business" &&
-      (fellow?.newApplication === true || fellow?.newSave === true)
+      (fellow?.newApplication === true ||
+        fellow?.newSave === true ||
+        fellow?.profileUpdate === true)
     ) {
-      console.log("there's new stuff - we should refetch their info");
       refetchProfile();
+      setFellow({ ...fellow, profileUpdate: false });
     }
   }, [fellow?.newApplication, fellow?.newSave]);
+
+  useEffect(() => {
+    refetchProfile();
+  }, [fellow?.profileIsBeingEdited]);
 
   return <>{children}</>;
 }

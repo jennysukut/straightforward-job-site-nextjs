@@ -57,7 +57,7 @@ export default function IndividualSignupPage1() {
   const router = useRouter();
   const { fellow, setFellow } = useFellow();
   const { hideModal, showModal } = useModal();
-  const { setCurrentPage, setJustGotHere } = usePageContext();
+  const { setCurrentPage } = usePageContext();
   const { titleColor, textColor } = useColorOptions();
   const { colorOption } = useColors();
   const avatarDetails =
@@ -103,33 +103,21 @@ export default function IndividualSignupPage1() {
           jobTitles: jobTitles,
           avatar: currentAvatar || "checks",
           languages: languages,
+          // do we need to have the profileIsBeingEdited here?
           profileIsBeingEdited: false,
         },
       });
       // when successful, set the Fellow and push to the next signup page
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage1,
-      );
-      setJustGotHere(true);
       setFellow({
         ...fellow,
-        profile: {
-          smallBio: data.smallBio,
-          country: data.country,
-          location: data.location,
-          skills: skills,
-          jobTitles: jobTitles,
-          avatar: currentAvatar,
-          languages: languages,
-        },
-        // profileIsBeingEdited: false,
+        profileIsBeingEdited: false,
+        profileUpdate: true,
       });
-      // if (fellow?.profileIsBeingEdited) {
-      //   router.push("/profile");
-      // } else {
-      router.push("/individual-signup/step2");
-      // }
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step2");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user
@@ -323,15 +311,13 @@ export default function IndividualSignupPage1() {
               onClick={handleSubmit(onSubmit)}
               disabled={disabledButton}
             >
-              {/* {disabledButton && fellow?.profileIsBeingEdited === true
+              {disabledButton && fellow?.profileIsBeingEdited === true
                 ? "Returning To Profile..."
                 : !disabledButton && fellow?.profileIsBeingEdited === true
                   ? "update"
                   : disabledButton && fellow?.profileIsBeingEdited === false
                     ? "Saving Information..."
-                    : "continue"}{" "} */}
-
-              {disabledButton ? "Saving Information..." : "continue"}
+                    : "continue"}{" "}
             </SiteButton>
           </div>
         </div>

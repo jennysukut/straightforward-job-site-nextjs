@@ -45,20 +45,13 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
     );
   };
 
-  // we'll be able to pass in an appId directly
-  let thisApp: string;
-  // const applied = job?.applications?.fellow?.id?.includes(fellow?.id);
   const applied =
     job?.applications?.some((app: any) => app?.fellow?.id === fellow?.id) ??
     false;
-  if (applied) {
-    const currentApp: any = applications?.find((app: any) => {
-      return app.jobId === job.jobId && app.applicant === fellow?.id;
-    });
-    if (currentApp) {
-      thisApp = currentApp.id;
-    }
-  }
+
+  const thisApp = applied
+    ? job?.applications?.find((a: any) => a?.fellow?.id === fellow?.id)?.id
+    : undefined;
 
   const saveClick = async () => {
     setIsSaved(!isSaved);
@@ -76,7 +69,6 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
       });
       //rerender here to set the saved status of the job? // or just update locally?
       // setIsSaved(!isSaved);
-      console.log("saved job successfully", response.data);
       setFellow({ ...fellow, newSave: true });
     } catch (error) {
       console.error("Signup error:", error);
@@ -100,8 +92,8 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
     } else router.push(`/listing/${job.id}`);
   };
 
-  // const appNumber = job?.job.applications?.length;
-  const appNumber = 2;
+  const appNumber = job.applications.length;
+  // const appNumber = 2;
 
   const saveButton = (() => {
     switch (colorOption) {

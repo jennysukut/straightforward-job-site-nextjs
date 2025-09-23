@@ -9,6 +9,8 @@ export interface Fellow {
   jobApplications?: Record<string, any>;
   newApplication?: Boolean;
   newSave?: Boolean;
+  profileIsBeingEdited?: Boolean;
+  profileUpdate?: Boolean;
   profile?: {
     email?: string;
     smallBio?: string;

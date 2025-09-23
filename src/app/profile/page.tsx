@@ -72,10 +72,16 @@ export default function Profile() {
   }, [fellow, business]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      router.push("/"); // Redirect to main page if not logged in
-    }
-  }, []);
+    if (isLoggedIn) return; // only run when not logged in
+
+    const timer = setTimeout(async () => {
+      if (!isLoggedIn) {
+        router.push("/");
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [isLoggedIn, router]);
 
   return (
     <div className="Profile flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">

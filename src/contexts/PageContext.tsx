@@ -15,8 +15,7 @@ type PageContextType = {
   setIsLoadingAccount: (type: boolean) => void;
   isLoggingOut: boolean;
   setIsLoggingOut: (type: boolean) => void;
-  justGotHere: boolean;
-  setJustGotHere: (type: boolean) => void;
+
   myID: string;
   setMyID: (type: string) => void;
 };
@@ -43,8 +42,6 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
 
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
-  const [justGotHere, setJustGotHere] = useState<boolean>(false);
-
   const [myID, setMyID] = useState<string>("");
 
   return (
@@ -62,8 +59,7 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
         setIsLoadingAccount,
         isLoggingOut,
         setIsLoggingOut,
-        justGotHere,
-        setJustGotHere,
+
         myID,
         setMyID,
       }}

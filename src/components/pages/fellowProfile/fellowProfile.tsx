@@ -116,7 +116,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const router = useRouter();
 
   const { fellow, setFellow } = useFellow();
-  const { setPageType, accountType, justGotHere, myID } = usePageContext();
+  const { setPageType, accountType, myID } = usePageContext();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { showModal } = useModal();
 
@@ -135,13 +135,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
   const [relevantID, setRelevantID] = useState("");
 
   useEffect(() => {
-    console.log("MYID:", myID);
     if (id) {
       setRelevantID(id);
     } else if (myID !== "") {
       setRelevantID(myID);
-      // setRelevantID("31");
-      // THIS WORKS! Set this ID here using the signupIndiv1 response "successful signup" detail
     }
   }, []);
 
@@ -239,7 +236,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   };
 
   const handleEditClick = (url: any) => {
-    // setFellow({ ...fellow, profileIsBeingEdited: true });
+    setFellow({ ...fellow, profileIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     setLoadingData(true);
     console.log("edit button was clicked, redirecting to: ", url);
@@ -292,7 +289,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   useEffect(() => {
     // Refetch data when the component mounts or when the id changes
-    if ((id || justGotHere) && !isApp) {
+    if (id && !isApp) {
       refetchProfile();
     }
   }, [id, refetchProfile, isApp]);
