@@ -141,11 +141,12 @@ export default function JobListing({
 
   // identify the related application
   let currentApp;
-  if (inAms || !isOwn) {
+  if (inAms && !isOwn) {
     // Filter a fellow's applications for the current jobId
     const thisApp = fellow?.jobApplications?.find(
       (app: any) => app?.jobListing?.id === id,
     );
+    console.log(currentApp);
     currentApp = thisApp.id;
   }
 

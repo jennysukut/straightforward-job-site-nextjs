@@ -47,12 +47,14 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
 
   // we'll be able to pass in an appId directly
   let thisApp: string;
-  const applied = job.job?.applicants?.includes(fellow?.id);
+  // const applied = job?.applications?.fellow?.id?.includes(fellow?.id);
+  const applied =
+    job?.applications?.some((app: any) => app?.fellow?.id === fellow?.id) ??
+    false;
   if (applied) {
     const currentApp: any = applications?.find((app: any) => {
       return app.jobId === job.jobId && app.applicant === fellow?.id;
     });
-    console.log(currentApp);
     if (currentApp) {
       thisApp = currentApp.id;
     }
@@ -147,7 +149,8 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
             {job?.applicationLimit}
           </div>
           {accountType === "Fellow" && (
-            <div className="SaveButton -mr-4 hover:saturate-150">
+            <div className="AppliedAndSaveButton -mr-4 flex gap-2 hover:saturate-150">
+              {applied ? <p className="Applied text-xs italic">applied</p> : ""}
               {isSaved ? (
                 <SiteButton
                   aria="addJobsButton"
