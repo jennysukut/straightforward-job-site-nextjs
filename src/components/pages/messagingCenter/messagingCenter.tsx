@@ -28,6 +28,7 @@ export interface Messages {
   seenAt: any;
   text: Array<string>;
   fromBusiness: Boolean;
+  formattedTime: any;
   // sender: string;
   // date: string;
   // timestamp: string;
@@ -67,6 +68,9 @@ const MessageCenter = ({
   const [loadingData, setLoadingData] = useState(true);
   const [sendMessage, { loading, error }] = useMutation(SEND_MESSAGE);
   const [paragraphs, setParagraphs] = useState([""]);
+  const [fellowName, setFellowName] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [relevantPosition, setRelevantPosition] = useState("");
 
   const {
     loading: queryLoading,
@@ -85,8 +89,14 @@ const MessageCenter = ({
           text: message.text.flatMap((text: string) => text.split("\n")), // Split by double newlines for paragraphs
         }));
       setMessages(filteredMessages);
-      console.log(filteredMessages);
       setLoadingData(false);
+      setFellowName(data.getConversation.jobApplication.fellow.name);
+      setBusinessName(
+        data.getConversation.jobApplication.jobListing.business.name,
+      );
+      setRelevantPosition(
+        data.getConversation.jobApplication.jobListing.jobTitle,
+      );
     },
   });
 
@@ -152,13 +162,6 @@ const MessageCenter = ({
         "Message sent successfully, Details:",
         response.data.sendMessage,
       );
-      // const mappedMessage = response.data.sendMessage.map(
-      //   (message: Messages) => ({
-      //     ...message,
-      //     text: message.text.flatMap((text: string) => text.split("\n")), // Split by newlines for paragraphs
-      //   }),
-      // );
-      // setMessages([...messages, mappedMessage]);
       setMessages([...messages, response.data.sendMessage]);
       setCurrentMessage("");
       setButtonClicked("");
@@ -172,15 +175,40 @@ const MessageCenter = ({
   // Group Messages Together
   let groupedMessages: { [key: string]: typeof messages } = {};
 
-  // Group Messages Into Dates
+  // Group Messages Into Dates - get the time here??
+  // ADD A FIELD TO THE GROUPED MESSAGES THAT'LL HOLD THE TIME AS WELL AS THE DATE.
+  // if (messages && messages.length > 0) {
+  //   groupedMessages = messages.reduce(
+  //     (acc: { [key: string]: typeof messages }, message: any) => {
+  //       const date = new Date(message.createdAt).toISOString().split("T")[0]; // Get only the date part
+  //       // GOT THE TIME HERE
+  //       const time = new Date(message.createdAt).toLocaleTimeString([], {
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //       });
+  //       console.log("time:", time);
+  //       if (!acc[date]) {
+  //         acc[date] = [];
+  //       }
+  //       acc[date].push(message);
+  //       return acc;
+  //     },
+  //     {},
+  //   );
+  // }
+
   if (messages && messages.length > 0) {
     groupedMessages = messages.reduce(
-      (acc: { [key: string]: typeof messages }, message: any) => {
-        const date = new Date(message.createdAt).toISOString().split("T")[0]; // Get only the date part
-        if (!acc[date]) {
-          acc[date] = [];
-        }
-        acc[date].push(message);
+      (acc: { [key: string]: any[] }, message: any) => {
+        const dt = new Date(message.createdAt);
+        const date = dt.toISOString().split("T")[0]; // YYYY-MM-DD (UTC)
+        const time = dt.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }); // local HH:MM
+
+        if (!acc[date]) acc[date] = [];
+        acc[date].push({ ...message, formattedTime: time });
         return acc;
       },
       {},
@@ -347,16 +375,17 @@ const MessageCenter = ({
     return formattedDate;
   };
 
-  const getMessageTime = (date: any) => {
-    const currentDate = new Date(date);
+  // pass in something other than the date?? // the date is limited before it gets here
+  // const getMessageTime = (date: any) => {
+  //   const currentDate = new Date(date);
 
-    const hours = currentDate.getUTCHours();
-    const minutes = currentDate.getUTCMinutes();
-    const formattedHours = hours % 12 || 12; // Convert to 12-hour format
-    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
-    const ampm = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
-    return `${formattedHours}:${formattedMinutes} ${ampm}`; // Format as "HH:MM AM/PM"
-  };
+  //   const hours = currentDate.getUTCHours();
+  //   const minutes = currentDate.getUTCMinutes();
+  //   const formattedHours = hours % 12 || 12; // Convert to 12-hour format
+  //   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes; // Add leading zero if needed
+  //   const ampm = hours >= 12 ? "PM" : "AM"; // Determine AM/PM
+  //   return `${formattedHours}:${formattedMinutes} ${ampm}`; // Format as "HH:MM AM/PM"
+  // };
 
   return (
     <div className="MessagingCenterPage h-full w-full">
@@ -396,56 +425,41 @@ const MessageCenter = ({
                   go to mailbox
                 </SiteButton>
               )}
-              {/* {(activeConvo || specificMessages) && (
+              {(activeConvo || specificMessages) && (
                 <div className="Title flex flex-col">
                   <h2 className="text-right text-emerald">
                     Your Conversation with{" "}
-                    {accountType === "Fellow"
-                      ? correspondingListing?.job?.businessName
-                      : findApplicantName(correspondingApp?.applicant)}
+                    {accountType === "Fellow" ? businessName : fellowName}
                   </h2>
                   <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
-                    regarding the {correspondingListing?.job?.jobTitle} position
+                    regarding the {relevantPosition} position
                   </p>
                 </div>
-              )} */}
-              {/* <div className="Title flex flex-col">
-            <h2 className="text-right text-emerald">
-              Your Conversation with{" "}
-              {accountType === "Fellow"
-                ? correspondingListing?.job?.businessName
-                : findApplicantName(correspondingApp?.applicant)}
-            </h2>
-            <p className="Subtitle mb-6 mr-2 text-right font-medium lowercase italic text-jade">
-              regarding the {correspondingListing?.job?.jobTitle} position
-            </p>
-          </div> */}
+              )}
             </div>
 
             {/* Messages */}
             <div
-              // className={`Messages -mr-6 ${messageHeight} ${!activeConvo ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
+              className={`Messages -mr-6 ${messageHeight} ${!activeConvo ? "flex flex-col justify-center" : ""}overflow-y-auto pr-6`}
               id="Messages"
             >
-              {/* {!activeConvo && (
-            <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
-              <p className="NoMessagesText text-center italic text-olive">
-                There are no messages yet.
-              </p>
-            </div>
-          )} */}
+              {!activeConvo && (
+                <div className="NoMessagesBox flex h-[60vh] flex-col justify-center self-center text-center">
+                  <p className="NoMessagesText text-center italic text-olive">
+                    There are no messages yet.
+                  </p>
+                </div>
+              )}
 
-              {/* {activeConvo && messages.length < 1 && (
-            <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
-              <p className="NoMessagesText text-center italic text-olive">
-                There are no messages with{" "}
-                {accountType === "Fellow"
-                  ? correspondingListing?.job?.businessName
-                  : findApplicantName(correspondingApp?.applicant)}{" "}
-                yet.
-              </p>
-            </div>
-          )} */}
+              {activeConvo && messages.length < 1 && (
+                <div className="NoMessagesBox flex min-h-[30vh] flex-col justify-center self-center text-center">
+                  <p className="NoMessagesText text-center italic text-olive">
+                    There are no messages with{" "}
+                    {accountType === "Fellow" ? businessName : fellowName} yet.
+                  </p>
+                </div>
+              )}
+
               {sortedDates.map((date) => (
                 <div key={date} className="flex w-[100%] flex-col gap-3">
                   <div className="Divider mb-2 flex items-center">
@@ -492,10 +506,11 @@ const MessageCenter = ({
                           className={`TimestampGroup flex gap-2 ${isOwn ? "self-end" : "self-start"} items-center`}
                         >
                           {/* {isOwn && message.edited && (
-                        <p className="EditedNotification text-xs text-olive opacity-50">
-                          edited |
-                        </p>
-                      )} */}
+                            <p className="EditedNotification text-xs text-olive opacity-50">
+                              edited |
+                            </p>
+                          )} */}
+
                           {/* {isOwn && message.read === true && (
                         <div className="ReadDetails flex gap-1">
                           <Image
@@ -513,7 +528,8 @@ const MessageCenter = ({
                           <p
                             className={`Timestamp ${isOwn ? "text-right text-olive" : "ml-2 text-left"} text-xs`}
                           >
-                            {getMessageTime(date)}
+                            {message?.formattedTime}
+                            {/* {getMessageTime(date)} */}
                             {/* {message.timestamp} */}
                           </p>
                           {isOwn && (
