@@ -1,5 +1,18 @@
 import { gql } from "@apollo/client";
 
+export const MESSAGE_SUBSCRIPTION = gql`
+  subscription MessageSubscription($conversationId: ID!) {
+    messages(conversationId: $conversationId) {
+      id
+      createdAt
+      deliveredAt
+      seenAt
+      text
+      fromBusiness
+    }
+  }
+`;
+
 export const GET_MY_PROFILE = gql`
   query GetMyProfile {
     getMyProfile {

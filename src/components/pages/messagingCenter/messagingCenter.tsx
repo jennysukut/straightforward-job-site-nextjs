@@ -10,8 +10,11 @@ import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { useRouter } from "next/navigation";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { rejectionOptions } from "@/lib/rejectionOptions";
-import { useQuery } from "@apollo/client";
-import { GET_CONVERSATION_BY_ID } from "@/graphql/queries";
+import { useQuery, useSubscription, gql } from "@apollo/client";
+import {
+  GET_CONVERSATION_BY_ID,
+  MESSAGE_SUBSCRIPTION,
+} from "@/graphql/queries";
 import { useMutation } from "@apollo/client";
 import { SEND_MESSAGE } from "@/graphql/mutations";
 
@@ -71,6 +74,39 @@ const MessageCenter = ({
   const [fellowName, setFellowName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [relevantPosition, setRelevantPosition] = useState("");
+
+  //Testing Connecting to Messaging Subscription/Webhook
+
+  const {
+    data: subscriptionData,
+    loading: subscriptionLoading,
+    error: subscriptionError,
+  } = useSubscription(MESSAGE_SUBSCRIPTION, {
+    variables: { conversationId: activeConvo },
+  });
+
+  console.log(
+    "subscriptionData:",
+    subscriptionData,
+    "activeConvo:",
+    activeConvo,
+  );
+
+  useEffect(() => {
+    if (subscriptionData) {
+      console.log("full subscription data:", subscriptionData);
+      console.log("upstreamPublisher:", subscriptionData.upstreamPublisher);
+
+      // Try to find the actual message data
+      if (subscriptionData.upstreamPublisher) {
+        console.log(
+          "upstreamPublisher keys:",
+          Object.keys(subscriptionData.upstreamPublisher),
+        );
+      }
+    }
+  }, [subscriptionData]);
+  ////end of messaging test
 
   const {
     loading: queryLoading,
