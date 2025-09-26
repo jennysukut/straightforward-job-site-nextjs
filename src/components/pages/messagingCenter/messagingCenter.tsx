@@ -77,34 +77,51 @@ const MessageCenter = ({
 
   //Testing Connecting to Messaging Subscription/Webhook
 
+  // const {
+  //   data: subscriptionData,
+  //   loading: subscriptionLoading,
+  //   error: subscriptionError,
+  // } = useSubscription(MESSAGE_SUBSCRIPTION, {
+  //   variables: { conversationId: activeConvo },
+  // });
+
+  // console.log(
+  //   "subscriptionData:",
+  //   subscriptionData,
+  //   "activeConvo:",
+  //   activeConvo,
+  // );
+
+  // useEffect(() => {
+  //   if (subscriptionData) {
+  //     console.log("full subscription data:", subscriptionData);
+  //     console.log("upstreamPublisher:", subscriptionData.upstreamPublisher);
+
+  //     // Try to find the actual message data
+  //     if (subscriptionData.upstreamPublisher) {
+  //       console.log(
+  //         "upstreamPublisher keys:",
+  //         Object.keys(subscriptionData.upstreamPublisher),
+  //       );
+  //     }
+  //   }
+  // }, [subscriptionData]);
+
   const {
     data: subscriptionData,
     loading: subscriptionLoading,
     error: subscriptionError,
   } = useSubscription(MESSAGE_SUBSCRIPTION, {
-    variables: { conversationId: activeConvo },
+    variables: { conversationId: "22" },
+    onData: ({ data }) => {
+      console.log("New message received:", data);
+      // This will log the actual message when one comes in
+    },
   });
 
-  console.log(
-    "subscriptionData:",
-    subscriptionData,
-    "activeConvo:",
-    activeConvo,
-  );
-
+  // Or check what's in data
   useEffect(() => {
-    if (subscriptionData) {
-      console.log("full subscription data:", subscriptionData);
-      console.log("upstreamPublisher:", subscriptionData.upstreamPublisher);
-
-      // Try to find the actual message data
-      if (subscriptionData.upstreamPublisher) {
-        console.log(
-          "upstreamPublisher keys:",
-          Object.keys(subscriptionData.upstreamPublisher),
-        );
-      }
-    }
+    console.log("Subscription data:", subscriptionData);
   }, [subscriptionData]);
   ////end of messaging test
 
@@ -498,7 +515,7 @@ const MessageCenter = ({
 
               {sortedDates.map((date) => (
                 <div key={date} className="flex w-[100%] flex-col gap-3">
-                  <div className="Divider mb-2 flex items-center">
+                  <div className="Divider mb-1 mt-4 flex items-center">
                     <div className="flex-grow border-t-2 border-dotted border-olive border-opacity-20"></div>
                     <p className="mx-3 text-center text-sm text-olive">
                       {/* TODO: turn this date to something easier to read */}

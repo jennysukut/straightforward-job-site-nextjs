@@ -30,7 +30,7 @@ const LoginSchema = z.object({
 
 type FormData = z.infer<typeof LoginSchema>;
 
-export default function LoginModal() {
+export default function LoginModal({ prompt }: any) {
   const router = useRouter();
   const { replaceModalStack, showModal, hideModal } = useModal();
   const { textColor } = useColorOptions();
@@ -94,7 +94,7 @@ export default function LoginModal() {
       <Dialog.Title
         className={`Title -mb-2 max-w-[450px] self-center text-center text-xl font-bold ${textColor}`}
       >
-        login
+        {prompt ? `${prompt}` : "login"}
       </Dialog.Title>
 
       <form

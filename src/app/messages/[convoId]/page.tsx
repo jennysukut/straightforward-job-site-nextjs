@@ -1,8 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/contexts/ModalContext";
+import { usePageContext } from "@/contexts/PageContext";
 
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
+import LoginModal from "@/components/modals/loginModal";
 
 // PAGE RUNDOWN: AppMessages Page is passed an appId to use in displaying messages. It displays only the messages from that application.
 // It finds the application via the Id and passes it into the MessageCenter.
@@ -12,6 +16,9 @@ import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 
 export default function AppMessages({ params }: any) {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
+  const { isLoggedIn } = usePageContext();
+  const router = useRouter();
+  const { showModal } = useModal();
 
   const scrollToPageBottom = () => {
     const offset = 0; // Adjust this value as needed
@@ -34,6 +41,27 @@ export default function AppMessages({ params }: any) {
   //     }, 500);
   //   }
   // }, []);
+
+  // give a timeout and if it's not logged in, perhaps open the logIn Modal?
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (!isLoggedIn) {
+  //       showModal(<LoginModal />);
+  //     }
+  //   }, 5000);
+  // }, []);
+
+  useEffect(() => {
+    if (isLoggedIn) return; // only run when not logged in
+
+    const timer = setTimeout(async () => {
+      if (!isLoggedIn) {
+        showModal(<LoginModal prompt={"login to access"} />);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [isLoggedIn, router]);
 
   return (
     <div
