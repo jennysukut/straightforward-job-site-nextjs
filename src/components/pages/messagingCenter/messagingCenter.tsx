@@ -32,11 +32,6 @@ export interface Messages {
   text: Array<string>;
   fromBusiness: Boolean;
   formattedTime: any;
-  // sender: string;
-  // date: string;
-  // timestamp: string;
-  // edited: boolean;
-  // read: boolean;
 }
 
 // We need to make the message center display something about initial contact is the message array doesn't have anything in it.
@@ -51,6 +46,7 @@ const MessageCenter = ({
   addClasses,
   messageHeight,
   specificMessages,
+  activeApp,
 }: any): JSX.Element => {
   const { accountType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -77,42 +73,12 @@ const MessageCenter = ({
 
   //Testing Connecting to Messaging Subscription/Webhook
 
-  // const {
-  //   data: subscriptionData,
-  //   loading: subscriptionLoading,
-  //   error: subscriptionError,
-  // } = useSubscription(MESSAGE_SUBSCRIPTION, {
-  //   variables: { conversationId: activeConvo },
-  // });
-
-  // console.log(
-  //   "subscriptionData:",
-  //   subscriptionData,
-  //   "activeConvo:",
-  //   activeConvo,
-  // );
-
-  // useEffect(() => {
-  //   if (subscriptionData) {
-  //     console.log("full subscription data:", subscriptionData);
-  //     console.log("upstreamPublisher:", subscriptionData.upstreamPublisher);
-
-  //     // Try to find the actual message data
-  //     if (subscriptionData.upstreamPublisher) {
-  //       console.log(
-  //         "upstreamPublisher keys:",
-  //         Object.keys(subscriptionData.upstreamPublisher),
-  //       );
-  //     }
-  //   }
-  // }, [subscriptionData]);
-
   const {
     data: subscriptionData,
     loading: subscriptionLoading,
     error: subscriptionError,
   } = useSubscription(MESSAGE_SUBSCRIPTION, {
-    variables: { conversationId: "22" },
+    variables: { conversationId: activeConvo },
     onData: ({ data }) => {
       console.log("New message received:", data);
       // This will log the actual message when one comes in
@@ -123,6 +89,7 @@ const MessageCenter = ({
   useEffect(() => {
     console.log("Subscription data:", subscriptionData);
   }, [subscriptionData]);
+
   ////end of messaging test
 
   const {
@@ -227,28 +194,6 @@ const MessageCenter = ({
 
   // Group Messages Together
   let groupedMessages: { [key: string]: typeof messages } = {};
-
-  // Group Messages Into Dates - get the time here??
-  // ADD A FIELD TO THE GROUPED MESSAGES THAT'LL HOLD THE TIME AS WELL AS THE DATE.
-  // if (messages && messages.length > 0) {
-  //   groupedMessages = messages.reduce(
-  //     (acc: { [key: string]: typeof messages }, message: any) => {
-  //       const date = new Date(message.createdAt).toISOString().split("T")[0]; // Get only the date part
-  //       // GOT THE TIME HERE
-  //       const time = new Date(message.createdAt).toLocaleTimeString([], {
-  //         hour: "2-digit",
-  //         minute: "2-digit",
-  //       });
-  //       console.log("time:", time);
-  //       if (!acc[date]) {
-  //         acc[date] = [];
-  //       }
-  //       acc[date].push(message);
-  //       return acc;
-  //     },
-  //     {},
-  //   );
-  // }
 
   if (messages && messages.length > 0) {
     groupedMessages = messages.reduce(

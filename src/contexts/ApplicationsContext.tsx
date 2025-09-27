@@ -24,7 +24,18 @@ export interface Applications {
       id?: string;
     };
   };
-  mail?: Array<any>;
+  // mail?: Array<any>;
+  conversation?: {
+    id?: string;
+    messages?: {
+      id?: string;
+      createdAt?: any;
+      deliveredAt?: any;
+      seenAt?: any;
+      text?: Array<string>;
+      fromBusiness?: Boolean;
+    };
+  };
   businessNote?: Array<string>;
   fellowNote?: Array<string>;
   appointments?: Array<{

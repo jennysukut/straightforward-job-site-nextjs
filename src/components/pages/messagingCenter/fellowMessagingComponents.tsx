@@ -13,8 +13,35 @@ const RenderFellowMessageList = ({
 }: any) => {
   const { applications, setApplications } = useApplications();
   const { fellow } = useFellow();
-
   const [filteredMsgs, setFilteredMsgs] = useState<string[]>([]);
+
+  const currentMsgs = applications
+    ?.filter(
+      (app: any) =>
+        Array.isArray(app.conversation?.messages) &&
+        app.conversation.messages.length > 0,
+    )
+    .sort((a, b) => {
+      const mostRecentA =
+        Array.isArray(a.conversation?.messages) &&
+        a.conversation.messages.length > 0
+          ? a.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
+
+      const mostRecentB =
+        Array.isArray(b.conversation?.messages) &&
+        b.conversation.messages.length > 0
+          ? b.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
+
+      return mostRecentB.getTime() - mostRecentA.getTime();
+    });
 
   const filterMessages = () => {
     const filteredMessages: any = currentMsgs?.filter((msg: any) => {
@@ -24,22 +51,6 @@ const RenderFellowMessageList = ({
 
     setFilteredMsgs(filteredMessages);
   };
-
-  const currentMsgs = applications
-    ?.filter((app: any) => app.applicant === fellow?.id && app.mail.length > 0)
-    .sort((a, b) => {
-      const mostRecentA = a.mail?.reduce((latest: any, message: any) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
-
-      const mostRecentB = b.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
-
-      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
-    });
 
   useEffect(() => {
     setCurrentMessages(filteredMsgs);
@@ -51,15 +62,21 @@ const RenderFellowMessageList = ({
 
   return (
     <div className="MessageListGroup flex flex-col gap-4">
-      {filteredMsgs?.map((app: any, index: any) => {
-        const recentMessages = app.mail?.filter(
-          (message: any) => message.sender === "business",
+      <h2 className="ActiveConversations text-center">Active Conversations</h2>
+
+      {currentMsgs?.map((app: any, index: any) => {
+        const recentMessages = app.conversation.messages?.filter(
+          (message: any) => message.fromBusiness === true,
         );
-        const messageStatus = recentMessages
-          ? recentMessages[recentMessages.length - 1].read === true
-            ? "read"
-            : "new"
-          : "no messages";
+        // update the "read" field/status using DB
+        const messageStatus = "read";
+        // recentMessages
+        //   ? recentMessages[recentMessages.length - 1].read === true
+        //     ? "read"
+        //     : "new"
+        //   : "no messages";
+
+        const businessName = app.jobListing.business.name;
 
         return (
           <div key={index} className="FellowMessageGroup flex gap-2">
@@ -75,7 +92,7 @@ const RenderFellowMessageList = ({
             >
               <div className="MsgInfo flex justify-between">
                 <p className="BusinessName w-[90%] overflow-hidden truncate text-left text-[.85rem]">
-                  {app.business}
+                  {businessName}
                 </p>
                 <p className="ReadStatus text-[.75rem]">| {messageStatus}</p>
               </div>

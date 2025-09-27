@@ -53,16 +53,16 @@ export default function Messages() {
   });
 
   const showMessages = (id: any) => {
+    console.log(
+      "using the showMessages function in the messages page. Here's the id we got passed:",
+      id,
+    );
     if (activeApp === id) {
       setActiveApp(currentMessages?.[0]?.id || "");
     } else {
       setActiveApp(id);
     }
   };
-
-  // const showJobMessages = (id: any) => {
-  //   console.log("showing applicants for this job:", id);
-  // };
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
@@ -111,7 +111,7 @@ export default function Messages() {
       </div>
       <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
         <MessageCenter
-          activeApp={activeApp}
+          activeConvo={activeApp}
           messageHeight="max-h-[65vh] min-h-[55vh]"
         />
       </div>

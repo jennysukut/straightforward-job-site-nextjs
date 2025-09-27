@@ -40,6 +40,17 @@ export const GET_MY_PROFILE = gql`
           message
           status
           createdAt
+          conversation {
+            id
+            messages {
+              id
+              createdAt
+              deliveredAt
+              seenAt
+              text
+              fromBusiness
+            }
+          }
           jobListing {
             id
             jobTitle

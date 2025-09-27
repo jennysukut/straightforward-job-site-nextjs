@@ -28,13 +28,10 @@ const RenderBusinessMessageList = ({
     CurrentSchemeType[]
   >([]);
 
+  //REDEFINE
   const activeListing = currentListings?.find((listing: any) => {
     return listing?.job?.applications?.includes(activeApp);
   });
-
-  useEffect(() => {
-    console.log("currentListings:", currentListings);
-  }, [currentListings]);
 
   const listingsWithConversations = currentListings.filter((listing: any) =>
     listing.applications?.some(
@@ -52,35 +49,32 @@ const RenderBusinessMessageList = ({
   );
 
   // I'll need to filter once I get the dates and timestamps for each of the messages
-  const currentApps = applications
-    ?.filter(
-      (app: any) =>
-        app.businessId === business?.id &&
-        app.mail &&
-        app.mail.length > 0 &&
-        app.appStatus !== "closed",
-    )
-    .sort((a, b) => {
-      const mostRecentA = a.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
+  const timeSortedAppsWithConvos = activeAppsWithConversations.sort(
+    (a: any, b: any) => {
+      const mostRecentA =
+        Array.isArray(a.conversation?.messages) &&
+        a.conversation.messages.length > 0
+          ? a.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
 
-      const mostRecentB = b.mail?.reduce((latest, message) => {
-        const messageDate = new Date(`${message.date} ${message.timestamp}`);
-        return messageDate > latest ? messageDate : latest;
-      }, new Date(0));
+      const mostRecentB =
+        Array.isArray(b.conversation?.messages) &&
+        b.conversation.messages.length > 0
+          ? b.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
 
-      return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
-    });
-
-  const findApplicantName: any = (id: any) => {
-    // const applicant = fellows?.find((fellow) => fellow.id === id);
-    const applicant = { name: "Person", smallBio: "smallBio Here" };
-    return applicant ? applicant.name : "Unknown";
-  };
+      return mostRecentB.getTime() - mostRecentA.getTime();
+    },
+  );
 
   const expandListingMessages = (id: any) => {
+    console.log("expandListingMessages for:", id);
     if (selectedListing === id) {
       setSelectedListing("");
     } else {
@@ -110,18 +104,21 @@ const RenderBusinessMessageList = ({
     //   return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
     // });
 
-    return listingsWithConversations.map((job: any, index: number) => {
+    return activeAppsWithConversations.map((app: any, index: number) => {
       // if the message was sent by someone else, we can mark it as read, but we should probably try to work that out in the backend
 
       // return sortedMessages?.map((app: any, index: number) => {
       //   const recentMessages = app.mail?.filter(
       //     (message: any) => message.sender === "fellow",
       //   );
+
       //   const messageStatus = recentMessages
       //     ? recentMessages[recentMessages.length - 1].read === true
       //       ? "read"
       //       : "new"
       //     : "no messages";
+
+      const messageStatus = "new";
 
       // TODO: sort messages by most recent message
 
@@ -139,20 +136,20 @@ const RenderBusinessMessageList = ({
                 index % secondaryColorArray.length
               ] as ButtonColorOption
             }
-            onClick={() => showMessages(job.application.id)}
-            isSelected={activeApp === job.application.id}
+            onClick={() => showMessages(app.id)}
+            isSelected={activeApp === app.id}
           >
             <p className="ApplicantName w-[50%] overflow-hidden truncate text-left text-[0.8rem]">
-              {job.application.fellow.name} | {job.application.id}
+              test name | something
+              {/* {app.fellow.name} | {app.id} */}
               {/* {findApplicantName(app.applicant)} */}
             </p>
             {/* TODO: Find relevant mail numbers */}
             {/* Probably just set this to "read" or "unread"?? */}
 
             <p className="Details">
-              | messageStatus
-              {/* {messageStatus} */}
-              {job.application.conversation.messages.length || 0} total | 1 new
+              | {messageStatus}
+              {/* {app.conversation.messages.length || 0} total | 1 new */}
             </p>
           </SiteButton>
         </div>
@@ -161,7 +158,7 @@ const RenderBusinessMessageList = ({
   };
 
   useEffect(() => {
-    setCurrentMessages(currentApps);
+    setCurrentMessages(timeSortedAppsWithConvos);
   }, []);
 
   useEffect(() => {
@@ -192,7 +189,9 @@ const RenderBusinessMessageList = ({
                 {job.jobTitle}
               </p>
 
-              <p className="Details">| ? active messages</p>
+              <p className="Details">
+                | {job.applications.length} active messages
+              </p>
             </SiteButton>
             {selectedListing === job.id && (
               <div className="RelevantMessages flex max-h-[90vh] flex-col gap-3 overflow-y-auto overflow-x-visible px-3 pb-2 pt-1">
