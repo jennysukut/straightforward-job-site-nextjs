@@ -103,14 +103,11 @@ export default function IndividualSignupPage1() {
           jobTitles: jobTitles,
           avatar: currentAvatar || "checks",
           languages: languages,
-          // do we need to have the profileIsBeingEdited here?
-          profileIsBeingEdited: false,
         },
       });
       // when successful, set the Fellow and push to the next signup page
       setFellow({
         ...fellow,
-        profileIsBeingEdited: false,
         profileUpdate: true,
       });
       if (fellow?.profileIsBeingEdited) {

@@ -118,14 +118,14 @@ export default function IndividualSignupPage3() {
           awards: awards,
           experienceLevels: experienceLevels,
           accomplishments: accomplishments,
-          // profileIsBeingEdited: false,
         },
+        profileUpdate: true,
       });
-      // if (fellow?.profileIsBeingEdited) {
-      //   router.push("/profile");
-      // } else {
-      router.push("/individual-signup/step4");
-      // }
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step4");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

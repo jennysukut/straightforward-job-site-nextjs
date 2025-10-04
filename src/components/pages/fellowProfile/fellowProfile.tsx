@@ -223,10 +223,9 @@ const FellowProfile: React.FC<FellowProfile> = ({
     variables: { id: relevantID },
     skip: (!id && !myID) || isApp,
     onCompleted: (data) => {
-      console.log("calling GET_PROFILE query:", data);
       setCurrentFellow({ ...data.fellow, avatar: data.fellow.profile.avatar });
-      console.log("currentFellow:", currentFellow);
       setLoadingData(false);
+      setFellow({ ...data.fellow });
     },
   });
 
@@ -294,9 +293,24 @@ const FellowProfile: React.FC<FellowProfile> = ({
     }
   }, [id, refetchProfile, isApp]);
 
+  useEffect(() => {
+    if (fellow?.profileUpdate) {
+      refetchProfile();
+    }
+  }, [fellow]);
+
+  useEffect(() => {
+    setFellow({ ...fellow, profileIsBeingEdited: false });
+  }, []);
+
   const email = () => {
     sendFellowVerificationEmail("jennysukut@gmail.com", "Jenny Sukut");
   };
+
+  const skillsAndLanguages = [
+    ...(fellow?.profile?.skills || []),
+    ...(fellow?.profile?.languages || []),
+  ];
 
   return (
     <div
@@ -362,24 +376,21 @@ const FellowProfile: React.FC<FellowProfile> = ({
             >
               <h2 className="SkillsTitle text-center">{`My Skills:`}</h2>
               <div className="SkillsContainer -mb-2 mt-4 flex flex-wrap justify-center gap-x-2 gap-y-1">
-                {currentFellow?.profile?.skills &&
-                currentFellow.profile.skills.length > 0 ? (
-                  currentFellow.profile.skills.map(
-                    (skill: any, index: number) => {
-                      return (
-                        <SiteLabel
-                          aria={skill}
-                          variant="display"
-                          key={skill}
-                          colorScheme={
-                            primaryColorArray[index % primaryColorArray.length]
-                          }
-                        >
-                          {skill}
-                        </SiteLabel>
-                      );
-                    },
-                  )
+                {skillsAndLanguages.length > 0 ? (
+                  skillsAndLanguages.map((skill: any, index: number) => {
+                    return (
+                      <SiteLabel
+                        aria={skill}
+                        variant="display"
+                        key={skill}
+                        colorScheme={
+                          primaryColorArray[index % primaryColorArray.length]
+                        }
+                      >
+                        {skill}
+                      </SiteLabel>
+                    );
+                  })
                 ) : (
                   <p>No skills available.</p>
                 )}

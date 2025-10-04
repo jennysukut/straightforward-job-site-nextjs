@@ -132,17 +132,17 @@ export default function IndividualSignupPage5() {
         ...fellow,
         profile: {
           ...fellow?.profile,
-          // profileIsBeingEdited: false,
           hobbies: hobbies,
           bookOrQuote: bookOrQuote,
           petDetails: data.petDetails,
         },
+        profileUpdate: true,
       });
-      // if (fellow?.profileIsBeingEdited) {
-      //   router.push("/profile");
-      // } else {
-      router.push("/individual-signup/step6");
-      // }
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step6");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

@@ -101,13 +101,13 @@ export default function IndividualSignupPage4() {
           lookingFor: data.lookingFor,
           locationOptions: locationOptions,
         },
-        // profileIsBeingEdited: false,
+        profileUpdate: true,
       });
-      // if (fellow?.profileIsBeingEdited) {
-      //   router.push("/profile");
-      // } else {
-      router.push("/individual-signup/step5");
-      // }
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step5");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

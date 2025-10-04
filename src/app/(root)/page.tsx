@@ -5,10 +5,11 @@ import { usePageContext } from "@/contexts/PageContext";
 import OtherHeaderSection from "./otherHeaderSection";
 
 export default function Home() {
-  const { setPageType } = usePageContext();
+  const { setPageType, setCurrentPage } = usePageContext();
 
   useEffect(() => {
     setPageType("main");
+    setCurrentPage("main");
   }, []);
 
   return (

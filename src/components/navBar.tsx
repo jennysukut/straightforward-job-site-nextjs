@@ -109,7 +109,7 @@ export default function NavBar() {
                     current={Number(currentPage)}
                     total={6}
                     fillColor="bg-olive"
-                    fillOpacity="opacity-50"
+                    fillOpacity="opacity-100"
                   />
                   <p className="ProgressBarStatus mt-2 pr-1 text-end text-xs italic opacity-50">
                     step {currentPage}/6

@@ -105,14 +105,14 @@ export default function IndividualSignupPage2() {
           ...fellow?.profile,
           experience: experienceDetails,
           education: educationDetails,
-          // profileIsBeingEdited: false,
         },
+        profileUpdate: true,
       });
-      // if (fellow?.profileIsBeingEdited) {
-      //   router.push("/profile");
-      // } else {
-      router.push("/individual-signup/step3");
-      // }
+      if (fellow?.profileIsBeingEdited) {
+        router.push("/profile");
+      } else {
+        router.push("/individual-signup/step3");
+      }
     } catch (error) {
       console.error("Signup error:", error);
       // Optionally, you can set an error state here to display to the user

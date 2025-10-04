@@ -119,6 +119,16 @@ export default function IndividualSignupPage6() {
         response.data.saveFellowProfilePage6,
       );
 
+      setFellow({
+        ...fellow,
+        profile: {
+          ...fellow?.profile,
+          links: links,
+          aboutMe: data.aboutMe,
+        },
+        profileUpdate: true,
+      });
+
       // if (
       //   fellow?.profileIsBeingEdited === false &&
       //   fellow?.addMoreInfo === false
