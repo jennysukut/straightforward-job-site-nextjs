@@ -46,7 +46,9 @@ const MessageCenter = ({
   addClasses,
   messageHeight,
   specificMessages,
-  activeApp,
+  setIsLoading,
+  loadingData,
+  setLoadingData,
 }: any): JSX.Element => {
   const { accountType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -64,7 +66,6 @@ const MessageCenter = ({
   // const [editingMessage, setEditingMessage] = useState(null);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isBeingEdited, setIsBeingEdited] = useState(null);
-  const [loadingData, setLoadingData] = useState(true);
   const [sendMessage, { loading, error }] = useMutation(SEND_MESSAGE);
   const [paragraphs, setParagraphs] = useState([""]);
   const [fellowName, setFellowName] = useState("");
@@ -117,6 +118,7 @@ const MessageCenter = ({
       setRelevantPosition(
         data.getConversation.jobApplication.jobListing.jobTitle,
       );
+      setIsLoading(false);
     },
   });
 
@@ -128,34 +130,12 @@ const MessageCenter = ({
     }
   })?.colorScheme;
 
-  // You can grab the correspondingApp and corresponding listing data from the GET_CONVO_BY_ID
-  // const correspondingApp = applications?.find((app: any) => {
-  //   return app.id === activeConvo;
-  // });
-  const correspondingListing = "1";
-  // jobListings?.find((jl: any) => {
-  //   return jl.jobId === correspondingApp?.jobId;
-  // });
-
   const scrollToBottom = () => {
     const messageContainer = document.getElementById("Messages");
     if (messageContainer) {
       messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   };
-
-  // const renderMessages = useCallback(() => {
-  //   // if (activeConvo) {
-  //   //   const selectedApp: any = applications?.find((app: any) => {
-  //   //     return app.id === activeConvo;
-  //   //   });
-  //   //   setSelectedApp(selectedApp);
-  //     setMessages(selectedApp.mail);
-  //   // } else {
-  //     // do I need to have an else statement?
-  //     //what if there isn't an active app?
-  //   // }
-  // }, [activeConvo, applications]);
 
   // Send A Message!
   const handleSendMessage = async (e: any) => {
@@ -272,7 +252,7 @@ const MessageCenter = ({
 
   const expandClick = () => {
     setButtonClicked("expandClick");
-    // router.push(`/messages/${correspondingApp?.id}`);
+    router.push(`/messages/${activeConvo}`);
   };
 
   // const fileReport = () => {
@@ -320,12 +300,11 @@ const MessageCenter = ({
   //   // setMessages(updatedMessages);
   // };
 
-  // useEffect(() => {
-  //   renderMessages();
-  //   if (currentMessage === "" && messages.length !== 0) {
-  //     scrollToBottom();
-  //   }
-  // }, [currentMessage, activeConvo, groupedMessages]);
+  useEffect(() => {
+    if (currentMessage === "" && messages.length !== 0) {
+      scrollToBottom();
+    }
+  }, [currentMessage, activeConvo, groupedMessages]);
 
   useEffect(() => {
     setCurrentColorScheme(currentAvatarChoice || "b2");
@@ -385,9 +364,11 @@ const MessageCenter = ({
   //   return `${formattedHours}:${formattedMinutes} ${ampm}`; // Format as "HH:MM AM/PM"
   // };
 
+  console.log("loadingData:", loadingData, "activeConvo:", activeConvo);
+
   return (
     <div className="MessagingCenterPage h-full w-full">
-      {loadingData ? (
+      {loadingData === true ? (
         <p className="LoadingData">loading...</p>
       ) : (
         <div

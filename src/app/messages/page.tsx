@@ -11,10 +11,13 @@ import { RenderBusinessMessageList } from "@/components/pages/messagingCenter/bu
 import { useQuery } from "@apollo/client";
 import { GET_JOB_LISTINGS } from "@/graphql/queries";
 import { useBusiness } from "@/contexts/BusinessContext";
+import { useRouter } from "next/navigation";
+import { useModal } from "@/contexts/ModalContext";
 
 import MessageCenter from "@/components/pages/messagingCenter/messagingCenter";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import Image from "next/image";
+import LoginModal from "@/components/modals/loginModal";
 
 type CurrentSchemeType = ButtonColorOption;
 
@@ -37,6 +40,10 @@ export default function Messages() {
   const [activeApp, setActiveApp] = useState("");
   const [currentMessages, setCurrentMessages] = useState(Array<any>);
   const [loadingData, setLoadingData] = useState(true);
+  const [loadingListings, setLoadingListings] = useState(true);
+  const router = useRouter();
+  const { showModal } = useModal();
+
   // Find the current Applications and sort them via the date of their latest messages, so the most recent messages are displayed at the top
 
   const {
@@ -45,10 +52,10 @@ export default function Messages() {
     data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
     variables: { businessId: business?.id },
-    // skip: loadingData === false || accountType === "Fellow" || !isLoggedIn,
+    skip: loadingData === false || accountType === "Fellow" || !isLoggedIn,
     onCompleted: (data) => {
       setJobListings(data.jobListings);
-      setLoadingData(false);
+      setLoadingListings(false);
     },
   });
 
@@ -60,6 +67,7 @@ export default function Messages() {
     if (activeApp === id) {
       setActiveApp(currentMessages?.[0]?.id || "");
     } else {
+      setLoadingData(true);
       setActiveApp(id);
     }
   };
@@ -74,47 +82,65 @@ export default function Messages() {
     }
   }, [currentMessages]);
 
+  useEffect(() => {
+    if (isLoggedIn) return; // only run when not logged in
+
+    const timer = setTimeout(async () => {
+      if (!isLoggedIn) {
+        showModal(<LoginModal prompt={"login to access"} />);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [isLoggedIn, router]);
+
   return (
-    <div className="MessagePage -mb-10 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
-      <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
-        <div className="MessageListGroup flex flex-col gap-4">
-          {/* message list for fellows */}
+    <div className="MessagePage">
+      {isLoggedIn && (
+        <div className="MessageCenter -mb-10 ml-4 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
+          <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
+            <div className="MessageListGroup flex flex-col gap-4">
+              {/* message list for fellows */}
+              {accountType === "Fellow" && (
+                <RenderFellowMessageList
+                  colorArray={colorArray}
+                  activeApp={activeApp}
+                  showMessages={showMessages}
+                  setCurrentMessages={setCurrentMessages}
+                />
+              )}
 
-          {accountType === "Fellow" && (
-            <RenderFellowMessageList
-              colorArray={colorArray}
-              activeApp={activeApp}
-              showMessages={showMessages}
-              setCurrentMessages={setCurrentMessages}
+              {/* message list for businesses */}
+              {accountType === "Business" && (
+                <RenderBusinessMessageList
+                  colorArray={colorArray}
+                  activeApp={activeApp}
+                  showMessages={showMessages}
+                  setCurrentMessages={setCurrentMessages}
+                  currentListings={jobListings}
+                  setActiveApp={setActiveApp}
+                  setLoadingData={setLoadingData}
+                />
+              )}
+            </div>
+            <Image
+              width={140}
+              height={140}
+              alt="decor"
+              src="/lime-flower.svg"
+              className={`${!activeApp ? "-mb-4 -ml-4" : "-mb-6 -ml-20"} self-baseline`}
+            ></Image>
+          </div>
+          <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
+            <MessageCenter
+              activeConvo={activeApp}
+              messageHeight="max-h-[65vh] min-h-[55vh]"
+              loadingData={loadingData}
+              setLoadingData={setLoadingData}
             />
-          )}
-
-          {/* message list for businesses */}
-
-          {accountType === "Business" && (
-            <RenderBusinessMessageList
-              colorArray={colorArray}
-              activeApp={activeApp}
-              showMessages={showMessages}
-              setCurrentMessages={setCurrentMessages}
-              currentListings={jobListings}
-            />
-          )}
+          </div>
         </div>
-        <Image
-          width={140}
-          height={140}
-          alt="decor"
-          src="/lime-flower.svg"
-          className={`${!activeApp ? "-mb-4 -ml-4" : "-mb-6 -ml-20"} self-baseline`}
-        ></Image>
-      </div>
-      <div className="MessageCenter -mr-4 w-full pl-2 pr-10">
-        <MessageCenter
-          activeConvo={activeApp}
-          messageHeight="max-h-[65vh] min-h-[55vh]"
-        />
-      </div>
+      )}
     </div>
   );
 }

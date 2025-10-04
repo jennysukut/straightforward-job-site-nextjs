@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/contexts/ModalContext";
 import { usePageContext } from "@/contexts/PageContext";
@@ -19,6 +19,7 @@ export default function AppMessages({ params }: any) {
   const { isLoggedIn } = usePageContext();
   const router = useRouter();
   const { showModal } = useModal();
+  const [isLoading, setIsLoading] = useState(true);
 
   const scrollToPageBottom = () => {
     const offset = 0; // Adjust this value as needed
@@ -34,13 +35,13 @@ export default function AppMessages({ params }: any) {
   };
 
   // This is how we scroll to the bottom of messages
-  // useEffect(() => {
-  //   if (correspondingApp?.mail && correspondingApp?.mail.length > 0) {
-  //     setTimeout(() => {
-  //       scrollToPageBottom();
-  //     }, 500);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isLoading === false) {
+      // setTimeout(() => {
+      scrollToPageBottom();
+      // }, 5000);
+    }
+  }, [isLoading]);
 
   // give a timeout and if it's not logged in, perhaps open the logIn Modal?
   // useEffect(() => {
@@ -74,6 +75,7 @@ export default function AppMessages({ params }: any) {
         activeConvo={params.convoId}
         specificMessages
         messageHeight="h-full"
+        setIsLoading={setIsLoading}
       />
     </div>
   );

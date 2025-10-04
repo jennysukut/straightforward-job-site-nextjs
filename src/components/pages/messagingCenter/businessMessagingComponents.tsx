@@ -19,19 +19,22 @@ const RenderBusinessMessageList = ({
   showMessages,
   setCurrentMessages,
   currentListings,
+  setActiveApp,
+  setLoadingData,
 }: any) => {
   const { showModal, hideModal } = useModal();
   const { applications, setApplications } = useApplications();
   const { business } = useBusiness();
   const [selectedListing, setSelectedListing] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [secondaryColorArray, setSecondaryColorArray] = useState<
     CurrentSchemeType[]
   >([]);
 
-  //REDEFINE
-  const activeListing = currentListings?.find((listing: any) => {
-    return listing?.job?.applications?.includes(activeApp);
-  });
+  //REDEFINE -- these are undefined
+  // const activeListing = currentListings?.find((listing: any) => {
+  //   return listing?.job?.applications?.includes(activeApp);
+  // });
 
   const listingsWithConversations = currentListings.filter((listing: any) =>
     listing.applications?.some(
@@ -83,33 +86,52 @@ const RenderBusinessMessageList = ({
   };
 
   const renderRelevantMessages = () => {
-    // const selectedApps = currentApps?.filter(
-    //   (app) => app?.jobListing?.id === selectedListing,
-    // );
-    // const activeAppsWithMail = selectedApps?.filter(
-    //   (app) => app.mail && app.mail.length > 0 && app.status !== "closed",
-    // );
+    // Here, we need to find all the activeAppsWithConversations whose jobListing attached to it matches the "selectedListing", then render throught the list
 
-    // const sortedMessages = activeAppsWithMail?.sort((a, b) => {
-    //   const mostRecentA = a.mail?.reduce((latest, message) => {
-    //     const messageDate = new Date(`${message.date} ${message.timestamp}`);
-    //     return messageDate > latest ? messageDate : latest;
-    //   }, new Date(0));
+    const currentListing = listingsWithConversations?.filter(
+      (listing: any) => listing?.id === selectedListing,
+    );
 
-    //   const mostRecentB = b.mail?.reduce((latest, message) => {
-    //     const messageDate = new Date(`${message.date} ${message.timestamp}`);
-    //     return messageDate > latest ? messageDate : latest;
-    //   }, new Date(0));
+    const currentApps = currentListing.flatMap((listing: any) =>
+      listing.applications.filter(
+        (app: any) =>
+          app.appStatus !== "closed" && app.conversation.messages.length >= 1,
+      ),
+    );
 
-    //   return (mostRecentB?.getTime() ?? 0) - (mostRecentA?.getTime() ?? 0); // Sort in descending order
-    // });
+    const sortedMessages = currentApps?.sort((a: any, b: any) => {
+      const mostRecentA =
+        Array.isArray(a.conversation?.messages) &&
+        a.conversation.messages.length > 0
+          ? a.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
 
-    return activeAppsWithConversations.map((app: any, index: number) => {
-      // if the message was sent by someone else, we can mark it as read, but we should probably try to work that out in the backend
+      const mostRecentB =
+        Array.isArray(b.conversation?.messages) &&
+        b.conversation.messages.length > 0
+          ? b.conversation.messages.reduce((latest: any, message: any) => {
+              const messageDate = new Date(message.createdAt);
+              return messageDate > latest ? messageDate : latest;
+            }, new Date(0))
+          : new Date(0);
+
+      return mostRecentB.getTime() - mostRecentA.getTime();
+    });
+
+    // set the activeApp if there isn't one
+    if (selectedListing !== "" && !activeApp) {
+      setActiveApp(sortedMessages[0].id);
+    }
+
+    return sortedMessages.map((msgs: any, index: number) => {
+      // FIGURE OUT: How to indicate if a message is read or unread?
 
       // return sortedMessages?.map((app: any, index: number) => {
       //   const recentMessages = app.mail?.filter(
-      //     (message: any) => message.sender === "fellow",
+      //     (message: any) => message.sentByBusiness === false,
       //   );
 
       //   const messageStatus = recentMessages
@@ -118,13 +140,13 @@ const RenderBusinessMessageList = ({
       //       : "new"
       //     : "no messages";
 
-      const messageStatus = "new";
+      const messageStatus = "status";
 
       // TODO: sort messages by most recent message
 
       return (
         <div
-          key={index}
+          key={msgs.id}
           className="ListingMessageGroup flex items-end gap-3 self-end"
         >
           <SiteButton
@@ -136,16 +158,12 @@ const RenderBusinessMessageList = ({
                 index % secondaryColorArray.length
               ] as ButtonColorOption
             }
-            onClick={() => showMessages(app.id)}
-            isSelected={activeApp === app.id}
+            onClick={() => showMessages(msgs.id)}
+            isSelected={activeApp === msgs.id}
           >
             <p className="ApplicantName w-[50%] overflow-hidden truncate text-left text-[0.8rem]">
-              test name | something
-              {/* {app.fellow.name} | {app.id} */}
-              {/* {findApplicantName(app.applicant)} */}
+              {msgs.fellow.name}
             </p>
-            {/* TODO: Find relevant mail numbers */}
-            {/* Probably just set this to "read" or "unread"?? */}
 
             <p className="Details">
               | {messageStatus}
@@ -166,8 +184,10 @@ const RenderBusinessMessageList = ({
   }, []);
 
   useEffect(() => {
-    setSelectedListing(activeListing?.jobId || "");
-  }, [activeListing]);
+    if (listingsWithConversations.length > 0) {
+      setSelectedListing(listingsWithConversations[0].id);
+    }
+  }, [listingsWithConversations]);
 
   return (
     <div className="MessageListGroup flex max-h-[90vh] flex-col gap-4 overflow-y-auto overflow-x-visible p-3">
@@ -193,6 +213,7 @@ const RenderBusinessMessageList = ({
                 | {job.applications.length} active messages
               </p>
             </SiteButton>
+
             {selectedListing === job.id && (
               <div className="RelevantMessages flex max-h-[90vh] flex-col gap-3 overflow-y-auto overflow-x-visible px-3 pb-2 pt-1">
                 {renderRelevantMessages()}
