@@ -11,8 +11,9 @@ import { useQuery } from "@apollo/client";
 import { GET_PROFILE, GET_APPLICATION_BY_ID } from "@/graphql/queries";
 import { useMutation } from "@apollo/client";
 import { UPDATE_STATUS } from "@/graphql/mutations";
-
 import { sendFellowVerificationEmail } from "@/utils/emailUtils";
+
+import BouncingDotsLoader from "@/components/loader";
 
 import {
   OwnFellowTopButtons,
@@ -319,6 +320,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
         //make loading screen design here
         <div className="LoadingText text-olive">Loading...</div>
       ) : (
+        // <BouncingDotsLoader />
         <div className="ProfileDetails mr-14 flex gap-8">
           <div className="ProfileLeftColumn mt-36 flex flex-col gap-8">
             {/* TOP BUTTON OPTIONS */}

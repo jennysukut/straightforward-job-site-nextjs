@@ -38,7 +38,7 @@ export const PageProvider: React.FC<{ children: ReactNode }> = ({
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   // when we first refresh the page and are getting the profile data, we want to be able to blur the navbar with this feature
-  const [isLoadingAccount, setIsLoadingAccount] = useState<boolean>(false);
+  const [isLoadingAccount, setIsLoadingAccount] = useState<boolean>(true);
 
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 

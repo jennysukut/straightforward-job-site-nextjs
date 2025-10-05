@@ -31,7 +31,7 @@ type CurrentSchemeType = ButtonColorOption;
 // activeApp is then passed into the MessageCenter, which will display the active Messages related to the activeApp application.
 
 export default function Messages() {
-  const { accountType, isLoggedIn } = usePageContext();
+  const { accountType, isLoggedIn, setCurrentPage } = usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const { applications } = useApplications();
@@ -71,6 +71,7 @@ export default function Messages() {
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setColorArray);
+    setCurrentPage("mail");
   }, []);
 
   useEffect(() => {
@@ -90,8 +91,6 @@ export default function Messages() {
 
     return () => clearTimeout(timer);
   }, [isLoggedIn, router]);
-
-  console.log("activeApp:", activeApp);
 
   return (
     <div className="MessagePage">

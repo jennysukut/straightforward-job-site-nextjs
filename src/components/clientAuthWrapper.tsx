@@ -61,7 +61,7 @@ export default function ClientAuthWrapper({
         setBusiness(data.getMyProfile.business);
         console.log("you're a business and you're logged in!");
       }
-      setIsLoadingAccount(false);
+      // setIsLoadingAccount(false);
 
       // could maybe just do a general setIsLoadingAccount(false) here?
     },

@@ -16,10 +16,11 @@ import LoginModal from "@/components/modals/loginModal";
 
 export default function AppMessages({ params }: any) {
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const { isLoggedIn } = usePageContext();
+  const { isLoggedIn, setCurrentPage } = usePageContext();
   const router = useRouter();
   const { showModal } = useModal();
   const [loadingMessages, setLoadingMessages] = useState(true);
+  const [messageLength, setMessageLength] = useState(0);
 
   const scrollToPageBottom = () => {
     const offset = 0; // Adjust this value as needed
@@ -36,21 +37,12 @@ export default function AppMessages({ params }: any) {
 
   // This is how we scroll to the bottom of messages
   useEffect(() => {
-    if (loadingMessages === false) {
+    if (loadingMessages === false && messageLength > 0) {
       // setTimeout(() => {
       scrollToPageBottom();
       // }, 5000);
     }
   }, [loadingMessages]);
-
-  // give a timeout and if it's not logged in, perhaps open the logIn Modal?
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (!isLoggedIn) {
-  //       showModal(<LoginModal />);
-  //     }
-  //   }, 5000);
-  // }, []);
 
   useEffect(() => {
     if (isLoggedIn) return; // only run when not logged in
@@ -63,6 +55,10 @@ export default function AppMessages({ params }: any) {
 
     return () => clearTimeout(timer);
   }, [isLoggedIn, router]);
+
+  useEffect(() => {
+    setCurrentPage("specificMessages");
+  }, []);
 
   return (
     <div
@@ -77,6 +73,7 @@ export default function AppMessages({ params }: any) {
         messageHeight="h-full"
         setLoadingMessages={setLoadingMessages}
         loadingMessages={loadingMessages}
+        setMessageLength={setMessageLength}
       />
     </div>
   );

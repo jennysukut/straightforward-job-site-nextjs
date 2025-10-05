@@ -64,7 +64,7 @@ export default function NavBar() {
 
   return (
     <div
-      className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor}`}
+      className={`NavBar mx-auto flex h-fit w-[100%] items-start justify-between px-14 py-10 ${textColor} `}
     >
       <Link href={"/"}>
         {colorOption === "standard" && (
@@ -305,7 +305,7 @@ export default function NavBar() {
           return (
             // STANDARD / MAIN NAV BAR
             <div
-              className={`NavButtonContainer ${isLoadingAccount ? "blur-sm" : ""} hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
+              className={`NavButtonContainer ${isLoadingAccount ? "blur-[1px]" : ""} hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
             >
               <NavButton
                 onClick={handleNavButtonClick}

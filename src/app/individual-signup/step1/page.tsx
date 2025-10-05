@@ -108,6 +108,16 @@ export default function IndividualSignupPage1() {
       // when successful, set the Fellow and push to the next signup page
       setFellow({
         ...fellow,
+        profile: {
+          ...fellow?.profile,
+          smallBio: data.smallBio,
+          country: data.country,
+          location: data.location,
+          skills: skills,
+          jobTitles: jobTitles,
+          avatar: currentAvatar || "checks",
+          languages: languages,
+        },
         profileUpdate: true,
       });
       if (fellow?.profileIsBeingEdited) {

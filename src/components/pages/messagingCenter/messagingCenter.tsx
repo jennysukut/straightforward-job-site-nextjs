@@ -47,10 +47,9 @@ const MessageCenter = ({
   messageHeight,
   specificMessages,
   setIsLoading,
-  loadingData,
-  setLoadingData,
   loadingMessages,
   setLoadingMessages,
+  setMessageLength,
 }: any): JSX.Element => {
   const { accountType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -85,24 +84,15 @@ const MessageCenter = ({
     variables: { conversationId: activeConvo },
     onData: ({ data }) => {
       setLoadingMessages(false);
-      console.log("New message received:", data);
+      // console.log("New message received:", data);
       // This will log the actual message when one comes in
     },
   });
 
-  console.log(
-    "activeConvo from messaging center:",
-    activeConvo,
-    "loadingData:",
-    loadingData,
-    "loadingMessages:",
-    loadingMessages,
-  );
-
   // Or check what's in data
-  useEffect(() => {
-    console.log("Subscription data:", subscriptionData);
-  }, [subscriptionData]);
+  // useEffect(() => {
+  //   console.log("Subscription data:", subscriptionData);
+  // }, [subscriptionData]);
 
   ////end of messaging test
 
@@ -114,7 +104,7 @@ const MessageCenter = ({
     variables: { id: activeConvo },
     skip: !isLoggedIn,
     onCompleted: (data) => {
-      console.log("using the GET_CONVERSATION_BY_ID query:", data);
+      // console.log("using the GET_CONVERSATION_BY_ID query:", data);
       // Filter messages to only include those with non-null text
       const filteredMessages = data.getConversation.messages
         .filter((message: Messages) => message.text !== null)
@@ -132,7 +122,7 @@ const MessageCenter = ({
       );
       setLoadingMessages(false);
       setIsLoading(false);
-      setLoadingData(false);
+      setMessageLength(filteredMessages.length);
     },
   });
 
@@ -158,13 +148,12 @@ const MessageCenter = ({
       setClickedButton(id);
       router.push(`/${route}`);
     }
-    // () => router.push(`/messages`)
   };
 
   // Send A Message!
   const handleSendMessage = async (e: any) => {
     e.preventDefault();
-    console.log("trying to send message");
+    // console.log("trying to send message");
     setButtonClicked("send");
 
     if (currentMessage.trim()) {
@@ -182,15 +171,15 @@ const MessageCenter = ({
           text: currentMessage,
         },
       });
-      console.log(
-        "Message sent successfully, Details:",
-        response.data.sendMessage,
-      );
+      // console.log(
+      //   "Message sent successfully, Details:",
+      //   response.data.sendMessage,
+      // );
       setMessages([...messages, response.data.sendMessage]);
       setCurrentMessage("");
       setButtonClicked("");
     } catch (error) {
-      console.error("Message Sending error:", error);
+      // console.error("Message Sending error:", error);
       setButtonClicked("");
       // Optionally, you can set an error state here to display to the user
     }
@@ -242,7 +231,7 @@ const MessageCenter = ({
   };
 
   const updateMessage = (message: any, editId: any) => {
-    console.log("updated text:", message);
+    // console.log("updated text:", message);
 
     // Update the messages state by mapping through the existing messages
     setMessages((prevMessages) =>
@@ -325,7 +314,7 @@ const MessageCenter = ({
   // };
 
   useEffect(() => {
-    if (currentMessage === "" && messages.length !== 0) {
+    if (currentMessage === "" && messages.length > 0) {
       scrollToBottom();
     }
   }, [currentMessage, activeConvo, groupedMessages]);
@@ -394,7 +383,7 @@ const MessageCenter = ({
         <p className="LoadingData">loading...</p>
       ) : (
         <div
-          className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[70vh] w-full max-w-[1600px] flex-col justify-between self-center`}
+          className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[90vh] w-full max-w-[1600px] flex-col justify-between self-center`}
           id="messagingCenter"
         >
           <div className="Messages flex w-[100%] flex-col self-center align-top">

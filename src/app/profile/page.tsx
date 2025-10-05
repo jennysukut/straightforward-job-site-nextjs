@@ -13,6 +13,7 @@ import ConfirmLogoutModal from "@/components/modals/confirmLogoutModal";
 import React from "react";
 import BusinessProfile from "@/components/pages/businessProfile/businessProfile";
 import FellowProfile from "@/components/pages/fellowProfile/fellowProfile";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function Profile() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function Profile() {
     setIsLoggedIn,
     setIsLoggingOut,
     setAccountType,
+    isLoadingAccount,
   } = usePageContext();
   const { fellow, setFellow } = useFellow();
   const { business, setBusiness } = useBusiness();
@@ -74,17 +76,26 @@ export default function Profile() {
   useEffect(() => {
     if (isLoggedIn) return; // only run when not logged in
 
-    const timer = setTimeout(async () => {
-      if (!isLoggedIn) {
-        router.push("/");
-      }
-    }, 5000);
+    // const timer = setTimeout(async () => {
+    //   if (!isLoggedIn) {
+    //     router.push("/");
+    //   }
+    // }, 5000);
 
-    return () => clearTimeout(timer);
+    // return () => clearTimeout(timer);
+
+    if (!isLoadingAccount && !isLoggedIn) {
+      router.push("/");
+    }
   }, [isLoggedIn, router]);
 
   return (
     <div className="Profile flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12 md:pt-3">
+      {isLoadingAccount && (
+        <div className="LoadingPage flex h-full items-center">
+          <BouncingDotsLoader />
+        </div>
+      )}
       {isLoggedIn && accountType === "Fellow" && (
         <FellowProfile self={fellow} isOwn logout={logout} id={fellow?.id} />
       )}
