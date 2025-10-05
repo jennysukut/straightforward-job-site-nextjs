@@ -39,7 +39,8 @@ export default function Messages() {
   const [jobListings, setJobListings] = useState<[]>([]);
   const [activeApp, setActiveApp] = useState("");
   const [currentMessages, setCurrentMessages] = useState(Array<any>);
-  const [loadingData, setLoadingData] = useState(true);
+  const [loadingData, setLoadingData] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(true);
   const [loadingListings, setLoadingListings] = useState(true);
   const router = useRouter();
   const { showModal } = useModal();
@@ -52,7 +53,7 @@ export default function Messages() {
     data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
     variables: { businessId: business?.id },
-    skip: loadingData === false || accountType === "Fellow" || !isLoggedIn,
+    skip: loadingMessages === false || accountType === "Fellow" || !isLoggedIn,
     onCompleted: (data) => {
       setJobListings(data.jobListings);
       setLoadingListings(false);
@@ -60,14 +61,10 @@ export default function Messages() {
   });
 
   const showMessages = (id: any) => {
-    console.log(
-      "using the showMessages function in the messages page. Here's the id we got passed:",
-      id,
-    );
     if (activeApp === id) {
       setActiveApp(currentMessages?.[0]?.id || "");
     } else {
-      setLoadingData(true);
+      // setLoadingData(true);
       setActiveApp(id);
     }
   };
@@ -94,8 +91,21 @@ export default function Messages() {
     return () => clearTimeout(timer);
   }, [isLoggedIn, router]);
 
+  console.log("activeApp:", activeApp);
+
   return (
     <div className="MessagePage">
+      {isLoggedIn && currentMessages.length === 0 && (
+        <div
+          className={`MessagePageTest flex flex-grow flex-col items-center gap-8 pt-36 md:pb-12 md:pt-3 ${!isLoggedIn ? "justify-center" : ""}`}
+        >
+          <div className="LogInPrompt flex w-full max-w-[40vw] flex-col items-center self-center text-center">
+            <p className="prompt text-olive">{`Error message here`} </p>
+            <p className="prompt text-olive">{`Prompt here`}</p>
+          </div>
+        </div>
+      )}
+
       {isLoggedIn && (
         <div className="MessageCenter -mb-10 ml-4 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
           <div className="MailList flex min-h-[75vh] flex-col justify-between gap-4 border-r-2 border-olive border-opacity-25 pr-8">
@@ -111,7 +121,7 @@ export default function Messages() {
               )}
 
               {/* message list for businesses */}
-              {accountType === "Business" && (
+              {accountType === "Business" && currentMessages.length > 0 && (
                 <RenderBusinessMessageList
                   colorArray={colorArray}
                   activeApp={activeApp}
@@ -137,6 +147,8 @@ export default function Messages() {
               messageHeight="max-h-[65vh] min-h-[55vh]"
               loadingData={loadingData}
               setLoadingData={setLoadingData}
+              loadingMessages={loadingMessages}
+              setLoadingMessages={setLoadingMessages}
             />
           </div>
         </div>

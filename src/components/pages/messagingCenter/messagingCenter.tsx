@@ -49,6 +49,8 @@ const MessageCenter = ({
   setIsLoading,
   loadingData,
   setLoadingData,
+  loadingMessages,
+  setLoadingMessages,
 }: any): JSX.Element => {
   const { accountType, isLoggedIn } = usePageContext();
   const { showModal, hideModal } = useModal();
@@ -71,6 +73,7 @@ const MessageCenter = ({
   const [fellowName, setFellowName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [relevantPosition, setRelevantPosition] = useState("");
+  const [clickedButton, setClickedButton] = useState("");
 
   //Testing Connecting to Messaging Subscription/Webhook
 
@@ -81,10 +84,20 @@ const MessageCenter = ({
   } = useSubscription(MESSAGE_SUBSCRIPTION, {
     variables: { conversationId: activeConvo },
     onData: ({ data }) => {
+      setLoadingMessages(false);
       console.log("New message received:", data);
       // This will log the actual message when one comes in
     },
   });
+
+  console.log(
+    "activeConvo from messaging center:",
+    activeConvo,
+    "loadingData:",
+    loadingData,
+    "loadingMessages:",
+    loadingMessages,
+  );
 
   // Or check what's in data
   useEffect(() => {
@@ -110,7 +123,6 @@ const MessageCenter = ({
           text: message.text.flatMap((text: string) => text.split("\n")), // Split by double newlines for paragraphs
         }));
       setMessages(filteredMessages);
-      setLoadingData(false);
       setFellowName(data.getConversation.jobApplication.fellow.name);
       setBusinessName(
         data.getConversation.jobApplication.jobListing.business.name,
@@ -118,7 +130,9 @@ const MessageCenter = ({
       setRelevantPosition(
         data.getConversation.jobApplication.jobListing.jobTitle,
       );
+      setLoadingMessages(false);
       setIsLoading(false);
+      setLoadingData(false);
     },
   });
 
@@ -135,6 +149,16 @@ const MessageCenter = ({
     if (messageContainer) {
       messageContainer.scrollTop = messageContainer.scrollHeight;
     }
+  };
+
+  const clickButton = (id: string, route: string) => {
+    if (clickedButton === id) {
+      setClickedButton("");
+    } else {
+      setClickedButton(id);
+      router.push(`/${route}`);
+    }
+    // () => router.push(`/messages`)
   };
 
   // Send A Message!
@@ -364,11 +388,9 @@ const MessageCenter = ({
   //   return `${formattedHours}:${formattedMinutes} ${ampm}`; // Format as "HH:MM AM/PM"
   // };
 
-  console.log("loadingData:", loadingData, "activeConvo:", activeConvo);
-
   return (
     <div className="MessagingCenterPage h-full w-full">
-      {loadingData === true ? (
+      {loadingMessages ? (
         <p className="LoadingData">loading...</p>
       ) : (
         <div
@@ -634,7 +656,8 @@ const MessageCenter = ({
                   aria="mail"
                   variant="filled"
                   colorScheme="b6"
-                  onClick={() => router.push(`/messages`)}
+                  onClick={() => clickButton("mail", `messages`)}
+                  isSelected={clickedButton === "mail"}
                 >
                   mailbox
                 </SiteButton>

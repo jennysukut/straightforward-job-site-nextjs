@@ -15,6 +15,8 @@ const RenderFellowMessageList = ({
   const { fellow } = useFellow();
   const [filteredMsgs, setFilteredMsgs] = useState<string[]>([]);
 
+  console.log("applications:", applications);
+
   const currentMsgs = applications
     ?.filter(
       (app: any) =>

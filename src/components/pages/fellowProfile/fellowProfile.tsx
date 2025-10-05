@@ -225,7 +225,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
     onCompleted: (data) => {
       setCurrentFellow({ ...data.fellow, avatar: data.fellow.profile.avatar });
       setLoadingData(false);
-      setFellow({ ...data.fellow });
+      setFellow({ ...data.fellow, profileUpdate: false });
     },
   });
 
@@ -243,7 +243,6 @@ const FellowProfile: React.FC<FellowProfile> = ({
   };
 
   const addMoreInfo = () => {
-    // setFellow({ ...fellow, addMoreInfo: true });
     router.push("/individual-signup/step1");
   };
 

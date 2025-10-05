@@ -285,6 +285,7 @@ export default function IndividualSignupPage1() {
               required
             />
 
+            {/* Figure out how to limit the search results to around 20ish, but first create the query to get the skills list options on search */}
             {/* skills input & generator */}
             <LabelGeneratorAndDisplayComp
               handleAdd={handleAdd}

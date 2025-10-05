@@ -14,7 +14,7 @@ export default function SuccessfulApplicationModal({
   businessName,
 }: any) {
   const { showModal, replaceModalStack, goBack, hideModal } = useModal();
-  const { fellow } = useFellow();
+  const { fellow, setFellow } = useFellow();
   const { textColor, secondaryTextColor, titleColor } = useColorOptions();
   const { application } = useApplication();
   const [clickedButton, setClickedButton] = useState("");
@@ -37,6 +37,10 @@ export default function SuccessfulApplicationModal({
       hideModal();
     }, 500);
   };
+
+  useEffect(() => {
+    setFellow({ ...fellow, profileUpdate: true });
+  }, []);
 
   return (
     <div
