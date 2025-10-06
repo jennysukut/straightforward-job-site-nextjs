@@ -38,6 +38,14 @@ export default function SuccessfulApplicationModal({
     }, 500);
   };
 
+  const savedJobs = () => {
+    setClickedButton("savedJobs");
+    router.push("/saved-jobs");
+    setTimeout(() => {
+      hideModal();
+    }, 500);
+  };
+
   useEffect(() => {
     setFellow({ ...fellow, profileUpdate: true });
   }, []);
@@ -59,7 +67,34 @@ export default function SuccessfulApplicationModal({
       <p
         className={`Details ${titleColor} text-center`}
       >{`You can keep up with this application in your application management system.`}</p>
-      <div className="Buttons mt-4 flex flex-row items-start gap-4">
+      <div className="Buttons mt-4 flex flex-col items-center gap-4">
+        <div className="OptionalButtons flex gap-4">
+          {appsLeft > 0 && (
+            <SiteButton
+              variant="hollow"
+              size="large"
+              colorScheme="f1"
+              aria="go back"
+              onClick={backToSearch}
+              isSelected={clickedButton === "backToSearch"}
+            >
+              back to job board
+            </SiteButton>
+          )}
+
+          {appsLeft > 0 && (
+            <SiteButton
+              variant="hollow"
+              size="large"
+              colorScheme="e5"
+              aria="go back"
+              onClick={savedJobs}
+              isSelected={clickedButton === "savedJobs"}
+            >
+              view your saved jobs
+            </SiteButton>
+          )}
+        </div>
         <SiteButton
           variant="hollow"
           size="large"
@@ -70,18 +105,6 @@ export default function SuccessfulApplicationModal({
         >
           application manager
         </SiteButton>
-        {appsLeft > 0 && (
-          <SiteButton
-            variant="hollow"
-            size="large"
-            colorScheme="f1"
-            aria="go back"
-            onClick={backToSearch}
-            isSelected={clickedButton === "backToSearch"}
-          >
-            back to job search
-          </SiteButton>
-        )}
       </div>
     </div>
   );

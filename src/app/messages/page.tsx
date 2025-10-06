@@ -64,7 +64,6 @@ export default function Messages() {
     if (activeApp === id) {
       setActiveApp(currentMessages?.[0]?.id || "");
     } else {
-      // setLoadingData(true);
       setActiveApp(id);
     }
   };
@@ -94,7 +93,7 @@ export default function Messages() {
 
   return (
     <div className="MessagePage">
-      {isLoggedIn && currentMessages.length === 0 && (
+      {/* {isLoggedIn && currentMessages.length === 0 && (
         <div
           className={`MessagePageTest flex flex-grow flex-col items-center gap-8 pt-36 md:pb-12 md:pt-3 ${!isLoggedIn ? "justify-center" : ""}`}
         >
@@ -103,7 +102,7 @@ export default function Messages() {
             <p className="prompt text-olive">{`Prompt here`}</p>
           </div>
         </div>
-      )}
+      )} */}
 
       {isLoggedIn && (
         <div className="MessageCenter -mb-10 ml-4 flex w-[95%] justify-between justify-items-start gap-10 self-center text-jade md:pb-12">
@@ -120,7 +119,8 @@ export default function Messages() {
               )}
 
               {/* message list for businesses */}
-              {accountType === "Business" && currentMessages.length > 0 && (
+              {accountType === "Business" && (
+                // currentMessages.length > 0 &&
                 <RenderBusinessMessageList
                   colorArray={colorArray}
                   activeApp={activeApp}
