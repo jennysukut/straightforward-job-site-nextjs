@@ -73,21 +73,23 @@ const MessageCenter = ({
   const [businessName, setBusinessName] = useState("");
   const [relevantPosition, setRelevantPosition] = useState("");
   const [clickedButton, setClickedButton] = useState("");
+  const [relevantListing, setRelevantListing] = useState("");
+  const [businessID, setBusinessID] = useState("");
 
   //Testing Connecting to Messaging Subscription/Webhook
 
-  const {
-    data: subscriptionData,
-    loading: subscriptionLoading,
-    error: subscriptionError,
-  } = useSubscription(MESSAGE_SUBSCRIPTION, {
-    variables: { conversationId: activeConvo },
-    onData: ({ data }) => {
-      setLoadingMessages(false);
-      // console.log("New message received:", data);
-      // This will log the actual message when one comes in
-    },
-  });
+  // const {
+  //   data: subscriptionData,
+  //   loading: subscriptionLoading,
+  //   error: subscriptionError,
+  // } = useSubscription(MESSAGE_SUBSCRIPTION, {
+  //   variables: { conversationId: activeConvo },
+  //   onData: ({ data }) => {
+  //     setLoadingMessages(false);
+  //     // console.log("New message received:", data);
+  //     // This will log the actual message when one comes in
+  //   },
+  // });
 
   // Or check what's in data
   // useEffect(() => {
@@ -104,7 +106,7 @@ const MessageCenter = ({
     variables: { id: activeConvo },
     skip: !isLoggedIn,
     onCompleted: (data) => {
-      // console.log("using the GET_CONVERSATION_BY_ID query:", data);
+      console.log("using the GET_CONVERSATION_BY_ID query:", data);
       // Filter messages to only include those with non-null text
       const filteredMessages = data.getConversation.messages
         .filter((message: Messages) => message.text !== null)
@@ -117,14 +119,21 @@ const MessageCenter = ({
       setBusinessName(
         data.getConversation.jobApplication.jobListing.business.name,
       );
+      setBusinessID(data.getConversation.jobApplication.jobListing.business.id);
+      setSelectedApp(data.conversation.jobApplication.id);
       setRelevantPosition(
         data.getConversation.jobApplication.jobListing.jobTitle,
       );
+      setRelevantListing(data.getConversation.jobApplication.jobListing.id);
       setLoadingMessages(false);
       setIsLoading(false);
       setMessageLength(filteredMessages.length);
     },
   });
+
+  if (loadingMessages) {
+    setLoadingMessages(false);
+  }
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -249,24 +258,23 @@ const MessageCenter = ({
     hideModal();
   };
 
-  // const viewRelevantProfile = () => {
-  //   setButtonClicked("viewRelevantProfile");
-  //   if (accountType === "Fellow") {
-  //     console.log(
-  //       "need to go to the profile for: ",
-  //       correspondingApp?.businessId,
-  //     );
-  //     router.push(`/profile/${correspondingApp?.businessId}`);
-  //   } else if (accountType === "Business") {
-  //     router.push(`/application/${correspondingApp?.id}`);
-  //     // router.push(`/profile/${correspondingApp?.applicant}`);
-  //   }
-  // };
+  console.log("businessID:", businessID, "selectedApp:", selectedApp);
+
+  const viewRelevantProfile = () => {
+    setButtonClicked("viewRelevantProfile");
+    if (accountType === "Fellow") {
+      router.push(`/profile/${businessID}`);
+    } else if (accountType === "Business") {
+      router.push(`/application/${selectedApp}`);
+    }
+  };
 
   const expandClick = () => {
     setButtonClicked("expandClick");
     router.push(`/messages/${activeConvo}`);
   };
+
+  console.log("loading messages?", loadingMessages);
 
   // const fileReport = () => {
   //   if (accountType === "Business") {
@@ -290,14 +298,14 @@ const MessageCenter = ({
   //   console.log("need to file a report");
   // };
 
-  // const viewListing = () => {
-  //   setButtonClicked("viewListing");
-  //   if (accountType === "Fellow") {
-  //     router.push(`/listing/${correspondingApp?.id}`);
-  //   } else if (accountType === "Business") {
-  //     router.push(`/ams/${correspondingApp?.jobId}`);
-  //   }
-  // };
+  const viewListing = () => {
+    setButtonClicked("viewListing");
+    if (accountType === "Fellow") {
+      router.push(`/listing/${relevantListing}`);
+    } else if (accountType === "Business") {
+      router.push(`/ams/${relevantListing}`);
+    }
+  };
 
   // const readMesssages = () => {
   //   const updatedMessages = messages.map((message) => {
@@ -599,10 +607,10 @@ const MessageCenter = ({
             <div
               className={`ButtonOptions mt-6 flex w-[100%] ${specificMessages ? "" : "mb-8"} justify-between self-end border-t-2 border-dotted border-olive border-opacity-25 pt-3`}
             >
-              {/* <div
-            className={`ButtonGroup ${!specificMessages ? "justify-end" : "justify-start"} flex w-[100%] gap-4`}
-          >
-            <SiteButton
+              <div
+                className={`ButtonGroup ${!specificMessages ? "justify-end" : "justify-start"} flex w-[100%] gap-4`}
+              >
+                {/* <SiteButton
               aria="report"
               variant="filled"
               colorScheme="e3"
@@ -610,35 +618,38 @@ const MessageCenter = ({
               isSelected={buttonClicked === "fileReport"}
             >
               report
-            </SiteButton>
-            <SiteButton
-              aria="view profile"
-              variant="filled"
-              colorScheme="a5"
-              onClick={viewRelevantProfile}
-              isSelected={buttonClicked === "viewRelevantProfile"}
-            >
-              {accountType === "Business"
-                ? "view application"
-                : "view business profile"}
-            </SiteButton>
-            <SiteButton
-              aria="view listing"
-              variant="filled"
-              colorScheme="c1"
-              onClick={viewListing}
-              isSelected={buttonClicked === "viewListing"}
-            >
-              {accountType === "Business"
-                ? "manage applications"
-                : "go to listing"}
-            </SiteButton>
-            <SiteButton aria="report" variant="filled" colorScheme="b3">
-              {accountType === "Business"
-                ? "set an appointment"
-                : "view appointments"}
-            </SiteButton>
-          </div> */}
+            </SiteButton> */}
+
+                <SiteButton
+                  aria="view profile"
+                  variant="filled"
+                  colorScheme="a5"
+                  onClick={viewRelevantProfile}
+                  isSelected={buttonClicked === "viewRelevantProfile"}
+                >
+                  {accountType === "Business"
+                    ? "view application"
+                    : "view business profile"}
+                </SiteButton>
+
+                <SiteButton
+                  aria="view listing"
+                  variant="filled"
+                  colorScheme="c1"
+                  onClick={viewListing}
+                  isSelected={buttonClicked === "viewListing"}
+                >
+                  {accountType === "Business"
+                    ? "manage applications"
+                    : "go to listing"}
+                </SiteButton>
+
+                {/* <SiteButton aria="report" variant="filled" colorScheme="b3">
+                  {accountType === "Business"
+                    ? "set an appointment"
+                    : "view appointments"}
+                </SiteButton> */}
+              </div>
 
               {specificMessages && (
                 <SiteButton

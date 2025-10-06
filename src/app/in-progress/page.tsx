@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { usePageContext } from "@/contexts/PageContext";
 
 import BouncingDotsLoader from "@/components/loader";
+import DotSpinnerLoader from "@/components/spinningLoader";
 
 export default function Home() {
   const { setCurrentPage } = usePageContext();
@@ -18,6 +19,8 @@ export default function Home() {
         This Page Is Currently Under Construction
       </h2>
       <BouncingDotsLoader />
+      <div className="Space h-36"></div>
+      <DotSpinnerLoader />
     </div>
   );
 }

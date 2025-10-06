@@ -15,11 +15,13 @@ import NavButton from "./buttonsAndLabels/navButton";
 import PostAJobModal from "./modals/postAJobModals/postAJobModal";
 import SiteLabel from "./buttonsAndLabels/siteLabel";
 import ProgressBar from "./progressBar";
+import BouncingDotsLoader from "./loader";
+import SiteButton from "./buttonsAndLabels/siteButton";
+import DotSpinnerLoader from "./spinningLoader";
 
 import { useColorOptions } from "@/lib/stylingData/colorOptions";
 import { avatarOptions } from "@/lib/stylingData/avatarOptions";
 import { ButtonColorOption } from "@/lib/stylingData/buttonColors";
-import SiteButton from "./buttonsAndLabels/siteButton";
 
 export default function NavBar() {
   const { showModal } = useModal();
@@ -307,6 +309,7 @@ export default function NavBar() {
             <div
               className={`NavButtonContainer ${isLoadingAccount ? "blur-[1px]" : ""} hidden items-end gap-4 lg:flex lg:flex-row lg:items-center lg:max-lg:-mr-8`}
             >
+              {isLoadingAccount && <DotSpinnerLoader />}
               <NavButton
                 onClick={handleNavButtonClick}
                 colorScheme="b4"

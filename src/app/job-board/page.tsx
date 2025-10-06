@@ -229,7 +229,7 @@ export default function JobBoard() {
           </div>
           {/* location input */}
           {/*  */}
-          <div className="PayAndCountryFilters mt-2 flex gap-4 self-start pr-2">
+          {/* <div className="PayAndCountryFilters mt-2 flex gap-4 self-start pr-2">
             <InfoBox
               variant="hollow"
               size="tiny"
@@ -245,7 +245,7 @@ export default function JobBoard() {
                 onChange={handleLocationInput}
               />
             </InfoBox>
-          </div>
+          </div> */}
         </div>
       </div>
 

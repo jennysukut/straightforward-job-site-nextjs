@@ -13,7 +13,10 @@ export default function ListingPage({ params }: any) {
   //TODO: how do I tell if this is an app or not?
   return (
     <div className="ProfilePage flex w-[85%] max-w-[1600px] flex-grow flex-col items-center gap-8 self-center md:pb-12">
-      {<FellowProfile hasId id={params.id} isApp />}
+      {accountType === "Business" && (
+        <FellowProfile hasId id={params.id} isApp />
+      )}
+      {accountType === "Fellow" && <BusinessProfile hasId id={params.id} />}
     </div>
   );
 }
