@@ -75,10 +75,10 @@ export default function PostAJobStep1() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.addJobListingDetailsStep1,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.addJobListingDetailsStep1,
+      // );
 
       setJob({
         ...job,

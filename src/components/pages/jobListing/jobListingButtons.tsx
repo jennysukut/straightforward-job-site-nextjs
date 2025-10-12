@@ -49,10 +49,10 @@ const OwnListingTopButtons = ({
       });
 
       setIsPublished(true);
-      console.log(
-        "Job Listing successfully published, Details:",
-        response.data.publishJobListing,
-      );
+      // console.log(
+      //   "Job Listing successfully published, Details:",
+      //   response.data.publishJobListing,
+      // );
 
       showModal(
         <SuccessfullyPublishedModal isJobPost jobId={currentJob?.id} />,
@@ -85,7 +85,7 @@ const OwnListingTopButtons = ({
 
   const redirect = () => {
     setClickedButton("redirect");
-    console.log("need to redirect to the relevant url - ", redirectUrl);
+    // console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
     } else if (redirectUrl === "listing") {
@@ -94,7 +94,7 @@ const OwnListingTopButtons = ({
   };
 
   const manageListing = (key: string) => {
-    console.log("trying to manage listing by going to ams");
+    // console.log("trying to manage listing by going to ams");
     setClickedButton(key);
     router.push(`/ams/${currentJob.id}`);
   };
@@ -239,7 +239,7 @@ const OwnJobBottomButtons = ({
 
   const redirect = () => {
     setClickedButton("redirect");
-    console.log("need to redirect to the relevant url - ", redirectUrl);
+    // console.log("need to redirect to the relevant url - ", redirectUrl);
     if (redirectUrl !== "listing") {
       router.push(redirectUrl);
     } else if (redirectUrl === "listing") {
@@ -248,7 +248,7 @@ const OwnJobBottomButtons = ({
   };
 
   useEffect(() => {
-    console.log(isPublished);
+    // console.log(isPublished);
   }, [isPublished]);
 
   const publishPost = async () => {
@@ -262,10 +262,10 @@ const OwnJobBottomButtons = ({
         },
       });
 
-      console.log(
-        "Job Listing successfully published, Details:",
-        response.data.publishJobListing,
-      );
+      // console.log(
+      //   "Job Listing successfully published, Details:",
+      //   response.data.publishJobListing,
+      // );
 
       setIsPublished(true);
       showModal(
@@ -281,7 +281,7 @@ const OwnJobBottomButtons = ({
   };
 
   const manageListing = () => {
-    console.log("trying to manage listing by going to ams");
+    // console.log("trying to manage listing by going to ams");
     setClickedButton("ams");
     router.push(`/ams/${currentJob.id}`);
   };
@@ -507,7 +507,7 @@ const ListingBottomButtons = ({
   const [clickedButton, setClickedButton] = useState("");
 
   const continueRetract = () => {
-    console.log("trying to retract this application");
+    // console.log("trying to retract this application");
     const updatedApplications = applications?.filter(
       (app) => app.id !== currentApp?.id,
     );
@@ -633,7 +633,7 @@ const OtherBusinessBottomButtons = ({
   const { applications, setApplications } = useApplications();
   const { isLoggedIn } = usePageContext();
   const continueRetract = () => {
-    console.log("trying to retract this application");
+    // console.log("trying to retract this application");
     const updatedApplications = applications?.filter(
       (app) => app.id !== currentApp?.id,
     );

@@ -88,7 +88,7 @@ const LabelGeneratorAndDisplayComp: React.FC<LabelGeneratorAndDisplayComp> = ({
       setAddingNewItem(false);
       // Here, send the query to the database to add the skills in we're adding the items??
     } else {
-      console.log("Input value must be at least 2 characters long.");
+      // console.log("Input value must be at least 2 characters long.");
     }
   };
 

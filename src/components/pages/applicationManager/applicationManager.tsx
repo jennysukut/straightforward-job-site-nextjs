@@ -17,6 +17,7 @@ import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
 import BusinessApplication from "@/components/amsComponents/businessApplicationComponent";
 import JobListing from "../jobListing/jobListing";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function ApplicationManager({ jobId }: any) {
   const router = useRouter();
@@ -163,7 +164,8 @@ export default function ApplicationManager({ jobId }: any) {
     >
       {loadingData ? (
         <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
-          <div className="LoadingText text-center text-olive">Loading...</div>
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
         </div>
       ) : (
         <div className="AMSContainer flex">

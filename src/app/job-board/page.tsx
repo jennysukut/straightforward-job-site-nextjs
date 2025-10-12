@@ -78,7 +78,7 @@ export default function JobBoard() {
   };
 
   const searchLocation = () => {
-    console.log("searching location:", locationInputValue);
+    // console.log("searching location:", locationInputValue);
     setLocationInputValue("");
   };
 

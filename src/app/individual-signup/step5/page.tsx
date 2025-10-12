@@ -123,10 +123,10 @@ export default function IndividualSignupPage5() {
           petDetails: data.petDetails,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage5,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveFellowProfilePage5,
+      // );
 
       setFellow({
         ...fellow,

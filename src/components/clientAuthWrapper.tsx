@@ -42,26 +42,31 @@ export default function ClientAuthWrapper({
   } = useQuery(GET_MY_PROFILE, {
     skip: isLoggedIn || isLoggingOut,
     onCompleted: (data) => {
-      console.log(
-        "called the GET_MY_PROFILE query in the Client Auth Wrapper",
-        data,
-      );
+      // console.log(
+      //   "called the GET_MY_PROFILE query in the Client Auth Wrapper",
+      //   data,
+      // );
       if (data.getMyProfile === null) {
-        console.log("looks like you're not logged in");
+        // console.log("looks like you're not logged in");
         setIsLoggedIn(false);
+        setIsLoadingAccount(false);
       } else if (data.getMyProfile.roles.includes("FELLOW")) {
         setIsLoggedIn(true);
         setAccountType("Fellow");
         setFellow(data.getMyProfile.fellow);
         setApplications(data.getMyProfile.fellow.jobApplications);
-        console.log("you're a fellow and you're logged in!");
+        setIsLoadingAccount(false);
+
+        // console.log("you're a fellow and you're logged in!");
       } else if (data.getMyProfile.roles.includes("BUSINESS")) {
         setIsLoggedIn(true);
         setAccountType("Business");
         setBusiness(data.getMyProfile.business);
-        console.log("you're a business and you're logged in!");
+        setIsLoadingAccount(false);
+
+        // console.log("you're a business and you're logged in!");
       }
-      // setIsLoadingAccount(false);
+      setIsLoadingAccount(false);
 
       // could maybe just do a general setIsLoadingAccount(false) here?
     },

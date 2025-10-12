@@ -14,6 +14,7 @@ import {
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
 import Avatar from "../../avatarComponent";
+import BouncingDotsLoader from "@/components/loader";
 
 interface BusinessProfile {
   hasId?: boolean;
@@ -61,7 +62,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
     }
   }, []);
 
-  console.log("this business", thisBusiness);
+  // console.log("this business", thisBusiness);
   // make query and have it not run if isOwn?
   const {
     loading: queryLoading,
@@ -84,7 +85,7 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
   const handleEditClick = (url: any) => {
     setBusiness({ ...self, profileIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
-    console.log("edit button was clicked, redirecting to: ", url);
+    // console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
 
@@ -102,7 +103,10 @@ const BusinessProfile: React.FC<BusinessProfile> = ({
       {/* PROFILE DETAILS */}
       {loadingData ? (
         //make loading screen design here
-        <div className="LoadingText text-olive">Loading...</div>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
+        </div>
       ) : (
         <div className="ProfileDetails flex gap-8">
           <div className="ProfileLeftColumn mt-32 flex flex-col gap-8">

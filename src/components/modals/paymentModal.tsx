@@ -59,7 +59,7 @@ export default function PaymentModal({ subscriptionAmount, isJobPost }: any) {
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     if (agree) {
       setDisabledButton(true);
-      console.log(data, agree);
+      // console.log(data, agree);
       setFellow({
         ...fellow,
         profile: { ...fellow?.profile, subscriptionAmount: subscriptionAmount },

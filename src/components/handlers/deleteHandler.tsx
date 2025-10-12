@@ -30,6 +30,6 @@ export default function DeleteHandler({
     });
   } else {
     // if there isn't a type of that in setFunctions, console.log an error
-    console.log("there isn't a function associated with this type of input");
+    // console.log("there isn't a function associated with this type of input");
   }
 }

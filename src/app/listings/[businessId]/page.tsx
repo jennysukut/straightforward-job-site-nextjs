@@ -13,6 +13,7 @@ import { SAVE_JOB } from "@/graphql/mutations";
 import Link from "next/link";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function IndividualBusinessListings({ params }: any) {
   const { fellow, setFellow } = useFellow();
@@ -42,9 +43,9 @@ export default function IndividualBusinessListings({ params }: any) {
     try {
       const result = await saveJob({ variables: { jobId: id } });
 
-      console.log(result);
+      // console.log(result);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     // if (fellow?.savedJobs?.includes(jobId)) {
     //   setFellow({
@@ -71,7 +72,10 @@ export default function IndividualBusinessListings({ params }: any) {
     >
       {loadingData ? (
         //make loading screen design here
-        <div className="LoadingText text-olive">Loading...</div>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
+        </div>
       ) : (
         <div className="SavedJobsContainer flex w-full flex-col">
           <h1 className="SavedJobsTitle mb-2 mr-20 self-start">

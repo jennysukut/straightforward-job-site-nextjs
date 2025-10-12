@@ -15,8 +15,14 @@ import DeleteConfirmationModal from "../deleteConfirmationModal";
 
 const InterviewProcessSchema = z.object({
   stage: z.string(),
-  step: z.string().min(2, { message: "Step Required" }),
-  details: z.string().optional(),
+  step: z
+    .string()
+    .min(2, { message: "Information Required" })
+    .max(25, { message: "This Process Title Should be Succinct" }),
+  details: z
+    .string()
+    .min(2, { message: "Please Provide More Details" })
+    .max(500, { message: "That Might Be Too Many Details..." }),
 });
 
 type FormData = z.infer<typeof InterviewProcessSchema>;

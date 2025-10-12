@@ -15,7 +15,7 @@ export default function RejectAppModal({ application, applicant }: any) {
     hideModal();
   };
 
-  console.log(application);
+  // console.log(application);
 
   return (
     <div className="SetAppStatusModal flex w-[350px] flex-col items-center gap-4">

@@ -106,10 +106,10 @@ export default function IndividualSignupPage3() {
           accomplishments: accomplishments,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage3,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveFellowProfilePage3,
+      // );
 
       setFellow({
         ...fellow,

@@ -24,6 +24,7 @@ import Image from "next/image";
 import EditMessageModal from "../../modals/messagingModals/editMessageModal";
 import InfoBox from "../../informationDisplayComponents/infoBox";
 import SiteButton from "../../buttonsAndLabels/siteButton";
+import BouncingDotsLoader from "@/components/loader";
 
 export interface Messages {
   id: number;
@@ -106,7 +107,7 @@ const MessageCenter = ({
     variables: { id: activeConvo },
     skip: !isLoggedIn,
     onCompleted: (data) => {
-      console.log("using the GET_CONVERSATION_BY_ID query:", data);
+      // console.log("using the GET_CONVERSATION_BY_ID query:", data);
       // Filter messages to only include those with non-null text
       const filteredMessages = data.getConversation.messages
         .filter((message: Messages) => message.text !== null)
@@ -258,7 +259,7 @@ const MessageCenter = ({
     hideModal();
   };
 
-  console.log("businessID:", businessID, "selectedApp:", selectedApp);
+  // console.log("businessID:", businessID, "selectedApp:", selectedApp);
 
   const viewRelevantProfile = () => {
     setButtonClicked("viewRelevantProfile");
@@ -274,7 +275,7 @@ const MessageCenter = ({
     router.push(`/messages/${activeConvo}`);
   };
 
-  console.log("loading messages?", loadingMessages);
+  // console.log("loading messages?", loadingMessages);
 
   // const fileReport = () => {
   //   if (accountType === "Business") {
@@ -388,8 +389,12 @@ const MessageCenter = ({
   return (
     <div className="MessagingCenterPage h-full w-full">
       {loadingMessages ? (
-        <p className="LoadingData">loading...</p>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
+        </div>
       ) : (
+        // <p className="LoadingData">loading...</p>
         <div
           className={`MessagingCenter ${addClasses} -mb-4 -mt-4 flex min-h-[90vh] w-full max-w-[1600px] flex-col justify-between self-center`}
           id="messagingCenter"

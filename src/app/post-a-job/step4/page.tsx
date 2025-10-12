@@ -106,10 +106,10 @@ export default function PostAJobStep4() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.addJobListingDetailsStep4,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.addJobListingDetailsStep4,
+      // );
 
       setJob({
         ...job,

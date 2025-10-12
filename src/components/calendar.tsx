@@ -34,7 +34,7 @@ const CalendarComp = ({ size, addClasses }: any) => {
   };
 
   const viewAppointments = (apps: any, i: any) => {
-    console.log(apps);
+    // console.log(apps);
     showModal(
       <AppointmentListModal
         apps={apps}

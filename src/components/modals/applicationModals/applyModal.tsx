@@ -31,7 +31,7 @@ export default function ApplyModal({ jobTitle, business, jobId }: any) {
         },
       });
       // when successful
-      console.log("application successful, details:", response.data.applyToJob);
+      // console.log("application successful, details:", response.data.applyToJob);
       setFellow({
         ...fellow,
         newApplication: true,

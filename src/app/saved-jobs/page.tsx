@@ -13,12 +13,13 @@ import { SAVE_JOB } from "@/graphql/mutations";
 import Link from "next/link";
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import JobPost from "@/components/jobBoardComponents/jobPostComponent";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function SavedJobs() {
   const { fellow, setFellow } = useFellow();
   const { textColor } = useColorOptions();
   const { hideModal } = useModal();
-  const { setCurrentPage } = usePageContext();
+  const { setCurrentPage, isLoggedIn } = usePageContext();
 
   const [colorArray, setColorArray] = useState<[]>([]);
   const [loadingData, setLoadingData] = useState(true);
@@ -31,6 +32,7 @@ export default function SavedJobs() {
     data: { jobListings: jobListingsArray = [] } = {},
   } = useQuery(GET_JOB_LISTINGS, {
     variables: { isSaved: true },
+    skip: !isLoggedIn,
     onCompleted: (data) => {
       setLoadingData(false);
     },
@@ -42,13 +44,13 @@ export default function SavedJobs() {
 
   // make this saveClick function call the like-job thing
   const saveClick = async (id: any) => {
-    console.log(id);
+    // console.log(id);
     try {
       const result = await saveJob({ variables: { jobId: id } });
 
-      console.log(result);
+      // console.log(result);
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
     // if (fellow?.savedJobs?.includes(jobId)) {
     //   setFellow({
@@ -74,8 +76,10 @@ export default function SavedJobs() {
       className={`SavedJobsPage flex flex-grow flex-col items-center gap-8 md:pb-12 ${textColor} w-[84%] max-w-[1600px] gap-8 self-center`}
     >
       {loadingData ? (
-        //make loading screen design here
-        <div className="LoadingText text-olive">Loading...</div>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
+        </div>
       ) : (
         <div className="SavedJobsContainer">
           <h1 className="SavedJobsTitle -mb-2 mr-20 self-end">

@@ -37,7 +37,7 @@ export default function Profile() {
 
   const logout = () => {
     setIsLoggingOut(true);
-    console.log("trying to log out from the profile page");
+    // console.log("trying to log out from the profile page");
     showModal(
       <ConfirmLogoutModal
         continueLogout={continueLogout}
@@ -48,9 +48,9 @@ export default function Profile() {
   };
 
   const continueLogout = async () => {
-    console.log("Logging out..."); // Log to confirm the function is called
+    // console.log("Logging out..."); // Log to confirm the function is called
     await LOGOUT(); // Ensure this is awaited if it's an async function
-    console.log("removeCookie function called."); // Log after calling removeCookie
+    // console.log("removeCookie function called."); // Log after calling removeCookie
     setIsLoggedIn(false);
     setFellow({});
     setBusiness({});

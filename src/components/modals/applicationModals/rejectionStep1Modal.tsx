@@ -52,15 +52,15 @@ export default function RejectionStep1Modal({ application }: any) {
         },
       });
 
-      console.log(
-        "Details updated successfully, Details:",
-        response.data.rejectApp,
-      );
+      // console.log(
+      //   "Details updated successfully, Details:",
+      //   response.data.rejectApp,
+      // );
 
-      console.log(
-        "sending a basic rejection message & closing app: ",
-        application,
-      );
+      // console.log(
+      //   "sending a basic rejection message & closing app: ",
+      //   application,
+      // );
 
       // send the basic rejection message here?
 

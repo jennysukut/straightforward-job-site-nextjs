@@ -56,7 +56,7 @@ export default function SignupModalIndividual1() {
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
-    console.log(data);
+    // console.log(data);
 
     try {
       const response = await signupFellow({
@@ -72,7 +72,7 @@ export default function SignupModalIndividual1() {
         },
       });
       // when successful, set the Felow and push to the signup pages
-      console.log("Signup successful, ID:", response.data.signupFellow); // Adjust based on your mutation response
+      // console.log("Signup successful, ID:", response.data.signupFellow); // Adjust based on your mutation response
       setMyID(response.data.signupFellow);
       setFellow({
         ...fellow,

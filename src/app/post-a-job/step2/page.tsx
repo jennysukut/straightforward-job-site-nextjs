@@ -19,12 +19,18 @@ import AddHandler from "@/components/handlers/addHandler";
 import ButtonOptionsComponent from "@/components/buttonsAndLabels/buttonOptionsComponent";
 
 const jobSchema = z.object({
-  payscaleMin: z.string().min(2, {
-    message: "Payscale Information Required",
-  }),
-  payscaleMax: z.string().min(2, {
-    message: "Payscale Information Required",
-  }),
+  payscaleMin: z
+    .string()
+    .min(2, {
+      message: "Payscale Information Required",
+    })
+    .max(7, { message: "Please Profide Accurate Payscale Information" }),
+  payscaleMax: z
+    .string()
+    .min(2, {
+      message: "Payscale Information Required",
+    })
+    .max(7, { message: "Please Profide Accurate Payscale Information" }),
   payOption: z.string(),
   locationOption: z
     .string()
@@ -32,10 +38,16 @@ const jobSchema = z.object({
   idealCandidate: z.string().min(3, {
     message: "Please Provide More Information About Your Ideal Candidate",
   }),
-  daysInOffice: z.string().optional(),
-  daysRemote: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
+  daysInOffice: z
+    .string()
+    .max(1, { message: "Time In Office Must Be Listed as Amount Per Week" })
+    .optional(),
+  daysRemote: z
+    .string()
+    .max(1, { message: "Days Remote Must Be Listed as Amount Per Week" })
+    .optional(),
+  city: z.string().max(45, { message: "Is that a real place?" }).optional(),
+  state: z.string().max(25, { message: "You sure about that?" }).optional(),
 });
 
 type FormData = z.infer<typeof jobSchema>;
@@ -64,7 +76,7 @@ export default function PostAJobStep2() {
     defaultValues: {},
   });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  console.log(payOption);
+  // console.log(payOption);
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "locationOption" | "payOption", data: any) => {
@@ -97,7 +109,7 @@ export default function PostAJobStep2() {
       Number(data.payscaleMax.replace(/[^0-9.-]+/g, "")) -
       Number(data.payscaleMin.replace(/[^0-9.-]+/g, ""));
 
-    console.log(payDifference);
+    // console.log(payDifference);
     if (data.payOption === "hourly") {
       if (payDifference > 20) {
         setError("payscaleMin", {
@@ -115,7 +127,7 @@ export default function PostAJobStep2() {
         return;
       }
     }
-    console.log(data);
+    // console.log(data);
     setDisabledButton(true);
 
     const payscaleMin = Number(data.payscaleMin.replace(/[^0-9.-]+/g, ""));
@@ -153,10 +165,10 @@ export default function PostAJobStep2() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.addJobListingDetailsStep2,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.addJobListingDetailsStep2,
+      // );
 
       setJob({
         ...job,

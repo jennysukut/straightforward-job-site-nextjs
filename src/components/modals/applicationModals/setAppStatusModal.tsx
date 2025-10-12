@@ -69,10 +69,10 @@ export default function SetAppStatusModal({
           status: status,
         },
       });
-      console.log(
-        "Status updated successfully, Details:",
-        response.data.updateStatus,
-      );
+      // console.log(
+      //   "Status updated successfully, Details:",
+      //   response.data.updateStatus,
+      // );
       setNewStatus(status);
       hideModal();
       //choose what to do for each status update and plug in here

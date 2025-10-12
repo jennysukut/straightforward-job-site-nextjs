@@ -75,7 +75,7 @@ export default function LoginModal({ prompt }: any) {
       } else if (result.data.login.roles.includes("ADMIN")) {
         // setIsLoggedIn(true);
         // setAccountType("Admin");
-        console.log("you're an admin?");
+        // console.log("you're an admin?");
       }
       hideModal();
     } catch (err) {

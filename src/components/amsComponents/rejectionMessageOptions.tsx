@@ -69,7 +69,7 @@ export default function RejectionMessageOptionsComponent({
   let placeholderText = "";
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("adding details via onSubmit submit handler");
+    // console.log("adding details via onSubmit submit handler");
     if (title === "postInterview" && data.details) {
       setApplicantInfo({ ...applicantInfo, qualityOrExp: data.details });
     } else if (title === "promisingCandidate" && data.details) {
@@ -147,7 +147,7 @@ export default function RejectionMessageOptionsComponent({
 
   const sendRejection = () => {
     setButtonClicked("submit");
-    console.log("trying to send Rejection");
+    // console.log("trying to send Rejection");
     // if (applications) {
     //   setApplications(
     //     applications.map((app) =>

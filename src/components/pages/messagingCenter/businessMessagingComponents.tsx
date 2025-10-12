@@ -77,7 +77,7 @@ const RenderBusinessMessageList = ({
   );
 
   const expandListingMessages = (id: any) => {
-    console.log("expandListingMessages for:", id);
+    // console.log("expandListingMessages for:", id);
     if (selectedListing === id) {
       setSelectedListing("");
     } else {

@@ -50,7 +50,7 @@ export default function AddAMessageModal({ business, jobId }: any) {
         },
       });
       // when successful
-      console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
+      // console.log("application successful, details:", response.data.applyToJob); // Adjust based on your mutation response
       setFellow({
         ...fellow,
         newApplication: true,

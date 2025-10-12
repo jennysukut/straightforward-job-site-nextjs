@@ -12,6 +12,7 @@ import { GET_JOB_LISTINGS } from "@/graphql/queries";
 
 import ShuffleIdealButtonPattern from "@/components/buttonsAndLabels/shuffleIdealButtonPattern";
 import PostedJobComponent from "@/components/amsComponents/postedJobComponent";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function BusinessAMS() {
   const { textColor } = useColorOptions();
@@ -30,8 +31,8 @@ export default function BusinessAMS() {
     variables: { businessId: business?.id },
     skip: loadingData === false,
     onCompleted: (data) => {
-      console.log(JSON.stringify(data));
-      console.log("calling a query -", data);
+      // console.log(JSON.stringify(data));
+      // console.log("calling a query -", data);
       setJobListings(data.jobListings);
       setLoadingData(false);
     },
@@ -61,7 +62,8 @@ export default function BusinessAMS() {
     >
       {queryLoading ? (
         <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
-          <div className="LoadingText text-center text-olive">Loading...</div>
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
         </div>
       ) : (
         <div className="ApplicationList flex w-full flex-col gap-4">

@@ -19,7 +19,7 @@ export default function SubscriptionModal(isBeingUpdated: any) {
   const router = useRouter();
   const [selectedAmount, setSelectedAmount] = useState("0");
 
-  console.log(isBeingUpdated);
+  // console.log(isBeingUpdated);
 
   const handleSubmit = () => {
     // We should setFellow with the subscription amount only after a successful payment

@@ -21,7 +21,10 @@ import AddHandler from "@/components/handlers/addHandler";
 import { create } from "lodash";
 
 const jobSchema = z.object({
-  jobTitle: z.string().min(2, { message: "Job Title Required" }),
+  jobTitle: z
+    .string()
+    .min(2, { message: "Job Title Required" })
+    .max(50, { message: "Whoa There, That's An Interestingly Long Title" }),
   positionType: z.string().min(2, { message: "Position Type Required" }),
 });
 
@@ -86,10 +89,10 @@ export default function PostAJobModal() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.createJobListing,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.createJobListing,
+      // );
 
       setJob({
         id: response.data.createJobListing,

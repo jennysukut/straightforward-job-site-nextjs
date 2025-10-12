@@ -71,7 +71,7 @@ export default function SignupModalBusiness1() {
         },
       });
       // when successful, set the Felow and push to the signup pages
-      console.log("Signup successful, ID:", response.data.signupBusiness); // Adjust based on your mutation response
+      // console.log("Signup successful, ID:", response.data.signupBusiness); // Adjust based on your mutation response
       setBusiness({
         ...business,
         name: data.businessName,

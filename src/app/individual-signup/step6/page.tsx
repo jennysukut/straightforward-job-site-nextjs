@@ -114,10 +114,10 @@ export default function IndividualSignupPage6() {
           aboutMe: data.aboutMe,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage6,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveFellowProfilePage6,
+      // );
 
       setFellow({
         ...fellow,

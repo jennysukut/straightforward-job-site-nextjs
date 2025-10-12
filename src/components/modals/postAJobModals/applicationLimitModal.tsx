@@ -39,14 +39,15 @@ export default function ApplicationLimitModal({ currentLimit }: any) {
         },
       });
 
-      console.log(
-        "Round Details saved successfully, Details:",
-        response.data.createJobListingRound,
-      );
+      // console.log(
+      //   "Round Details saved successfully, Details:",
+      //   response.data.createJobListingRound,
+      // );
       setJob({
         ...job,
         applicationLimit: applicationLimit,
         roundNumber: "1",
+        completed: "appLimit",
       });
 
       hideModal();

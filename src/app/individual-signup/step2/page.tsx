@@ -93,10 +93,10 @@ export default function IndividualSignupPage2() {
           profileIsBeingEdited: false,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage2,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveFellowProfilePage2,
+      // );
 
       // when successful, set the Fellow and push to the next signup page
       setFellow({

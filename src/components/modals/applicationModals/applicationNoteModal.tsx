@@ -68,10 +68,10 @@ export default function ApplicationNoteModal({
           noteId: noteId,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.deleteNote,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.deleteNote,
+      // );
       setNewNote(true);
       hideModal();
     } catch (error) {
@@ -81,14 +81,14 @@ export default function ApplicationNoteModal({
   };
 
   useEffect(() => {
-    console.log("let's see if there's a note:", note);
+    // console.log("let's see if there's a note:", note);
   }, []);
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setDisabledButton(true);
     if (note) {
       // try editing note here
-      console.log("need to update this note:", note);
+      // console.log("need to update this note:", note);
       try {
         const response = await editNote({
           variables: {
@@ -96,7 +96,7 @@ export default function ApplicationNoteModal({
             note: data.note,
           },
         });
-        console.log(response.data.editNote);
+        // console.log(response.data.editNote);
         setNewNote(true);
       } catch (error) {
         console.error("Signup error:", error);
@@ -111,10 +111,10 @@ export default function ApplicationNoteModal({
             notes: data.note,
           },
         });
-        console.log(
-          "Details saved successfully, Details:",
-          response.data.keepNotes,
-        );
+        // console.log(
+        //   "Details saved successfully, Details:",
+        //   response.data.keepNotes,
+        // );
         setNewNote(true);
       } catch (error) {
         console.error("Signup error:", error);

@@ -166,14 +166,14 @@ const FellowProfile: React.FC<FellowProfile> = ({
       variables: { id: appId },
       skip: !isApp,
       onCompleted: (data) => {
-        console.log("calling GET_APPLICATION_BY_ID query:", data);
+        // console.log("calling GET_APPLICATION_BY_ID query:", data);
         setCurrentFellow(data.getApplication.fellow);
         setCurrentApp(data.getApplication);
         setCurrentJob(data.getApplication.jobListing);
         setLoadingData(false);
 
         if (data.getApplication.notes.length > 0) {
-          console.log("notes:", data.getApplication.notes);
+          // console.log("notes:", data.getApplication.notes);
           setAppNotes(data.getApplication.notes);
         }
         setNewNote(false);
@@ -239,7 +239,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
     setFellow({ ...fellow, profileIsBeingEdited: true });
     // We should make a loading element or screen, since there's no way of telling when this button is clicked & you're being redirected
     setLoadingData(true);
-    console.log("edit button was clicked, redirecting to: ", url);
+    // console.log("edit button was clicked, redirecting to: ", url);
     router.push(url);
   };
 
@@ -248,7 +248,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
   };
 
   const setStatus = async (newStatus: string) => {
-    console.log("trying to update the app's status");
+    // console.log("trying to update the app's status");
 
     try {
       const response = await updateStatus({
@@ -257,10 +257,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
           status: newStatus,
         },
       });
-      console.log(
-        "Status updated successfully, Details:",
-        response.data.addJobListingDetailsStep2,
-      );
+      // console.log(
+      //   "Status updated successfully, Details:",
+      //   response.data.addJobListingDetailsStep2,
+      // );
       setCurrentApp({ ...currentApp, status: newStatus });
       // if it's successful, update the front-end to reflect "viewed" status
     } catch (error) {
@@ -274,7 +274,7 @@ const FellowProfile: React.FC<FellowProfile> = ({
 
   useEffect(() => {
     if (isApp && currentApp.status === "submitted") {
-      console.log("this app has been submitted, will be marking it as viewed.");
+      // console.log("this app has been submitted, will be marking it as viewed.");
       // code here to update status from submitted to "viewed"
       setStatus("viewed");
     }
@@ -318,7 +318,10 @@ const FellowProfile: React.FC<FellowProfile> = ({
     >
       {loadingData ? (
         //make loading screen design here
-        <div className="LoadingText text-olive">Loading...</div>
+        <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
+        </div>
       ) : (
         // <BouncingDotsLoader />
         <div className="ProfileDetails mr-14 flex gap-8">

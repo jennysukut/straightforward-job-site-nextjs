@@ -14,6 +14,6 @@ export default function UpdateHandler({
     });
   } else {
     // if there isn't a type of that in setFunctions, we can simply setValue and clearErrors based on type
-    console.log("there's an issue with updating this info");
+    // console.log("there's an issue with updating this info");
   }
 }

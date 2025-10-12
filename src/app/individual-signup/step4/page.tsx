@@ -88,10 +88,10 @@ export default function IndividualSignupPage4() {
           locationOptions: locationOptions,
         },
       });
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveFellowProfilePage4,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveFellowProfilePage4,
+      // );
 
       setFellow({
         ...fellow,

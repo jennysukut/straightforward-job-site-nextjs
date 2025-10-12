@@ -9,6 +9,7 @@ export default function ListingPage({ params }: any) {
 
   return (
     <div className="JobListingPage flex flex-grow flex-col items-center gap-8 md:pb-12">
+      {/* We'll have to fix this so that it checks if the business is actually the one who posted that job */}
       {accountType === "Business" && (
         <JobListing isOwn hasId id={params.jobId} />
       )}

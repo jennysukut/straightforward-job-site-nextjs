@@ -40,6 +40,7 @@ import {
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { Job } from "@/contexts/JobContext";
 import DeleteConfirmationModal from "@/components/modals/deleteConfirmationModal";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function JobListing({
   hasId,
@@ -88,9 +89,11 @@ export default function JobListing({
     data: queryData,
   } = useQuery(GET_JOB_LISTING_BY_ID, {
     variables: { id: id },
-    skip: !isLoggedIn || gotJob || isBeingDeleted,
+    skip:
+      // !isLoggedIn ||
+      gotJob || isBeingDeleted,
     onCompleted: (data) => {
-      console.log(data);
+      // console.log(data);
       setGotJob(true);
       setCurrentJob(data.jobListing);
       setLoadingData(false);
@@ -130,10 +133,10 @@ export default function JobListing({
         },
       });
       // when successful
-      console.log(
-        "edit job successful, details:",
-        response.data.starOrStopEditingJobListing,
-      );
+      // console.log(
+      //   "edit job successful, details:",
+      //   response.data.starOrStopEditingJobListing,
+      // );
     } catch (error) {
       console.error("Error:", error);
     }
@@ -146,7 +149,7 @@ export default function JobListing({
     const thisApp = fellow?.jobApplications?.find(
       (app: any) => app?.jobListing?.id === id,
     );
-    console.log(currentApp);
+    // console.log(currentApp);
     currentApp = thisApp.id;
   }
 
@@ -201,10 +204,10 @@ export default function JobListing({
           id: job?.id,
         },
       });
-      console.log(
-        "save job successful, details:",
-        response.data.deleteJobListing,
-      );
+      // console.log(
+      //   "save job successful, details:",
+      //   response.data.deleteJobListing,
+      // );
       hideModal();
       router.push(`/ams`);
     } catch (error) {
@@ -220,10 +223,10 @@ export default function JobListing({
         },
       });
       // when successful
-      console.log(
-        "save job successful, details:",
-        response.data.saveJobListing,
-      );
+      // console.log(
+      //   "save job successful, details:",
+      //   response.data.saveJobListing,
+      // );
     } catch (error) {
       console.error("application error:", error);
     }
@@ -239,7 +242,7 @@ export default function JobListing({
     }
   }, [isOwn, id, job, newPost]);
 
-  console.log("currentJob:", currentJob);
+  // console.log("currentJob:", currentJob);
 
   useEffect(() => {
     ShuffleIdealButtonPattern(setPrimaryColorArray);
@@ -544,7 +547,8 @@ export default function JobListing({
     >
       {loadingData ? (
         <div className="LoadingScreen flex h-[80vh] justify-center align-middle">
-          <div className="LoadingText text-center text-olive">Loading...</div>
+          <BouncingDotsLoader />
+          {/* <div className="LoadingText text-center text-olive">Loading...</div> */}
         </div>
       ) : (
         <div className="ProfileDetails flex gap-8">

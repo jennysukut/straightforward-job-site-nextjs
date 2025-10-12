@@ -60,7 +60,7 @@ export default function BusinessSignupPage1() {
     SAVE_BUSINESS_PROFILE_PAGE_1_MUTATION,
   );
 
-  console.log("avatarDetails:", avatarDetails, business?.businessProfile);
+  // console.log("avatarDetails:", avatarDetails, business?.businessProfile);
 
   const {
     handleSubmit,
@@ -89,10 +89,11 @@ export default function BusinessSignupPage1() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveBusinessProfilePage1,
-      ); // Adjust based on your mutation response
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveBusinessProfilePage1,
+      // );
+      // Adjust based on your mutation response
       setBusiness({
         ...business,
         profileIsBeingEdited: false,

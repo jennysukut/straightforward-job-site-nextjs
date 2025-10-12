@@ -61,10 +61,10 @@ export default function BusinessSignupPage2() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.saveBusinessProfilePage2,
-      ); // Adjust based on your mutation response
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.saveBusinessProfilePage2,
+      // ); // Adjust based on your mutation response
 
       setBusiness({
         ...business,

@@ -26,10 +26,8 @@ const jobSchema = z.object({
     .array(
       z.object({
         stage: z.string(),
-        step: z.string().min(1, { message: "Step Name is Required" }),
-        details: z
-          .string()
-          .min(2, { message: "Please Include More Information" }),
+        step: z.string(),
+        details: z.string(),
         id: z.number(),
       }),
     )
@@ -75,7 +73,7 @@ export default function PostAJobStep5() {
 
   // handlers for adding, updating, and deleting details
   const handleAdd = (type: "interviewProcess", data: any) => {
-    console.log(data);
+    // console.log(data);
     AddHandler({
       item: data,
       type,
@@ -134,18 +132,20 @@ export default function PostAJobStep5() {
         },
       });
 
-      console.log(
-        "Details saved successfully, Details:",
-        response.data.addJobListingDetailsStep4,
-      );
+      // console.log(
+      //   "Details saved successfully, Details:",
+      //   response.data.addJobListingDetailsStep4,
+      // );
 
       setJob({
         ...job,
         interviewProcess: interviewProcess,
         roundNumber: "1",
         beingEdited: false,
+        completed: "step5",
       });
       if (job?.beingEdited) {
+        // console.log("job id:", job.id);
         router.push(`/listing/${job.id}`);
         // router.push(`/listing`);
       } else {
