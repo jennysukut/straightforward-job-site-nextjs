@@ -66,6 +66,7 @@ export default function Messages() {
       setActiveApp(currentMessages?.[0]?.id || "");
     } else {
       setActiveApp(id);
+      console.log("trying to set the activeApp to this:", id);
     }
   };
 

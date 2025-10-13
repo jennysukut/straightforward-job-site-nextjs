@@ -117,12 +117,7 @@ const MessageCenter = ({
           text: message.text.flatMap((text: string) => text.split("\n")), // Split by double newlines for paragraphs
         }));
       setMessages(filteredMessages);
-      console.log(
-        "data from response:",
-        // data,
-        // data.getConversation,
-        data.getConversation.jobApplication.jobListing.jobTitle,
-      );
+      setLoadingMessages(false);
       setFellowName(data.getConversation.jobApplication.fellow.name);
       setBusinessName(
         data.getConversation.jobApplication.jobListing.business.name,
@@ -133,9 +128,15 @@ const MessageCenter = ({
         data.getConversation.jobApplication.jobListing.jobTitle,
       );
       setRelevantListing(data.getConversation.jobApplication.jobListing.id);
-      setLoadingMessages(false);
+      // setLoadingMessages(false);
       setIsLoading(false);
       setMessageLength(filteredMessages.length);
+      // console.log(
+      //   "data from response:",
+      //   // data,
+      //   // data.getConversation,
+      //   data.getConversation.jobApplication.jobListing.jobTitle,
+      // );
     },
   });
 
@@ -162,14 +163,6 @@ const MessageCenter = ({
       messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   };
-
-  useEffect(() => {
-    if (loadingMessages) {
-      setLoadingMessages(false);
-    } else {
-      setLoadingMessages(true);
-    }
-  }, [activeConvo]);
 
   const clickButton = (id: string, route: string) => {
     if (clickedButton === id) {
@@ -328,7 +321,7 @@ const MessageCenter = ({
     }
   };
 
-  console.log("relevant position:", relevantPosition);
+  // console.log("relevant position:", relevantPosition);
 
   // const readMesssages = () => {
   //   const updatedMessages = messages.map((message) => {

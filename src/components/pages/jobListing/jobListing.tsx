@@ -153,6 +153,8 @@ export default function JobListing({
     currentApp = thisApp.id;
   }
 
+  console.log("isOwn?", isOwn);
+
   const handleEditClick = (url: any) => {
     setJob({ ...job, beingEdited: true });
     setCanEdit(true);
