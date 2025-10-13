@@ -17,6 +17,7 @@ import InfoBox from "@/components/informationDisplayComponents/infoBox";
 import AddHandler from "@/components/handlers/addHandler";
 import DeleteHandler from "@/components/handlers/deleteHandler";
 import TieredButtonOptionsComponent from "@/components/buttonsAndLabels/tieredButtonOptionsComponent";
+import BouncingDotsLoader from "@/components/loader";
 
 export default function JobBoard() {
   const { fellow, setFellow } = useFellow();
@@ -140,12 +141,14 @@ export default function JobBoard() {
   };
 
   const renderJobListings = () => {
+    // UPDATE HERE
     if (jobListingsArray.length < 1 && loadingData === false) {
       return (
         <div className="NoListingsDetail flex h-[30vh] w-[100%] flex-col justify-center">
-          <p className="NoListingsHere italic text-olive">
+          {/* <p className="NoListingsHere italic text-olive">
             No listings match those parameters.
-          </p>
+          </p> */}
+          <BouncingDotsLoader />
         </div>
       );
     }
@@ -264,8 +267,9 @@ export default function JobBoard() {
       {/* job listings */}
       {loadingData ? (
         //make loading screen design here
-        <div className="LoadingText text-olive">Searching...</div>
+        <BouncingDotsLoader />
       ) : (
+        // <div className="LoadingText text-olive">Searching...</div>
         <div className="JobListings flex flex-wrap justify-center gap-8">
           {renderJobListings()}
         </div>

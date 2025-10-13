@@ -52,7 +52,7 @@ const MessageCenter = ({
   setLoadingMessages,
   setMessageLength,
 }: any): JSX.Element => {
-  const { accountType, isLoggedIn } = usePageContext();
+  const { accountType, isLoggedIn, isLoadingAccount } = usePageContext();
   const { showModal, hideModal } = useModal();
   const { jobListings } = useJobListings();
   const { applications, setApplications } = useApplications();
@@ -70,12 +70,13 @@ const MessageCenter = ({
   const [isBeingEdited, setIsBeingEdited] = useState(null);
   const [sendMessage, { loading, error }] = useMutation(SEND_MESSAGE);
   const [paragraphs, setParagraphs] = useState([""]);
-  const [fellowName, setFellowName] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [relevantPosition, setRelevantPosition] = useState("");
+  const [fellowName, setFellowName] = useState<string>("");
+  const [jobTitle, setJobTitle] = useState("");
+  const [businessName, setBusinessName] = useState<string>("");
+  const [relevantPosition, setRelevantPosition] = useState<string>("");
   const [clickedButton, setClickedButton] = useState("");
-  const [relevantListing, setRelevantListing] = useState("");
-  const [businessID, setBusinessID] = useState("");
+  const [relevantListing, setRelevantListing] = useState<string>("");
+  const [businessID, setBusinessID] = useState<string>("");
 
   //Testing Connecting to Messaging Subscription/Webhook
 
@@ -116,6 +117,12 @@ const MessageCenter = ({
           text: message.text.flatMap((text: string) => text.split("\n")), // Split by double newlines for paragraphs
         }));
       setMessages(filteredMessages);
+      console.log(
+        "data from response:",
+        // data,
+        // data.getConversation,
+        data.getConversation.jobApplication.jobListing.jobTitle,
+      );
       setFellowName(data.getConversation.jobApplication.fellow.name);
       setBusinessName(
         data.getConversation.jobApplication.jobListing.business.name,
@@ -132,9 +139,14 @@ const MessageCenter = ({
     },
   });
 
-  if (loadingMessages) {
-    setLoadingMessages(false);
-  }
+  useEffect(() => {
+    console.log("relevantPosition:", relevantPosition);
+    console.log("relevantListing:", relevantListing);
+  }, [relevantPosition, relevantListing]);
+
+  // if (loadingMessages) {
+  //   setLoadingMessages(false);
+  // }
 
   const currentAvatarChoice = avatarOptions.find((option: any) => {
     if (accountType === "Fellow") {
@@ -150,6 +162,14 @@ const MessageCenter = ({
       messageContainer.scrollTop = messageContainer.scrollHeight;
     }
   };
+
+  useEffect(() => {
+    if (loadingMessages) {
+      setLoadingMessages(false);
+    } else {
+      setLoadingMessages(true);
+    }
+  }, [activeConvo]);
 
   const clickButton = (id: string, route: string) => {
     if (clickedButton === id) {
@@ -307,6 +327,8 @@ const MessageCenter = ({
       router.push(`/ams/${relevantListing}`);
     }
   };
+
+  console.log("relevant position:", relevantPosition);
 
   // const readMesssages = () => {
   //   const updatedMessages = messages.map((message) => {

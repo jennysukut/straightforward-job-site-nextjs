@@ -88,7 +88,8 @@ const JobPost: React.FC<JobPostProps> = ({ job, colorArray, index }) => {
   const viewDetails = () => {
     setViewMoreClicked(true);
     if (applied) {
-      router.push(`/application/${thisApp}`);
+      // router.push(`/application/${thisApp}`);
+      router.push(`/ams`);
     } else router.push(`/listing/${job.id}`);
   };
 

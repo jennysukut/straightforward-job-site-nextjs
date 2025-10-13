@@ -71,7 +71,7 @@ const RenderFellowMessageList = ({
           (message: any) => message.fromBusiness === true,
         );
         // update the "read" field/status using DB
-        const messageStatus = "read";
+        const messageStatus = "status";
         // recentMessages
         //   ? recentMessages[recentMessages.length - 1].read === true
         //     ? "read"

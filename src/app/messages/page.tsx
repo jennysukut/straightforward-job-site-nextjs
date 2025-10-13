@@ -31,7 +31,8 @@ type CurrentSchemeType = ButtonColorOption;
 // activeApp is then passed into the MessageCenter, which will display the active Messages related to the activeApp application.
 
 export default function Messages() {
-  const { accountType, isLoggedIn, setCurrentPage } = usePageContext();
+  const { accountType, isLoggedIn, setCurrentPage, isLoadingAccount } =
+    usePageContext();
   const { fellow } = useFellow();
   const { business } = useBusiness();
   const { applications } = useApplications();
@@ -82,14 +83,17 @@ export default function Messages() {
   useEffect(() => {
     if (isLoggedIn) return; // only run when not logged in
 
-    const timer = setTimeout(async () => {
-      if (!isLoggedIn) {
-        showModal(<LoginModal prompt={"login to access"} />);
-      }
-    }, 5000);
+    // const timer = setTimeout(async () => {
+    //   if (!isLoggedIn) {
+    //     showModal(<LoginModal prompt={"login to access"} />);
+    //   }
+    // }, 5000);
 
-    return () => clearTimeout(timer);
-  }, [isLoggedIn, router]);
+    // return () => clearTimeout(timer);
+    if (!isLoadingAccount && !isLoggedIn) {
+      showModal(<LoginModal prompt={"login to access"} />);
+    }
+  }, [isLoggedIn, router, isLoadingAccount]);
 
   return (
     <div className="MessagePage">
