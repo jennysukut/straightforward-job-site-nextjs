@@ -18,9 +18,9 @@ export default function Home() {
       <h2 className="UnderConstruction mb-8">
         This Page Is Currently Under Construction
       </h2>
-      <BouncingDotsLoader />
+      {/* <BouncingDotsLoader />
       <div className="Space h-36"></div>
-      <DotSpinnerLoader />
+      <DotSpinnerLoader /> */}
     </div>
   );
 }
