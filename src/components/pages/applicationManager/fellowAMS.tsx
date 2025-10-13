@@ -407,7 +407,7 @@ export default function FellowAMS() {
                 ? "going to messages..."
                 : "messages"}
             </SiteButton>
-            <SiteButton
+            {/* <SiteButton
               variant="hollow"
               colorScheme="d3"
               aria="retract"
@@ -415,7 +415,7 @@ export default function FellowAMS() {
               isSelected={clickedButton === "retract"}
             >
               {clickedButton === "retract" ? "retracting..." : "retract"}
-            </SiteButton>
+            </SiteButton> */}
           </div>
         </div>
       )}
