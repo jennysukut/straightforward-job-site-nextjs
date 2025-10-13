@@ -6,6 +6,7 @@ import { usePageContext } from "@/contexts/PageContext";
 import { useFellow } from "@/contexts/FellowContext";
 import { useBusiness } from "@/contexts/BusinessContext";
 import { useColors } from "@/contexts/ColorContext";
+import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -33,10 +34,17 @@ export default function NavBar() {
   const { colorOption } = useColors();
   const { textColor } = useColorOptions();
   // const { dailyLimit } = useFellow();
+  const router = useRouter();
 
   function handleNavButtonClick(e: any) {
     setClickedButton(clickedButton === e.target.value ? "" : e.target.value);
   }
+
+  useEffect(() => {
+    if (clickedButton === "about") {
+      router.push("/in-progress");
+    }
+  }, [clickedButton]);
 
   let avatarDetails;
   if (accountType === "Fellow") {
