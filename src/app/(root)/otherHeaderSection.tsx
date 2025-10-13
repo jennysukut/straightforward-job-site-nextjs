@@ -80,7 +80,8 @@ function OtherHeaderSection() {
     if (keyword === "mail/features") {
       setClickedButton("mail/features");
       if (!isLoggedIn) {
-        router.push(`/features`);
+        // router.push(`/features`);
+        router.push(`/in-progress`);
       } else {
         router.push(`/messages`);
       }
@@ -89,7 +90,8 @@ function OtherHeaderSection() {
       if (isLoggedIn) {
         router.push(`/ams`);
       } else if (!isLoggedIn) {
-        router.push(`/difference`);
+        // router.push(`/difference`);
+        router.push(`/in-progress`);
       }
     } else if (keyword === "signup/post/explore") {
       setClickedButton("signup/post/explore");
